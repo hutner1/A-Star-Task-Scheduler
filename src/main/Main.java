@@ -1,10 +1,13 @@
-import java.awt.List;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import org.jgrapht.graph.DefaultWeightedEdge;
+import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 
 public class Main {
 
@@ -22,7 +25,7 @@ public class Main {
 			System.out.println("Error! Please follow the correct input format");
 			System.exit(0);
 		}
-		
+
 		//Read the file name from the input arguments - by David Qi
 		String inputFileName = args[0];
 
@@ -63,19 +66,19 @@ public class Main {
 			for(int i = 0; i < optional_commands.size(); i++){
 
 				if(optional_commands.get(i).equals("-v")){	
-					
+
 					vFlag = 1; //Set the v optional command flag if found
-					
+
 				} else if(optional_commands.get(i).equals("-p")){
-					
+
 					//Checking that the optional command for cores is not repeated
 					if(pFlag == 1){
 						System.out.println("Warning, invalid optional command found!");
 						System.exit(0);
 					}
-					
+
 					pFlag = 1; //Set the p optional command flag
-					
+
 					//Stored the number of cores to be used
 					try{
 						cores = Integer.parseInt(optional_commands.get(i+1));
@@ -86,28 +89,28 @@ public class Main {
 						System.exit(0);
 
 					}
-					
+
 					i++;
-					
+
 				} else if(optional_commands.get(i).equals("-o")){
-					
+
 					//Checking that the optional command for output name is not repeated
 					if(oFlag == 1){
 						System.out.println("Warning, invalid optional command found!");
 						System.exit(0);
 					}
-					
+
 					oFlag = 1; //Set the o optional command flag
-					
+
 					String filename = optional_commands.get(i+1);
-					
+
 					//Store the output file name
-						OutputFileName = filename;
-					
+					OutputFileName = filename;
+
 					i++;
-					
+
 				} else {
-					
+
 					System.out.println("Warning, invalid optional command found!");
 					System.exit(0);
 				}
@@ -122,43 +125,52 @@ public class Main {
 
 		try {
 
-		    reader = new BufferedReader(new FileReader(file));
-		    String text = null;
-		    text = reader.readLine();
-		    String[] headerArray = text.split("\"");
-		    String digraphName = headerArray[1];
-		    
-		    while ((text = reader.readLine()) != null && !(text.equals("}")) ) {
-		    	
-		    	System.out.println(text);
-		    	
-		    	String[] lineArray=text.split("\\[");
-		    	
-		    	//finds the weight
-		
-		    	String weightString = lineArray[1];      
-		    	weightString = weightString.replaceAll("[^0-9]+", " "); //get only the integers
-		    	String[] weightArray = weightString.trim().split(" "); //get array of integers
-		    	int weight =Integer.parseInt(weightArray[0]); //the weight is the first element in array
-		    	System.out.println(weight);
-		    	
-		    	//Read node
-		    	
-		    	if (lineArray[0].contains("->")) { //check if there's an arrow
-		    		String[] nodeArray = lineArray[0].split("->"); 
-		    		char nodeA = nodeArray[0].trim().charAt(0); //get first character
-		    		System.out.println(nodeA);
-		    		char nodeB = nodeArray[1].trim().charAt(0); //get second character
-		    		System.out.println(nodeB);
-		    	} else {
-		    		String nodeString = lineArray[0].trim();
-		    		char node = nodeString.charAt(0); //get first character of string
-		    		System.out.println(node);
-		    	}
-		    	
-		    			    	
-		    }
-		    
+			reader = new BufferedReader(new FileReader(file));
+			String text = null;
+			text = reader.readLine();
+			String[] headerArray = text.split("\"");
+			String digraphName = headerArray[1];
+
+			//Creates digraph with weighted vertices and weighted edges
+			SimpleDirectedWeightedGraph<Character,DefaultWeightedEdge> digraph = new SimpleDirectedWeightedGraph<Character, DefaultWeightedEdge>(DefaultWeightedEdge.class);
+			HashMap<Character,Integer> nodeWeights = new HashMap<Character,Integer>();
+
+			while ((text = reader.readLine()) != null && !(text.equals("}")) ) {
+
+				System.out.println(text);
+
+				String[] lineArray=text.split("\\[");
+
+				//finds the weight
+
+				String weightString = lineArray[1];      
+				weightString = weightString.replaceAll("[^0-9]+", " "); //get only the integers
+				String[] weightArray = weightString.trim().split(" "); //get array of integers
+				int weight =Integer.parseInt(weightArray[0]); //the weight is the first element in array
+
+				//Read node
+
+				if (lineArray[0].contains("->")) { //check if there's an arrow
+					String[] nodeArray = lineArray[0].split("->"); 
+					char nodeA = nodeArray[0].trim().charAt(0); //get first character
+					char nodeB = nodeArray[1].trim().charAt(0); //get second character
+					DefaultWeightedEdge edge = digraph.addEdge(nodeA, nodeB);
+					digraph.setEdgeWeight(edge, weight);
+
+				} else {
+					String nodeString = lineArray[0].trim();
+					char node = nodeString.charAt(0); //get first character of string
+					digraph.addVertex(node);
+					nodeWeights.put(node, weight);
+				}
+
+
+			}
+			
+			System.out.println(digraph.vertexSet().toString());
+			System.out.println(nodeWeights.values());
+			System.out.println(digraph.edgeSet().toString());	
+
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found!");
 		} catch (IOException e) {
