@@ -43,31 +43,29 @@ public class Main {
 		    	
 		    	String[] lineArray=text.split("[");
 		    	
-		    	//read the weight
+		    	//finds the weight
 		
 		    	String weightString = lineArray[1];      
-		    	weightString = weightString.replaceAll("[^0-9]+", " ");
-		    	String[] weightArray = weightString.trim().split(" ");
-		    	int weight =Integer.parseInt(weightArray[0]);
+		    	weightString = weightString.replaceAll("[^0-9]+", " "); //get only the integers
+		    	String[] weightArray = weightString.trim().split(" "); //get array of integers
+		    	int weight =Integer.parseInt(weightArray[0]); //the weight is the first element in array
 		    	System.out.println(weight);
 		    	
 		    	//Read node
 		    	
-		    	if (lineArray[0].contains("->")) {
-		    		String[] nodeArray = lineArray[0].split("->");
-		    		char nodeA = nodeArray[0].trim().charAt(0);
+		    	if (lineArray[0].contains("->")) { //check if there's an arrow
+		    		String[] nodeArray = lineArray[0].split("->"); 
+		    		char nodeA = nodeArray[0].trim().charAt(0); //get first character
 		    		System.out.println(nodeA);
-		    		char nodeB = nodeArray[1].trim().charAt(1);
+		    		char nodeB = nodeArray[1].trim().charAt(1); //get second character
 		    		System.out.println(nodeB);
 		    	} else {
 		    		String nodeString = lineArray[0].trim();
-		    		char node = nodeString.charAt(0);
+		    		char node = nodeString.charAt(0); //get first character of string
 		    		System.out.println(node);
 		    	}
 		    	
-		    	
-		    	//comment
-		    	
+		    			    	
 		    }
 		    
 		} catch (FileNotFoundException e) {
