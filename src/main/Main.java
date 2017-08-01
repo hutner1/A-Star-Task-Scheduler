@@ -1,5 +1,3 @@
-package main;
-
 import java.awt.List;
 import java.io.BufferedReader;
 import java.io.File;
@@ -19,6 +17,12 @@ public class Main {
 		String OutputFileName;
 		ArrayList<String> optional_commands = new ArrayList<String>();
 
+		//Error for when no arguments are supplied - Hunter
+		if(args.length == 0) {
+			System.out.println("Error! Please follow the correct input format");
+			System.exit(0);
+		}
+		
 		//Read the file name from the input arguments - by David Qi
 		String inputFileName = args[0];
 
