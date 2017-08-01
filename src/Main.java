@@ -22,8 +22,7 @@ public class Main {
 
 		//Error for when no arguments are supplied - Hunter
 		if(args.length < 2) {
-			System.out.println("Error! Please follow the correct input format");
-			System.exit(0);
+			InputError("Error! Please follow the correct input format");
 		}
 
 		//Read the file name from the input arguments - by David Qi
@@ -32,14 +31,13 @@ public class Main {
 		//Verify that the file exists with correct extension. type - David Qi
 		File file = new File(inputFileName);
 		if(!(file.exists() && inputFileName.substring(inputFileName.lastIndexOf(".") + 1, inputFileName.length()).equals("dot"))){
-			System.out.println("Error! The file is either not found or is of wrong type!");
-			System.exit(0);
+			InputError("Error! The file is either not found or is of wrong type!");
+
 		}
 
 
 		//Read the number of processors from the input argument - David Qi
 		String Processors = args[1];
-
 
 		//Verify the validity of the argument for the number of processors and store it - David Qi
 		try{
@@ -47,8 +45,7 @@ public class Main {
 
 		} catch (NumberFormatException e) {
 
-			System.out.println("Invalid input for the number of processors!");
-			System.exit(0);
+			InputError("Invalid input for the number of processors!");
 
 		}
 
@@ -59,6 +56,8 @@ public class Main {
 			optional_commands.add(args[argumentIndex]);
 			argumentIndex++;
 		}
+		
+		
 
 		//Verify the validity of the optional commands if it is not empty - David Qi
 		if(optional_commands.size() != 0){
@@ -73,8 +72,7 @@ public class Main {
 
 					//Checking that the optional command for cores is not repeated
 					if(pFlag == 1){
-						System.out.println("Warning, invalid optional command found!");
-						System.exit(0);
+						InputError("Warning, invalid optional command found!");
 					}
 
 					pFlag = 1; //Set the p optional command flag
@@ -85,8 +83,7 @@ public class Main {
 
 					} catch (NumberFormatException e) {
 
-						System.out.println("Invalid input for the number of cores!");
-						System.exit(0);
+						InputError("Invalid input for the number of cores!");
 
 					}
 
@@ -96,8 +93,7 @@ public class Main {
 
 					//Checking that the optional command for output name is not repeated
 					if(oFlag == 1){
-						System.out.println("Warning, invalid optional command found!");
-						System.exit(0);
+						InputError("Warning, invalid optional command found!");
 					}
 
 					oFlag = 1; //Set the o optional command flag
@@ -110,9 +106,7 @@ public class Main {
 					i++;
 
 				} else {
-
-					System.out.println("Warning, invalid optional command found!");
-					System.exit(0);
+					InputError("Warning, invalid optional command found!");
 				}
 
 
@@ -180,6 +174,12 @@ public class Main {
 
 
 
+	}
+	
+	
+	public static void InputError(String msg){
+		System.out.println(msg);
+		System.exit(0);
 	}
 
 }
