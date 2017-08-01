@@ -18,7 +18,7 @@ public class Main {
 		ArrayList<String> optional_commands = new ArrayList<String>();
 
 		//Error for when no arguments are supplied - Hunter
-		if(args.length == 0) {
+		if(args.length < 2) {
 			System.out.println("Error! Please follow the correct input format");
 			System.exit(0);
 		}
@@ -28,7 +28,7 @@ public class Main {
 
 		//Verify that the file exists with correct extension. type - David Qi
 		File file = new File(inputFileName);
-		if(file.exists() && inputFileName.substring(inputFileName.lastIndexOf(".") + 1, inputFileName.length()).equals(".dot"));{
+		if(!(file.exists() && inputFileName.substring(inputFileName.lastIndexOf(".") + 1, inputFileName.length()).equals("dot"))){
 			System.out.println("Error! The file is either not found or is of wrong type!");
 			System.exit(0);
 		}
@@ -52,7 +52,7 @@ public class Main {
 
 		int argumentIndex = 2;
 		//Read and store the optional commands - David Qi
-		while(args[argumentIndex] != null){
+		while(argumentIndex < args.length){
 			optional_commands.add(args[argumentIndex]);
 			argumentIndex++;
 		}
@@ -128,11 +128,11 @@ public class Main {
 		    String[] headerArray = text.split("\"");
 		    String digraphName = headerArray[1];
 		    
-		    while ((text = reader.readLine()) != null && (text != "}") ) {
+		    while ((text = reader.readLine()) != null && !(text.equals("}")) ) {
 		    	
 		    	System.out.println(text);
 		    	
-		    	String[] lineArray=text.split("[");
+		    	String[] lineArray=text.split("\\[");
 		    	
 		    	//finds the weight
 		
@@ -148,7 +148,7 @@ public class Main {
 		    		String[] nodeArray = lineArray[0].split("->"); 
 		    		char nodeA = nodeArray[0].trim().charAt(0); //get first character
 		    		System.out.println(nodeA);
-		    		char nodeB = nodeArray[1].trim().charAt(1); //get second character
+		    		char nodeB = nodeArray[1].trim().charAt(0); //get second character
 		    		System.out.println(nodeB);
 		    	} else {
 		    		String nodeString = lineArray[0].trim();
