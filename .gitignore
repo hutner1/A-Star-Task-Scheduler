@@ -53,6 +53,6 @@ hs_err_pid*
 # allow jars in libs to be added
 !libs/*
 
-# don't track
+# don't track dot output files
 *.dot
 !example.dot
