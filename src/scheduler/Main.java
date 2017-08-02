@@ -33,7 +33,7 @@ public class Main {
 		String[] optionalCommands;
 		
 		//Records nodes and edges as they are being read
-		ArrayList<Character> nodesAndEdgesRead =new ArrayList<>();
+		ArrayList<String> nodesAndEdgesRead =new ArrayList<>();
 		//Records nodes and edges' info
 		ArrayList<String> nodesAndEdgesInfo = new ArrayList<>();
 
@@ -160,8 +160,8 @@ public class Main {
 			digraphName = headerArray[1];
 
 			//Creates digraph with weighted vertices and weighted edges
-			SimpleDirectedWeightedGraph<Character,DefaultWeightedEdge> digraph = new SimpleDirectedWeightedGraph<Character, DefaultWeightedEdge>(DefaultWeightedEdge.class);
-			HashMap<Character,Integer> nodeWeights = new HashMap<Character,Integer>(); //Create hash map to store node weights as SimpleDirectedWeightedGraph doesn't do this 
+			SimpleDirectedWeightedGraph<String,DefaultWeightedEdge> digraph = new SimpleDirectedWeightedGraph<String, DefaultWeightedEdge>(DefaultWeightedEdge.class);
+			HashMap<String,Integer> nodeWeights = new HashMap<String,Integer>(); //Create hash map to store node weights as SimpleDirectedWeightedGraph doesn't do this 
 
 			//Read the input file until last line reached 
 			while ((text = reader.readLine()) != null && !(text.equals("}")) ) {
@@ -177,19 +177,18 @@ public class Main {
 				//if EDGE 
 				if (lineArray[0].contains("->")) { //check if there's an arrow
 					String[] nodeArray = lineArray[0].split("->"); 
-					char nodeA = nodeArray[0].trim().charAt(0); //get first character
-					char nodeB = nodeArray[1].trim().charAt(0); //get second character
+					String nodeA = nodeArray[0].trim(); //get first character
+					String nodeB = nodeArray[1].trim(); //get second character
 					DefaultWeightedEdge edge = digraph.addEdge(nodeA, nodeB);
 					digraph.setEdgeWeight(edge, weight);		
 
-					nodesAndEdgesRead.add('>'); // indicates that the current entry is an edge
+					nodesAndEdgesRead.add(">"); // indicates that the current entry is an edge
 					
 				//if NODE
 				} else {
-					String nodeString = lineArray[0].trim();
-					char node = nodeString.charAt(0); //get first character of string
+					String node = lineArray[0].trim();
+					//char node = nodeString.charAt(0); //get first character of string
 					digraph.addVertex(node);
-					new Vertex(Character.toString(node), weight);
 					nodeWeights.put(node, weight);
 					
 					nodesAndEdgesRead.add(node);
@@ -230,7 +229,7 @@ public class Main {
 		System.exit(0);
 	}
 
-	private static void createSchedule(String outputName, String digraphName, ArrayList<String> weightInfos, ArrayList<Character> nodesAndEdges){
+	private static void createSchedule(String outputName, String digraphName, ArrayList<String> weightInfos, ArrayList<String> nodesAndEdges){
 		File outputFile = new File(outputName + ".dot");
 		
 		//create output file to write to if it doesn't exists  
@@ -252,10 +251,10 @@ public class Main {
 		for(String info : weightInfos){
 			int currentPos = weightInfos.indexOf(info);
 			// edge would be ">"
-			Character nodeOrEdge = nodesAndEdges.get(currentPos);
+			String nodeOrEdge = nodesAndEdges.get(currentPos);
 			
 			// record initially recorded edge info directly back to file as no extra info is needed
-			if(nodeOrEdge == '>'){
+			if(nodeOrEdge.equals(">")){
 				General.record(outputFile, info);
 			} else {
 				// add the start and processor info to the end before closing bracket
@@ -276,7 +275,7 @@ public class Main {
 	 * @param task task to obtain Start time for
 	 * @return Start time for the task
 	 */
-	private static int getTaskStart(Character task){
+	private static int getTaskStart(String task){
 		// TODO because it currently returns dummy value
 		return 0;
 	}
@@ -286,7 +285,7 @@ public class Main {
 	 * @param task task to obtain Processor to run on for
 	 * @return Processor for the task to run on
 	 */
-	private static int getTaskProcessor(Character task){
+	private static int getTaskProcessor(String task){
 		// TODO beacause it currently returns dummy value
 		return 1;
 	
