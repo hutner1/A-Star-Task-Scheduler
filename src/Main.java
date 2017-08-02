@@ -3,9 +3,17 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 
@@ -13,12 +21,11 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		int NumberOfProcessors, cores;
-		int pFlag = 0;
-		int vFlag = 0;
-		int oFlag = 0;
-		String OutputFileName;
-		ArrayList<String> optional_commands = new ArrayList<String>();
+		int NumberOfProcessors;
+		int vFlag= 0;
+		int cores = 1;
+		String OutputFileName = "INPUT-output";
+		String[] optional_commands;
 
 		//Error for when no arguments are supplied - Hunter
 		if(args.length < 2) {
@@ -48,70 +55,86 @@ public class Main {
 			InputError("Invalid input for the number of processors!");
 
 		}
-
-
-		int argumentIndex = 2;
-		//Read and store the optional commands - David Qi
-		while(argumentIndex < args.length){
-			optional_commands.add(args[argumentIndex]);
-			argumentIndex++;
-		}
 		
+		CommandLine commandLine;
+		Option option_V = Option.builder("v")
+				.required(false)
+				.desc("Visualize")
+				.build();
+		Option option_P = Option.builder("p")
+				.required(false)
+				.desc("The number of processors")
+				.numberOfArgs(1)
+				.build();
+		Option option_O = Option.builder("o")
+				.required(false)
+				.desc("The output name")
+				.numberOfArgs(1)
+				.build();
+		Options options = new Options();
+		CommandLineParser parser = new DefaultParser();
 		
+		options.addOption(option_V);
+		options.addOption(option_P);
+		options.addOption(option_O);
+		
+		try
+		{
+			optional_commands = Arrays.copyOfRange(args, 2, args.length);
+			
+			commandLine = parser.parse(options, optional_commands);
 
-		//Verify the validity of the optional commands if it is not empty - David Qi
-		if(optional_commands.size() != 0){
-
-			for(int i = 0; i < optional_commands.size(); i++){
-
-				if(optional_commands.get(i).equals("-v")){	
-
-					vFlag = 1; //Set the v optional command flag if found
-
-				} else if(optional_commands.get(i).equals("-p")){
-
-					//Checking that the optional command for cores is not repeated
-					if(pFlag == 1){
-						InputError("Warning, invalid optional command found!");
-					}
-
-					pFlag = 1; //Set the p optional command flag
-
-					//Stored the number of cores to be used
-					try{
-						cores = Integer.parseInt(optional_commands.get(i+1));
-
-					} catch (NumberFormatException e) {
-
-						InputError("Invalid input for the number of cores!");
-
-					}
-
-					i++;
-
-				} else if(optional_commands.get(i).equals("-o")){
-
-					//Checking that the optional command for output name is not repeated
-					if(oFlag == 1){
-						InputError("Warning, invalid optional command found!");
-					}
-
-					oFlag = 1; //Set the o optional command flag
-
-					String filename = optional_commands.get(i+1);
-
-					//Store the output file name
-					OutputFileName = filename;
-
-					i++;
-
-				} else {
-					InputError("Warning, invalid optional command found!");
-				}
-
-
+			if (commandLine.hasOption("v"))
+			{
+				vFlag = 1;
+				System.out.println("Option v is present.  This is a flag option.");
 			}
 
+			if (commandLine.hasOption("p"))
+			{
+
+				//Stored the number of cores to be used
+				try{
+					cores = Integer.parseInt(commandLine.getOptionValue("p"));
+
+				} catch (NumberFormatException e) {
+
+					InputError("Parse error: Invalid input for the number of cores!");
+
+				}
+				
+				System.out.print("Option p is present.  The number of cores is: ");
+				System.out.println(cores);
+				
+				
+			}
+
+			if (commandLine.hasOption("o"))
+			{
+				
+				if(commandLine.getOptionValue("o") != null && commandLine.getOptionValue("o") != "") {
+					OutputFileName = commandLine.getOptionValue("o");
+				} else {
+					InputError("Parse error: Invalid input for the output name!");
+				}
+				
+				System.out.print("Option o is present.  The output name is: ");
+				System.out.println(commandLine.getOptionValue("o"));
+				
+			}
+
+
+			{
+				String[] remainderArgs = commandLine.getArgs();
+				
+				if(remainderArgs.length > 0) {
+					InputError("Warning, invalid argument found!");
+				}
+				
+			}
+
+		} catch (ParseException exception) {
+			InputError("Parse error: " + exception.getMessage());
 		}
 
 
