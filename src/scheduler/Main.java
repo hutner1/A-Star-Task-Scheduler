@@ -10,6 +10,8 @@ import java.util.HashMap;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 
+import scheduler.basicmilestone.Vertex;
+
 public class Main {
 
 	public static void main(String[] args) {
@@ -152,6 +154,7 @@ public class Main {
 					String nodeString = lineArray[0].trim();
 					char node = nodeString.charAt(0); //get first character of string
 					digraph.addVertex(node);
+					new Vertex(Character.toString(node), weight);
 					nodeWeights.put(node, weight);
 				}
 
