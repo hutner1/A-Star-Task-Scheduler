@@ -13,7 +13,7 @@ public class Vertex {
 		this.w = w;
 	}
 	
-	//---Get Methods---
+	//---Getter Methods---
 	
 		/**
 		 * Get the name of Vertex
@@ -48,7 +48,7 @@ public class Vertex {
 		}
 		
 		
-		//---Set Methods---
+		//---Setter Methods---
 		
 		
 		/**
