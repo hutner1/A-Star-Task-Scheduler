@@ -29,7 +29,7 @@ public class Main {
 		int numberOfProcessors;
 		int vFlag= 0;
 		int cores = 1;
-		String outputFileName = "INPUT-output";
+		String outputFileName;
 		String[] optionalCommands;
 		
 		//Records nodes and edges as they are being read
@@ -44,14 +44,16 @@ public class Main {
 
 		//Read the file name from the input arguments - by David Qi
 		String inputFileName = args[0];
-
+		
 		//Verify that the file exists with correct extension. type - David Qi
 		File file = new File(inputFileName);
 		if(!(file.exists() && inputFileName.substring(inputFileName.lastIndexOf(".") + 1, inputFileName.length()).equals("dot"))){
 			InputError("Error! The file is either not found or is of wrong type!");
 
 		}
-
+		
+		//Set the default output file name
+		outputFileName = inputFileName.substring(0, inputFileName.lastIndexOf(".")) + "-output";
 
 		//Read the number of processors from the input argument - David Qi
 		String Processors = args[1];
