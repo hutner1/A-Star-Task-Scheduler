@@ -5,13 +5,13 @@ package scheduler.basicmilestone;
  */
 public class Vertex {
 	private String name;
-	private int w;
+	private int weight;
 	private int bottomLvl;
 	private int touchCount;
 	
-	public Vertex(String name, int w) {
+	public Vertex(String name, int weight) {
 		this.name = name;
-		this.w = w;
+		this.weight = weight;
 	}
 	
 	//---Getter Methods---
@@ -29,7 +29,7 @@ public class Vertex {
 		 * @return int weight
 		 */
 		public int getWeight() {
-			return w;
+			return weight;
 		}
 		
 		/**
@@ -57,7 +57,7 @@ public class Vertex {
 		 * @param weight
 		 */
 		public void setWeight(int w) {
-			this.w = w;
+			this.weight = w;
 		}
 		
 		/**
