@@ -61,6 +61,12 @@ public class Main {
 		//Verify the validity of the argument for the number of processors and store it - David Qi
 		try{
 			numberOfProcessors = Integer.parseInt(Processors);
+			
+			//Check that the number of processors is of valid value
+			if(numberOfProcessors < 1){
+				throw new NumberFormatException();
+			}
+			
 		} catch (NumberFormatException e) {
 			InputError("Invalid input for the number of processors!");
 		}
@@ -115,6 +121,11 @@ public class Main {
 				//entered argument cannot be parsed into an integer (invalid input)
 				try{
 					cores = Integer.parseInt(commandLine.getOptionValue("p"));
+					
+					//Double check that the core count is valid
+					if(cores < 1) {
+						throw new NumberFormatException();
+					}
 
 				} catch (NumberFormatException e) {
 
