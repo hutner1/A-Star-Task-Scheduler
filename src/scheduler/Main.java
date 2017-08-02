@@ -27,7 +27,7 @@ public class Main {
 	public static void main(String[] args) {
 
 		int numberOfProcessors;
-		int vFlag= 0;
+		boolean visualize = false;
 		int cores = 1;
 		String outputFileName = "INPUT-output";
 		String[] optionalCommands;
@@ -59,13 +59,11 @@ public class Main {
 		//Verify the validity of the argument for the number of processors and store it - David Qi
 		try{
 			numberOfProcessors = Integer.parseInt(Processors);
-
 		} catch (NumberFormatException e) {
-
 			InputError("Invalid input for the number of processors!");
-
 		}
 		
+		//Create the Common CLI command line options for each optional command
 		CommandLine commandLine;
 		Option option_V = Option.builder("v")
 				.required(false)
@@ -96,14 +94,20 @@ public class Main {
 
 			if (commandLine.hasOption("v"))
 			{
-				vFlag = 1;
+				visualize = true; //Set the visualization flag to true
 				System.out.println("Option v is present.  This is a flag option.");
 			}
 
 			if (commandLine.hasOption("p"))
 			{
+				
+				//Check whether the p option is repeated, if yes output error
+				if(commandLine.getOptionValues("p").length > 1){
+					InputError("Parse error: This option cannot be repeated!");
+				}
 
-				//Stored the number of cores to be used
+				//Stored the number of cores to be used, output error if the 
+				//entered argument cannot be parsed into an integer (invalid input)
 				try{
 					cores = Integer.parseInt(commandLine.getOptionValue("p"));
 
@@ -122,14 +126,22 @@ public class Main {
 			if (commandLine.hasOption("o"))
 			{
 				
+				//Check whether the o option is repeated, if yes output error
+				if(commandLine.getOptionValues("o").length > 1){
+					InputError("Parse error: This option cannot be repeated!");
+				}
+				
+				//Check if the output file name is empty/ invalid
 				if(commandLine.getOptionValue("o") != null && commandLine.getOptionValue("o") != "") {
-					outputFileName = commandLine.getOptionValue("o");
+					
+					//If the name is valid, change the output file name to the entered one
+					outputFileName = commandLine.getOptionValue("o"); 
 				} else {
 					InputError("Parse error: Invalid input for the output name!");
 				}
 				
 				System.out.print("Option o is present.  The output name is: ");
-				System.out.println(commandLine.getOptionValue("o"));
+				System.out.println(outputFileName);
 				
 			}
 
@@ -138,7 +150,7 @@ public class Main {
 				String[] remainderArgs = commandLine.getArgs();
 				
 				if(remainderArgs.length > 0) {
-					InputError("Warning, invalid argument found!");
+					InputError("Parse error: Invalid argument found!");
 				}
 				
 			}
@@ -212,7 +224,11 @@ public class Main {
 		createSchedule(outputFileName,digraphName,nodesAndEdgesInfo,nodesAndEdgesRead);
 	}
 	
-	
+	/**
+	 * Method to parse and get the weight of the node/edge
+	 * @param weightString string containing the node/edge weight
+	 * @return Weight of the node/edge
+	 */
 	private static int getWeight(String weightString) {
 		weightString = weightString.replaceAll("[^0-9]+", " "); //get only the integers
 		String[] weightArray = weightString.trim().split(" "); //get array of integers
