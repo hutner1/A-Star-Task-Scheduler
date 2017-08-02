@@ -136,12 +136,8 @@ public class Main {
 				String[] lineArray=text.split("\\[");
 
 				//finds the weight
-
-				String weightString = lineArray[1];      
-				weightString = weightString.replaceAll("[^0-9]+", " "); //get only the integers
-				String[] weightArray = weightString.trim().split(" "); //get array of integers
-				int weight =Integer.parseInt(weightArray[0]); //the weight is the first element in array
-
+				int weight = getWeight(lineArray[1]);
+				
 				//Read node
 
 				if (lineArray[0].contains("->")) { //check if there's an arrow
@@ -176,7 +172,14 @@ public class Main {
 
 	}
 	
-	
+	private static int getWeight(String weightString) {
+		weightString = weightString.replaceAll("[^0-9]+", " "); //get only the integers
+		String[] weightArray = weightString.trim().split(" "); //get array of integers
+		int weight =Integer.parseInt(weightArray[0]); //the weight is the first element in array
+		
+		return weight;
+
+	}
 	public static void InputError(String msg){
 		System.out.println(msg);
 		System.exit(0);
