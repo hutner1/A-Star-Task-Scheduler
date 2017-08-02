@@ -251,13 +251,16 @@ public class Main {
 		//record the weight info together with the start time and processor, in order according to input file 
 		for(String info : weightInfos){
 			int currentPos = weightInfos.indexOf(info);
+			// edge would be ">"
+			Character nodeOrEdge = nodesAndEdges.get(currentPos);
+			
 			// record initially recorded edge info directly back to file as no extra info is needed
-			if(nodesAndEdges.get(currentPos) == '>'){
+			if(nodeOrEdge == '>'){
 				General.record(outputFile, info);
 			} else {
 				// add the start and processor info to the end before closing bracket
-				String augmentedInfo = new StringBuilder(info).insert(info.length()-2, ",Start=0").toString();
-				augmentedInfo = new StringBuilder(augmentedInfo).insert(info.length()-2, ",Processor=1").toString();
+				String augmentedInfo = new StringBuilder(info).insert(info.length()-2, ",Start=" + getTaskStart(nodeOrEdge)).toString();
+				augmentedInfo = new StringBuilder(augmentedInfo).insert(augmentedInfo.length()-2, ",Processor=" + getTaskProcessor(nodeOrEdge)).toString();
 				General.record(outputFile, augmentedInfo);
 			}
 		}
@@ -266,5 +269,26 @@ public class Main {
 		General.record(outputFile, "}");
 
 		
+	}
+	
+	/**
+	 * Returns the Start time for a task
+	 * @param task task to obtain Start time for
+	 * @return Start time for the task
+	 */
+	private static int getTaskStart(Character task){
+		// TODO because it currently returns dummy value
+		return 0;
+	}
+
+	/**
+	 * Returns the Processor for a task to run on
+	 * @param task task to obtain Processor to run on for
+	 * @return Processor for the task to run on
+	 */
+	private static int getTaskProcessor(Character task){
+		// TODO beacause it currently returns dummy value
+		return 1;
+	
 	}
 }
