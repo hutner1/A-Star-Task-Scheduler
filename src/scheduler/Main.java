@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -28,11 +29,14 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		int NumberOfProcessors;
+		int numberOfProcessors;
 		int vFlag= 0;
 		int cores = 1;
-		String OutputFileName = "INPUT-output";
-		String[] optional_commands;
+		String outputFileName = "INPUT-output";
+		String[] optionalCommands;
+		
+		//Records nodes and edges as they are being read
+		ArrayList<Character> nodesAndEdgesRead =new ArrayList<>();
 
 		//Error for when no arguments are supplied - Hunter
 		if(args.length < 2) {
@@ -55,7 +59,7 @@ public class Main {
 
 		//Verify the validity of the argument for the number of processors and store it - David Qi
 		try{
-			NumberOfProcessors = Integer.parseInt(Processors);
+			numberOfProcessors = Integer.parseInt(Processors);
 
 		} catch (NumberFormatException e) {
 
@@ -87,9 +91,9 @@ public class Main {
 		
 		try
 		{
-			optional_commands = Arrays.copyOfRange(args, 2, args.length);
+			optionalCommands = Arrays.copyOfRange(args, 2, args.length);
 			
-			commandLine = parser.parse(options, optional_commands);
+			commandLine = parser.parse(options, optionalCommands);
 
 			if (commandLine.hasOption("v"))
 			{
@@ -120,7 +124,7 @@ public class Main {
 			{
 				
 				if(commandLine.getOptionValue("o") != null && commandLine.getOptionValue("o") != "") {
-					OutputFileName = commandLine.getOptionValue("o");
+					outputFileName = commandLine.getOptionValue("o");
 				} else {
 					InputError("Parse error: Invalid input for the output name!");
 				}
@@ -147,13 +151,14 @@ public class Main {
 
 		//Start reading the input file
 		BufferedReader reader = null;
+		String digraphName = null;
 		try {
 			reader = new BufferedReader(new FileReader(file));
 			
 			//Read first line of input file to get name of digraph and store it
 			String text = reader.readLine();
 			String[] headerArray = text.split("\"");
-			String digraphName = headerArray[1];
+			digraphName = headerArray[1];
 
 			//Creates digraph with weighted vertices and weighted edges
 			SimpleDirectedWeightedGraph<Character,DefaultWeightedEdge> digraph = new SimpleDirectedWeightedGraph<Character, DefaultWeightedEdge>(DefaultWeightedEdge.class);
@@ -176,7 +181,12 @@ public class Main {
 					char nodeA = nodeArray[0].trim().charAt(0); //get first character
 					char nodeB = nodeArray[1].trim().charAt(0); //get second character
 					DefaultWeightedEdge edge = digraph.addEdge(nodeA, nodeB);
-					digraph.setEdgeWeight(edge, weight);
+					digraph.setEdgeWeight(edge, weight);		
+
+					nodesAndEdgesRead.add(nodeA);
+					nodesAndEdgesRead.add('>');
+					nodesAndEdgesRead.add(nodeB);
+					
 				//if NODE
 				} else {
 					String nodeString = lineArray[0].trim();
@@ -184,6 +194,8 @@ public class Main {
 					digraph.addVertex(node);
 					new Vertex(Character.toString(node), weight);
 					nodeWeights.put(node, weight);
+					
+					nodesAndEdgesRead.add(node);
 				}
 
 
@@ -198,11 +210,11 @@ public class Main {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-
-
-
+		
+		//Create the optimal schedule
+		createSchedule(outputFileName,digraphName);
 	}
+	
 	
 	private static int getWeight(String weightString) {
 		weightString = weightString.replaceAll("[^0-9]+", " "); //get only the integers
@@ -220,22 +232,19 @@ public class Main {
 		System.out.println(msg);
 		System.exit(0);
 	}
-	
-	
-	/**
-	 * Convenient method to record a single line to a file
-	 * @param file file to write to
-	 * @param line line of words to record to a file
-	 */
-	public static void record(File file,String line){
-		try{
-			PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(file,true)));
-			writer.println(line);
-			writer.close();
-		} catch(IOException e){
-			System.out.println("An I/O Error Occurred when trying to write to " + file.toString());
-			System.exit(0);
-		}
-	}
 
+	private static void createSchedule(String outputName, String digraphName){
+		File outputFile = new File(outputName + ".dot");
+		
+		if(! outputFile.exists()){
+			try {
+				outputFile.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			
+		}
+		
+	}
 }
