@@ -84,14 +84,17 @@ public class Main {
 		Options options = new Options();
 		CommandLineParser parser = new DefaultParser();
 		
+		//Add the created options to the option object to be parsed
 		options.addOption(option_V);
 		options.addOption(option_P);
 		options.addOption(option_O);
 		
 		try
 		{
+			//Get the array that may or may not contain optional commands
 			optionalCommands = Arrays.copyOfRange(args, 2, args.length);
 			
+			//Initialize the command line parser
 			commandLine = parser.parse(options, optionalCommands);
 
 			if (commandLine.hasOption("v"))
@@ -149,6 +152,7 @@ public class Main {
 
 
 			{
+				//If there are arguments that does not belong to option o or p, output error
 				String[] remainderArgs = commandLine.getArgs();
 				
 				if(remainderArgs.length > 0) {
