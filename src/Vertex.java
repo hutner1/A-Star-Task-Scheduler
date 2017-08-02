@@ -1,5 +1,6 @@
 /**
- * Used to store information about a task
+ * This class is used to store information about a node
+ * while it is processed in an algorithm
  */
 public class Vertex {
 	private String name;
