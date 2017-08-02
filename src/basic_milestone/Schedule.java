@@ -6,12 +6,12 @@ import java.util.HashMap;
  * This class stores all the vertices in the graph
  * and the solutions of the topological sort in a hash map
  */
-public class ScheduleInfo {
+public class Schedule {
 	
 	private HashMap<Vertex,NodeInfo> nodeMap;
 	
 	//Constructor
-	public ScheduleInfo() {
+	public Schedule() {
 		nodeMap = new HashMap<>();
 	}
 	
