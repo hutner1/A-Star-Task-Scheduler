@@ -18,6 +18,9 @@ import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 
 import scheduler.basicmilestone.Vertex;
 
+/**
+ * This is the main class for the task scheduler program.
+ */
 public class Main {
 
 	public static void main(String[] args) {
@@ -139,38 +142,39 @@ public class Main {
 		}
 
 
+		//Start reading the input file
 		BufferedReader reader = null;
-
 		try {
-
 			reader = new BufferedReader(new FileReader(file));
-			String text = null;
-			text = reader.readLine();
+			
+			//Read first line of input file to get name of digraph and store it
+			String text = reader.readLine();
 			String[] headerArray = text.split("\"");
 			String digraphName = headerArray[1];
 
 			//Creates digraph with weighted vertices and weighted edges
 			SimpleDirectedWeightedGraph<Character,DefaultWeightedEdge> digraph = new SimpleDirectedWeightedGraph<Character, DefaultWeightedEdge>(DefaultWeightedEdge.class);
-			HashMap<Character,Integer> nodeWeights = new HashMap<Character,Integer>();
+			HashMap<Character,Integer> nodeWeights = new HashMap<Character,Integer>(); //Create hash map to store node weights as SimpleDirectedWeightedGraph doesn't do this 
 
+			//Read the input file until last line reached 
 			while ((text = reader.readLine()) != null && !(text.equals("}")) ) {
 
-				System.out.println(text);
+				System.out.println(text); 
 
 				String[] lineArray=text.split("\\[");
 
-				//finds the weight
+				//Find the weights for all node/edge entries in input file
 				int weight = getWeight(lineArray[1]);
 
-				//Read node
-
+				//Record node/edge info
+				//if EDGE 
 				if (lineArray[0].contains("->")) { //check if there's an arrow
 					String[] nodeArray = lineArray[0].split("->"); 
 					char nodeA = nodeArray[0].trim().charAt(0); //get first character
 					char nodeB = nodeArray[1].trim().charAt(0); //get second character
 					DefaultWeightedEdge edge = digraph.addEdge(nodeA, nodeB);
 					digraph.setEdgeWeight(edge, weight);
-
+				//if NODE
 				} else {
 					String nodeString = lineArray[0].trim();
 					char node = nodeString.charAt(0); //get first character of string
@@ -204,6 +208,11 @@ public class Main {
 		
 		return weight;
 	}
+	
+	/**
+	 * Method to print out error and exit the program immediately
+	 * @param msg error message
+	 */
 	public static void InputError(String msg){
 		System.out.println(msg);
 		System.exit(0);
