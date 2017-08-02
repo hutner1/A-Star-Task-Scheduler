@@ -1,12 +1,9 @@
 package scheduler;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -37,6 +34,8 @@ public class Main {
 		
 		//Records nodes and edges as they are being read
 		ArrayList<Character> nodesAndEdgesRead =new ArrayList<>();
+		//Records nodes and edges' info
+		ArrayList<String> nodesAndEdgesInfo = new ArrayList<>();
 
 		//Error for when no arguments are supplied - Hunter
 		if(args.length < 2) {
@@ -166,7 +165,7 @@ public class Main {
 
 			//Read the input file until last line reached 
 			while ((text = reader.readLine()) != null && !(text.equals("}")) ) {
-
+				nodesAndEdgesInfo.add(text);
 				System.out.println(text); 
 
 				String[] lineArray=text.split("\\[");
@@ -183,9 +182,7 @@ public class Main {
 					DefaultWeightedEdge edge = digraph.addEdge(nodeA, nodeB);
 					digraph.setEdgeWeight(edge, weight);		
 
-					nodesAndEdgesRead.add(nodeA);
-					nodesAndEdgesRead.add('>');
-					nodesAndEdgesRead.add(nodeB);
+					nodesAndEdgesRead.add('>'); // indicates that the current entry is an edge
 					
 				//if NODE
 				} else {
@@ -212,7 +209,7 @@ public class Main {
 		}
 		
 		//Create the optimal schedule
-		createSchedule(outputFileName,digraphName);
+		createSchedule(outputFileName,digraphName,nodesAndEdgesInfo,nodesAndEdgesRead);
 	}
 	
 	
@@ -233,18 +230,41 @@ public class Main {
 		System.exit(0);
 	}
 
-	private static void createSchedule(String outputName, String digraphName){
+	private static void createSchedule(String outputName, String digraphName, ArrayList<String> weightInfos, ArrayList<Character> nodesAndEdges){
 		File outputFile = new File(outputName + ".dot");
 		
+		//create output file to write to if it doesn't exists  
 		if(! outputFile.exists()){
 			try {
 				outputFile.createNewFile();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		//clear the output file if it exists to start anew with new outputs
 		} else {
-			
+			General.clearFile(outputFile);
 		}
+		
+		//record first line of output file which contains the title
+		General.record(outputFile, "digraph \"" + digraphName +"\" {");
+		
+		//record the weight info together with the start time and processor, in order according to input file 
+		for(String info : weightInfos){
+			int currentPos = weightInfos.indexOf(info);
+			// record initially recorded edge info directly back to file as no extra info is needed
+			if(nodesAndEdges.get(currentPos) == '>'){
+				General.record(outputFile, info);
+			} else {
+				// add the start and processor info to the end before closing bracket
+				String augmentedInfo = new StringBuilder(info).insert(info.length()-2, ",Start=0").toString();
+				augmentedInfo = new StringBuilder(augmentedInfo).insert(info.length()-2, ",Processor=1").toString();
+				General.record(outputFile, augmentedInfo);
+			}
+		}
+		
+		//end the output file with closing bracket
+		General.record(outputFile, "}");
+
 		
 	}
 }
