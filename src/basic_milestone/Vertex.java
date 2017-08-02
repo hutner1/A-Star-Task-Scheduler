@@ -1,3 +1,4 @@
+package basic_milestone;
 /**
  * This class is used to store information about a node
  * while it is processed in an algorithm
