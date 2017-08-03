@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class ScheduleGenerator {
 	
-	public Schedule makeSolution(List<Vertex> tSort) {
+	public static Schedule makeSolution(List<Vertex> tSort) {
 		Schedule solution = new Schedule();
 		int start = 0;
 		
@@ -20,7 +20,7 @@ public class ScheduleGenerator {
 		return solution;
 	}
 
-	private void assignToProcessor(Vertex vertex, int processorNo, int start, Schedule sol) {
+	private static void assignToProcessor(Vertex vertex, int processorNo, int start, Schedule sol) {
 		NodeInfo nInfo = new NodeInfo(start, processorNo);
 		sol.addVertexToMap(vertex, nInfo);
 		

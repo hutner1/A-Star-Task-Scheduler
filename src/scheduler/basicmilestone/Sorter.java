@@ -14,7 +14,7 @@ import org.jgrapht.graph.DefaultDirectedWeightedGraph;
  */
 public class Sorter {
 
-	private List<Vertex> tSort = new ArrayList<Vertex>();
+	private static List<Vertex> tSort = new ArrayList<Vertex>();
 
 	/**
 	 * Stack to store nodes that are not preceded by another node
@@ -22,9 +22,9 @@ public class Sorter {
 	 * Source: https://stackoverflow.com/questions/6163166/why-is-arraydeque-better-than-linkedlist
 	 */
 
-	private Deque<Vertex> nodeStack = new ArrayDeque<Vertex>();
+	private static Deque<Vertex> nodeStack = new ArrayDeque<Vertex>();
 
-	public List<Vertex> generateSort(DefaultDirectedWeightedGraph<Vertex, DefaultWeightedEdge> graph){
+	public static List<Vertex> generateSort(DefaultDirectedWeightedGraph<Vertex, DefaultWeightedEdge> graph){
 		//Loop through the graph to find nodes that are not preceded by another node
 		for (Vertex v: graph.vertexSet()) {
 			if (graph.inDegreeOf(v)==0) {
