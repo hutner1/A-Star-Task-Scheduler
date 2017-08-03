@@ -237,6 +237,12 @@ public class Main {
 		}
 		
 		//Create the optimal schedule
+		/**
+		 * Code for discussion:
+		 * NodeWeightCalculator.calculate(digraph);
+		 * List<Vertex> tSort = Sorter.generateSort(digraph);
+		 * Schedule sol = ScheduleGenerator.makeSolution(tSort);
+		 */
 		createSchedule(outputFileName,digraphName,nodesAndEdgesInfo,nodesAndEdgesRead);
 	}
 	
