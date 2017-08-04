@@ -46,6 +46,7 @@ public class Vertex {
 		
 		/**
 		 * Get the number of times this vertex is accessed in a solution
+		 * To be used in the A* implementation
 		 * @return int number of use
 		 */
 		public int getTouchCount() {

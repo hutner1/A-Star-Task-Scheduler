@@ -47,7 +47,6 @@ public class NodeWeightCalculator {
 			}
 		}
 		
-		//Mix the order of nodes entered in the graph
 		for (DefaultWeightedEdge e : completedNodes) {
 			graph.addEdge(graph.getEdgeSource(e), graph.getEdgeTarget(e),e);
 		}

@@ -28,7 +28,7 @@ public class Schedule {
 	}
 	
 	/**
-	 * Add a vertex into the hash map of nodes togehter with the solution
+	 * Add a vertex into the hash map of nodes together with the solution
 	 * @param v Vertex
 	 * @param ni Node info
 	 */

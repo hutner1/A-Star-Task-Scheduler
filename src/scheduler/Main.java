@@ -272,6 +272,13 @@ public class Main {
 		System.exit(0);
 	}
 
+	/**
+	 * Create a schedule and write it to the output dot file 
+	 * @param outputName name of the output file which will have ".dot" appended to it
+	 * @param digraphName name of the digraph
+	 * @param weightInfos the entries in the input file which will have 2 extra properties appended to it in the end for the output file
+	 * @param nodesAndEdges list that contains all the tasks and edges as ">", in the same order as the input digraph, to have the schedule be in the same order as the input digraph
+	 */
 	private static void createSchedule(String outputName, String digraphName, ArrayList<String> weightInfos, ArrayList<String> nodesAndEdges){
 		File outputFile = new File(outputName + ".dot");
 		
@@ -319,7 +326,7 @@ public class Main {
 	 * @return Start time for the task
 	 */
 	private static int getTaskStart(String task){
-		// TODO because it currently returns dummy value
+		// TODO because it currently returns dummy value 0
 		return 0;
 	}
 
@@ -329,7 +336,7 @@ public class Main {
 	 * @return Processor for the task to run on
 	 */
 	private static int getTaskProcessor(String task){
-		// TODO beacause it currently returns dummy value
+		// TODO beacause it currently returns dummy value 1
 		return 1;
 	
 	}

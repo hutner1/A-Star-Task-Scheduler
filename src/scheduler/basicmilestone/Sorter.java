@@ -22,26 +22,27 @@ public class Sorter {
 	 * Source: https://stackoverflow.com/questions/6163166/why-is-arraydeque-better-than-linkedlist
 	 */
 
+	//This data structure stores the nodes to be processed
 	private static Deque<Vertex> nodeStack = new ArrayDeque<Vertex>();
 
 	public static List<Vertex> generateSort(DefaultDirectedWeightedGraph<Vertex, DefaultWeightedEdge> graph){
 		//Loop through the graph to find nodes that are not preceded by another node
 		for (Vertex v: graph.vertexSet()) {
 			if (graph.inDegreeOf(v)==0) {
-				nodeStack.add(v);
+				nodeStack.add(v); //add the vertices that have no incoming arcs to process
 			}
 		}
 
-		while(nodeStack.size()>0) {
+		while(nodeStack.size()>0) { // process nodes until all nodes are processed
 			Vertex v = nodeStack.pop(); //get the vertex to process
 			tSort.add(v);
 
 
 			//Remove all connecting edges to other nodes from the current vertex
 			for (DefaultWeightedEdge dwe: graph.edgesOf(v)) {
-				graph.removeEdge(dwe);
+				graph.removeEdge(dwe); // remove all nodes that may overlap in the digraph
 
-				//Add nodes that are not preceded by another node
+				//Add nodes that become 'leaves'
 				Vertex target = graph.getEdgeTarget(dwe);
 				if (graph.inDegreeOf(target)==0) {
 					nodeStack.add(target);

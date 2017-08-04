@@ -9,7 +9,7 @@ import java.util.List;
 public class ScheduleGenerator {
 	
 	/**
-	 * Takes the TOPOLOGICALLy sorted tasks and generate an RANDOM schedule atm 
+	 * Takes the TOPOLOGICALLY sorted tasks and generate an RANDOM schedule atm 
 	 * @param tSort The sorted tasks (vertex) 
 	 * @return the solution (schedule)
 	 */
@@ -30,7 +30,7 @@ public class ScheduleGenerator {
 	/**
 	 * Set the processor no of NodeInfo for a Vertex, 
 	 * currently everything is assigned to processor 1
-	 * @param vertex Veretx
+	 * @param vertex Vertex
 	 * @param processorNo Processor No
 	 * @param start Start time
 	 * @param sol Schedule
