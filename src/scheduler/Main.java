@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -14,6 +15,7 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 
@@ -35,7 +37,7 @@ public class Main {
 		int cores = 1;
 		String outputFileName;
 		String[] optionalCommands;
-		
+
 		//Records nodes and edges as they are being read
 		ArrayList<String> nodesAndEdgesRead =new ArrayList<>();
 		//Records nodes and edges' info
@@ -48,14 +50,14 @@ public class Main {
 
 		//Read the file name from the input arguments - by David Qi
 		String inputFileName = args[0];
-		
+
 		//Verify that the file exists with correct extension. type - David Qi
 		File file = new File(inputFileName);
 		if(!(file.exists() && inputFileName.substring(inputFileName.lastIndexOf(".") + 1, inputFileName.length()).equals("dot"))){
 			InputError("Error! The file is either not found or is of wrong type!");
 
 		}
-		
+
 		//Set the default output file name
 		outputFileName = inputFileName.substring(0, inputFileName.lastIndexOf(".")) + "-output";
 
@@ -65,16 +67,16 @@ public class Main {
 		//Verify the validity of the argument for the number of processors and store it - David Qi
 		try{
 			numberOfProcessors = Integer.parseInt(Processors);
-			
+
 			//Check that the number of processors is of valid value
 			if(numberOfProcessors < 1){
 				throw new NumberFormatException();
 			}
-			
+
 		} catch (NumberFormatException e) {
 			InputError("Invalid input for the number of processors!");
 		}
-		
+
 		//Create the Common CLI command line options for each optional command
 		CommandLine commandLine;
 		Option option_V = Option.builder("v")
@@ -93,17 +95,17 @@ public class Main {
 				.build();
 		Options options = new Options();
 		CommandLineParser parser = new DefaultParser();
-		
+
 		//Add the created options to the option object to be parsed
 		options.addOption(option_V);
 		options.addOption(option_P);
 		options.addOption(option_O);
-		
+
 		try
 		{
 			//Get the array that may or may not contain optional commands
 			optionalCommands = Arrays.copyOfRange(args, 2, args.length);
-			
+
 			//Initialize the command line parser
 			commandLine = parser.parse(options, optionalCommands);
 
@@ -115,7 +117,7 @@ public class Main {
 
 			if (commandLine.hasOption("p"))
 			{
-				
+
 				//Check whether the p option is repeated, if yes output error
 				if(commandLine.getOptionValues("p").length > 1){
 					InputError("Parse error: This option cannot be repeated!");
@@ -125,7 +127,7 @@ public class Main {
 				//entered argument cannot be parsed into an integer (invalid input)
 				try{
 					cores = Integer.parseInt(commandLine.getOptionValue("p"));
-					
+
 					//Double check that the core count is valid
 					if(cores < 1) {
 						throw new NumberFormatException();
@@ -136,44 +138,44 @@ public class Main {
 					InputError("Parse error: Invalid input for the number of cores!");
 
 				}
-				
+
 				System.out.print("Option p is present.  The number of cores is: ");
 				System.out.println(cores);
-				
-				
+
+
 			}
 
 			if (commandLine.hasOption("o"))
 			{
-				
+
 				//Check whether the o option is repeated, if yes output error
 				if(commandLine.getOptionValues("o").length > 1){
 					InputError("Parse error: This option cannot be repeated!");
 				}
-				
+
 				//Check if the output file name is empty/ invalid
 				if(commandLine.getOptionValue("o") != null && commandLine.getOptionValue("o") != "") {
-					
+
 					//If the name is valid, change the output file name to the entered one
 					outputFileName = commandLine.getOptionValue("o"); 
 				} else {
 					InputError("Parse error: Invalid input for the output name!");
 				}
-				
+
 				System.out.print("Option o is present.  The output name is: ");
 				System.out.println(outputFileName);
-				
+
 			}
 
 
 			{
 				//If there are arguments that does not belong to option o or p, output error
 				String[] remainderArgs = commandLine.getArgs();
-				
+
 				if(remainderArgs.length > 0) {
 					InputError("Parse error: Invalid argument found!");
 				}
-				
+
 			}
 
 		} catch (ParseException exception) {
@@ -186,15 +188,15 @@ public class Main {
 		String digraphName = null;
 		try {
 			reader = new BufferedReader(new FileReader(file));
-			
+
 			//Read first line of input file to get name of digraph and store it
 			String text = reader.readLine();
 			String[] headerArray = text.split("\"");
 			digraphName = headerArray[1];
 
 			//Creates digraph with weighted vertices and weighted edges
-			SimpleDirectedWeightedGraph<String,DefaultWeightedEdge> digraph = new SimpleDirectedWeightedGraph<String, DefaultWeightedEdge>(DefaultWeightedEdge.class);
-			HashMap<String,Integer> nodeWeights = new HashMap<String,Integer>(); //Create hash map to store node weights as SimpleDirectedWeightedGraph doesn't do this 
+			DefaultDirectedWeightedGraph<Vertex,DefaultWeightedEdge> digraph = new DefaultDirectedWeightedGraph<Vertex, DefaultWeightedEdge>(DefaultWeightedEdge.class);
+			HashMap<String, Vertex> nodes = new HashMap<String, Vertex>();
 
 			//Read the input file until last line reached 
 			while ((text = reader.readLine()) != null && !(text.equals("}")) ) {
@@ -209,47 +211,78 @@ public class Main {
 				//Record node/edge info
 				//if EDGE 
 				if (lineArray[0].contains("->")) { //check if there's an arrow
-					String[] nodeArray = lineArray[0].split("->"); 
+					String[] nodeArray = lineArray[0].split("->");
+
+
 					String nodeA = nodeArray[0].trim(); //get first character
 					String nodeB = nodeArray[1].trim(); //get second character
-					DefaultWeightedEdge edge = digraph.addEdge(nodeA, nodeB);
+					Vertex vertexA;
+					Vertex vertexB;
+
+					if (!nodes.containsKey(nodeA)) {
+						vertexA = new Vertex(nodeA);
+						digraph.addVertex(vertexA);
+
+					} else {
+						vertexA = nodes.get(nodeA);
+					}
+
+					if (!nodes.containsKey(nodeB)) {
+						vertexB = new Vertex(nodeB);
+						digraph.addVertex(vertexB);
+					} else {
+						vertexB = nodes.get(nodeB);
+					}
+
+					DefaultWeightedEdge edge = digraph.addEdge(vertexA, vertexB);
 					digraph.setEdgeWeight(edge, weight);		
 
 					nodesAndEdgesRead.add(">"); // indicates that the current entry is an edge
-					
-				//if NODE
+
+					//if NODE
 				} else {
 					String node = lineArray[0].trim();
-					//char node = nodeString.charAt(0); //get first character of string
-					digraph.addVertex(node);
-					nodeWeights.put(node, weight);
-					
+
+					if (!nodes.containsKey(node)) {
+						Vertex vertex = new Vertex(node);
+						vertex.setWeight(weight);
+
+					} else {
+						Vertex vertex = nodes.get(node);
+						vertex.setWeight(weight);
+
+					}
+					//char node = nodeString.charAt(0);
+
+
 					nodesAndEdgesRead.add(node);
 				}
 
 
 			}
-			
+
 			System.out.println(digraph.vertexSet().toString());
-			System.out.println(nodeWeights.values());
 			System.out.println(digraph.edgeSet().toString());	
+
+			//Create the optimal schedule
+			/**
+			 Code for discussion:
+			 */
+			NodeWeightCalculator.calculate(digraph);
+			List<Vertex> tSort = Sorter.generateSort(digraph);
+			Schedule sol = ScheduleGenerator.makeSolution(tSort);
+
+			createSchedule(outputFileName,digraphName,nodesAndEdgesInfo,nodesAndEdgesRead);
 
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found!");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		//Create the optimal schedule
-		/**
-		 Code for discussion:
-		 NodeWeightCalculator.calculate(digraph);
-		 List<Vertex> tSort = Sorter.generateSort(digraph);
-		 Schedule sol = ScheduleGenerator.makeSolution(tSort);
-		*/ 
-		createSchedule(outputFileName,digraphName,nodesAndEdgesInfo,nodesAndEdgesRead);
+
+
 	}
-	
+
 	/**
 	 * Method to parse and get the weight of the node/edge
 	 * @param weightString string containing the node/edge weight
@@ -259,10 +292,10 @@ public class Main {
 		weightString = weightString.replaceAll("[^0-9]+", " "); //get only the integers
 		String[] weightArray = weightString.trim().split(" "); //get array of integers
 		int weight =Integer.parseInt(weightArray[0]); //the weight is the first element in array
-		
+
 		return weight;
 	}
-	
+
 	/**
 	 * Method to print out error and exit the program immediately
 	 * @param msg error message
@@ -281,7 +314,7 @@ public class Main {
 	 */
 	private static void createSchedule(String outputName, String digraphName, ArrayList<String> weightInfos, ArrayList<String> nodesAndEdges){
 		File outputFile = new File(outputName + ".dot");
-		
+
 		//create output file to write to if it doesn't exists  
 		if(! outputFile.exists()){
 			try {
@@ -289,20 +322,20 @@ public class Main {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		//clear the output file if it exists to start anew with new outputs
+			//clear the output file if it exists to start anew with new outputs
 		} else {
 			General.clearFile(outputFile);
 		}
-		
+
 		//record first line of output file which contains the title
 		General.record(outputFile, "digraph \"" + digraphName +"\" {");
-		
+
 		//record the weight info together with the start time and processor, in order according to input file 
 		for(String info : weightInfos){
 			int currentPos = weightInfos.indexOf(info);
 			// edge would be ">"
 			String nodeOrEdge = nodesAndEdges.get(currentPos);
-			
+
 			// record initially recorded edge info directly back to file as no extra info is needed
 			if(nodeOrEdge.equals(">")){
 				General.record(outputFile, info);
@@ -313,13 +346,13 @@ public class Main {
 				General.record(outputFile, augmentedInfo);
 			}
 		}
-		
+
 		//end the output file with closing bracket
 		General.record(outputFile, "}");
 
-		
+
 	}
-	
+
 	/**
 	 * Returns the Start time for a task
 	 * @param task task to obtain Start time for
@@ -338,6 +371,6 @@ public class Main {
 	private static int getTaskProcessor(String task){
 		// TODO beacause it currently returns dummy value 1
 		return 1;
-	
+
 	}
 }

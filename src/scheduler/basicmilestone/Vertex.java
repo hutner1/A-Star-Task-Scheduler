@@ -13,10 +13,15 @@ public class Vertex {
 	private int bottomLvl;
 	private int touchCount;
 	
-	public Vertex(String name, int weight) {
+	/*public Vertex(String name, int weight) {
 		this.name = name;
 		this.weight = weight;
+	}*/
+	
+	public Vertex(String name) {
+		this.name = name;
 	}
+	
 	
 	//---Getter Methods---
 	
