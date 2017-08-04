@@ -4,7 +4,6 @@ import java.util.List;
 import io.DataReader;
 import io.InputParser;
 import io.OutputWriter;
-import scheduler.basicmilestone.NodeWeightCalculator;
 import scheduler.basicmilestone.Schedule;
 import scheduler.basicmilestone.ScheduleGenerator;
 import scheduler.basicmilestone.Sorter;
@@ -30,7 +29,6 @@ public class Main {
 			dataReader.readNextGraph();
 			
 			//Create the optimal schedule
-			NodeWeightCalculator.calculate(dataReader.getGraph());
 			Sorter sorter = new Sorter(dataReader.getGraph());
 			List<Vertex> tSort = sorter.generateSort();
 			Schedule sol = ScheduleGenerator.makeSolution(tSort);

@@ -8,8 +8,9 @@ import java.util.Deque;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 /**
- * This class calculates all the vertex weights
+ * This class calculates all the vertex bottom levels
  * for the topological sort to work using Kahn's algorithm
+ * NOT REQUIRED FOR BASIC MILESTONE
  * 
  */
 public class NodeWeightCalculator {
