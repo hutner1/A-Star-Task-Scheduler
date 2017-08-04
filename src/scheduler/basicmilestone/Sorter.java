@@ -10,7 +10,7 @@ import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 /**
  * This class creates a topological sort of a graph of 
- * events to be put in a schedule
+ * events to be put in a schedule using Kahn's algorithm
  */
 public class Sorter {
 
