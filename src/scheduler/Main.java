@@ -200,6 +200,7 @@ public class Main {
 
 			//Read the input file until last line reached 
 			while ((text = reader.readLine()) != null && !(text.equals("}")) ) {
+				//add input file's entries in order so that output file is just input file with extra attributes
 				nodesAndEdgesInfo.add(text);
 				System.out.println(text); 
 
@@ -222,6 +223,7 @@ public class Main {
 					if (!nodes.containsKey(nodeA)) {
 						vertexA = new Vertex(nodeA);
 						digraph.addVertex(vertexA);
+						nodes.put(nodeA, vertexA);
 
 					} else {
 						vertexA = nodes.get(nodeA);
@@ -230,6 +232,7 @@ public class Main {
 					if (!nodes.containsKey(nodeB)) {
 						vertexB = new Vertex(nodeB);
 						digraph.addVertex(vertexB);
+						nodes.put(nodeB, vertexB);
 					} else {
 						vertexB = nodes.get(nodeB);
 					}
@@ -246,6 +249,8 @@ public class Main {
 					if (!nodes.containsKey(node)) {
 						Vertex vertex = new Vertex(node);
 						vertex.setWeight(weight);
+						digraph.addVertex(vertex);
+						nodes.put(node, vertex);
 
 					} else {
 						Vertex vertex = nodes.get(node);
@@ -261,8 +266,8 @@ public class Main {
 
 			}
 
-			System.out.println(digraph.vertexSet().toString());
-			System.out.println(digraph.edgeSet().toString());	
+			//System.out.println(digraph.vertexSet().toString());
+			//System.out.println(digraph.edgeSet().toString());	
 
 			//Create the optimal schedule
 			/**
@@ -272,7 +277,7 @@ public class Main {
 			List<Vertex> tSort = Sorter.generateSort(digraph);
 			Schedule sol = ScheduleGenerator.makeSolution(tSort);
 
-			createSchedule(outputFileName,digraphName,nodesAndEdgesInfo,nodesAndEdgesRead);
+			createSchedule(outputFileName,digraphName,nodesAndEdgesInfo,nodesAndEdgesRead,sol,nodes);
 
 		} catch (FileNotFoundException e) {
 			System.out.println("File not found!");
@@ -311,8 +316,10 @@ public class Main {
 	 * @param digraphName name of the digraph
 	 * @param weightInfos the entries in the input file which will have 2 extra properties appended to it in the end for the output file
 	 * @param nodesAndEdges list that contains all the tasks and edges as ">", in the same order as the input digraph, to have the schedule be in the same order as the input digraph
+	 * @param solution Schedule containing Vertices and NodeInfos
 	 */
-	private static void createSchedule(String outputName, String digraphName, ArrayList<String> weightInfos, ArrayList<String> nodesAndEdges){
+	private static void createSchedule(String outputName, String digraphName, 
+			ArrayList<String> weightInfos, ArrayList<String> nodesAndEdges, Schedule solution, HashMap<String, Vertex> nodeMapping){
 		File outputFile = new File(outputName + ".dot");
 
 		//create output file to write to if it doesn't exists  
@@ -339,11 +346,11 @@ public class Main {
 			// record initially recorded edge info directly back to file as no extra info is needed
 			if(nodeOrEdge.equals(">")){
 				General.record(outputFile, info);
+				
 			} else {
 				// add the start and processor info to the end before closing bracket
-				String augmentedInfo = new StringBuilder(info).insert(info.length()-2, ",Start=" + getTaskStart(nodeOrEdge)).toString();
-				augmentedInfo = new StringBuilder(augmentedInfo).insert(augmentedInfo.length()-2, ",Processor=" + getTaskProcessor(nodeOrEdge)).toString();
-				General.record(outputFile, augmentedInfo);
+				StringBuilder augmentedInfo = new StringBuilder(info).insert(info.length()-2, solution.getVertexInfo(nodeMapping.get(nodeOrEdge)).outputString());
+				General.record(outputFile, augmentedInfo.toString());
 			}
 		}
 
@@ -353,24 +360,4 @@ public class Main {
 
 	}
 
-	/**
-	 * Returns the Start time for a task
-	 * @param task task to obtain Start time for
-	 * @return Start time for the task
-	 */
-	private static int getTaskStart(String task){
-		// TODO because it currently returns dummy value 0
-		return 0;
-	}
-
-	/**
-	 * Returns the Processor for a task to run on
-	 * @param task task to obtain Processor to run on for
-	 * @return Processor for the task to run on
-	 */
-	private static int getTaskProcessor(String task){
-		// TODO beacause it currently returns dummy value 1
-		return 1;
-
-	}
 }
