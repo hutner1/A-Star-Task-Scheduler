@@ -1,7 +1,11 @@
 package scheduler.basicmilestone;
 /**
  * This class is used to store information about a node
- * while it is processed in an algorithm
+ * while it is processed in an algorithm.
+ * 
+ * Name and weight will be set when initialising the Vertex.
+ * 
+ * BottomLvl will be set later, it is the lvl from the leaf 
  */
 public class Vertex {
 	private String name;

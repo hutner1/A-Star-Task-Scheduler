@@ -17,6 +17,10 @@ import org.apache.commons.cli.ParseException;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 
+import scheduler.basicmilestone.NodeWeightCalculator;
+import scheduler.basicmilestone.Schedule;
+import scheduler.basicmilestone.ScheduleGenerator;
+import scheduler.basicmilestone.Sorter;
 import scheduler.basicmilestone.Vertex;
 
 /**
@@ -238,11 +242,11 @@ public class Main {
 		
 		//Create the optimal schedule
 		/**
-		 * Code for discussion:
-		 * NodeWeightCalculator.calculate(digraph);
-		 * List<Vertex> tSort = Sorter.generateSort(digraph);
-		 * Schedule sol = ScheduleGenerator.makeSolution(tSort);
-		 */
+		 Code for discussion:
+		 NodeWeightCalculator.calculate(digraph);
+		 List<Vertex> tSort = Sorter.generateSort(digraph);
+		 Schedule sol = ScheduleGenerator.makeSolution(tSort);
+		*/ 
 		createSchedule(outputFileName,digraphName,nodesAndEdgesInfo,nodesAndEdgesRead);
 	}
 	

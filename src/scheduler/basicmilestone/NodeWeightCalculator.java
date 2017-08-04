@@ -9,7 +9,8 @@ import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 /**
  * This class calculates all the vertex weights
- * for the topological sort to work
+ * for the topological sort to work using Kahn's algorithm
+ * 
  */
 public class NodeWeightCalculator {
 

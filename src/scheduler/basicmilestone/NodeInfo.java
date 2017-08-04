@@ -2,7 +2,7 @@ package scheduler.basicmilestone;
 
 /**
  * This class stores the information needed
- * for the final schedule
+ * for the final schedule, i.e. Start and Processor
  */
 public class NodeInfo {
 	
@@ -20,7 +20,10 @@ public class NodeInfo {
 		return startTime;
 	}
 	
-	//Outputs a string for the solution
+	/**
+	 * Outputs a string for the solution
+	 * @return Start= startTime , Processor= processorNo
+	 */
 	public String outputString() {
 		return ", Start=" + startTime + ", Processor=" + processorNo;
 	}
