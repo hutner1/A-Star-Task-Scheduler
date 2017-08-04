@@ -8,3 +8,13 @@ d       [Weight=2];
 b -> d  [Weight=2];
 c -> d  [Weight=1];
 }
+digraph "example2" {
+aaa			[Weight=20];
+bbb			[Weight=30];
+aaa -> bbb	[Weight=10];
+ccc			[Weight=30];
+aaa -> ccc	[Weight=20];
+ddd			[Weight=20];
+bbb -> ddd	[Weight=20];
+ccc -> ddd	[Weight=10];
+}
