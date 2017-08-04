@@ -17,10 +17,11 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		OutputWriter outWriter = new OutputWriter();
 		InputParser inputParser = new InputParser(args);
-
 		inputParser.parse();
+		
+		OutputWriter outWriter = new OutputWriter(inputParser.getOutputFileName());
+		outWriter.initialise();
 
 		DataReader dataReader = new DataReader(inputParser.getFile());
 		
@@ -32,7 +33,7 @@ public class Main {
 			NodeWeightCalculator.calculate(dataReader.getGraph());
 			List<Vertex> tSort = Sorter.generateSort(dataReader.getGraph());
 			Schedule sol = ScheduleGenerator.makeSolution(tSort);
-			outWriter.createSchedule(inputParser.getOutputFileName(),dataReader.getGraphName(),dataReader.getInfo(),dataReader.getRead(),sol,dataReader.getMapping());
+			outWriter.createSchedule(dataReader.getGraphName(),dataReader.getInfo(),dataReader.getRead(),sol,dataReader.getMapping());
 		}
 	}
 }
