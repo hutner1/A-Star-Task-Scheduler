@@ -18,3 +18,13 @@ ddd			[Weight=20];
 bbb -> ddd	[Weight=20];
 ccc -> ddd	[Weight=10];
 }
+digraph "example3" {
+aaa			[Weight=2];
+bbb			[Weight=30];
+aaa -> bbb	[Weight=10];
+ccc			[Weight=30];
+aaa -> ccc	[Weight=20];
+ddd			[Weight=20];
+bbb -> ddd	[Weight=20];
+ccc -> ddd	[Weight=10];
+}

@@ -31,7 +31,8 @@ public class Main {
 			
 			//Create the optimal schedule
 			NodeWeightCalculator.calculate(dataReader.getGraph());
-			List<Vertex> tSort = Sorter.generateSort(dataReader.getGraph());
+			Sorter sorter = new Sorter(dataReader.getGraph());
+			List<Vertex> tSort = sorter.generateSort();
 			Schedule sol = ScheduleGenerator.makeSolution(tSort);
 			outWriter.createSchedule(dataReader.getGraphName(),dataReader.getInfo(),dataReader.getRead(),sol,dataReader.getMapping());
 		}
