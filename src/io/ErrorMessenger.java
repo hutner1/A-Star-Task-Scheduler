@@ -1,14 +1,14 @@
 package io;
 
-public class InputError {
+public class ErrorMessenger {
 	
-	public InputError() {
+	public ErrorMessenger() {
 	}
 	/**
 	 * Method to print out error and exit the program immediately
 	 * @param msg error message
 	 */
-	public static void inputError(String msg){
+	public static void reportError(String msg){
 		System.out.println(msg);
 		System.exit(0);
 	}

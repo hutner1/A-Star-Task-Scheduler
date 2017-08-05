@@ -79,8 +79,7 @@ public class OutputWriter {
 			writer.println(line);
 			writer.close();
 		} catch(IOException e){
-			System.out.println("An I/O Error Occurred when trying to write to " + file.toString());
-			System.exit(0);
+			ErrorMessenger.reportError("An I/O Error Occurred when trying to write to " + file.toString());
 		}
 	}
 

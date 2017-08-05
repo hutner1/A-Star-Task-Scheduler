@@ -54,7 +54,7 @@ public class InputParser {
 	private void checkInputLength() {
 		//Error for when no arguments are supplied - Hunter
 		if(_input.length < 2) {
-			InputError.inputError("Error! Please follow the correct input format");
+			ErrorMessenger.reportError("Error! Please follow the correct input format");
 		}
 	}
 
@@ -69,7 +69,7 @@ public class InputParser {
 		//Verify that the file exists with correct extension. type - David Qi
 		_file = new File(inputFileName);
 		if(!(_file.exists() && inputFileName.substring(inputFileName.lastIndexOf(".") + 1, inputFileName.length()).equals("dot"))){
-			InputError.inputError("Error! The file is either not found or is of wrong type!");
+			ErrorMessenger.reportError("Error! The file is either not found or is of wrong type!");
 
 		}
 		//Set the default output file name
@@ -95,7 +95,7 @@ public class InputParser {
 			}
 
 		} catch (NumberFormatException e) {
-			InputError.inputError("Invalid input for the number of processors!");
+			ErrorMessenger.reportError("Invalid input for the number of processors!");
 		}
 	}
 
@@ -146,7 +146,7 @@ public class InputParser {
 
 				//Check whether the p option is repeated, if yes output error
 				if(commandLine.getOptionValues("p").length > 1){
-					InputError.inputError("Parse error: This option cannot be repeated!");
+					ErrorMessenger.reportError("Parse error: This option cannot be repeated!");
 				}
 
 				//Stored the number of cores to be used, output error if the 
@@ -161,7 +161,7 @@ public class InputParser {
 
 				} catch (NumberFormatException e) {
 
-					InputError.inputError("Parse error: Invalid input for the number of cores!");
+					ErrorMessenger.reportError("Parse error: Invalid input for the number of cores!");
 
 				}
 
@@ -176,7 +176,7 @@ public class InputParser {
 
 				//Check whether the o option is repeated, if yes output error
 				if(commandLine.getOptionValues("o").length > 1){
-					InputError.inputError("Parse error: This option cannot be repeated!");
+					ErrorMessenger.reportError("Parse error: This option cannot be repeated!");
 				}
 
 				//Check if the output file name is empty/ invalid
@@ -185,7 +185,7 @@ public class InputParser {
 					//If the name is valid, change the output file name to the entered one
 					_outputFileName = commandLine.getOptionValue("o"); 
 				} else {
-					InputError.inputError("Parse error: Invalid input for the output name!");
+					ErrorMessenger.reportError("Parse error: Invalid input for the output name!");
 				}
 
 				System.out.print("Option o is present.  The output name is: ");
@@ -199,13 +199,13 @@ public class InputParser {
 				String[] remainderArgs = commandLine.getArgs();
 
 				if(remainderArgs.length > 0) {
-					InputError.inputError("Parse error: Invalid argument found!");
+					ErrorMessenger.reportError("Parse error: Invalid argument found!");
 				}
 
 			}
 
 		} catch (ParseException exception) {
-			InputError.inputError("Parse error: " + exception.getMessage());
+			ErrorMessenger.reportError("Parse error: " + exception.getMessage());
 		}
 	}
 
