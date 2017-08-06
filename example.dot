@@ -28,3 +28,22 @@ ddd			[Weight=20];
 bbb -> ddd	[Weight=20];
 ccc -> ddd	[Weight=10];
 }
+digraph "example4" {
+aaaa			[Weight=2];
+ffff			[Weight=5];
+cccc -> ffff	[Weight=2];
+dddd -> ffff	[Weight=3];
+eeee -> ffff	[Weight=2];
+hhhh			[Weight=2];
+ffff -> hhhh	[Weight=1];
+bbbb			[Weight=3];
+aaaa -> bbbb	[Weight=3];
+cccc			[Weight=4];
+aaaa -> cccc	[Weight=2];
+dddd			[Weight=2];
+aaaa -> dddd	[Weight=2];
+eeee			[Weight=3];
+bbbb -> eeee	[Weight=1];
+gggg			[Weight=4];
+eeee -> gggg	[Weight=2];
+}
