@@ -1,4 +1,4 @@
-package astar;
+package scheduler.astar;
 
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
