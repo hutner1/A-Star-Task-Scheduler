@@ -1,11 +1,18 @@
 package scheduler.astar;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Processor {
 
+	private List<ProcessInfo> processes;
+		
+	public Processor() {
+		processes = new ArrayList<ProcessInfo>();
+	}
 	
 	public int getTime() {
-		// TODO Auto-generated method stub
-		return 0;
+		return processes.get(processes.size()-1).endTime();
 	}
 	
 
