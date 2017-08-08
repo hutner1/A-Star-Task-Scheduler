@@ -16,6 +16,7 @@ import scheduler.dfsbranchandbound.SolutionGenerator;
 public class Main {
 
 	public static void main(String[] args) {
+		long startTime = System.nanoTime(); // TIME @@@@@
 
 		InputParser inputParser = new InputParser(args);
 		inputParser.parse();
@@ -43,5 +44,10 @@ public class Main {
 			outWriter.createScheduleDFS(dataReader.getGraphName(),dataReader.getInfo(),dataReader.getRead(),solutionGenerator,dataReader.getMapping());
 
 		}
+		
+		long endTime = System.nanoTime(); // TIME @@@@@
+		
+		// prints time in seconds
+		System.out.println((double)(endTime-startTime) / 1000000000.0);
 	}
 }
