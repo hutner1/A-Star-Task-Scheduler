@@ -26,7 +26,7 @@ public class AStar {
 		for (Vertex v : _graph.vertexSet()) {
 			if (_graph.inDegreeOf(v) == 0) { //get source nodes
 				Solution s = new Solution(_numberOfProcessors);
-				s.addProcess(v, 1);
+				s.addProcess(v, 1, _graph);
 				initialSolutions.add(s); //list of solutions starting source node
 				schedulableProcesses.add(v); 
 			} else {
@@ -46,7 +46,7 @@ public class AStar {
 
 		for (Vertex v : schedulableProcesses) {
 			for (int i = 1; i <= _numberOfProcessors; i++) {
-				bestInitialSolution.addProcess(v, i);
+				bestInitialSolution.addProcess(v, i, _graph);
 				updateSchedulable(v, scheduledProcesses, schedulableProcesses, nonschedulableProcesses);
 			}
 		}

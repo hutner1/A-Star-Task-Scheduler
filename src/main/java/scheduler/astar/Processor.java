@@ -18,8 +18,8 @@ public class Processor {
 		return processes.get(processes.size()-1).endTime(); //end time of last scheduled task
 	}
 	
-	public void addProcess(Vertex v) {
-		ProcessInfo p = new ProcessInfo(v,earliestNextProcess);
+	public void addProcess(Vertex v, int time) {
+		ProcessInfo p = new ProcessInfo(v,time);
 		processes.add(p);
 		earliestNextProcess = p.endTime();
 	}
@@ -28,12 +28,21 @@ public class Processor {
 		return processes;
 	}
 
-	public boolean scheduled(Vertex v) {
+	public boolean isScheduled(Vertex v) {
 		for (ProcessInfo pI : processes) {
 			if (pI.getVertex().equals(v)) {
 				return true;
 			}
 		}
 		return false;
+	}
+	
+	public int endTimeOf(Vertex v) {
+		for (ProcessInfo pi : processes) {
+			if (pi.getVertex().equals(v)) {
+				return pi.endTime();
+			}
+		}
+		return 0;
 	}
 }
