@@ -8,31 +8,31 @@ import java.util.HashMap;
  */
 public class Schedule {
 	
-	private HashMap<Vertex,NodeInfo> nodeMap;
+	private HashMap<Vertex,VertexInfo> vertexMap;
 	
 	/**
 	 * Constructor that initialises an EMPTY hashmap for the schedule
-	 * <Vertex,NodeInfo>
+	 * <Vertex,VertexInfo>
 	 */
 	public Schedule() {
-		nodeMap = new HashMap<>();
+		vertexMap = new HashMap<>();
 	}
 	
 	/**
-	 * Get NodeInfo for the vertex
+	 * Get VertexInfo for the vertex
 	 * @param v Vertex
-	 * @return NodeInfo for the Vertex (solution)
+	 * @return VertexInfo for the Vertex (solution)
 	 */
-	public NodeInfo getVertexInfo(Vertex v) {
-		return nodeMap.get(v);
+	public VertexInfo getVertexInfo(Vertex v) {
+		return vertexMap.get(v);
 	}
 	
 	/**
-	 * Add a vertex into the hash map of nodes together with the solution
+	 * Add a vertex into the hash map of vertices together with the solution
 	 * @param v Vertex
-	 * @param ni Node info
+	 * @param vi Vertex info
 	 */
-	public void addVertexToMap(Vertex v, NodeInfo ni) {
-		nodeMap.put(v, ni);
+	public void addVertexToMap(Vertex v, VertexInfo vi) {
+		vertexMap.put(v, vi);
 	}
 }

@@ -4,12 +4,12 @@ package scheduler.basicmilestone;
  * This class stores the information needed
  * for the final schedule, i.e. Start and Processor
  */
-public class NodeInfo {
+public class VertexInfo {
 	
 	private int startTime;
 	private int processorNo;
 	
-	public NodeInfo(int st, int pn) {
+	public VertexInfo(int st, int pn) {
 		this.startTime = st;
 		this.processorNo = pn;
 	}

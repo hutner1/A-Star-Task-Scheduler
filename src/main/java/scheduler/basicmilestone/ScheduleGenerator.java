@@ -28,7 +28,7 @@ public class ScheduleGenerator {
 	}
 
 	/**
-	 * Set the processor no of NodeInfo for a Vertex, 
+	 * Set the processor no of VertexInfo for a Vertex, 
 	 * currently everything is assigned to processor 1
 	 * @param vertex Vertex
 	 * @param processorNo Processor No
@@ -36,8 +36,8 @@ public class ScheduleGenerator {
 	 * @param sol Schedule
 	 */
 	private static void assignToProcessor(Vertex vertex, int processorNo, int start, Schedule sol) {
-		NodeInfo nInfo = new NodeInfo(start, processorNo);
-		sol.addVertexToMap(vertex, nInfo);
+		VertexInfo vInfo = new VertexInfo(start, processorNo);
+		sol.addVertexToMap(vertex, vInfo);
 		
 	}
 }

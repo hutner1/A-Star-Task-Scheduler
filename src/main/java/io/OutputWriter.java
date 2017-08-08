@@ -39,10 +39,10 @@ public class OutputWriter {
 	 * Create a schedule and write it to the output dot file 
 	 * @param digraphName name of the digraph
 	 * @param weightInfos the entries in the input file which will have 2 extra properties appended to it in the end for the output file
-	 * @param nodesAndEdges list that contains all the tasks and edges as ">", in the same order as the input digraph, to have the schedule be in the same order as the input digraph
+	 * @param verticesAndEdges list that contains all the tasks and edges as ">", in the same order as the input digraph, to have the schedule be in the same order as the input digraph
 	 * @param solution Schedule containing Vertices and NodeInfos
 	 */
-	public void createSchedule(String digraphName, ArrayList<String> weightInfos, ArrayList<String> nodesAndEdges, Schedule solution, HashMap<String, Vertex> nodeMapping){
+	public void createSchedule(String digraphName, ArrayList<String> weightInfos, ArrayList<String> verticesAndEdges, Schedule solution, HashMap<String, Vertex> nodeMapping){
 
 		//record first line of output file which contains the title
 		record(_outputFile, "digraph \"" + digraphName +"\" {");
@@ -51,15 +51,15 @@ public class OutputWriter {
 		for(String info : weightInfos){
 			int currentPos = weightInfos.indexOf(info);
 			// edge would be ">"
-			String nodeOrEdge = nodesAndEdges.get(currentPos);
+			String vertexOrEdge = verticesAndEdges.get(currentPos);
 
 			// record initially recorded edge info directly back to file as no extra info is needed
-			if(nodeOrEdge.equals(">")){
+			if(vertexOrEdge.equals(">")){
 				record(_outputFile, info);
 
 			} else {
 				// add the start and processor info to the end before closing bracket
-				StringBuilder augmentedInfo = new StringBuilder(info).insert(info.length()-2, solution.getVertexInfo(nodeMapping.get(nodeOrEdge)).outputString());
+				StringBuilder augmentedInfo = new StringBuilder(info).insert(info.length()-2, solution.getVertexInfo(nodeMapping.get(vertexOrEdge)).outputString());
 				record(_outputFile, augmentedInfo.toString());
 			}
 		}
