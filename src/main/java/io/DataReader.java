@@ -16,8 +16,8 @@ import scheduler.basicmilestone.Vertex;
 public class DataReader {
 
 	private String _digraphName;
-	private ArrayList<String> _nodesAndEdgesRead; //Records nodes and edges as they are being read
-	private ArrayList<String> _nodesAndEdgesInfo; //Records nodes and edges' info
+	private ArrayList<String> _verticesAndEdgesRead; //Records vertices and edges as they are being read
+	private ArrayList<String> _verticesAndEdgesInfo; //Records vertices and edges' info
 	private DefaultDirectedWeightedGraph<Vertex,DefaultWeightedEdge> _digraph;
 	private HashMap<String,Vertex> _mapping;
 	private BufferedReader _reader;
@@ -50,64 +50,62 @@ public class DataReader {
 			//Read the input file until last line reached 
 			while ((text = _reader.readLine()) != null && !(text.equals("}")) ) {
 				//add input file's entries in order so that output file is just input file with extra attributes
-				_nodesAndEdgesInfo.add(text);
-				
-				//System.out.println(text); 
+				_verticesAndEdgesInfo.add(text);
 
 				String[] lineArray=text.split("\\[");
 
-				//Find the weights for all node/edge entries in input file
+				//Find the weights for all vertex/edge entries in input file
 				int weight = getWeight(lineArray[1]);
 
-				//Record node/edge info
+				//Record vertex/edge info
 				//if EDGE 
 				if (lineArray[0].contains("->")) { //check if there's an arrow
-					String[] nodeArray = lineArray[0].split("->");
+					String[] vertexArray = lineArray[0].split("->");
 
 
-					String nodeA = nodeArray[0].trim(); //get first character
-					String nodeB = nodeArray[1].trim(); //get second character
+					String vertexStringA = vertexArray[0].trim(); //get first character
+					String vertexStringB = vertexArray[1].trim(); //get second character
 					Vertex vertexA;
 					Vertex vertexB;
 
-					if (!_mapping.containsKey(nodeA)) {
-						vertexA = new Vertex(nodeA);
+					if (!_mapping.containsKey(vertexStringA)) {
+						vertexA = new Vertex(vertexStringA);
 						_digraph.addVertex(vertexA);
-						_mapping.put(nodeA, vertexA);
+						_mapping.put(vertexStringA, vertexA);
 
 					} else {
-						vertexA = _mapping.get(nodeA);
+						vertexA = _mapping.get(vertexStringA);
 					}
 
-					if (!_mapping.containsKey(nodeB)) {
-						vertexB = new Vertex(nodeB);
+					if (!_mapping.containsKey(vertexStringB)) {
+						vertexB = new Vertex(vertexStringB);
 						_digraph.addVertex(vertexB);
-						_mapping.put(nodeB, vertexB);
+						_mapping.put(vertexStringB, vertexB);
 					} else {
-						vertexB = _mapping.get(nodeB);
+						vertexB = _mapping.get(vertexStringB);
 					}
 
 					DefaultWeightedEdge edge = _digraph.addEdge(vertexA, vertexB);
 					_digraph.setEdgeWeight(edge, weight);		
 
-					_nodesAndEdgesRead.add(">"); // indicates that the current entry is an edge
+					_verticesAndEdgesRead.add(">"); // indicates that the current entry is an edge
 
-					//if NODE
+					//if VERTEX
 				} else {
-					String node = lineArray[0].trim();
+					String vertexString = lineArray[0].trim();
 
-					if (!_mapping.containsKey(node)) {
-						Vertex vertex = new Vertex(node);
+					if (!_mapping.containsKey(vertexString)) {
+						Vertex vertex = new Vertex(vertexString);
 						vertex.setWeight(weight);
 						_digraph.addVertex(vertex);
-						_mapping.put(node, vertex);
+						_mapping.put(vertexString, vertex);
 
 					} else {
-						Vertex vertex = _mapping.get(node);
+						Vertex vertex = _mapping.get(vertexString);
 						vertex.setWeight(weight);
 
 					}
-					_nodesAndEdgesRead.add(node);
+					_verticesAndEdgesRead.add(vertexString);
 				}
 
 			}
@@ -121,8 +119,8 @@ public class DataReader {
 	 */
 	private void resetData() {
 	
-		_nodesAndEdgesRead = new ArrayList<String>();
-		_nodesAndEdgesInfo = new ArrayList<String>();
+		_verticesAndEdgesRead = new ArrayList<String>();
+		_verticesAndEdgesInfo = new ArrayList<String>();
 		//Creates digraph with weighted vertices and weighted edges
 		_digraph = new DefaultDirectedWeightedGraph<Vertex,DefaultWeightedEdge>(DefaultWeightedEdge.class);
 		//Creates a HashMap mapping a string to the vertex with the same name
@@ -148,9 +146,9 @@ public class DataReader {
 	}
 	
 	/**
-	 * Method to parse and get the weight of the node/edge
-	 * @param weightString string containing the node/edge weight
-	 * @return Weight of the node/edge
+	 * Method to parse and get the weight of the vertex/edge
+	 * @param weightString string containing the vertex/edge weight
+	 * @return Weight of the vertex/edge
 	 */
 	private int getWeight(String weightString) {
 		weightString = weightString.replaceAll("[^0-9]+", " "); //get only the integers
@@ -167,11 +165,11 @@ public class DataReader {
 	}
 
 	public ArrayList<String> getRead() {
-		return _nodesAndEdgesRead;
+		return _verticesAndEdgesRead;
 	}
 
 	public ArrayList<String> getInfo() {
-		return _nodesAndEdgesInfo;
+		return _verticesAndEdgesInfo;
 	}
 
 	public DefaultDirectedWeightedGraph<Vertex, DefaultWeightedEdge> getGraph() {
