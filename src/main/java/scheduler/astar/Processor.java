@@ -15,7 +15,7 @@ public class Processor {
 	}
 	
 	public int getTime() {
-		return processes.get(processes.size()-1).endTime();
+		return processes.get(processes.size()-1).endTime(); //end time of last scheduled task
 	}
 	
 	public void addProcess(Vertex v) {

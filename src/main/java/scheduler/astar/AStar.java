@@ -24,23 +24,23 @@ public class AStar {
 		List<Vertex> nonschedulableProcesses = new ArrayList<Vertex>();
 
 		for (Vertex v : _graph.vertexSet()) {
-			if (_graph.inDegreeOf(v) == 0) {
+			if (_graph.inDegreeOf(v) == 0) { //get source nodes
 				Solution s = new Solution(_numberOfProcessors);
 				s.addProcess(v, 1);
-				initialSolutions.add(s);
-				schedulableProcesses.add(v);
+				initialSolutions.add(s); //list of solutions starting source node
+				schedulableProcesses.add(v); 
 			} else {
 				nonschedulableProcesses.add(v);
 			}
 		}
 
 		Solution bestInitialSolution = null; 
-		int maxTime = Integer.MAX_VALUE;
+		int minTime = Integer.MAX_VALUE;
 
 		for (Solution s : initialSolutions) {
-			if (s.getTime() < maxTime) {
+			if (s.getTime() < minTime) {
 				bestInitialSolution = s;
-				maxTime = s.getTime();
+				minTime = s.getTime(); //min time of the source nodes
 			}
 		}
 
@@ -72,11 +72,11 @@ public class AStar {
 			
 			boolean canBeScheduled = true;
 			for (DefaultWeightedEdge inEdge : _graph.incomingEdgesOf(child)) {
-				if (!scheduled.contains(_graph.getEdgeSource(inEdge))) {
+				if (!scheduled.contains(_graph.getEdgeSource(inEdge))) { 
 					canBeScheduled = false;
 				}
 			}
-			if (canBeScheduled) {
+			if (canBeScheduled && nonschedulable.contains(child))  {
 				schedulable.add(child);
 				nonschedulable.remove(child);
 			}
