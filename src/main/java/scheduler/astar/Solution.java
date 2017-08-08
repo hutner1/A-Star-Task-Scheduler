@@ -1,6 +1,8 @@
 package scheduler.astar;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Solution {
 	private HashMap<Integer, Processor> _processors;
@@ -11,6 +13,7 @@ public class Solution {
 		for (int i = 1; i <= numberOfProcessors; i++) {
 			_processors.put(i, new Processor());
 		}
+		
 	}
 	
 	public int getTime() {
@@ -26,6 +29,9 @@ public class Solution {
 	}
 	
 	public void addProcess(ProcessInfo process, int processorNumber) {
-		_processors.get(processorNumber);
+		_processors.get(processorNumber).addProcess(process);
+		
 	}
+	
 }
+
