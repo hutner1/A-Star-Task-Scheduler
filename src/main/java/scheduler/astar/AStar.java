@@ -15,33 +15,41 @@ public class AStar {
 	public AStar(DefaultDirectedWeightedGraph<Vertex, DefaultWeightedEdge> graph, int numberOfProcessors) {
 		_graph = graph;
 	}
-	
+
 	public void execute() {
-		
+
 		List<Solution> initialSolutions = new ArrayList<Solution>();
-		
+		List<Vertex> schedulableProcesses = new ArrayList<Vertex>();
+		List<Vertex> nonschedulableProcesses = new ArrayList<Vertex>();
+
 		for (Vertex v : _graph.vertexSet()) {
 			if (_graph.inDegreeOf(v) == 0) {
 				Solution s = new Solution(_numberOfProcessors);
-				ProcessInfo p = new ProcessInfo(v,0);
-				s.addProcess(p, 1);
+				s.addProcess(v, 1);
 				initialSolutions.add(s);
+				schedulableProcesses.add(v);
+			} else {
+				nonschedulableProcesses.add(v);
 			}
 		}
-		
-		Solution bestInitialSolution; 
+
+		Solution bestInitialSolution = null; 
 		int maxTime = Integer.MAX_VALUE;
-		
+
 		for (Solution s : initialSolutions) {
 			if (s.getTime() < maxTime) {
 				bestInitialSolution = s;
 				maxTime = s.getTime();
 			}
 		}
-	
+
+		for (Vertex v : schedulableProcesses) {
+			for (int i = 1; i <= _numberOfProcessors; i++) {
+				bestInitialSolution.addProcess(v, i);
+			}
+		}
+		
 		
 	}
-	
-	
-	
+
 }
