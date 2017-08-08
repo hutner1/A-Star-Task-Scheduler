@@ -1,6 +1,7 @@
 package scheduler.dfsbranchandbound;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
@@ -17,6 +18,8 @@ public class SolutionGenerator {
 	DefaultDirectedWeightedGraph<Vertex, DefaultWeightedEdge> _digraph;
 	int _noOfProcessors; 
 	int _currentMinCost;
+	HashMap<Integer, ArrayList<Vertex>> _processorList;
+	HashMap<Vertex,int[]> _vertexScheduleInfo;
 	
 	/**
 	 * Takes in digraph information to generate optimum solution for
@@ -26,6 +29,12 @@ public class SolutionGenerator {
 	public SolutionGenerator(DefaultDirectedWeightedGraph<Vertex, DefaultWeightedEdge> digraph, int noOfProcessors){
 		_digraph = digraph;
 		_noOfProcessors = noOfProcessors;
+		_processorList = new HashMap<>();
+		// create a list for tasks for each processor
+		for(int i = 0; i<noOfProcessors; i++){
+			_processorList.put(i, new ArrayList<>());
+		}
+		_vertexScheduleInfo = new HashMap<>();
 	} 
 	
 	/**
