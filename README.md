@@ -16,19 +16,19 @@ To test that the jar file works, move the example.dot to the target folder and r
 ### Command Line Interface
 ````
 java −jar scheduler.jar INPUT.dot P [OPTION]
-INPUT.dot   a task  graph  with  integer  weights  in  dot  format
-P           number  of  processors  to  schedule  the INPUT graph on
+INPUT.dot   A task graph with integer weights in dot format
+P           Number of processors to schedule the INPUT graph on
 
 Optional:
-−p N        use N cores for execution  in  parallel (default is sequential)
-−v          visualise the search
-−o OUTPUT   output file is named OUTPUT (default is INPUT−output.dot)
+−p N        Use N cores for execution in parallel (default is sequential)
+−v          Visualise the search
+−o OUTPUT   Output file is named OUTPUT (default is INPUT−output.dot)
 ````
 
-## Authors
-* Hunter Bao
-* Jack Huang
-* Injae Park
-* David Qi
-* Yao Jian Yap
-* Justin Chuk
+## Collaborators
+* Hunter Bao - hbao448@aucklanduni.ac.nz
+* Jack Huang - xhua451@aucklanduni.ac.nz
+* Injae Park - ipar569@aucklanduni.ac.nz
+* David Qi - yqi955@aucklanduni.ac.nz
+* Yao Jian Yap - yyap601@aucklanduni.ac.nz
+* Justin Chuk - hchuk167@aucklanduni.ac.nz
