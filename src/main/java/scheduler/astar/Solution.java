@@ -1,28 +1,31 @@
 package scheduler.astar;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 public class Solution {
-	private List<Processor> _processors;
+	private HashMap<Integer, Processor> _processors;
 	
 	public Solution(int numberOfProcessors) {
-		_processors = new ArrayList<Processor>();
+		_processors = new HashMap<Integer, Processor>();
 		
-		for (int i = 0; i < numberOfProcessors; i++) {
-			_processors.add(new Processor());
+		for (int i = 1; i <= numberOfProcessors; i++) {
+			_processors.put(i, new Processor());
 		}
 	}
 	
 	public int getTime() {
 		int maximumTime = 0;
 		
-		for (Processor p : _processors) {
+		for (Processor p : _processors.values()) {
 			if (p.getTime() > maximumTime) {
 				maximumTime = p.getTime();
 			}
 		}
 		
 		return maximumTime;
+	}
+	
+	public void addProcess(ProcessInfo process, int processorNumber) {
+		_processors.get(processorNumber);
 	}
 }

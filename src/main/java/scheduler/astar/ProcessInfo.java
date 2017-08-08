@@ -15,7 +15,5 @@ public class ProcessInfo {
 	public int endTime() {
 		return _startTime + _vertex.getWeight();
 	}
-
-	
 	
 }

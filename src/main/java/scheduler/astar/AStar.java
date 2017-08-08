@@ -15,6 +15,7 @@ public class AStar {
 	
 	public void execute() {
 		Solution solution = new Solution(_numberOfProcessors);
+		
 	}
 	
 }
