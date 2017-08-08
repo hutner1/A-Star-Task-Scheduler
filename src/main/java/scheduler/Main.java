@@ -1,6 +1,7 @@
 package scheduler;
 import java.util.List;
 
+import Visualization.Visualizer;
 import io.DataReader;
 import io.InputParser;
 import io.OutputWriter;
@@ -23,10 +24,15 @@ public class Main {
 		outWriter.initialise();
 
 		DataReader dataReader = new DataReader(inputParser.getFile());
+		Visualizer graphVisualizer = new Visualizer();
 		
 		while(dataReader.hasMoreGraphs()) {
 			System.out.println("More graphs in file? " + dataReader.hasMoreGraphs());
 			dataReader.readNextGraph();
+			
+			if(inputParser.isVisualise() == true){
+				graphVisualizer.add(dataReader.getGraph());
+			}
 			
 			//Create the optimal schedule
 			Sorter sorter = new Sorter(dataReader.getGraph());
@@ -34,5 +40,6 @@ public class Main {
 			Schedule sol = ScheduleGenerator.makeSolution(tSort);
 			outWriter.createSchedule(dataReader.getGraphName(),dataReader.getInfo(),dataReader.getRead(),sol,dataReader.getMapping());
 		}
+		graphVisualizer.displayGraphs();
 	}
 }
