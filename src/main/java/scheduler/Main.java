@@ -8,6 +8,7 @@ import scheduler.basicmilestone.Schedule;
 import scheduler.basicmilestone.ScheduleGenerator;
 import scheduler.basicmilestone.Sorter;
 import scheduler.basicmilestone.Vertex;
+import scheduler.dfsbranchandbound.SolutionGenerator;
 
 /**
  * This is the main class for the task scheduler program.
@@ -29,10 +30,18 @@ public class Main {
 			dataReader.readNextGraph();
 			
 			//Create the optimal schedule
+			/**
 			Sorter sorter = new Sorter(dataReader.getGraph());
 			List<Vertex> tSort = sorter.generateSort();
 			Schedule sol = ScheduleGenerator.makeSolution(tSort);
-			outWriter.createSchedule(dataReader.getGraphName(),dataReader.getInfo(),dataReader.getRead(),sol,dataReader.getMapping());
+			**/
+			SolutionGenerator solutionGenerator = new SolutionGenerator(dataReader.getGraph(), 2);
+			solutionGenerator.generateSolution();
+			
+			//outWriter.createSchedule(dataReader.getGraphName(),dataReader.getInfo(),dataReader.getRead(),sol,dataReader.getMapping());
+			
+			outWriter.createScheduleDFS(dataReader.getGraphName(),dataReader.getInfo(),dataReader.getRead(),solutionGenerator,dataReader.getMapping());
+
 		}
 	}
 }

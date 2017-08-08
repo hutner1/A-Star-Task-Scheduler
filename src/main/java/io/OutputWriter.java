@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 import scheduler.basicmilestone.Schedule;
 import scheduler.basicmilestone.Vertex;
+import scheduler.dfsbranchandbound.SolutionGenerator;
 
 public class OutputWriter {
 
@@ -67,6 +68,36 @@ public class OutputWriter {
 		//end the output file with closing bracket
 		record(_outputFile, "}");
 	}
+	
+	
+	public void createScheduleDFS(String digraphName, ArrayList<String> weightInfos, ArrayList<String> verticesAndEdges, SolutionGenerator solutionGenerator, HashMap<String, Vertex> vertextMapping){
+
+		//record first line of output file which contains the title
+		record(_outputFile, "digraph \"" + digraphName +"\" {");
+
+		//record the weight info together with the start time and processor, in order according to input file 
+		for(String info : weightInfos){
+			int currentPos = weightInfos.indexOf(info);
+			// edge would be ">"
+			String vertexOrEdge = verticesAndEdges.get(currentPos);
+
+			// record initially recorded edge info directly back to file as no extra info is needed
+			if(vertexOrEdge.equals(">")){
+				record(_outputFile, info);
+
+			} else {
+				// add the start and processor info to the end before closing bracket
+				//StringBuilder augmentedInfo = new StringBuilder(info).insert(info.length()-2, solution.getVertexInfo(vertextMapping.get(vertexOrEdge)).outputString());
+				StringBuilder augmentedInfo = new StringBuilder(info).insert(info.length()-2, solutionGenerator.outputString(vertextMapping.get(vertexOrEdge)));
+
+				record(_outputFile, augmentedInfo.toString());
+			}
+		}
+
+		//end the output file with closing bracket
+		record(_outputFile, "}");
+	}
+	
 	
 	/**
 	 * Convenient method to record a single line to a file and then print new line
