@@ -35,7 +35,7 @@ public class Main {
 			List<Vertex> tSort = sorter.generateSort();
 			Schedule sol = ScheduleGenerator.makeSolution(tSort);
 			**/
-			SolutionGenerator solutionGenerator = new SolutionGenerator(dataReader.getGraph(), 2);
+			SolutionGenerator solutionGenerator = new SolutionGenerator(dataReader.getGraph(), inputParser.getProcessors());
 			solutionGenerator.generateSolution();
 			
 			//outWriter.createSchedule(dataReader.getGraphName(),dataReader.getInfo(),dataReader.getRead(),sol,dataReader.getMapping());
