@@ -20,6 +20,10 @@ public class Sorter {
 		_graph = graph;
 	}
 	
+	/**
+	 * Takes the list of vertices in the digraph and returns returns a topological sorted order of the vertices 
+	 * @return
+	 */
 	public List<Vertex> generateSort(){
 		
 		/**
