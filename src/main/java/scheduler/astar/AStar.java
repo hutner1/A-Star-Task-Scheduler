@@ -39,6 +39,7 @@ public class AStar {
 			
 			solutionSpace.addAll(bestCurrentSolution.createChildren());
 			bestCurrentSolution = solutionSpace.poll();
+		
 		}
 		
 
