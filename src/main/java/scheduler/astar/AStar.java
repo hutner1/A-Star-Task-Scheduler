@@ -1,7 +1,7 @@
 package scheduler.astar;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
 
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
@@ -18,10 +18,35 @@ public class AStar {
 
 	public void execute() {
 
+		//Create initial solution and add to priority queue
+		//Pop solution and create children solutions for that, readd children to queue
+		//Pop most efficient child and add create children, readd
+		//Repeat until child is a complete graph, that is the optimal schedule
+
+		PriorityQueue<Solution> solutionSpace = new PriorityQueue<Solution>();
+
+		for (Vertex v : _graph.vertexSet()) {
+			if (_graph.inDegreeOf(v) == 0) { //get source nodes
+				Solution s = new Solution(_numberOfProcessors, _graph);
+				s.addProcess(v, 1);
+				solutionSpace.add(s); //list of solutions starting source node
+			} 
+		}
+		
+		Solution bestCurrentSolution = solutionSpace.poll();
+		
+		while (!bestCurrentSolution.isCompleteSchedule()) {
+			
+			solutionSpace.addAll(bestCurrentSolution.createChildren());
+			bestCurrentSolution = solutionSpace.poll();
+		}
+		
+
+
+
+		/*
 		List<Solution> initialSolutions = new ArrayList<Solution>();
-		List<Vertex> scheduledProcesses = new ArrayList<Vertex>();
-		List<Vertex> schedulableProcesses = new ArrayList<Vertex>();
-		List<Vertex> nonschedulableProcesses = new ArrayList<Vertex>();
+
 
 		for (Vertex v : _graph.vertexSet()) {
 			if (_graph.inDegreeOf(v) == 0) { //get source nodes
@@ -49,37 +74,9 @@ public class AStar {
 				bestInitialSolution.addProcess(v, i, _graph);
 				updateSchedulable(v, scheduledProcesses, schedulableProcesses, nonschedulableProcesses);
 			}
-		}
-		
-		
+		}*/
+
+
 	}
 
-	/**
-	 * This method updates the list of schedulable and nonschedulable processes.
-	 * It checks the children processes of the parent input and if all of the parent processes
-	 * of the child have already been scheduled
-	 * @param parent Parent process to be updated
-	 * @param scheduled List of processes already scheduled
-	 * @param schedulable List of processes available to be scheduled
-	 * @param nonschedulable List of processes that have not had their dependencies met
-	 */
-	private void updateSchedulable(Vertex parent, List<Vertex> scheduled, List<Vertex> schedulable, List<Vertex> nonschedulable) {
-		
-		scheduled.add(parent);
-		
-		for (DefaultWeightedEdge outEdge : _graph.outgoingEdgesOf(parent)) {
-			Vertex child = _graph.getEdgeTarget(outEdge);
-			
-			boolean canBeScheduled = true;
-			for (DefaultWeightedEdge inEdge : _graph.incomingEdgesOf(child)) {
-				if (!scheduled.contains(_graph.getEdgeSource(inEdge))) { 
-					canBeScheduled = false;
-				}
-			}
-			if (canBeScheduled && nonschedulable.contains(child))  {
-				schedulable.add(child);
-				nonschedulable.remove(child);
-			}
-		}
-	}
 }
