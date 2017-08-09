@@ -1,6 +1,7 @@
 package scheduler.astar;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
@@ -36,8 +37,6 @@ public class Solution {
 
 	public void addProcess(Vertex v, int processorNumber, DefaultDirectedWeightedGraph<Vertex, DefaultWeightedEdge> graph) {
 
-		int time = 0;
-
 		//for every processor, get the latest starting parent, then determine the earliest possible start time of new process
 
 		ArrayList<Integer> startingTimes = new ArrayList<Integer>();
@@ -58,10 +57,15 @@ public class Solution {
 			startingTimes.add(latestParentEndTime);
 		}
 
-
-
-
-		_processors.get(processorNumber).addProcess(v,time);
+		int earliestStartTime = Collections.max(startingTimes);
+		int earliestAvailableTime = _processors.get(processorNumber).earliestNextProcess();
+		
+		if (earliestStartTime > earliestAvailableTime) {
+			_processors.get(processorNumber).addProcess(v,earliestStartTime);
+		} else {
+			_processors.get(processorNumber).addProcess(v,earliestAvailableTime);
+		}
+	
 
 	}
 

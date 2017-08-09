@@ -45,4 +45,8 @@ public class Processor {
 		}
 		return 0;
 	}
+	
+	public int earliestNextProcess() {
+		return earliestNextProcess;
+	}
 }
