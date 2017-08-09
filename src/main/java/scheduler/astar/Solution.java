@@ -14,12 +14,13 @@ import scheduler.basicmilestone.Vertex;
 public class Solution implements Comparable<Solution>{
 	private HashMap<Integer, Processor> _processors;
 	private int _numberOfProcessors;
-	private List<Vertex> scheduledProcesses = new ArrayList<Vertex>();
-	private List<Vertex> schedulableProcesses = new ArrayList<Vertex>();
-	private List<Vertex> nonschedulableProcesses = new ArrayList<Vertex>();
+	private List<Vertex> _scheduledProcesses;
+	private List<Vertex> _schedulableProcesses;
+	private List<Vertex> _nonschedulableProcesses;
 	private DefaultDirectedWeightedGraph<Vertex, DefaultWeightedEdge> _graph;
 
-	public Solution(int numberOfProcessors, DefaultDirectedWeightedGraph<Vertex, DefaultWeightedEdge> graph) {
+	public Solution(int numberOfProcessors, DefaultDirectedWeightedGraph<Vertex, DefaultWeightedEdge> graph, List<Vertex> scheduled, List<Vertex> schedulable, List<Vertex> nonschedulable) {
+		
 		_numberOfProcessors = numberOfProcessors;
 		_processors = new HashMap<Integer, Processor>();
 		_graph = graph;
@@ -27,15 +28,10 @@ public class Solution implements Comparable<Solution>{
 		for (int i = 1; i <= numberOfProcessors; i++) {
 			_processors.put(i, new Processor());
 		}
-	}
-	
-	private Solution createCopy() {
-		Solution s = new Solution();
-		s._numberOfProcessors = this._numberOfProcessors;
-		s.scheduledProcesses = this.scheduledProcesses;
-		s.schedulableProcesses = this.schedulableProcesses;
-		s.nonschedulableProcesses = this.nonschedulableProcesses;
-		return s;
+		
+		_scheduledProcesses = new ArrayList<Vertex>(scheduled);
+		_schedulableProcesses = new ArrayList<Vertex>(schedulable);
+		_nonschedulableProcesses = new ArrayList<Vertex>(nonschedulable);
 	}
 
 	public int getTime() {
@@ -75,6 +71,9 @@ public class Solution implements Comparable<Solution>{
 		int earliestStartTime = Collections.max(startingTimes);
 		int earliestAvailableTime = _processors.get(processorNumber).earliestNextProcess();
 		
+		System.out.println(earliestStartTime);
+		System.out.println(earliestAvailableTime);
+		
 		if (earliestStartTime > earliestAvailableTime) {
 			_processors.get(processorNumber).addProcess(v,earliestStartTime);
 		} else {
@@ -87,9 +86,9 @@ public class Solution implements Comparable<Solution>{
 	@Override
 	public int compareTo(Solution s) {
 		if (s.getTime() == this.getTime()) {
-			if (s.scheduledProcesses.size() > this.scheduledProcesses.size()) {
+			if (s._scheduledProcesses.size() > this._scheduledProcesses.size()) {
 				return -1;
-			} else if (s.scheduledProcesses.size() < this.scheduledProcesses.size()) {
+			} else if (s._scheduledProcesses.size() < this._scheduledProcesses.size()) {
 				return 1;
 			} else {
 				return 0;
@@ -101,7 +100,7 @@ public class Solution implements Comparable<Solution>{
 		}
 	}
 	
-
+	
 	/**
 	 * This method updates the list of schedulable and nonschedulable processes.
 	 * It checks the children processes of the parent input and if all of the parent processes
@@ -113,33 +112,34 @@ public class Solution implements Comparable<Solution>{
 	 */
 	private void updateSchedulable(Vertex parent) {
 		
-		scheduledProcesses.add(parent);
+		_scheduledProcesses.add(parent);
+		_schedulableProcesses.remove(parent);
 		
 		for (DefaultWeightedEdge outEdge : _graph.outgoingEdgesOf(parent)) {
 			Vertex child = _graph.getEdgeTarget(outEdge);
 			
 			boolean canBeScheduled = true;
 			for (DefaultWeightedEdge inEdge : _graph.incomingEdgesOf(child)) {
-				if (!scheduledProcesses.contains(_graph.getEdgeSource(inEdge))) { 
+				if (!_scheduledProcesses.contains(_graph.getEdgeSource(inEdge))) { 
 					canBeScheduled = false;
 				}
 			}
-			if (canBeScheduled && nonschedulableProcesses.contains(child))  {
-				schedulableProcesses.add(child);
-				nonschedulableProcesses.remove(child);
+			if (canBeScheduled && _nonschedulableProcesses.contains(child))  {
+				_schedulableProcesses.add(child);
+				_nonschedulableProcesses.remove(child);
 			}
 		}
 	}
 	
 	public boolean isCompleteSchedule() {
-		return scheduledProcesses.size() == _graph.vertexSet().size();
+		return _scheduledProcesses.size() == _graph.vertexSet().size();
 	}
 
 	public List<Solution> createChildren() {
 		
 		List<Solution> children = new ArrayList<Solution>();
 		
-		for (Vertex v : schedulableProcesses) {
+		for (Vertex v : _schedulableProcesses) {
 			for (int i = 1; i <= _numberOfProcessors; i++) {
 				Solution child = createDeepCopy();
 				child.addProcess(v, i);
@@ -147,12 +147,31 @@ public class Solution implements Comparable<Solution>{
 			}
 		}
 	
+		return children;
 	}
 	
 	public Solution createDeepCopy() {
-		
+		Solution s = new Solution(_numberOfProcessors, _graph, _scheduledProcesses, _schedulableProcesses, _nonschedulableProcesses);
+		s.setProcessorSchedule(_processors);
+		return s;
 	}
 
+	private void setProcessorSchedule(HashMap<Integer, Processor> processors) {
+		for (int i = 1; i <= _numberOfProcessors; i++) {
+			_processors.put(i, processors.get(i).getClone());
+		}
+	}
+
+	public String getVertexString(Vertex vertex) {
+		for (int i = 1; i <= _numberOfProcessors; i++) {
+			if (_processors.get(i).isScheduled(vertex)) {				
+				return ", Start=" + _processors.get(i).getProcess(vertex).startTime() + ", Processor=" + i;
+			}
+		}
+		return null;
+	}
+
+	
 	/*public boolean scheduled(Vertex v) {
 
 		for (Processor p : _processors.values()) {

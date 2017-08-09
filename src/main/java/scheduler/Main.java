@@ -4,6 +4,7 @@ import java.util.List;
 import io.DataReader;
 import io.InputParser;
 import io.OutputWriter;
+import scheduler.astar.AStar;
 import scheduler.basicmilestone.Schedule;
 import scheduler.basicmilestone.ScheduleGenerator;
 import scheduler.basicmilestone.Sorter;
@@ -29,10 +30,12 @@ public class Main {
 			dataReader.readNextGraph();
 			
 			//Create the optimal schedule
-			Sorter sorter = new Sorter(dataReader.getGraph());
+			/*Sorter sorter = new Sorter(dataReader.getGraph());
 			List<Vertex> tSort = sorter.generateSort();
-			Schedule sol = ScheduleGenerator.makeSolution(tSort);
-			outWriter.createSchedule(dataReader.getGraphName(),dataReader.getInfo(),dataReader.getRead(),sol,dataReader.getMapping());
+			Schedule sol = ScheduleGenerator.makeSolution(tSort);*/
+			
+			AStar aStar = new AStar(dataReader.getGraph(),inputParser.getProcessors());
+			outWriter.createScheduleAStar(dataReader.getGraphName(),dataReader.getInfo(),dataReader.getRead(),aStar.execute(),dataReader.getMapping());
 		}
 	}
 }

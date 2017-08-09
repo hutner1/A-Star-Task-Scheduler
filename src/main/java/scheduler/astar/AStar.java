@@ -1,5 +1,6 @@
 package scheduler.astar;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 
@@ -14,20 +15,32 @@ public class AStar {
 
 	public AStar(DefaultDirectedWeightedGraph<Vertex, DefaultWeightedEdge> graph, int numberOfProcessors) {
 		_graph = graph;
+		_numberOfProcessors = numberOfProcessors;
 	}
 
-	public void execute() {
+	public Solution execute() {
 
 		//Create initial solution and add to priority queue
 		//Pop solution and create children solutions for that, readd children to queue
 		//Pop most efficient child and add create children, readd
 		//Repeat until child is a complete graph, that is the optimal schedule
 
+		List<Vertex> schedulable = new ArrayList<Vertex>();
+		List<Vertex> nonschedulable = new ArrayList<Vertex>();
+		
+		for (Vertex v : _graph.vertexSet()) {
+			if (_graph.inDegreeOf(v) == 0) { //get source nodes
+				schedulable.add(v);
+			} else {
+				nonschedulable.add(v);
+			}
+		}
+		
 		PriorityQueue<Solution> solutionSpace = new PriorityQueue<Solution>();
 
 		for (Vertex v : _graph.vertexSet()) {
 			if (_graph.inDegreeOf(v) == 0) { //get source nodes
-				Solution s = new Solution(_numberOfProcessors, _graph);
+				Solution s = new Solution(_numberOfProcessors, _graph, new ArrayList<Vertex>(), schedulable, nonschedulable);
 				s.addProcess(v, 1);
 				solutionSpace.add(s); //list of solutions starting source node
 			} 
@@ -42,6 +55,7 @@ public class AStar {
 		
 		}
 		
+		return bestCurrentSolution;
 
 
 
