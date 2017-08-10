@@ -39,7 +39,7 @@ public class Main {
 			outWriter.createScheduleAStar(dataReader.getGraphName(),dataReader.getInfo(),dataReader.getRead(),aStar.execute(),dataReader.getMapping());
 			long endTime = System.nanoTime();
 			long totalTime = endTime - startTime;
-			System.out.println("\n Took " + totalTime/1000000 + "ms");
+			System.out.println("\n Took " + totalTime/1000000 + "ms" + " : " + totalTime/1000000000 + " seconds");
 		}
 	}
 }
