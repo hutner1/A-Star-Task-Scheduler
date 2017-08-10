@@ -6,7 +6,6 @@ import java.util.HashMap;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 
-import scheduler.basicmilestone.Schedule;
 import scheduler.basicmilestone.Vertex;
 
 /**
@@ -15,222 +14,231 @@ import scheduler.basicmilestone.Vertex;
  */
 public class SolutionGenerator {
 
+	// DIGRAPH
 	DefaultDirectedWeightedGraph<Vertex, DefaultWeightedEdge> _digraph;
+	// NO. OF PROCESSORS
 	int _noOfProcessors; 
-	int _currentMinCost;
 	
-	// For storage of current optimal solution
+	// For storage of CURRENT OPTIMAL SOLUTION
+	/**
+	 * Processors and tasks executed on it
+	 * for e.g.
+	 * 
+	 * |= Processor No ==|
+	 * |  0  |  1  |  2  |
+	 * |==== Task No.====|
+	 * |  a  |  b  |  d  |
+	 * |     |  c  |  e  | 
+	 * |=====|=====|=====|
+	 * 
+	 */
 	HashMap<Integer, ArrayList<Vertex>> _processorList;
-	// int[startTime, finishTime, processorNo]
+	
+	// CURRENT VERTEX INFO, VALUE FORMAT := int[startTime, finishTime, processorNo]
+	/** 
+	 * for e.g.
+	 * Task[a] -> [start: 0, finish: 3, processor no: 2]
+	 */
 	HashMap<Vertex,int[]> _vertexScheduleInfo;
 	
-	// For storage of OPTIMAL solution
+	// For storage of *OPTIMAL SOLUTION* 
 	HashMap<Integer, ArrayList<Vertex>> _optimalProcessorListSolution;
 	HashMap<Vertex,int[]> _optimalVertexScheduleInfo;
 	
-	// Current OPTIMAL cost
+	
+	// CURRENT OPTIMAL COST
 	int _optimalCost;
 	
-	// For storage of bottom level information
+	// For storage of *BOTTOM LVL* information
 	HashMap<Vertex,Integer> _btmLevel;
 	
 	/**
-	 * Takes in digraph information to generate optimum solution for
+	 * Takes in digraph information to generate optimum solution for using DFS branch & bound
 	 * @param digraph
 	 * @param noOfProcessors
 	 */
 	public SolutionGenerator(DefaultDirectedWeightedGraph<Vertex, DefaultWeightedEdge> digraph, int noOfProcessors){
 		_digraph = digraph;
 		_noOfProcessors = noOfProcessors;
+		
+		// initialise data structures
 		_processorList = new HashMap<>();
-		// create a list for tasks for each processor
+		_vertexScheduleInfo = new HashMap<>();
+		_btmLevel = new HashMap<>(); 
 		for(int i = 0; i<noOfProcessors; i++){
 			_processorList.put(i, new ArrayList<>());
 		}
-		_vertexScheduleInfo = new HashMap<>();
 		
 		// starting optimal cost is max value
-		_optimalCost = Integer.MAX_VALUE;
-		
-		_btmLevel = new HashMap<>(); 
+		_optimalCost = Integer.MAX_VALUE;	
 	} 
 	
 	/**
 	 * Does Depth First Search Branch & Bound and returns the optimal solution
+	 * which contains info on each vertices
 	 * @return optimal schedule
 	 */
 	public HashMap<Vertex,int[]> generateSolution(){
 		ArrayList<Vertex> rootVertices =  returnRootVertices();
 		
-		// populate bottom level hashmap
+		// populate bottom level hash map
 		for(Vertex v : _digraph.vertexSet()){
 			_btmLevel.put(v, getBottomLevel(v));
-			System.out.println(v.getName()+"'s bottom level :"+_btmLevel.get(v));
+			//System.out.println(v.getName()+"'s bottom level :"+_btmLevel.get(v)); //debug
 		}
 		
-		// start the dfs for different root vertices
+		// start the dfs b&b for different root vertices
 		for(Vertex v : rootVertices){
-			// create a shallow copy of vertices
+			// create a shallow copy of all vertices
 			ArrayList<Vertex> initialVertices = new ArrayList<>();
 			for (Vertex v2 : _digraph.vertexSet()){
 				initialVertices.add(v2);
 			}
+			// start dfs b&b for optimal solution
 			dfs(v, initialVertices);
 		}
-		
 		return _optimalVertexScheduleInfo;
 	}
 	
 	/**
-	 * Get the output string for each vertex //TODO
+	 * Get the output string for each vertex, to be written to output file
 	 * @param vertex
-	 * @return
+	 * @return output string, to be written to output file
 	 */
 	public String outputString(Vertex vertex) {
 		return ", Start=" + getOptimalStartTime(vertex) + ", Processor=" + getOptimalProcessorNo(vertex);
 	}
 	
+	// DEBUGGER
 	private void debugger(Vertex vertex){
-		System.out.println("Time "+ _optimalCost);
+		System.out.println("==============\n");
+		System.out.println("OPTIMAL: "+ _optimalCost);
 		for(int i=0; i<_noOfProcessors; i++){
 	 		ArrayList<Vertex> processorSchedule = _processorList.get(i);
-	 		System.out.println("Processor "+i);
+	 		System.out.println("Processor "+i+":");
 	 		for(Vertex v: processorSchedule){
-		 		System.out.println(v.getName() + " : " + getStartTime(v)  + " -> " + getFinishTime(v) + " = " + getProcessorNo(v) );
-	 			
+		 		System.out.println(v.getName() + " : " + getStartTime(v)  + " -> " + getFinishTime(v));	
 	 		}
-
 		}
 		System.out.println("==============\n");
-
 	}
 	
 	/**
-	 * Recursive DFS from a free vertex that is not in any processor
+	 * Recursive DFS from a free vertex that is not yet run on any processorS
 	 * @param vertex free vertex
 	 * @param freeVertices free vertices
 	 */
 	private void dfs(Vertex vertex, ArrayList<Vertex> freeVertices){
+		// vertices NOT YET RUN
+		ArrayList<Vertex> currentFreeVertices = new ArrayList<>(freeVertices); 
 		
-		// list of vertices currently not on any processors (to be processed) //TODO I think I'm making a copy here
-		ArrayList<Vertex> currentFreeVertices = new ArrayList<>(freeVertices); //TODO
-		// remove vertex to process
+		// REMOVE VERTEX TO RUN
 		currentFreeVertices.remove(vertex);
 		
-		// do STATE SPACE SEARCH by assigning the VERTEX to each processor 
+		// do *STATE SPACE SEARCH* by assigning the VERTEX to each processor 
 		// so that RESULTS can be checked for different processors
 		for(int i=0; i<_noOfProcessors; i++){
-
 			// BOUNDING
-			// determine whether to abandon search based on the running total 
+			// go 1 back up the branch, if abandoning branch
 			boolean abandonSearch = assignVertexToProcessor(i, vertex);
 			if(abandonSearch){
 				revertChangesMade(vertex);
-				System.out.println("Abandon Search");
 				continue;
 			}
 			
-			
-			//TODO refactor
 			/**
-			 * Get the optimal solution for the branch when leaf of DFS search is reached
+			 * LEAF REACHED, CHECK IF SOLUTION is OPTIMAL
 			 * This is done by comparing the last finish times of all the processors
 			 */
 			if(currentFreeVertices.size() == 0){
-				int[] lastFinish = null; 
-				for(int j=0; j<_noOfProcessors; j++){
-					if(lastFinish == null){
-						lastFinish = new int[]{j,getFinishTimeOfLastTask(j)};
-						continue;
-					}
-					if(getFinishTimeOfLastTask(j) > lastFinish[1]){
-						lastFinish = new int[]{j,getFinishTimeOfLastTask(j)};
+				// FIND LATEST FINISH TIME among the processors
+				int[] processorAndFinishTime = new int[]{0,getFinishTimeOfLastTask(0)}; 
+				for(int j=1; j<_noOfProcessors; j++){
+					if(getFinishTimeOfLastTask(j) > processorAndFinishTime[1]){
+						processorAndFinishTime = new int[]{j,getFinishTimeOfLastTask(j)};
 					}
 				}
-				if(lastFinish[1] < _optimalCost){
+				// IF LATEST FINISH TIME < CURRENT OPTIMAL, update optimal solution
+				if(processorAndFinishTime[1] < _optimalCost){
+					System.out.println("Optimal cost found: " + _optimalCost); //TODO debug
 					// store the current minimum cost
-					_optimalCost = lastFinish[1];
-					System.out.println("Leaf reached, optimal cost: " + _optimalCost);
+					_optimalCost = processorAndFinishTime[1];
 					// store the current optimal solution
-					_optimalProcessorListSolution = new HashMap<Integer,ArrayList<Vertex>>(_processorList); //TODO
-					_optimalVertexScheduleInfo = new HashMap<Vertex, int[]>(_vertexScheduleInfo); //TODO
+					_optimalProcessorListSolution = new HashMap<Integer,ArrayList<Vertex>>(_processorList);
+					_optimalVertexScheduleInfo = new HashMap<Vertex, int[]>(_vertexScheduleInfo);
 				}
 			}
 			
-			// nodes that have parents already run and haven't been considered yet
-			ArrayList<Vertex> nodesToConsider = new ArrayList<>(); //TODO
+			// list of NODES NOT RUN YET but with DEPENDENCIES RAN
+			ArrayList<Vertex> nodesToConsider = new ArrayList<>();
 			for (Vertex v : _digraph.vertexSet()){
+				// check if dependencies ran
 				boolean consider = true;
 				for(Vertex v2 : getParents(v)){
 					if(! _vertexScheduleInfo.containsKey(v2)){
 						consider = false;
 					}
 				}
+				// add to list to consider if dependencies ran
 				if(consider && !_vertexScheduleInfo.containsKey(v)){
 					nodesToConsider.add(v);
 				}
 			}
 			
-			
-			
-			//TODO need to look at all nodes whose dependencies are run
 			/**
-			 * Start doing DFS on children vertices
+			 * Start doing recursive DFS on nodes to consider
 			 */
 			for(Vertex v : nodesToConsider){
 				dfs(v,currentFreeVertices);
 			}
-			
-			System.out.println("Leaf reached! from vertex: " + vertex.getName() + "\n");
 
-			// when all children have been convert, go back up the branch
+			// when all children considered, go 1 back up the branch
 			revertChangesMade(vertex);
-			
 		}
-		
-		
 	}
 	
 	/**
-	 * Checks the start time for the vertex on this processor by checking for finishing
+	 * Checks the start time for a vertex on this processor by checking for finishing
 	 * times of the dependencies
 	 * @param processorNo
 	 * @param vertex
+	 * @return whether to BOUND this branch starting with the vertex
 	 */
 	private boolean assignVertexToProcessor(int processorNo, Vertex vertex){
- 		// get the last finish time of a task on the current processor
+ 		// LATEST FINISH TIME of a task on the current processor
  		int currentStartTimeForVertex = getFinishTimeOfLastTask(processorNo);
 		
-		// get the list of vertices associated with a processor
+		// list of TASKS RAN ON PROCESSOR
  		ArrayList<Vertex> processorSchedule = _processorList.get(processorNo);
  		
-		// check where the dependencies of the vertex to add to this current processor are at
+		// locate the dependencies to consider start time
  		for(DefaultWeightedEdge e : _digraph.incomingEdgesOf(vertex)){
- 			// get a parent
+ 			// GET A PARENT (DEPENDENCY)
  			Vertex parent = _digraph.getEdgeSource(e);
  			// check which processor was parent run on
  			for(int i=0; i<_noOfProcessors; i++){
- 				// if the processor is not the current processor, get the possible start time after
- 				// communication from the parent is done and if it is higher than the
- 				// earliest possible start time on the current processor, replace it
- 	 			if (_processorList.get(i).contains(parent)){
- 	 				if(i != processorNo){
- 	 					int possibleStartTimeForVertex = getFinishTime(parent) + (int) _digraph.getEdgeWeight(e);
- 	 					if(possibleStartTimeForVertex > currentStartTimeForVertex){
- 	 						currentStartTimeForVertex = possibleStartTimeForVertex;
- 	 					}
- 	 				}
- 	 			}		
+ 				// get the possible start time after communication from parent and 
+ 				// reconsider earliest possible start
+ 				int parentsProcessor = _vertexScheduleInfo.get(i)[2];
+ 				if(parentsProcessor != processorNo){
+ 					// START AFTER COMMUNICATION
+ 					int possibleStartTimeForVertex = getFinishTime(parent) + (int)_digraph.getEdgeWeight(e);
+ 					// NEW START TIME if COMMUNICATION causes delay
+ 					if(possibleStartTimeForVertex > currentStartTimeForVertex){
+ 						currentStartTimeForVertex = possibleStartTimeForVertex;
+ 					}
+ 				}
  	 		}	
  		}
- 		// add vertex to the current processor
+ 		
+ 		// add vertex as ran
  		processorSchedule.add(vertex);
- 		// add start time information for that vertex, finish time will be generated
+ 		// add start and processor info for vertex
  		addVertexScheduleInformation(vertex, currentStartTimeForVertex, processorNo);
 
-		debugger(vertex);
+		debugger(vertex); //TODO debug
 		
- 		// based on running total cost, BOUND if larger than optimal cost
+ 		// BOUND if running total larger than optimal cost
 		for(int j=0; j<_noOfProcessors; j++){
 			int totalForBranch = getFinishTimeOfLastTask(j);
 			if(totalForBranch > _optimalCost){
@@ -238,12 +246,12 @@ public class SolutionGenerator {
 				return true;
 			}
 		}
-		// based on bottom level, BOUND if larger than optimal cost
+		
+		// BOUND if considering bottom lvl results in > optimal cost
 		if(currentStartTimeForVertex+_btmLevel.get(vertex) > _optimalCost){
 			return true;
 		}
 		
-
  		return false;
 	}
 	
