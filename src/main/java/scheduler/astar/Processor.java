@@ -32,7 +32,7 @@ public class Processor {
 	}
 
 	public void addProcess(Vertex v, int time) {
-		System.out.println("ADDED " + v.getName());
+		//System.out.println("ADDED " + v.getName());
 		ProcessInfo p = new ProcessInfo(v,time);
 		processes.add(p);
 		earliestNextProcess = p.endTime();
@@ -67,5 +67,11 @@ public class Processor {
 
 	public int earliestNextProcess() {
 		return earliestNextProcess;
+	}
+
+	public void printProcesses() {
+		for (ProcessInfo pI : processes) {
+			System.out.print(pI.getVertex().getName() + " ");
+		}
 	}
 }

@@ -75,8 +75,8 @@ public class Solution implements Comparable<Solution>{
 		int earliestStartTime = Collections.max(startingTimes);
 		int earliestAvailableTime = _processors.get(processorNumber).earliestNextProcess();
 
-		System.out.println(earliestStartTime);
-		System.out.println(earliestAvailableTime);
+		//System.out.println(earliestStartTime);
+		//System.out.println(earliestAvailableTime);
 
 		if (earliestStartTime > earliestAvailableTime) {
 			_processors.get(processorNumber).addProcess(v,earliestStartTime);
@@ -147,11 +147,21 @@ public class Solution implements Comparable<Solution>{
 			for (int i = 1; i <= _numberOfProcessors; i++) {
 				Solution child = createDeepCopy();
 				child.addProcess(v, i);
+				child.printTree();
 				children.add(child);
 			}
 		}
 
 		return children;
+	}
+
+	private void printTree() {
+		for (int i = 1; i <= _numberOfProcessors; i++) {
+			System.out.print("P:" + i + " [ ");
+			_processors.get(i).printProcesses();
+			System.out.print("] ");
+		}
+		System.out.println();
 	}
 
 	public Solution createDeepCopy() {
