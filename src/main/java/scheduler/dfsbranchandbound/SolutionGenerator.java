@@ -31,6 +31,9 @@ public class SolutionGenerator {
 	// Current OPTIMAL cost
 	int _optimalCost;
 	
+	// For storage of bottom level information
+	HashMap<Vertex,Integer> _btmLevel;
+	
 	/**
 	 * Takes in digraph information to generate optimum solution for
 	 * @param digraph
@@ -48,6 +51,8 @@ public class SolutionGenerator {
 		
 		// starting optimal cost is max value
 		_optimalCost = Integer.MAX_VALUE;
+		
+		_btmLevel = new HashMap<>(); 
 	} 
 	
 	/**
@@ -56,6 +61,12 @@ public class SolutionGenerator {
 	 */
 	public HashMap<Vertex,int[]> generateSolution(){
 		ArrayList<Vertex> rootVertices =  returnRootVertices();
+		
+		// populate bottom level hashmap
+		for(Vertex v : _digraph.vertexSet()){
+			_btmLevel.put(v, getBottomLevel(v));
+			System.out.println(v.getName()+"'s bottom level :"+_btmLevel.get(v));
+		}
 		
 		// start the dfs for different root vertices
 		for(Vertex v : rootVertices){
@@ -80,7 +91,7 @@ public class SolutionGenerator {
 	}
 	
 	private void debugger(Vertex vertex){
-		System.out.println("Adding " + vertex.getName() + " - " + _optimalCost);
+		System.out.println("Time "+ _optimalCost);
 		for(int i=0; i<_noOfProcessors; i++){
 	 		ArrayList<Vertex> processorSchedule = _processorList.get(i);
 	 		System.out.println("Processor "+i);
@@ -187,10 +198,11 @@ public class SolutionGenerator {
 	 * @param vertex
 	 */
 	private boolean assignVertexToProcessor(int processorNo, Vertex vertex){
-		// get the list of vertices associated with a processor
- 		ArrayList<Vertex> processorSchedule = _processorList.get(processorNo);
  		// get the last finish time of a task on the current processor
  		int currentStartTimeForVertex = getFinishTimeOfLastTask(processorNo);
+		
+		// get the list of vertices associated with a processor
+ 		ArrayList<Vertex> processorSchedule = _processorList.get(processorNo);
  		
 		// check where the dependencies of the vertex to add to this current processor are at
  		for(DefaultWeightedEdge e : _digraph.incomingEdgesOf(vertex)){
@@ -225,6 +237,10 @@ public class SolutionGenerator {
 				System.out.println("Node : " + vertex.getName() + " " +totalForBranch);
 				return true;
 			}
+		}
+		// based on bottom level, BOUND if larger than optimal cost
+		if(currentStartTimeForVertex+_btmLevel.get(vertex) > _optimalCost){
+			return true;
 		}
 		
 
@@ -277,6 +293,29 @@ public class SolutionGenerator {
 		}
 		return children;
 	}
+	
+	/**
+	 * Returns the bottom level of a vertex
+	 * @param vertex
+	 * @return
+	 */
+	private int getBottomLevel(Vertex vertex){
+		ArrayList<Vertex> children = getChildren(vertex);
+		int myWeight = vertex.getWeight();
+		if(children.isEmpty()){
+			return myWeight;
+		} else {
+			int btmLvl = 0;
+			for (Vertex v : children){
+				int lvl = getBottomLevel(v);
+				if(lvl > btmLvl){
+					btmLvl = lvl;
+				}
+			}
+			return myWeight + btmLvl;
+		}
+	}
+	
 	
 	/**
 	 * Returns start time of a vertex on a processor
