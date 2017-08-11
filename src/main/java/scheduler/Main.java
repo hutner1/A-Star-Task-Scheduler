@@ -1,10 +1,12 @@
 package scheduler;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import Visualization.Visualizer;
 import io.DataReader;
 import io.InputParser;
 import io.OutputWriter;
+import scheduler.astar.AStar;
 import scheduler.basicmilestone.Schedule;
 import scheduler.basicmilestone.ScheduleGenerator;
 import scheduler.basicmilestone.Sorter;
@@ -35,10 +37,15 @@ public class Main {
 			}
 			
 			//Create the optimal schedule
-			Sorter sorter = new Sorter(dataReader.getGraph());
+			/*Sorter sorter = new Sorter(dataReader.getGraph());
 			List<Vertex> tSort = sorter.generateSort();
-			Schedule sol = ScheduleGenerator.makeSolution(tSort);
-			outWriter.createSchedule(dataReader.getGraphName(),dataReader.getInfo(),dataReader.getRead(),sol,dataReader.getMapping());
+			Schedule sol = ScheduleGenerator.makeSolution(tSort);*/
+			long startTime = System.nanoTime();
+			AStar aStar = new AStar(dataReader.getGraph(),inputParser.getProcessors());
+			outWriter.createScheduleAStar(dataReader.getGraphName(),dataReader.getInfo(),dataReader.getRead(),aStar.execute(),dataReader.getMapping());
+			long endTime = System.nanoTime();
+			long totalTime = endTime - startTime;
+			System.out.println("\n Took " + totalTime/1000000 + "ms" + " : " + totalTime/1000000000 + " seconds");
 		}
 		graphVisualizer.displayGraphs();
 	}
