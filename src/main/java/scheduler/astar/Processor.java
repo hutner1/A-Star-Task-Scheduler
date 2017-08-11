@@ -81,4 +81,26 @@ public class Processor {
 			System.out.print(pI.getVertex().getName() + " ");
 		}
 	}
+	
+	public String getProcessesString() {
+		String s = "";
+		for (ProcessInfo pI : processes) {
+			s += pI.getVertex().getName();
+			s += pI.startTime();
+		}
+		return s;
+	}
+	
+	public List<ProcessInfo> getProcesses() {
+		return processes;
+	}
+
+	public int idleTime() {
+		int idleTime = earliestNextProcess;
+		for (ProcessInfo pI : processes) {
+			idleTime += pI.startTime();
+			idleTime -= pI.endTime();
+		}
+		return idleTime;
+	}
 }
