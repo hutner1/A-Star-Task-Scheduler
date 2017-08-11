@@ -3,10 +3,8 @@ package scheduler.astar;
 import java.util.PriorityQueue;
 import java.util.Set;
 
-import org.jgrapht.graph.DefaultDirectedWeightedGraph;
-import org.jgrapht.graph.DefaultWeightedEdge;
-
 import scheduler.basicmilestone.Vertex;
+import scheduler.graphstructures.DefaultDirectedWeightedGraph;
 
 /**
  * AStar thread class that will be added to allow solution search in parallel
@@ -17,7 +15,7 @@ public class AStarThread extends AStar{
 	protected Set<Solution> _schedulable; //TODO: Link with AStar
 	private Solution bestSol = null;
 	
-	public AStarThread(int i, DefaultDirectedWeightedGraph<Vertex, DefaultWeightedEdge> graph, PriorityQueue<Solution> nonschedulable, Set<Solution> schedulable, int numberOfProcessors) {
+	public AStarThread(int i, DefaultDirectedWeightedGraph graph, PriorityQueue<Solution> nonschedulable, Set<Solution> schedulable, int numberOfProcessors) {
 		super(graph, numberOfProcessors);
 		this._threadNo = i;
 		this._nonschedulable = nonschedulable;

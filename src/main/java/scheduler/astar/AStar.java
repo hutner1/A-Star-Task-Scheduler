@@ -8,6 +8,7 @@ import java.util.PriorityQueue;
 
 import scheduler.basicmilestone.Vertex;
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
+import scheduler.graphstructures.DefaultWeightedEdge;
 
 /**
  * AStar creates optimal solution with A*
