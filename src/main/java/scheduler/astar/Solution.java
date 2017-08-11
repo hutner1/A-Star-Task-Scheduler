@@ -164,6 +164,8 @@ public class Solution implements Comparable<Solution>{
 		costs.add(idleTimePlusComputationLoad());
 		costs.add(maximumEndTimeOfFreeVertices());
 
+		//System.out.println(costs.toString());
+
 		return Collections.max(costs);
 	}
 
@@ -183,7 +185,11 @@ public class Solution implements Comparable<Solution>{
 			}
 		}
 
-		return Collections.max(maxBottomLevels);
+		if (maxBottomLevels.isEmpty()) {
+			return 0;
+		} else {
+			return Collections.max(maxBottomLevels);
+		}
 	}
 
 	/**
@@ -294,7 +300,10 @@ public class Solution implements Comparable<Solution>{
 				if (child.isBelowUpperBound()) {
 					children.add(child);
 				}
-			}
+				if (_numberOfProcessors == 1) {
+					return children;
+				}
+			} 
 		}
 		return children;
 	}
