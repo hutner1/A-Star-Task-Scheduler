@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import scheduler.astar.Solution;
 import scheduler.basicmilestone.Schedule;
 import scheduler.basicmilestone.Vertex;
 import scheduler.dfsbranchandbound.SolutionGenerator;
@@ -69,7 +70,34 @@ public class OutputWriter {
 		record(_outputFile, "}");
 	}
 	
+
+	public void createScheduleAStar(String digraphName, ArrayList<String> weightInfos, ArrayList<String> verticesAndEdges, Solution solution, HashMap<String, Vertex> vertextMapping){
+
+		//record first line of output file which contains the title
+		record(_outputFile, "digraph \"" + digraphName +"\" {");
+
+		//record the weight info together with the start time and processor, in order according to input file 
+		for(String info : weightInfos){
+			int currentPos = weightInfos.indexOf(info);
+			// edge would be ">"
+			String vertexOrEdge = verticesAndEdges.get(currentPos);
+
+			// record initially recorded edge info directly back to file as no extra info is needed
+			if(vertexOrEdge.equals(">")){
+				record(_outputFile, info);
+
+			} else {
+				// add the start and processor info to the end before closing bracket
+				StringBuilder augmentedInfo = new StringBuilder(info).insert(info.length()-2, solution.getVertexString(vertextMapping.get(vertexOrEdge)));
+				record(_outputFile, augmentedInfo.toString());
+			}
+		}
+
+		//end the output file with closing bracket
+		record(_outputFile, "}");
+	}
 	
+  	
 	public void createScheduleDFS(String digraphName, ArrayList<String> weightInfos, ArrayList<String> verticesAndEdges, SolutionGenerator solutionGenerator, HashMap<String, Vertex> vertextMapping){
 
 		//record first line of output file which contains the title
@@ -97,8 +125,7 @@ public class OutputWriter {
 		//end the output file with closing bracket
 		record(_outputFile, "}");
 	}
-	
-	
+  
 	/**
 	 * Convenient method to record a single line to a file and then print new line
 	 * @param file file to write to
@@ -106,6 +133,8 @@ public class OutputWriter {
 	 */
 	private void record(File file,String line){
 		try{
+      
+      
 			PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(file,true)));
 			writer.println(line);
 			writer.close();
