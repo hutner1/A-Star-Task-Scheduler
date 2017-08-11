@@ -8,10 +8,10 @@ package scheduler.basicmilestone;
  * BottomLvl will be set later, it is the level from the leaf 
  */
 public class Vertex {
-	private String name;
-	private int weight;
-	private int bottomLvl;
-	private int touchCount;
+	private String _name;
+	private int _weight;
+	private int _bottomLvl;
+	private int _touchCount;
 	
 	/*public Vertex(String name, int weight) {
 		this.name = name;
@@ -19,7 +19,7 @@ public class Vertex {
 	}*/
 	
 	public Vertex(String name) {
-		this.name = name;
+		this._name = name;
 	}
 	
 	
@@ -30,7 +30,7 @@ public class Vertex {
 		 * @return String name
 		 */
 		public String getName(){
-			return name;
+			return _name;
 		}
 		
 		/**
@@ -38,7 +38,7 @@ public class Vertex {
 		 * @return int weight
 		 */
 		public int getWeight() {
-			return weight;
+			return _weight;
 		}
 		
 		/**
@@ -46,7 +46,7 @@ public class Vertex {
 		 * @return int critical path from one node
 		 */
 		public int getBottomLevel() {
-			return bottomLvl;
+			return _bottomLvl;
 		}
 		
 		/**
@@ -55,7 +55,7 @@ public class Vertex {
 		 * @return int number of use
 		 */
 		public int getTouchCount() {
-			return touchCount;
+			return _touchCount;
 		}
 		
 		
@@ -67,7 +67,7 @@ public class Vertex {
 		 * @param weight
 		 */
 		public void setWeight(int w) {
-			this.weight = w;
+			this._weight = w;
 		}
 		
 		/**
@@ -75,6 +75,6 @@ public class Vertex {
 		 * @param value from bottomLvl
 		 */
 		public void setBottomLevel(int val) {
-			bottomLvl = val;
+			_bottomLvl = val;
 		}
 }

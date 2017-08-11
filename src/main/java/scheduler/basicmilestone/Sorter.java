@@ -5,18 +5,18 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
-//Using the jgrapht library data structures
-import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.DefaultDirectedWeightedGraph;
+import scheduler.graphstructures.DefaultDirectedWeightedGraph;
+import scheduler.graphstructures.DefaultWeightedEdge;
+
 /**
  * This class creates a topological sort of a graph of 
  * events to be put in a schedule using Kahn's algorithm
  */
 public class Sorter {
 
-	private DefaultDirectedWeightedGraph<Vertex, DefaultWeightedEdge> _graph;
+	private DefaultDirectedWeightedGraph _graph;
 	
-	public Sorter(DefaultDirectedWeightedGraph<Vertex, DefaultWeightedEdge> graph) {
+	public Sorter(DefaultDirectedWeightedGraph graph) {
 		_graph = graph;
 	}
 	
