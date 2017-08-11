@@ -90,4 +90,17 @@ public class Processor {
 		}
 		return s;
 	}
+	
+	public List<ProcessInfo> getProcesses() {
+		return processes;
+	}
+
+	public int idleTime() {
+		int idleTime = earliestNextProcess;
+		for (ProcessInfo pI : processes) {
+			idleTime += pI.startTime();
+			idleTime -= pI.endTime();
+		}
+		return idleTime;
+	}
 }

@@ -23,6 +23,7 @@ public class Solution implements Comparable<Solution>{
 	private List<Vertex> _schedulableProcesses;
 	private List<Vertex> _nonschedulableProcesses;
 	private DefaultDirectedWeightedGraph<Vertex, DefaultWeightedEdge> _graph;
+	private static HashMap<Vertex, Integer> _btmLevels;
 
 	public Solution(int upperBound, int numberOfProcessors, DefaultDirectedWeightedGraph<Vertex, DefaultWeightedEdge> graph, List<Vertex> scheduled, List<Vertex> schedulable, List<Vertex> nonschedulable) {
 
@@ -56,11 +57,12 @@ public class Solution implements Comparable<Solution>{
 	}
 
 	/**
-	 * Adds a process to a processor at its earliest possible time
+	 * Returns the earliest time that a vertex can start on the given processor number
 	 * @param v
 	 * @param processorNumber
+	 * @return
 	 */
-	public void addProcess(Vertex v, int processorNumber) {
+	private int earliestDataReadyTime(Vertex v, int processorNumber) {
 
 		// for every processor, get the latest starting parent, then determine the earliest possible start time of new process
 		ArrayList<Integer> startingTimes = new ArrayList<Integer>();
@@ -90,19 +92,34 @@ public class Solution implements Comparable<Solution>{
 		//System.out.println(earliestStartTime);
 		//System.out.println(earliestAvailableTime);
 		if (earliestStartTime > earliestAvailableTime) {
-			_processors.get(processorNumber).addProcess(v,earliestStartTime);
+			return earliestStartTime;
 		} else {
-			_processors.get(processorNumber).addProcess(v,earliestAvailableTime);
+			return earliestAvailableTime;
 		}
+	}
+
+	/**
+	 * Adds a process to a processor at its earliest possible time
+	 * @param v
+	 * @param processorNumber
+	 */
+	public void addProcess(Vertex v, int processorNumber) {
+
+		_processors.get(processorNumber).addProcess(v,earliestDataReadyTime(v, processorNumber));
 
 		// saying that this task has been scheduled and update the list of schedulables
 		updateSchedulable(v);
 	}
 
 	@Override
-	//TODO change & comment
+	/**
+	 * Overrides the compareTo method in order for Solution to work in a priority queue
+	 * a solution is better than another its the highest end time is lower than the other
+	 * The end time is done by checking the bottom level of each vertex added to its 
+	 * individual start time
+	 */
 	public int compareTo(Solution s) {
-		if (s.getTime() == this.getTime()) {
+		/*if (s.getTime() == this.getTime()) {
 			if (s._scheduledProcesses.size() > this._scheduledProcesses.size()) {
 				return -1;
 			} else if (s._scheduledProcesses.size() < this._scheduledProcesses.size()) {
@@ -114,7 +131,114 @@ public class Solution implements Comparable<Solution>{
 			return -1;
 		} else {
 			return 1;
+		}*/
+
+
+		int maxThis = maxCostFunction();
+		int maxOther = s.maxCostFunction();
+
+		if (maxThis < maxOther) {
+			return -1;
+		} else if (maxThis == maxOther) {
+			if (s._scheduledProcesses.size() > _scheduledProcesses.size()) {
+				return -1;
+			} else if (s._scheduledProcesses.size() < _scheduledProcesses.size()) {
+				return 1;
+			} else {
+				return 0;
+			}
+		} else {
+			return 1;
 		}
+	}
+
+	/**
+	 * Helper function that calls all three parts of the proposed cost function
+	 * and returns the maximum of those three values
+	 * @return
+	 */
+	private int maxCostFunction() {
+		ArrayList<Integer> costs = new ArrayList<Integer>();
+
+		costs.add(maximumEndTimeOfPartialSchedule());
+		costs.add(idleTimePlusComputationLoad());
+		costs.add(maximumEndTimeOfFreeVertices());
+
+		return Collections.max(costs);
+	}
+
+	/**
+	 * Part 1 of proposed cost function, returns the maximum end time of all
+	 * vertices that have already been scheduled, by using their bottom level
+	 * @return
+	 */
+	private int maximumEndTimeOfPartialSchedule() {
+		ArrayList<Integer> maxBottomLevels = new ArrayList<Integer>();
+
+		for (Processor p : _processors.values()) {
+			for (ProcessInfo pI : p.getProcesses()) {
+				int btmLevel = _btmLevels.get(pI.getVertex());
+				btmLevel += pI.startTime();
+				maxBottomLevels.add(btmLevel);
+			}
+		}
+
+		return Collections.max(maxBottomLevels);
+	}
+
+	/**
+	 * Part 2 of the proposed cost function, returns the total idle time of the
+	 * schedule added to the total cost of all vertices, all divided by the 
+	 * number of processors
+	 */
+	private int idleTimePlusComputationLoad() {
+
+		int idleTime = 0;
+
+		for (Processor p : _processors.values()) {
+			idleTime += p.idleTime();
+		}
+
+		int totalTime = idleTime + _upperBound;
+
+		return totalTime/_numberOfProcessors;
+	}
+
+	/**
+	 * Part 3 of proposed cost function, returns the latest end time of all schedulable
+	 * vertex given that they are scheduled at the next earliest time
+	 * @return
+	 */
+	private int maximumEndTimeOfFreeVertices() {
+		ArrayList<Integer> maxTimes = new ArrayList<Integer>();
+
+		for (Vertex v : _schedulableProcesses) {
+			maxTimes.add(minimalDataReadyTime(v) + _btmLevels.get(v));
+		}
+
+		if (maxTimes.isEmpty()) {
+			return 0;
+		} else {
+			return Collections.max(maxTimes);
+		}
+	}
+
+	/**
+	 * Returns the earliest time that a vertex can start on any processor
+	 * @param v
+	 * @return
+	 */
+	private int minimalDataReadyTime(Vertex v) {
+		int minTime = Integer.MAX_VALUE;
+
+		for (int i = 1; i <= _numberOfProcessors; i++) {
+			int earliestTime = earliestDataReadyTime(v, i);
+			if (earliestTime < minTime) {
+				minTime = earliestTime;
+			}
+		}
+
+		return minTime;
 	}
 
 
@@ -180,16 +304,16 @@ public class Solution implements Comparable<Solution>{
 	 * @return
 	 */
 	private boolean isBelowUpperBound() {
-		
+
 		int maxTimeRemaining = 0;
-		
+
 		for (Vertex v : _schedulableProcesses) {
 			maxTimeRemaining += v.getWeight();
 		}
 		for (Vertex v : _nonschedulableProcesses) {
 			maxTimeRemaining += v.getWeight();
 		}
- 		
+
 		return (getTime() + maxTimeRemaining) <= _upperBound;
 	}
 
@@ -241,12 +365,12 @@ public class Solution implements Comparable<Solution>{
 
 		ArrayList<String> processesThisSolution = new ArrayList<String>();
 		ArrayList<String> processesOtherSolution = new ArrayList<String>();
-		
+
 		for (int i = 1; i <= _numberOfProcessors; i++) {
 			processesThisSolution.add(_processors.get(i).getProcessesString());
 			processesOtherSolution.add(s._processors.get(i).getProcessesString());
 		}
-		
+
 		for (String processorString : processesThisSolution) {
 			if (processesOtherSolution.contains(processorString)) {
 				processesOtherSolution.remove(processorString);
@@ -254,11 +378,18 @@ public class Solution implements Comparable<Solution>{
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 
-	
+	/**
+	 * Sets the static mapping of bottom levels for all vertices in the graph
+	 * @param btmLevels
+	 */
+	public void setBtmLevels(HashMap<Vertex, Integer> btmLevels) {
+		_btmLevels = btmLevels;
+	}
+
 	/*public boolean scheduled(Vertex v) {
 
 		for (Processor p : _processors.values()) {
