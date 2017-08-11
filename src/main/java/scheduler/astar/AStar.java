@@ -78,6 +78,9 @@ public class AStar {
 			for (Solution s : bestCurrentSolution.createChildren()) {
 				if (!solutionSpace.contains(s)) {
 					solutionSpace.add(s);
+					if (s.maxCostFunction() <= bestCurrentSolution.maxCostFunction()) {
+						break;
+					}
 				}
 			}
 			bestCurrentSolution = solutionSpace.poll();
