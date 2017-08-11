@@ -1,0 +1,18 @@
+digraph "hard" {
+a       [Weight=2];
+b       [Weight=3];
+c       [Weight=3];
+d       [Weight=2];
+e		[Weight=2];
+f		[Weight=2];
+g		[Weight=50];
+h		[Weight=50];
+a -> d	[Weight=3];
+a -> c	[Weight=2];
+b -> d	[Weight=5];
+c -> e	[Weight=2];
+d -> e	[Weight=1];
+g -> h	[Weight=1];
+h -> e	[Weight=1];
+e -> f	[Weight=2];
+}

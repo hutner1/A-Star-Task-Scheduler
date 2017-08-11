@@ -31,4 +31,4 @@ Optional:
 * Injae Park - ipar569@aucklanduni.ac.nz
 * David Qi - yqi955@aucklanduni.ac.nz
 * Yao Jian Yap - yyap601@aucklanduni.ac.nz
-* Justin Chuk - hchuk167@aucklanduni.ac.nz
+* Justin Chuk - hchu167@aucklanduni.ac.nz

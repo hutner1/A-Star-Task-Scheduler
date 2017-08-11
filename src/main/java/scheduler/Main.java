@@ -2,6 +2,7 @@ package scheduler;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import Visualization.Visualizer;
 import io.DataReader;
 import io.InputParser;
 import io.OutputWriter;
@@ -25,10 +26,15 @@ public class Main {
 		outWriter.initialise();
 
 		DataReader dataReader = new DataReader(inputParser.getFile());
+		Visualizer graphVisualizer = new Visualizer();
 		
 		while(dataReader.hasMoreGraphs()) {
 			System.out.println("More graphs in file? " + dataReader.hasMoreGraphs());
 			dataReader.readNextGraph();
+			
+			if(inputParser.isVisualise() == true){
+				graphVisualizer.add(dataReader.getGraph());
+			}
 			
 			//Create the optimal schedule
 			/*Sorter sorter = new Sorter(dataReader.getGraph());
@@ -41,5 +47,6 @@ public class Main {
 			long totalTime = endTime - startTime;
 			System.out.println("\n Took " + totalTime/1000000 + "ms" + " : " + totalTime/1000000000 + " seconds");
 		}
+		graphVisualizer.displayGraphs();
 	}
 }
