@@ -230,7 +230,35 @@ public class Solution implements Comparable<Solution>{
 		return null;
 	}
 
+	/**
+	 * Overrides the equals method to be used for checking if two solutions are equivalent
+	 * Two schedules are equivalent if all processes are done the same, or if 
+	 * its processes are done in the same order but on different processors
+	 */
+	@Override
+	public boolean equals(Object o) {
+		Solution s = (Solution)o;
+		return (isDuplicate(s) || isMirror(s));
+	}
 
+	/**
+	 * Checks if two solutions contain the same schedule
+	 * @param s
+	 * @return
+	 */
+	private boolean isDuplicate(Solution s) {
+		return true;
+	}
+	
+	/**
+	 * Checks if two solutions are mirrors of each other
+	 * @param s
+	 * @return
+	 */
+	private boolean isMirror(Solution s) {
+		return false;
+	}
+	
 	/*public boolean scheduled(Vertex v) {
 
 		for (Processor p : _processors.values()) {

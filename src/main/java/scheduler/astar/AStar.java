@@ -66,9 +66,13 @@ public class AStar {
 		// if not complete, consider the children in generating the solution and poll again
 		while (!bestCurrentSolution.isCompleteSchedule()) {
 			
-			solutionSpace.addAll(bestCurrentSolution.createChildren());
+			for (Solution s : bestCurrentSolution.createChildren()) {
+				if (!solutionSpace.contains(s)) {
+					solutionSpace.add(s);
+				}
+			}
 			bestCurrentSolution = solutionSpace.poll();
-		
+			System.out.println("Solution space size : " + solutionSpace.size());
 		}
 		
 		return bestCurrentSolution;
