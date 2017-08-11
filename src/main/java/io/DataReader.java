@@ -8,17 +8,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.jgrapht.graph.DefaultDirectedWeightedGraph;
-import org.jgrapht.graph.DefaultWeightedEdge;
-
 import scheduler.basicmilestone.Vertex;
+import scheduler.graphstructures.DefaultDirectedWeightedGraph;
 
 public class DataReader {
 
 	private String _digraphName;
 	private ArrayList<String> _verticesAndEdgesRead; //Records vertices and edges as they are being read
 	private ArrayList<String> _verticesAndEdgesInfo; //Records vertices and edges' info
-	private DefaultDirectedWeightedGraph<Vertex,DefaultWeightedEdge> _digraph;
+	private DefaultDirectedWeightedGraph _digraph;
 	private HashMap<String,Vertex> _mapping;
 	private BufferedReader _reader;
 	
@@ -85,8 +83,7 @@ public class DataReader {
 						vertexB = _mapping.get(vertexStringB);
 					}
 
-					DefaultWeightedEdge edge = _digraph.addEdge(vertexA, vertexB);
-					_digraph.setEdgeWeight(edge, weight);		
+					_digraph.addEdge(vertexA, vertexB, weight);
 
 					_verticesAndEdgesRead.add(">"); // indicates that the current entry is an edge
 
@@ -122,7 +119,7 @@ public class DataReader {
 		_verticesAndEdgesRead = new ArrayList<String>();
 		_verticesAndEdgesInfo = new ArrayList<String>();
 		//Creates digraph with weighted vertices and weighted edges
-		_digraph = new DefaultDirectedWeightedGraph<Vertex,DefaultWeightedEdge>(DefaultWeightedEdge.class);
+		_digraph = new DefaultDirectedWeightedGraph();
 		//Creates a HashMap mapping a string to the vertex with the same name
 		_mapping = new HashMap<String,Vertex>();
 	}
@@ -172,7 +169,7 @@ public class DataReader {
 		return _verticesAndEdgesInfo;
 	}
 
-	public DefaultDirectedWeightedGraph<Vertex, DefaultWeightedEdge> getGraph() {
+	public DefaultDirectedWeightedGraph getGraph() {
 		return _digraph;
 	}
 	

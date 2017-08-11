@@ -5,18 +5,18 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
-//Using the jgrapht library data structures
-import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.DefaultDirectedWeightedGraph;
+import scheduler.graphstructures.DefaultDirectedWeightedGraph;
+import scheduler.graphstructures.DefaultWeightedEdge;
+
 /**
  * This class creates a topological sort of a graph of 
  * events to be put in a schedule using Kahn's algorithm
  */
 public class Sorter {
 
-	private DefaultDirectedWeightedGraph<Vertex, DefaultWeightedEdge> _graph;
+	private DefaultDirectedWeightedGraph _graph;
 	
-	public Sorter(DefaultDirectedWeightedGraph<Vertex, DefaultWeightedEdge> graph) {
+	public Sorter(DefaultDirectedWeightedGraph graph) {
 		_graph = graph;
 	}
 	
@@ -38,7 +38,7 @@ public class Sorter {
 		
 		//Loop through the graph to find nodes that are not preceded by another node
 		for (Vertex v: _graph.vertexSet()) {
-			if (_graph.inDegreeOf(v)==0) {
+			if (v.getInDegree()==0) {
 				nodeStack.add(v); //add the vertices that have no incoming arcs to process
 			}
 		}
@@ -54,7 +54,7 @@ public class Sorter {
 
 				//Add nodes that become 'leaves'
 				Vertex target = _graph.getEdgeTarget(dwe);
-				if (_graph.inDegreeOf(target)==0) {
+				if (target.getInDegree()==0) {
 					nodeStack.add(target);
 				}
 			}
