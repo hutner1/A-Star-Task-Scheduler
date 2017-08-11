@@ -81,4 +81,13 @@ public class Processor {
 			System.out.print(pI.getVertex().getName() + " ");
 		}
 	}
+	
+	public String getProcessesString() {
+		String s = "";
+		for (ProcessInfo pI : processes) {
+			s += pI.getVertex().getName();
+			s += pI.startTime();
+		}
+		return s;
+	}
 }

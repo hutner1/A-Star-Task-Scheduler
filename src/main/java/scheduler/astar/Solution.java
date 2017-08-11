@@ -238,26 +238,26 @@ public class Solution implements Comparable<Solution>{
 	@Override
 	public boolean equals(Object o) {
 		Solution s = (Solution)o;
-		return (isDuplicate(s) || isMirror(s));
-	}
 
-	/**
-	 * Checks if two solutions contain the same schedule
-	 * @param s
-	 * @return
-	 */
-	private boolean isDuplicate(Solution s) {
+		ArrayList<String> processesThisSolution = new ArrayList<String>();
+		ArrayList<String> processesOtherSolution = new ArrayList<String>();
+		
+		for (int i = 1; i <= _numberOfProcessors; i++) {
+			processesThisSolution.add(_processors.get(i).getProcessesString());
+			processesOtherSolution.add(s._processors.get(i).getProcessesString());
+		}
+		
+		for (String processorString : processesThisSolution) {
+			if (processesOtherSolution.contains(processorString)) {
+				processesOtherSolution.remove(processorString);
+			} else {
+				return false;
+			}
+		}
+		
 		return true;
 	}
-	
-	/**
-	 * Checks if two solutions are mirrors of each other
-	 * @param s
-	 * @return
-	 */
-	private boolean isMirror(Solution s) {
-		return false;
-	}
+
 	
 	/*public boolean scheduled(Vertex v) {
 
