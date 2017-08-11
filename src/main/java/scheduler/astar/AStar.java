@@ -4,19 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
 
-import org.jgrapht.graph.DefaultDirectedWeightedGraph;
-import org.jgrapht.graph.DefaultWeightedEdge;
 
 import scheduler.basicmilestone.Vertex;
+import scheduler.graphstructures.DefaultDirectedWeightedGraph;
 
 /**
  * AStar creates optimal solution with A*
  */
 public class AStar {
-	private DefaultDirectedWeightedGraph<Vertex, DefaultWeightedEdge> _graph;
+	private DefaultDirectedWeightedGraph _graph;
 	private int _numberOfProcessors;
 
-	public AStar(DefaultDirectedWeightedGraph<Vertex, DefaultWeightedEdge> graph, int numberOfProcessors) {
+	public AStar(DefaultDirectedWeightedGraph graph, int numberOfProcessors) {
 		_graph = graph;
 		_numberOfProcessors = numberOfProcessors;
 	}

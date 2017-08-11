@@ -3,10 +3,10 @@ package scheduler.dfsbranchandbound;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.jgrapht.graph.DefaultDirectedWeightedGraph;
-import org.jgrapht.graph.DefaultWeightedEdge;
 
 import scheduler.basicmilestone.Vertex;
+import scheduler.graphstructures.DefaultDirectedWeightedGraph;
+import scheduler.graphstructures.DefaultWeightedEdge;
 
 /**
  * This class generates an optimal solution using Depth First Search Branch & Bound algorithm
@@ -15,7 +15,7 @@ import scheduler.basicmilestone.Vertex;
 public class SolutionGenerator {
 
 	// DIGRAPH
-	DefaultDirectedWeightedGraph<Vertex, DefaultWeightedEdge> _digraph;
+	DefaultDirectedWeightedGraph _digraph;
 	// NO. OF PROCESSORS
 	int _noOfProcessors; 
 	
@@ -57,7 +57,7 @@ public class SolutionGenerator {
 	 * @param digraph
 	 * @param noOfProcessors
 	 */
-	public SolutionGenerator(DefaultDirectedWeightedGraph<Vertex, DefaultWeightedEdge> digraph, int noOfProcessors){
+	public SolutionGenerator(DefaultDirectedWeightedGraph digraph, int noOfProcessors){
 		_digraph = digraph;
 		_noOfProcessors = noOfProcessors;
 		

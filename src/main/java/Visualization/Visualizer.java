@@ -6,10 +6,11 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.ui.layout.HierarchicalLayout;
 import org.graphstream.ui.view.Viewer;
-import org.jgrapht.graph.DefaultDirectedWeightedGraph;
-import org.jgrapht.graph.DefaultWeightedEdge;
+
 
 import scheduler.basicmilestone.Vertex;
+import scheduler.graphstructures.DefaultDirectedWeightedGraph;
+import scheduler.graphstructures.DefaultWeightedEdge;
 
 public class Visualizer {
 	
@@ -19,7 +20,7 @@ public class Visualizer {
 		_graphs = new ArrayList<Graph>();
 	}
 	
-	public void add(DefaultDirectedWeightedGraph<Vertex, DefaultWeightedEdge> DAG) {
+	public void add(DefaultDirectedWeightedGraph DAG) {
 		
 		Graph graph = new SingleGraph("Input Graph");
 		
