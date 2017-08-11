@@ -6,10 +6,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import org.jgrapht.graph.DefaultDirectedWeightedGraph;
-import org.jgrapht.graph.DefaultWeightedEdge;
 
 import scheduler.basicmilestone.Vertex;
+import scheduler.graphstructures.DefaultDirectedWeightedGraph;
+import scheduler.graphstructures.DefaultWeightedEdge;
 
 /**
  * Represent partial/complete solution
@@ -22,10 +22,10 @@ public class Solution implements Comparable<Solution>{
 	private List<Vertex> _scheduledProcesses;
 	private List<Vertex> _schedulableProcesses;
 	private List<Vertex> _nonschedulableProcesses;
-	private DefaultDirectedWeightedGraph<Vertex, DefaultWeightedEdge> _graph;
-	private static HashMap<Vertex, Integer> _btmLevels;
+	private DefaultDirectedWeightedGraph _graph;
 
-	public Solution(int upperBound, int numberOfProcessors, DefaultDirectedWeightedGraph<Vertex, DefaultWeightedEdge> graph, List<Vertex> scheduled, List<Vertex> schedulable, List<Vertex> nonschedulable) {
+	public Solution(int numberOfProcessors, DefaultDirectedWeightedGraph graph, List<Vertex> scheduled, List<Vertex> schedulable, List<Vertex> nonschedulable) {
+
 
 		_upperBound = upperBound;
 		_numberOfProcessors = numberOfProcessors;
