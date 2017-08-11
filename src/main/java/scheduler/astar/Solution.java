@@ -16,6 +16,7 @@ import scheduler.basicmilestone.Vertex;
  * Comparable because needed for comparison in priority queue (polling for best solution)
  */
 public class Solution implements Comparable<Solution>{
+	private int _upperBound;
 	private HashMap<Integer, Processor> _processors;
 	private int _numberOfProcessors;
 	private List<Vertex> _scheduledProcesses;
@@ -23,8 +24,9 @@ public class Solution implements Comparable<Solution>{
 	private List<Vertex> _nonschedulableProcesses;
 	private DefaultDirectedWeightedGraph<Vertex, DefaultWeightedEdge> _graph;
 
-	public Solution(int numberOfProcessors, DefaultDirectedWeightedGraph<Vertex, DefaultWeightedEdge> graph, List<Vertex> scheduled, List<Vertex> schedulable, List<Vertex> nonschedulable) {
+	public Solution(int upperBound, int numberOfProcessors, DefaultDirectedWeightedGraph<Vertex, DefaultWeightedEdge> graph, List<Vertex> scheduled, List<Vertex> schedulable, List<Vertex> nonschedulable) {
 
+		_upperBound = upperBound;
 		_numberOfProcessors = numberOfProcessors;
 		_processors = new HashMap<Integer, Processor>();
 		_graph = graph;
@@ -37,7 +39,7 @@ public class Solution implements Comparable<Solution>{
 		_schedulableProcesses = new ArrayList<Vertex>(schedulable);
 		_nonschedulableProcesses = new ArrayList<Vertex>(nonschedulable);
 	}
-	
+
 	/**
 	 * The greatest last end time on all processors
 	 */
@@ -154,7 +156,8 @@ public class Solution implements Comparable<Solution>{
 	}
 
 	/**
-	 * Get children tasks as a deep copy
+	 * Get children tasks as a deep copy, bounds off children who's times are able
+	 * to be below the upper bound
 	 * @return
 	 */
 	public List<Solution> createChildren() {
@@ -164,10 +167,30 @@ public class Solution implements Comparable<Solution>{
 				Solution child = createDuplicateSolution();
 				child.addProcess(v, i);
 				child.printTree();
-				children.add(child);
+				if (child.isBelowUpperBound()) {
+					children.add(child);
+				}
 			}
 		}
 		return children;
+	}
+
+	/**
+	 * Checks if a possible solution is still able to be optimal
+	 * @return
+	 */
+	private boolean isBelowUpperBound() {
+		
+		int maxTimeRemaining = 0;
+		
+		for (Vertex v : _schedulableProcesses) {
+			maxTimeRemaining += v.getWeight();
+		}
+		for (Vertex v : _nonschedulableProcesses) {
+			maxTimeRemaining += v.getWeight();
+		}
+ 		
+		return (getTime() + maxTimeRemaining) <= _upperBound;
 	}
 
 	/**
@@ -187,11 +210,11 @@ public class Solution implements Comparable<Solution>{
 	 * @return
 	 */
 	public Solution createDuplicateSolution() {
-		Solution s = new Solution(_numberOfProcessors, _graph, _scheduledProcesses, _schedulableProcesses, _nonschedulableProcesses);
+		Solution s = new Solution(_upperBound, _numberOfProcessors, _graph, _scheduledProcesses, _schedulableProcesses, _nonschedulableProcesses);
 		s.setProcessorSchedule(_processors);
 		return s;
 	}
-	
+
 	private void setProcessorSchedule(HashMap<Integer, Processor> processors) {
 		for (int i = 1; i <= _numberOfProcessors; i++) {
 			_processors.put(i, processors.get(i).createDeepCopy());

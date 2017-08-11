@@ -35,12 +35,17 @@ public class AStar {
 		List<Vertex> schedulable = new ArrayList<Vertex>(); // dependencies all met
 		List<Vertex> nonschedulable = new ArrayList<Vertex>(); // dependencies not met
 		// fill lists of schedulables
+		
+		// Upper bound of run time if all tasks are run in order
+		int upperBound = 0;
+		
 		for (Vertex v : _graph.vertexSet()) {
 			if (_graph.inDegreeOf(v) == 0) { //get source nodes
 				schedulable.add(v);
 			} else {
 				nonschedulable.add(v);
 			}
+			upperBound += v.getWeight();
 		}
 		
 		// state space
@@ -49,7 +54,7 @@ public class AStar {
 		// creating all possible valid schedules with only the root nodes
 		for (Vertex v : _graph.vertexSet()) {
 			if (_graph.inDegreeOf(v) == 0) { //get source nodes
-				Solution s = new Solution(_numberOfProcessors, _graph, new ArrayList<Vertex>(), schedulable, nonschedulable);
+				Solution s = new Solution(upperBound, _numberOfProcessors, _graph, new ArrayList<Vertex>(), schedulable, nonschedulable);
 				s.addProcess(v, 1);
 				solutionSpace.add(s); //list of solutions starting source node
 			} 
