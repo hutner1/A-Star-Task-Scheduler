@@ -44,7 +44,7 @@ public class OutputWriter {
 	 * @param verticesAndEdges list that contains all the tasks and edges as ">", in the same order as the input digraph, to have the schedule be in the same order as the input digraph
 	 * @param solution Schedule containing Vertices and NodeInfos
 	 */
-	public void createSchedule(String digraphName, ArrayList<String> weightInfos, ArrayList<String> verticesAndEdges, Schedule solution, HashMap<String, Vertex> vertextMapping){
+	public void createSchedule(String digraphName, ArrayList<String> weightInfos, ArrayList<String> verticesAndEdges, Schedule solution, HashMap<String, Vertex> vertexMapping){
 
 		//record first line of output file which contains the title
 		record(_outputFile, "digraph \"" + digraphName +"\" {");
@@ -61,7 +61,7 @@ public class OutputWriter {
 
 			} else {
 				// add the start and processor info to the end before closing bracket
-				StringBuilder augmentedInfo = new StringBuilder(info).insert(info.length()-2, solution.getVertexInfo(vertextMapping.get(vertexOrEdge)).outputString());
+				StringBuilder augmentedInfo = new StringBuilder(info).insert(info.length()-2, solution.getVertexInfo(vertexMapping.get(vertexOrEdge)).outputString());
 				record(_outputFile, augmentedInfo.toString());
 			}
 		}
@@ -71,7 +71,7 @@ public class OutputWriter {
 	}
 	
 
-	public void createScheduleAStar(String digraphName, ArrayList<String> weightInfos, ArrayList<String> verticesAndEdges, Solution solution, HashMap<String, Vertex> vertextMapping){
+	public void createScheduleAStar(String digraphName, ArrayList<String> weightInfos, ArrayList<String> verticesAndEdges, Solution solution, HashMap<String, Vertex> vertexMapping){
 
 		//record first line of output file which contains the title
 		record(_outputFile, "digraph \"" + digraphName +"\" {");
@@ -88,7 +88,7 @@ public class OutputWriter {
 
 			} else {
 				// add the start and processor info to the end before closing bracket
-				StringBuilder augmentedInfo = new StringBuilder(info).insert(info.length()-2, solution.getVertexString(vertextMapping.get(vertexOrEdge)));
+				StringBuilder augmentedInfo = new StringBuilder(info).insert(info.length()-2, solution.getVertexString(vertexMapping.get(vertexOrEdge)));
 				record(_outputFile, augmentedInfo.toString());
 			}
 		}
@@ -98,7 +98,7 @@ public class OutputWriter {
 	}
 	
   	
-	public void createScheduleDFS(String digraphName, ArrayList<String> weightInfos, ArrayList<String> verticesAndEdges, SolutionGenerator solutionGenerator, HashMap<String, Vertex> vertextMapping){
+	public void createScheduleDFS(String digraphName, ArrayList<String> weightInfos, ArrayList<String> verticesAndEdges, SolutionGenerator solutionGenerator, HashMap<String, Vertex> vertexMapping){
 
 		//record first line of output file which contains the title
 		record(_outputFile, "digraph \"" + digraphName +"\" {");
@@ -115,8 +115,8 @@ public class OutputWriter {
 
 			} else {
 				// add the start and processor info to the end before closing bracket
-				//StringBuilder augmentedInfo = new StringBuilder(info).insert(info.length()-2, solution.getVertexInfo(vertextMapping.get(vertexOrEdge)).outputString());
-				StringBuilder augmentedInfo = new StringBuilder(info).insert(info.length()-2, solutionGenerator.outputString(vertextMapping.get(vertexOrEdge)));
+				//StringBuilder augmentedInfo = new StringBuilder(info).insert(info.length()-2, solution.getVertexInfo(vertexMapping.get(vertexOrEdge)).outputString());
+				StringBuilder augmentedInfo = new StringBuilder(info).insert(info.length()-2, solutionGenerator.outputString(vertexMapping.get(vertexOrEdge)));
 
 				record(_outputFile, augmentedInfo.toString());
 			}

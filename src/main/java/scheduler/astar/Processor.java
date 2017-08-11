@@ -5,6 +5,9 @@ import java.util.List;
 
 import scheduler.basicmilestone.Vertex;
 
+/**
+ * Processor containing tasks ran on it 
+ */
 public class Processor {
 
 	private List<ProcessInfo> processes;
@@ -14,7 +17,11 @@ public class Processor {
 		processes = new ArrayList<ProcessInfo>();
 	}
 
-	public Processor getClone() {
+	/**
+	 * Deep copy
+	 * @return
+	 */
+	public Processor createDeepCopy() {
 		Processor p = new Processor();
 		for (ProcessInfo pI : processes) {
 			p.processes.add(pI);

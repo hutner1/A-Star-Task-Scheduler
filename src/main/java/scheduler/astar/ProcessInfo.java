@@ -2,6 +2,9 @@ package scheduler.astar;
 
 import scheduler.basicmilestone.Vertex;
 
+/**
+ * Task's start/end time on a processor in a schedule
+ */
 public class ProcessInfo {
 
 	private int _startTime;

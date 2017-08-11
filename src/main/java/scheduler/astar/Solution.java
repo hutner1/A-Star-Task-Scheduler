@@ -11,6 +11,10 @@ import org.jgrapht.graph.DefaultWeightedEdge;
 
 import scheduler.basicmilestone.Vertex;
 
+/**
+ * Represent partial/complete solution
+ * Comparable because needed for comparison in priority queue (polling for best solution)
+ */
 public class Solution implements Comparable<Solution>{
 	private HashMap<Integer, Processor> _processors;
 	private int _numberOfProcessors;
@@ -33,7 +37,10 @@ public class Solution implements Comparable<Solution>{
 		_schedulableProcesses = new ArrayList<Vertex>(schedulable);
 		_nonschedulableProcesses = new ArrayList<Vertex>(nonschedulable);
 	}
-
+	
+	/**
+	 * The greatest last end time on all processors
+	 */
 	public int getTime() {
 		int maximumTime = 0;
 
@@ -46,12 +53,17 @@ public class Solution implements Comparable<Solution>{
 		return maximumTime;
 	}
 
+	/**
+	 * Adds a process to a processor at its earliest possible time
+	 * @param v
+	 * @param processorNumber
+	 */
 	public void addProcess(Vertex v, int processorNumber) {
 
-		//for every processor, get the latest starting parent, then determine the earliest possible start time of new process
-
+		// for every processor, get the latest starting parent, then determine the earliest possible start time of new process
 		ArrayList<Integer> startingTimes = new ArrayList<Integer>();
 
+		// finds task's dependencies, and finds earliest possible start time
 		for (int i = 1; i <= _numberOfProcessors; i++) {
 			int latestParentEndTime = 0;
 			for (DefaultWeightedEdge e : _graph.incomingEdgesOf(v)) {
@@ -71,23 +83,22 @@ public class Solution implements Comparable<Solution>{
 			}
 			startingTimes.add(latestParentEndTime);
 		}
-
 		int earliestStartTime = Collections.max(startingTimes);
 		int earliestAvailableTime = _processors.get(processorNumber).earliestNextProcess();
-
 		//System.out.println(earliestStartTime);
 		//System.out.println(earliestAvailableTime);
-
 		if (earliestStartTime > earliestAvailableTime) {
 			_processors.get(processorNumber).addProcess(v,earliestStartTime);
 		} else {
 			_processors.get(processorNumber).addProcess(v,earliestAvailableTime);
 		}
 
+		// saying that this task has been scheduled and update the list of schedulables
 		updateSchedulable(v);
 	}
 
 	@Override
+	//TODO change & comment
 	public int compareTo(Solution s) {
 		if (s.getTime() == this.getTime()) {
 			if (s._scheduledProcesses.size() > this._scheduledProcesses.size()) {
@@ -135,26 +146,33 @@ public class Solution implements Comparable<Solution>{
 		}
 	}
 
+	/**
+	 * Checks if all tasks have been scheduled
+	 */
 	public boolean isCompleteSchedule() {
 		return _scheduledProcesses.size() == _graph.vertexSet().size();
 	}
 
+	/**
+	 * Get children tasks as a deep copy
+	 * @return
+	 */
 	public List<Solution> createChildren() {
-
 		List<Solution> children = new ArrayList<Solution>();
-
 		for (Vertex v : _schedulableProcesses) {
 			for (int i = 1; i <= _numberOfProcessors; i++) {
-				Solution child = createDeepCopy();
+				Solution child = createDuplicateSolution();
 				child.addProcess(v, i);
 				child.printTree();
 				children.add(child);
 			}
 		}
-
 		return children;
 	}
 
+	/**
+	 * Debugging
+	 */
 	private void printTree() {
 		for (int i = 1; i <= _numberOfProcessors; i++) {
 			System.out.print("P:" + i + " [ ");
@@ -164,15 +182,19 @@ public class Solution implements Comparable<Solution>{
 		System.out.println();
 	}
 
-	public Solution createDeepCopy() {
+	/**
+	 * Creates a hard copy of current solution
+	 * @return
+	 */
+	public Solution createDuplicateSolution() {
 		Solution s = new Solution(_numberOfProcessors, _graph, _scheduledProcesses, _schedulableProcesses, _nonschedulableProcesses);
 		s.setProcessorSchedule(_processors);
 		return s;
 	}
-
+	
 	private void setProcessorSchedule(HashMap<Integer, Processor> processors) {
 		for (int i = 1; i <= _numberOfProcessors; i++) {
-			_processors.put(i, processors.get(i).getClone());
+			_processors.put(i, processors.get(i).createDeepCopy());
 		}
 	}
 

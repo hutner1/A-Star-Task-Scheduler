@@ -9,6 +9,9 @@ import org.jgrapht.graph.DefaultWeightedEdge;
 
 import scheduler.basicmilestone.Vertex;
 
+/**
+ * AStar creates optimal solution with A*
+ */
 public class AStar {
 	private DefaultDirectedWeightedGraph<Vertex, DefaultWeightedEdge> _graph;
 	private int _numberOfProcessors;
@@ -18,16 +21,20 @@ public class AStar {
 		_numberOfProcessors = numberOfProcessors;
 	}
 
+	/**
+	 * Execute A* algorithm
+	 * @return
+	 */
 	public Solution execute() {
 
 		//Create initial solution and add to priority queue
 		//Pop solution and create children solutions for that, readd children to queue
 		//Pop most efficient child and add create children, readd
 		//Repeat until child is a complete graph, that is the optimal schedule
-
-		List<Vertex> schedulable = new ArrayList<Vertex>();
-		List<Vertex> nonschedulable = new ArrayList<Vertex>();
-		
+	
+		List<Vertex> schedulable = new ArrayList<Vertex>(); // dependencies all met
+		List<Vertex> nonschedulable = new ArrayList<Vertex>(); // dependencies not met
+		// fill lists of schedulables
 		for (Vertex v : _graph.vertexSet()) {
 			if (_graph.inDegreeOf(v) == 0) { //get source nodes
 				schedulable.add(v);
@@ -36,8 +43,10 @@ public class AStar {
 			}
 		}
 		
+		// state space
 		PriorityQueue<Solution> solutionSpace = new PriorityQueue<Solution>();
-
+		
+		// creating all possible valid schedules with only the root nodes
 		for (Vertex v : _graph.vertexSet()) {
 			if (_graph.inDegreeOf(v) == 0) { //get source nodes
 				Solution s = new Solution(_numberOfProcessors, _graph, new ArrayList<Vertex>(), schedulable, nonschedulable);
@@ -46,8 +55,10 @@ public class AStar {
 			} 
 		}
 		
+		// BEST priority solution
 		Solution bestCurrentSolution = solutionSpace.poll();
 		
+		// if not complete, consider the children in generating the solution and poll again
 		while (!bestCurrentSolution.isCompleteSchedule()) {
 			
 			solutionSpace.addAll(bestCurrentSolution.createChildren());

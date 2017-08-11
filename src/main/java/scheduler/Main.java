@@ -33,6 +33,7 @@ public class Main {
 			
 			if(inputParser.isVisualise() == true){
 				graphVisualizer.add(dataReader.getGraph());
+				graphVisualizer.displayGraphs();
 			}
 			
 			//Create the optimal schedule
@@ -46,6 +47,5 @@ public class Main {
 			long totalTime = endTime - startTime;
 			System.out.println("\n Took " + totalTime/1000000 + "ms" + " : " + totalTime/1000000000 + " seconds");
 		}
-		graphVisualizer.displayGraphs();
 	}
 }
