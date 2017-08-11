@@ -219,14 +219,13 @@ public class SolutionGenerator {
  			for(int i=0; i<_noOfProcessors; i++){
  				// get the possible start time after communication from parent and 
  				// reconsider earliest possible start
- 				int parentsProcessor = _vertexScheduleInfo.get(i)[2];
- 				if(parentsProcessor != processorNo){
- 					// START AFTER COMMUNICATION
- 					int possibleStartTimeForVertex = getFinishTime(parent) + (int)_digraph.getEdgeWeight(e);
- 					// NEW START TIME if COMMUNICATION causes delay
- 					if(possibleStartTimeForVertex > currentStartTimeForVertex){
- 						currentStartTimeForVertex = possibleStartTimeForVertex;
- 					}
+				  if (_processorList.get(i).contains(parent)){ 
+				     if(i != processorNo){ 
+				       int possibleStartTimeForVertex = getFinishTime(parent) + (int) _digraph.getEdgeWeight(e); 
+				       if(possibleStartTimeForVertex > currentStartTimeForVertex){ 
+				         currentStartTimeForVertex = possibleStartTimeForVertex; 
+				       } 
+				     } 
  				}
  	 		}	
  		}
