@@ -139,15 +139,7 @@ public class Solution implements Comparable<Solution>{
 
 		if (maxThis < maxOther) {
 			return -1;
-		} else if (maxThis == maxOther) {
-			if (s._scheduledProcesses.size() > _scheduledProcesses.size()) {
-				return -1;
-			} else if (s._scheduledProcesses.size() < _scheduledProcesses.size()) {
-				return 1;
-			} else {
-				return 0;
-			}
-		} else {
+		}  else {
 			return 1;
 		}
 	}
@@ -157,7 +149,7 @@ public class Solution implements Comparable<Solution>{
 	 * and returns the maximum of those three values
 	 * @return
 	 */
-	private int maxCostFunction() {
+	public int maxCostFunction() {
 		ArrayList<Integer> costs = new ArrayList<Integer>();
 
 		costs.add(maximumEndTimeOfPartialSchedule());
@@ -299,9 +291,7 @@ public class Solution implements Comparable<Solution>{
 				child.printTree();
 				if (child.isBelowUpperBound()) {
 					children.add(child);
-				}
-				if (_numberOfProcessors == 1) {
-					return children;
+					System.out.println(child.maxCostFunction());
 				}
 			} 
 		}
