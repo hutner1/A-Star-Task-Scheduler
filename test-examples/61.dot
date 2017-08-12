@@ -1,11 +1,4 @@
 digraph "Join_Nodes_30_CCR_0.99_WeightType_Random" {
-	graph [CCR=0.99,
-		Density=0.97,
-		"No of edges"=29,
-		"No of nodes"=30,
-		"Node concurrency"=29,
-		"Total sequential time"=193
-	];
 	0	 [Weight=7];
 	29	 [Weight=10];
 	0 -> 29	 [Weight=2];

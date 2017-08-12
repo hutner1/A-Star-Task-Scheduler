@@ -1,11 +1,4 @@
 digraph Independent_Nodes_30_WeightType_Random {
-	graph [CCR=0.0,
-		Density=0.0,
-		"No of edges"=0,
-		"No of nodes"=30,
-		"Node concurrency"=30,
-		"Total sequential time"=183
-	];
 	0	 [Weight=4];
 	1	 [Weight=7];
 	2	 [Weight=9];

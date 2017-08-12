@@ -1,11 +1,4 @@
 digraph "SeriesParallel-MaxBf-4_Nodes_30_CCR_0.10_WeightType_Random" {
-	graph [CCR=0.1,
-		Density=1.47,
-		"No of edges"=44,
-		"No of nodes"=30,
-		"Node concurrency"=-1,
-		"Total sequential time"=2636
-	];
 	0	 [Weight=44];
 	2	 [Weight=103];
 	0 -> 2	 [Weight=9];

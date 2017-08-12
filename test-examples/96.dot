@@ -1,11 +1,4 @@
 digraph "Pipeline_Nodes_30_CCR_0.10_WeightType_Random" {
-	graph [CCR=0.1,
-		Density=1.63,
-		"No of edges"=49,
-		"No of nodes"=30,
-		"Node concurrency"=5,
-		"Total sequential time"=2858
-	];
 	0	 [Weight=96];
 	1	 [Weight=112];
 	0 -> 1	 [Weight=10];

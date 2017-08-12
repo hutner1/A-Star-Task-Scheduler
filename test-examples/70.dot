@@ -1,11 +1,4 @@
 digraph "OutTree-Balanced-MaxBf-3_Nodes_21_CCR_10.00_WeightType_Random" {
-	graph [CCR=10.0,
-		Density=0.95,
-		"No of edges"=20,
-		"No of nodes"=21,
-		"Node concurrency"=14,
-		"Total sequential time"=122
-	];
 	0	 [Weight=2];
 	1	 [Weight=10];
 	0 -> 1	 [Weight=53];

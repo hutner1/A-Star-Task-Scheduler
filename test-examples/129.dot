@@ -1,11 +1,4 @@
 digraph "Random_Nodes_21_Density_4.95_CCR_1.00_WeightType_Random" {
-	graph [CCR=1.0,
-		Density=4.95,
-		"No of edges"=104,
-		"No of nodes"=21,
-		"Node concurrency"=-1,
-		"Total sequential time"=644
-	];
 	0	 [Weight=45];
 	2	 [Weight=27];
 	0 -> 2	 [Weight=5];

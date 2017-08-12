@@ -1,11 +1,4 @@
 digraph "Fork_Nodes_30_CCR_2.00_WeightType_Random" {
-	graph [CCR=2.0,
-		Density=0.97,
-		"No of edges"=29,
-		"No of nodes"=30,
-		"Node concurrency"=29,
-		"Total sequential time"=207
-	];
 	0	 [Weight=9];
 	1	 [Weight=10];
 	0 -> 1	 [Weight=9];

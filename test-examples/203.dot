@@ -1,11 +1,4 @@
 digraph "Stencil_Nodes_21_CCR_10.03_WeightType_Random" {
-	graph [CCR=10.03,
-		Density=2.0,
-		"No of edges"=42,
-		"No of nodes"=21,
-		"Node concurrency"=3,
-		"Total sequential time"=141
-	];
 	0	 [Weight=8];
 	3	 [Weight=10];
 	0 -> 3	 [Weight=29];
