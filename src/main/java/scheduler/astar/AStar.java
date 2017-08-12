@@ -15,8 +15,8 @@ import scheduler.graphstructures.DefaultWeightedEdge;
  * AStar creates optimal solution with A*
  */
 public class AStar {
-	private DefaultDirectedWeightedGraph _graph;
-	private int _numberOfProcessors;
+	protected DefaultDirectedWeightedGraph _graph;
+	protected int _numberOfProcessors;
 	protected PriorityQueue<Solution> _solutionSpace;
 	protected Set<Solution> _closedSolutions;
 
