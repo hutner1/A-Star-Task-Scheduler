@@ -68,14 +68,14 @@ public class AStarParallelised extends AStar{
 		
 		//Start threading process. Index 1 is used as Index 0 is reserved for the main thread
 		for (int i = 1; i < _numberOfThreads; i++) {
-			AStarThreads[i] = new AStarThread(i, _graph, threadQueue[i], _solutionSpace, _closedSolutions, _numberOfProcessors);
+			AStarThreads[i] = new AStarThread(i, _graph, threadQueue[i], _closedSolutions, _numberOfProcessors);
 			//Add the custom thread with all the AStar fields into a thread
 			threads[i] = new Thread(AStarThreads[i]);
 			threads[i].run();
 		}
 		
 		//Initialise main thread (read all about it in SOFTENG 370)
-		AStarThreads[0] = new AStarThread(0, _graph, threadQueue[0], _solutionSpace, _closedSolutions, _numberOfProcessors);
+		AStarThreads[0] = new AStarThread(0, _graph, threadQueue[0], _closedSolutions, _numberOfProcessors);
 		AStarThreads[0].run();
 		
 		//Try to join threads once the threads have finished
