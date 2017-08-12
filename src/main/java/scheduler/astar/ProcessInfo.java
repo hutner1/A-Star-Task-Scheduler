@@ -26,4 +26,6 @@ public class ProcessInfo {
 	public Vertex getVertex() {
 		return _vertex;
 	}
+	
+	
 }

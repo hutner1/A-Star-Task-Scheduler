@@ -10,6 +10,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
 import scheduler.basicmilestone.Vertex;
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
 import scheduler.graphstructures.DefaultWeightedEdge;
+import visualization.Visualizer;
 
 /**
  * AStar creates optimal solution with A*
@@ -19,12 +20,14 @@ public class AStar {
 	protected int _numberOfProcessors;
 	protected PriorityQueue<Solution> _solutionSpace;
 	protected Set<Solution> _closedSolutions;
-
-	public AStar(DefaultDirectedWeightedGraph graph, int numberOfProcessors) {
+	protected Visualizer _visualizer;
+	
+	public AStar(DefaultDirectedWeightedGraph graph, int numberOfProcessors, Visualizer graphVisualizer) {
 		_graph = graph;
 		_numberOfProcessors = numberOfProcessors;
 		_solutionSpace = new PriorityQueue<Solution>();
 		_closedSolutions = new CopyOnWriteArraySet<Solution>(); //threadsafe set
+		_visualizer = graphVisualizer;
 	}
 
 	/**
@@ -95,7 +98,9 @@ public class AStar {
 			bestCurrentSolution = _solutionSpace.poll();
 			System.out.println(bestCurrentSolution.maxCostFunction());
 			System.out.println("Solution space size : " + _solutionSpace.size());
+			_visualizer.UpdateGraph(bestCurrentSolution);
 		}
+		
 		
 		return bestCurrentSolution;
 

@@ -5,6 +5,7 @@ import java.util.Set;
 
 import scheduler.basicmilestone.Vertex;
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
+import visualization.Visualizer;
 
 /**
  * AStar thread class that will be added to allow solution search in parallel
@@ -19,8 +20,8 @@ public class AStarParallelised extends AStar{
 	AStarThread[] AStarThreads = new AStarThread[_numberOfThreads];
 	Thread[] threads = new Thread[_numberOfThreads];
 	
-	public AStarParallelised(DefaultDirectedWeightedGraph graph, int numberOfProcessors, int numberOfThreads) {
-		super(graph, numberOfProcessors);
+	public AStarParallelised(DefaultDirectedWeightedGraph graph, int numberOfProcessors, int numberOfThreads, Visualizer Visualizer) {
+		super(graph, numberOfProcessors, Visualizer);
 		this._numberOfThreads = numberOfThreads;
 	}
 	
@@ -68,14 +69,14 @@ public class AStarParallelised extends AStar{
 		
 		//Start threading process. Index 1 is used as Index 0 is reserved for the main thread
 		for (int i = 1; i < _numberOfThreads; i++) {
-			AStarThreads[i] = new AStarThread(i, _graph, threadQueue[i], _closedSolutions, _numberOfProcessors);
+			AStarThreads[i] = new AStarThread(i, _graph, threadQueue[i], _closedSolutions, _numberOfProcessors, _visualizer);
 			//Add the custom thread with all the AStar fields into a thread
 			threads[i] = new Thread(AStarThreads[i]);
 			threads[i].run();
 		}
 		
 		//Initialise main thread (read all about it in SOFTENG 370)
-		AStarThreads[0] = new AStarThread(0, _graph, threadQueue[0], _closedSolutions, _numberOfProcessors);
+		AStarThreads[0] = new AStarThread(0, _graph, threadQueue[0], _closedSolutions, _numberOfProcessors, _visualizer);
 		AStarThreads[0].run();
 		
 		//Try to join threads once the threads have finished
@@ -93,9 +94,11 @@ public class AStarParallelised extends AStar{
 		Solution bestSolution = AStarThreads[0].execute();
 		for (int i = 1; i < _numberOfThreads; i++) {
 			if (bestSolution.getTime()< AStarThreads[i].execute().getTime()) {
+				
 				bestSolution = AStarThreads[i].execute(); //update the best solution
 			}
 		}
+		
 		return bestSolution;
 	}
 }

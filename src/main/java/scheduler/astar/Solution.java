@@ -398,6 +398,11 @@ public class Solution implements Comparable<Solution>{
 		}
 		return false;
 	}*/
+	
+	public HashMap<Integer, Processor> getProcess(){
+		return _processors;
+	}
+	
 
 }
 

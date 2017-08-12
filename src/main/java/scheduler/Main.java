@@ -25,15 +25,16 @@ public class Main {
 		outWriter.initialise();
 
 		DataReader dataReader = new DataReader(inputParser.getFile());
-		Visualizer graphVisualizer = new Visualizer();
+		Visualizer graphVisualizer = null;
 		
 		while(dataReader.hasMoreGraphs()) {
 			System.out.println("More graphs in file? " + dataReader.hasMoreGraphs());
 			dataReader.readNextGraph();
 			
 			if(inputParser.isVisualise() == true){
+				graphVisualizer = new Visualizer();
 				graphVisualizer.add(dataReader.getGraph());
-				graphVisualizer.displayGraphs();
+				graphVisualizer.displayGraph();
 			}
 			
 			//Create the optimal schedule
@@ -41,7 +42,7 @@ public class Main {
 			List<Vertex> tSort = sorter.generateSort();
 			Schedule sol = ScheduleGenerator.makeSolution(tSort);*/
 			long startTime = System.nanoTime();
-			AStar aStar = new AStar(dataReader.getGraph(),inputParser.getProcessors());
+			AStar aStar = new AStar(dataReader.getGraph(),inputParser.getProcessors(), graphVisualizer);
 			outWriter.createScheduleAStar(dataReader.getGraphName(),dataReader.getInfo(),dataReader.getRead(),aStar.execute(),dataReader.getMapping());
 			long endTime = System.nanoTime();
 			long totalTime = endTime - startTime;
