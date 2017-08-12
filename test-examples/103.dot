@@ -1,0 +1,24 @@
+digraph "Random_Nodes_10_Density_0.50_CCR_0.10_WeightType_Random" {
+	graph [CCR=0.1,
+		Density=0.5,
+		"No of edges"=5,
+		"No of nodes"=10,
+		"Node concurrency"=-1,
+		"Total sequential time"=362
+	];
+	0	 [Weight=22];
+	2	 [Weight=44];
+	0 -> 2	 [Weight=10];
+	4	 [Weight=11];
+	0 -> 4	 [Weight=5];
+	1	 [Weight=49];
+	2 -> 4	 [Weight=9];
+	3	 [Weight=55];
+	9	 [Weight=11];
+	4 -> 9	 [Weight=3];
+	5	 [Weight=33];
+	6	 [Weight=33];
+	7	 [Weight=55];
+	6 -> 7	 [Weight=9];
+	8	 [Weight=49];
+}
