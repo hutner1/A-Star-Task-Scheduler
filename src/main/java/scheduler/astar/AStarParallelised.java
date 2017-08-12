@@ -1,9 +1,7 @@
 package scheduler.astar;
 
 import java.util.PriorityQueue;
-import java.util.Set;
 
-import scheduler.basicmilestone.Vertex;
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
 import visualization.Visualizer;
 
@@ -24,7 +22,10 @@ public class AStarParallelised extends AStar{
 		super(graph, numberOfProcessors, Visualizer);
 		this._numberOfThreads = numberOfThreads;
 	}
-	
+	@Override
+	protected boolean runSequentially() {
+		return _solutionSpace.size() < (_numberOfThreads + 1000);
+	}
 	@Override
 	public Solution execute() {
 		Solution sol = super.execute();
@@ -40,6 +41,7 @@ public class AStarParallelised extends AStar{
 	 * Execute the A* algorithm in parallel using separate threads
 	 * @return optimal solution
 	 */
+	@SuppressWarnings("unchecked")
 	protected Solution executeInParallel() {
 		//Fields to loop through solutions
 		Solution sol = null;
@@ -48,7 +50,7 @@ public class AStarParallelised extends AStar{
 		PriorityQueue<Solution>[] threadQueue = new PriorityQueue[_numberOfThreads];
 		
 		for (int i = 0; i < _numberOfThreads ; i++) {
-			threadQueue[i] = new PriorityQueue<Solution>();
+			threadQueue[i] = new PriorityQueue<Solution>(1000);
 		}
 		
 		//For one thread, just add everything to the first queue

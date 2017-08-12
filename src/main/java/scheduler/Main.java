@@ -6,6 +6,7 @@ import io.DataReader;
 import io.InputParser;
 import io.OutputWriter;
 import scheduler.astar.AStar;
+import scheduler.astar.AStarParallelised;
 import scheduler.basicmilestone.Schedule;
 import scheduler.basicmilestone.ScheduleGenerator;
 import scheduler.basicmilestone.Sorter;
@@ -42,7 +43,7 @@ public class Main {
 			List<Vertex> tSort = sorter.generateSort();
 			Schedule sol = ScheduleGenerator.makeSolution(tSort);*/
 			long startTime = System.nanoTime();
-			AStar aStar = new AStar(dataReader.getGraph(),inputParser.getProcessors(), graphVisualizer);
+			AStar aStar = new AStarParallelised(dataReader.getGraph(),inputParser.getProcessors(),4, graphVisualizer);
 			outWriter.createScheduleAStar(dataReader.getGraphName(),dataReader.getInfo(),dataReader.getRead(),aStar.execute(),dataReader.getMapping());
 			long endTime = System.nanoTime();
 			long totalTime = endTime - startTime;
