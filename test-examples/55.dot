@@ -1,0 +1,28 @@
+digraph "Join_Nodes_10_CCR_2.00_WeightType_Random" {
+	graph [CCR=2.0,
+		Density=0.9,
+		"No of edges"=9,
+		"No of nodes"=10,
+		"Node concurrency"=9,
+		"Total sequential time"=61
+	];
+	0	 [Weight=6];
+	9	 [Weight=3];
+	0 -> 9	 [Weight=14];
+	1	 [Weight=10];
+	1 -> 9	 [Weight=16];
+	2	 [Weight=5];
+	2 -> 9	 [Weight=14];
+	3	 [Weight=5];
+	3 -> 9	 [Weight=14];
+	4	 [Weight=5];
+	4 -> 9	 [Weight=16];
+	5	 [Weight=4];
+	5 -> 9	 [Weight=10];
+	6	 [Weight=9];
+	6 -> 9	 [Weight=17];
+	7	 [Weight=10];
+	7 -> 9	 [Weight=9];
+	8	 [Weight=4];
+	8 -> 9	 [Weight=12];
+}

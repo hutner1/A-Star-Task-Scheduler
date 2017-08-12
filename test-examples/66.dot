@@ -1,0 +1,28 @@
+digraph "OutTree-Balanced-MaxBf-3_Nodes_10_CCR_1.97_WeightType_Random" {
+	graph [CCR=1.97,
+		Density=0.9,
+		"No of edges"=9,
+		"No of nodes"=10,
+		"Node concurrency"=7,
+		"Total sequential time"=64
+	];
+	0	 [Weight=7];
+	1	 [Weight=7];
+	0 -> 1	 [Weight=18];
+	2	 [Weight=4];
+	0 -> 2	 [Weight=6];
+	3	 [Weight=9];
+	0 -> 3	 [Weight=6];
+	4	 [Weight=8];
+	1 -> 4	 [Weight=30];
+	5	 [Weight=5];
+	1 -> 5	 [Weight=21];
+	6	 [Weight=4];
+	1 -> 6	 [Weight=9];
+	7	 [Weight=10];
+	2 -> 7	 [Weight=15];
+	8	 [Weight=8];
+	2 -> 8	 [Weight=12];
+	9	 [Weight=2];
+	2 -> 9	 [Weight=9];
+}

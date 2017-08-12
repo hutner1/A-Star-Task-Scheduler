@@ -1,0 +1,21 @@
+digraph  {
+	0	 [Weight=2];
+	1	 [Weight=10];
+	0 -> 1	 [Weight=13];
+	2	 [Weight=4];
+	0 -> 2	 [Weight=10];
+	3	 [Weight=4];
+	0 -> 3	 [Weight=15];
+	4	 [Weight=3];
+	1 -> 4	 [Weight=13];
+	5	 [Weight=4];
+	2 -> 5	 [Weight=7];
+	6	 [Weight=3];
+	2 -> 6	 [Weight=10];
+	7	 [Weight=2];
+	3 -> 7	 [Weight=3];
+	8	 [Weight=3];
+	3 -> 8	 [Weight=10];
+	9	 [Weight=10];
+	4 -> 9	 [Weight=7];
+}
