@@ -2,7 +2,6 @@ package scheduler;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import Visualization.Visualizer;
 import io.DataReader;
 import io.InputParser;
 import io.OutputWriter;
@@ -11,6 +10,7 @@ import scheduler.basicmilestone.Schedule;
 import scheduler.basicmilestone.ScheduleGenerator;
 import scheduler.basicmilestone.Sorter;
 import scheduler.basicmilestone.Vertex;
+import visualization.Visualizer;
 
 /**
  * This is the main class for the task scheduler program.
