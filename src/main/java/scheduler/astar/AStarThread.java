@@ -11,15 +11,13 @@ import scheduler.graphstructures.DefaultDirectedWeightedGraph;
  */
 public class AStarThread extends AStar{
 	int _threadNo; //Number identifier for thread
-	protected PriorityQueue<Solution> _nonschedulable; //TODO: Link with AStar
-	protected Set<Solution> _schedulable; //TODO: Link with AStar
 	private Solution bestSol = null;
 	
-	public AStarThread(int i, DefaultDirectedWeightedGraph graph, PriorityQueue<Solution> nonschedulable, Set<Solution> schedulable, int numberOfProcessors) {
+	public AStarThread(int i, DefaultDirectedWeightedGraph graph, PriorityQueue<Solution> solutionSpace, Set<Solution> closedSolutions, int numberOfProcessors) {
 		super(graph, numberOfProcessors);
 		this._threadNo = i;
-		this._nonschedulable = nonschedulable;
-		this._schedulable = schedulable;
+		this._solutionSpace = solutionSpace;
+		this._closedSolutions = closedSolutions;
 	}
 	
 	public void run() {
