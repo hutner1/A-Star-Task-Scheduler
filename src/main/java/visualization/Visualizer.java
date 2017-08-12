@@ -2,16 +2,21 @@ package visualization;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import org.graphstream.algorithm.generator.BaseGenerator;
 import org.graphstream.algorithm.generator.LobsterGenerator;
+import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
+import org.graphstream.stream.ProxyPipe;
+import org.graphstream.stream.SinkAdapter;
 import org.graphstream.ui.layout.HierarchicalLayout;
 import org.graphstream.ui.view.View;
 import org.graphstream.ui.view.Viewer;
+import org.graphstream.ui.view.ViewerPipe;
 
 import scheduler.astar.ProcessInfo;
 import scheduler.astar.Processor;
@@ -23,6 +28,7 @@ import scheduler.graphstructures.DefaultWeightedEdge;
 
 public class Visualizer {
 
+	//Set the style for the graph using CSS
 	private String stylesheet = 
 			"graph {" +
 			"fill-color: rgb(225,225,225);" +
@@ -48,6 +54,7 @@ public class Visualizer {
 	private Viewer _viewer;
 	private DefaultDirectedWeightedGraph _DAG;
 
+
 	public Visualizer(){
 		System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
 		_graph = new SingleGraph("Input Graph");
@@ -55,7 +62,15 @@ public class Visualizer {
 		_graph.addAttribute("ui.antialias");
 		_graph.setAttribute("stylesheet", stylesheet);
 	}
+	
 
+	/**
+	 * This adds the nodes and edges from the directed weight graph into the graph stream
+	 * data structure
+	 * 
+	 * @param DAG the directed weighted graph input
+	 * 
+	 */
 	public void add(DefaultDirectedWeightedGraph DAG) {
 
 		_DAG = DAG;
@@ -86,13 +101,32 @@ public class Visualizer {
 
 	}
 
-
+	/**
+	 * 
+	 * This method displays the graph onto the screen, and also add action listeners
+	 * to mouse action (not yet implemented)
+	 * 
+	 */
 	public void displayGraph() {
 		_viewer = _graph.display();
+		/*_viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);*/
 		View view = _viewer.getDefaultView();
+		
+		/*ViewerPipe fromViewer = _viewer.newViewerPipe();
+		fromViewer.addViewerListener(this);
+		fromViewer.addSink(_graph);*/
 		/*view.setViewCenter(2, 3, 4);*/
+
+        ProxyPipe fromViewer = _viewer.newViewerPipe();
+        fromViewer.addSink(_graph);
 	}
 
+	/**
+	 * Updates the status/ visual of the graph based on the current best schedule.
+	 * The color of nodes changes accordingly to the processor that it is assigned to
+	 * 
+	 * @param currentBestSol the current best solution schedule from the A* algorithm
+	 */
 	public void UpdateGraph(Solution currentBestSol) {
 		
 		//Get the hash map of the processes
@@ -114,6 +148,13 @@ public class Visualizer {
 		
 	}
 	
+	
+	/**
+	 * Get the color code
+	 * 
+	 * @param index the index used to retrieve the color code from the array
+	 * @return String the color code
+	 */
 	public String getColor(int index){
 		String[] colors = {	"ffffff", "e74c3c", "FFC300", "1d8348", "8e44ad", "2874a6", 
 				"e67e22", "5d6d7e", "45b39d", "aed6f1", "f4f6f7", "cc5c92", "f0a0a0"};
