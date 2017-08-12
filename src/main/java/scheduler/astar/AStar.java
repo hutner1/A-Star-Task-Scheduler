@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.PriorityQueue;
-
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import scheduler.basicmilestone.Vertex;
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
@@ -16,10 +17,14 @@ import scheduler.graphstructures.DefaultWeightedEdge;
 public class AStar {
 	private DefaultDirectedWeightedGraph _graph;
 	private int _numberOfProcessors;
+	protected PriorityQueue<Solution> _solutionSpace;
+	protected Set<Solution> _closedSolutions;
 
 	public AStar(DefaultDirectedWeightedGraph graph, int numberOfProcessors) {
 		_graph = graph;
 		_numberOfProcessors = numberOfProcessors;
+		_solutionSpace = new PriorityQueue<Solution>();
+		_closedSolutions = new CopyOnWriteArraySet<Solution>(); //threadsafe set
 	}
 
 	/**
@@ -51,13 +56,12 @@ public class AStar {
 			btmLevel.put(v, getBottomLevel(v));
 		}
 		
-		// state space
-		PriorityQueue<Solution> solutionSpace = new PriorityQueue<Solution>();
+		
 		
 		// Create empty solution and then commence the looping
 		Solution emptySolution = new Solution(upperBound, _numberOfProcessors, _graph, new ArrayList<Vertex>(), schedulable, nonschedulable);
 		emptySolution.setBtmLevels(btmLevel);
-		solutionSpace.add(emptySolution);
+		_solutionSpace.add(emptySolution);
 		
 		/*
 		// creating all possible valid schedules with only the root nodes
@@ -70,22 +74,27 @@ public class AStar {
 		}*/
 		
 		// BEST priority solution
-		Solution bestCurrentSolution = solutionSpace.poll();
+		Solution bestCurrentSolution = _solutionSpace.poll();
 		
 		// if not complete, consider the children in generating the solution and poll again
 		while (!bestCurrentSolution.isCompleteSchedule()) {
 			
+			while (_closedSolutions.contains(bestCurrentSolution)) {
+				bestCurrentSolution = _solutionSpace.poll();
+			}
+			
 			for (Solution s : bestCurrentSolution.createChildren()) {
-				if (!solutionSpace.contains(s)) {
-					solutionSpace.add(s);
-					if (s.maxCostFunction() <= bestCurrentSolution.maxCostFunction()) {
+				if (!_solutionSpace.contains(s)) {
+					_solutionSpace.add(s);
+					if (s.maxCostFunction() == bestCurrentSolution.maxCostFunction()) {
 						break;
 					}
 				}
 			}
-			bestCurrentSolution = solutionSpace.poll();
+			_closedSolutions.add(bestCurrentSolution);
+			bestCurrentSolution = _solutionSpace.poll();
 			System.out.println(bestCurrentSolution.maxCostFunction());
-			System.out.println("Solution space size : " + solutionSpace.size());
+			System.out.println("Solution space size : " + _solutionSpace.size());
 		}
 		
 		return bestCurrentSolution;
