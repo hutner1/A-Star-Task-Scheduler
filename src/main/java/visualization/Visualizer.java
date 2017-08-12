@@ -20,6 +20,7 @@ import scheduler.basicmilestone.Vertex;
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
 import scheduler.graphstructures.DefaultWeightedEdge;
 
+
 public class Visualizer {
 
 	private String stylesheet = 
@@ -45,6 +46,7 @@ public class Visualizer {
     		"}";
 	private Graph _graph;
 	private Viewer _viewer;
+	private DefaultDirectedWeightedGraph _DAG;
 
 	public Visualizer(){
 		System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
@@ -56,10 +58,17 @@ public class Visualizer {
 
 	public void add(DefaultDirectedWeightedGraph DAG) {
 
+		_DAG = DAG;
 		for(Vertex vertex : DAG.vertexSet()){
 			Node n =_graph.addNode(vertex.getName());
-			if(DAG.inDegreeOf(vertex) == 0 || DAG.outgoingEdgesOf(vertex).size() < 1){
+			if(DAG.inDegreeOf(vertex) == 0){
 				n.addAttribute("ui.style", " size:40px;");
+				n.setAttribute("y", 300);
+				n.setAttribute("x", 0);
+				
+			}else if(DAG.outgoingEdgesOf(vertex).size() < 1) {
+				n.addAttribute("ui.style", " size:40px;");
+				
 			} else {
 				n.addAttribute("ui.style", " size:25px;");
 			}
@@ -86,26 +95,30 @@ public class Visualizer {
 
 	public void UpdateGraph(Solution currentBestSol) {
 		
+		//Get the hash map of the processes
 		HashMap<Integer, Processor> processorWithSolution =currentBestSol.getProcess();
+		
+		//Set all nodes to black to reset previous visualization
+		for(Vertex vertex : _DAG.vertexSet()){
+			_graph.getNode(vertex.getName()).setAttribute("ui.style", "fill-color:#"+ "000000" +";");
+		}
 		
 		for(int i = 1; i < processorWithSolution.keySet().size() + 1; i++){
 			List<ProcessInfo> processes = processorWithSolution.get(i).getProcesses();
 			for(ProcessInfo processInfo : processes){
-				String colorCode = "FFFFFF";
-				if(i == 1){
-					colorCode = "FF0000";
-				} else if (i == 2){
-					colorCode = "FFC300";
-				} else if (i == 3){
-					colorCode = "1d8348";
-				} else if (i == 4){
-					colorCode = "8e44ad";
-				}
+				String colorCode = getColor(i);
 				
 				_graph.getNode(processInfo.getVertex().getName()).setAttribute("ui.style", "fill-color:#"+ colorCode +";");
 			}
 		}
 		
+	}
+	
+	public String getColor(int index){
+		String[] colors = {	"ffffff", "e74c3c", "FFC300", "1d8348", "8e44ad", "2874a6", 
+				"e67e22", "5d6d7e", "45b39d", "aed6f1", "f4f6f7", "cc5c92", "f0a0a0"};
+
+		return colors[index];
 	}
 
 }
