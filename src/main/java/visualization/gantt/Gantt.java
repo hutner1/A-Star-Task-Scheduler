@@ -2,8 +2,10 @@ package visualization.gantt;
 
 import java.awt.Dimension;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -16,14 +18,24 @@ import org.jfree.data.gantt.TaskSeriesCollection;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
+import scheduler.astar.ProcessInfo;
+import scheduler.astar.Solution;
+
 public class Gantt extends ApplicationFrame{
-	 
+	
+	private static int _processors;
+	
 	public Gantt(String title) {
 	        super(title);
 	        JPanel jpanel = createDemoPanel();
 	        jpanel.setPreferredSize(new Dimension(500, 270));
 	        setContentPane(jpanel);
 	    }
+	
+	public Gantt(String title, int processors) {
+		super(title);
+		_processors = processors;
+	}
 
 	    private static JFreeChart createChart(IntervalCategoryDataset dataset) {
 	        final JFreeChart chart = GanttChartFactory.createGanttChart(
@@ -32,6 +44,12 @@ public class Gantt extends ApplicationFrame{
 	    }
 
 	    private static IntervalCategoryDataset createDataset() {
+	    	
+	    	//ArrayList<String> names = (ArrayList) createProcessNames();
+	    	
+	    	//TaskSeries t = new TaskSeries("Current Solution");
+	    	
+	    	
 	        TaskSeries taskseries1 = new TaskSeries("Current Solution");
 
 	        Task task0 = new TaskNumeric("Processor 0", 0, 5);
@@ -53,6 +71,29 @@ public class Gantt extends ApplicationFrame{
 	        taskseriescollection.add(t2);
 	        
 	        return taskseriescollection;
+	        
+	    }
+	    
+	    
+	    private void getTaskStart(ProcessInfo p) {
+	    	
+	    }
+	    
+	    private void getTaskEnd(ProcessInfo p) {
+	    	
+	    }
+	    
+	    private static List<String> createProcessNames() {
+	    	List<String> names = new ArrayList<String>();
+	    	for (int i = 0; i < _processors; i++) {
+	    		names.add("Processor " + i);
+	    	}
+	    	
+	    	return names;
+	    }
+	    
+	    private void update(Solution s) {
+	    	//TODO
 	    }
 
 	    public static JPanel createDemoPanel() {
