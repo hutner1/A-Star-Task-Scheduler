@@ -101,7 +101,10 @@ public class AStar {
 				bestCurrentSolution = _solutionSpace.poll();
 				System.out.println(bestCurrentSolution.maxCostFunction());
 				System.out.println("Solution space size : " + _solutionSpace.size());
-				//_visualizer.UpdateGraph(bestCurrentSolution);
+				
+				
+				_visualizer.UpdateGraph(bestCurrentSolution);
+				
 			}
 			
 			
