@@ -60,65 +60,7 @@ public class NodeClickListener implements ViewerListener , MouseInputListener{
   */ 
  public void buttonPushed(String id) { 
   System.out.println("Button pushed on node "+id); 
-  Node n = graph.getNode(id); 
-  String _ui_label = n.getAttribute("_ui.label"); 
-  String ui_label = n.getAttribute("ui.label");  
- 
-  // if not set toggle on node and adj edges 
-  if (ui_label==null || ui_label.equals("")) 
-  { 
-   n.setAttribute("ui.label", _ui_label); 
- 
-   // Label adjacent edges 
-   labelAdjacentEdges(n); 
- 
-  } 
-  else // Toggle node off and adj unbound edges 
-  { 
-   n.setAttribute("ui.label", ""); 
-   unlabelAdjacentEdges(n); 
-  } 
- } 
- 
- /**
-  * labels adjacent edges of the given node  
-  * @param n - node to label adjacent edges of 
-  */ 
- private void labelAdjacentEdges(Node n) 
- { 
-  for (Edge e : n.getEdgeSet()){ 
-   String _ui_label = e.getAttribute("_ui.label"); 
-   String ui_label = e.getAttribute("ui.label");  
- 
-   if (ui_label==null || ui_label.equals("")) 
-   { 
-    e.setAttribute("ui.label", _ui_label); 
- 
-   } 
-  } 
- } 
- 
- /**
-  * unlabels all edges connected to node which are no longer 
-  * connected to any other labeled node 
-  * @param n - the node to apply to adjacent edges 
-  */ 
- private void unlabelAdjacentEdges(Node n) 
- { 
-  for (Edge e : n.getEdgeSet()){ 
-   Node v1 = e.getNode0(); 
-   Node v2 = e.getNode1(); 
- 
-   String ui_label_v1 = v1.getAttribute("ui.label"); 
-   String ui_label_v2 = v2.getAttribute("ui.label"); 
- 
- 
-   if ((ui_label_v1==null || ui_label_v1.equals("")) 
-     && (ui_label_v2==null || ui_label_v2.equals(""))) 
-   { 
-    e.setAttribute("ui.label", ""); 
-   } 
-  } 
+  Node n = graph.getNode(id);  
  
  } 
  
