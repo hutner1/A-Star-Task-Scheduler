@@ -1,5 +1,8 @@
 package visualization;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -16,6 +19,7 @@ import org.graphstream.stream.SinkAdapter;
 import org.graphstream.ui.layout.HierarchicalLayout;
 import org.graphstream.ui.view.View;
 import org.graphstream.ui.view.Viewer;
+import org.graphstream.ui.view.ViewerListener;
 import org.graphstream.ui.view.ViewerPipe;
 
 import scheduler.astar.ProcessInfo;
@@ -120,16 +124,121 @@ public class Visualizer {
         /*ProxyPipe fromViewer = _viewer.newViewerPipe();
         fromViewer.addSink(_graph);*/
 		
-		Viewer viewer = new Viewer(_graph,Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
+		/*Viewer viewer = new Viewer(_graph,Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
 		viewer.enableAutoLayout();
-		View viewPanel = viewer.addDefaultView(false);
-		/*
-		* Set up listeners to graph/view events
-		*/
-		ViewerPipe fromViewer = viewer.newViewerPipe();
-		/*fromViewer.addViewerListener(new GraphViewHandler());*/
-		fromViewer.addSink(_graph);
-		fromViewer.pump();
+		View viewPanel = viewer.addDefaultView(false);*/
+		/*viewPanel.addMouseListener(new MouseListener l);*/
+/*		viewPanel.addMouseListener(new MouseListener() {
+		    public void mouseClicked(MouseEvent e) {
+		    	System.out.println("camera: " + e.getSource().getClass().getName());
+		        Point3 gu = view.getCamera().transformPxToGu(e.getX(), e.getY());
+		        Node node = graph.addNode(e.getWhen());
+		        node.setAttribute("xyz", gu.x, gu.y, 0);
+
+		    }
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});*/
+
+		
+		/*ViewerPipe fromViewer = viewer.newViewerPipe();*/
+		/*fromViewer.addViewerListener(n);*/
+		/*fromViewer.addSink(_graph);
+		fromViewer.pump();*/
+		
+        /*ProxyPipe fromViewer = _viewer.newViewerPipe();
+        fromViewer.addSink(_graph);*/
+        
+
+/*        fromViewer.addSink(new SinkAdapter(){
+            @Override
+            public void nodeAttributeAdded(String sourceId, long timeId, String nodeId, String attribute, Object value) {
+                if(attribute.equals("ui.clicked")){
+
+                    toggleNode(nodeId);
+                }
+            }
+
+            @Override
+            public void nodeAttributeChanged(String sourceId, long timeId, String nodeId, String attribute, Object oldValue, Object newValue) {
+                if(attribute.equals("ui.clicked")){
+                    toggleNode(nodeId);
+                }
+            }
+            
+            void toggleNode(String id){
+                Node n  = _graph.getNode(id);
+                String nodeName = n.toString();
+                System.out.println(nodeName);
+            }
+        });*/
+
+/*		ViewerPipe fromViewer = _viewer.newViewerPipe();
+        fromViewer.addViewerListener(new ViewerListener(){
+
+			@Override
+			public void viewClosed(String viewName) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void buttonPushed(String id) {
+				// TODO Auto-generated method stub
+				Node n  = _graph.getNode(id);
+                String nodeName = n.toString();
+                System.out.println(nodeName);
+			}
+
+			@Override
+			public void buttonReleased(String id) {
+				// TODO Auto-generated method stub
+				
+			}
+        	
+        });
+        fromViewer.addSink(_graph);
+        fromViewer.pump();*/
+/*        while(true){
+       
+                fromViewer.pump();
+
+        }*/
+		
+		 
+		View view = _viewer.getDefaultView();
+		 
+		 
+		 
+		   // We connect back the viewer to the graph, 
+		   // the graph becomes a sink for the viewer. 
+		   // We also install us as a viewer listener to 
+		   // intercept the graphic events. 
+		ViewerPipe fromViewer = _viewer.newViewerPipe();
+		   NodeClickListener clisten = new NodeClickListener(fromViewer, view, _graph); 
+		   fromViewer.addViewerListener((ViewerListener) clisten); 
 	}
 
 	/**
