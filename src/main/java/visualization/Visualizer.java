@@ -110,15 +110,26 @@ public class Visualizer {
 	public void displayGraph() {
 		_viewer = _graph.display();
 		/*_viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);*/
-		View view = _viewer.getDefaultView();
+		/*View view = _viewer.getDefaultView();*/
 		
 		/*ViewerPipe fromViewer = _viewer.newViewerPipe();
 		fromViewer.addViewerListener(this);
 		fromViewer.addSink(_graph);*/
 		/*view.setViewCenter(2, 3, 4);*/
 
-        ProxyPipe fromViewer = _viewer.newViewerPipe();
-        fromViewer.addSink(_graph);
+        /*ProxyPipe fromViewer = _viewer.newViewerPipe();
+        fromViewer.addSink(_graph);*/
+		
+		Viewer viewer = new Viewer(_graph,Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
+		viewer.enableAutoLayout();
+		View viewPanel = viewer.addDefaultView(false);
+		/*
+		* Set up listeners to graph/view events
+		*/
+		ViewerPipe fromViewer = viewer.newViewerPipe();
+		/*fromViewer.addViewerListener(new GraphViewHandler());*/
+		fromViewer.addSink(_graph);
+		fromViewer.pump();
 	}
 
 	/**
