@@ -14,14 +14,25 @@ import scheduler.basicmilestone.Schedule;
 import scheduler.basicmilestone.Vertex;
 import scheduler.dfsbranchandbound.SolutionGenerator;
 
+/**
+ * Writes optimal solution to a file
+ *
+ */
 public class OutputWriter {
 
 	private File _outputFile;
 
+	/**
+	 * Construct OutputWriter with the  name of output file before the ".dot" is appended to it
+	 * @param outputName name of output file before the ".dot" is appended to it
+	 */
 	public OutputWriter(String outputName) {
 		_outputFile = new File(outputName + ".dot");
 	}
 
+	/**
+	 * Checks and creates the necessary output file before writing to it
+	 */
 	public void initialise() {
 		//create output file to write to if it doesn't exists  
 		if(!_outputFile.exists()){

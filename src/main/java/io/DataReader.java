@@ -11,6 +11,9 @@ import java.util.HashMap;
 import scheduler.basicmilestone.Vertex;
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
 
+/**
+ * Reads an input file for a task digraph and stores the digraph and order information
+ */
 public class DataReader {
 
 	private String _digraphName;
@@ -20,6 +23,10 @@ public class DataReader {
 	private HashMap<String,Vertex> _mapping;
 	private BufferedReader _reader;
 	
+	/**
+	 * Constructs DataReader
+	 * @param file input file to read digraph from
+	 */
 	public DataReader(File file) {
 		try {
 			_reader = new BufferedReader(new FileReader(file));
