@@ -33,20 +33,20 @@ import scheduler.graphstructures.Vertex;
 public class Visualizer {
 
 	//Set the style for the graph using CSS
-	private String stylesheet = 
+	private String _stylesheet = 
 			"graph {" +
-			"fill-color: rgb(225,225,225);" +
-			"}" + 
-			
+					"fill-color: rgb(225,225,225);" +
+					"}" + 
+
 			"edge {" +
 			"size:3px;" +
 			"arrow-shape: arrow; " +
-    		"arrow-size: 12px, 6px;" +
+			"arrow-size: 12px, 6px;" +
 			/*shape:cubic-curve;*/
 			/*shape:blob;*/
 			/*fill-color: rgb(127,0,55);*/
 			"}" +
-    		
+
     		"node{" +
     		"text-size:16px;"+
     		"text-color:rgb(255,255,255);"+
@@ -57,6 +57,7 @@ public class Visualizer {
 	private Graph _graph;
 	private Viewer _viewer;
 	private DefaultDirectedWeightedGraph _DAG;
+	private HashMap<Integer, Processor> _processorWithSolution = null;
 
 
 	public Visualizer(){
@@ -64,9 +65,10 @@ public class Visualizer {
 		_graph = new SingleGraph("Input Graph");
 		_graph.addAttribute("ui.quality");
 		_graph.addAttribute("ui.antialias");
-		_graph.setAttribute("stylesheet", stylesheet);
+		_graph.setAttribute("stylesheet", _stylesheet);
+
 	}
-	
+
 
 	/**
 	 * This adds the nodes and edges from the directed weight graph into the graph stream
@@ -84,10 +86,10 @@ public class Visualizer {
 				n.addAttribute("ui.style", " size:40px;");
 				n.setAttribute("y", 300);
 				n.setAttribute("x", 0);
-				
+
 			}else if(DAG.outgoingEdgesOf(vertex).size() < 1) {
 				n.addAttribute("ui.style", " size:40px;");
-				
+
 			} else {
 				n.addAttribute("ui.style", " size:25px;");
 			}
@@ -113,22 +115,24 @@ public class Visualizer {
 	 */
 	public void displayGraph() {
 		_viewer = _graph.display();
+		/*		HierarchicalLayout hl = new HierarchicalLayout();
+		_viewer.enableAutoLayout(hl);*/
 		/*_viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);*/
 		/*View view = _viewer.getDefaultView();*/
-		
+
 		/*ViewerPipe fromViewer = _viewer.newViewerPipe();
 		fromViewer.addViewerListener(this);
 		fromViewer.addSink(_graph);*/
 		/*view.setViewCenter(2, 3, 4);*/
 
-        /*ProxyPipe fromViewer = _viewer.newViewerPipe();
+		/*ProxyPipe fromViewer = _viewer.newViewerPipe();
         fromViewer.addSink(_graph);*/
-		
+
 		/*Viewer viewer = new Viewer(_graph,Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
 		viewer.enableAutoLayout();
 		View viewPanel = viewer.addDefaultView(false);*/
 		/*viewPanel.addMouseListener(new MouseListener l);*/
-/*		viewPanel.addMouseListener(new MouseListener() {
+		/*		viewPanel.addMouseListener(new MouseListener() {
 		    public void mouseClicked(MouseEvent e) {
 		    	System.out.println("camera: " + e.getSource().getClass().getName());
 		        Point3 gu = view.getCamera().transformPxToGu(e.getX(), e.getY());
@@ -140,68 +144,42 @@ public class Visualizer {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});*/
 
-		
+
 		/*ViewerPipe fromViewer = viewer.newViewerPipe();*/
 		/*fromViewer.addViewerListener(n);*/
 		/*fromViewer.addSink(_graph);
 		fromViewer.pump();*/
-		
-        /*ProxyPipe fromViewer = _viewer.newViewerPipe();
-        fromViewer.addSink(_graph);*/
-        
 
-/*        fromViewer.addSink(new SinkAdapter(){
-            @Override
-            public void nodeAttributeAdded(String sourceId, long timeId, String nodeId, String attribute, Object value) {
-                if(attribute.equals("ui.clicked")){
 
-                    toggleNode(nodeId);
-                }
-            }
-
-            @Override
-            public void nodeAttributeChanged(String sourceId, long timeId, String nodeId, String attribute, Object oldValue, Object newValue) {
-                if(attribute.equals("ui.clicked")){
-                    toggleNode(nodeId);
-                }
-            }
-            
-            void toggleNode(String id){
-                Node n  = _graph.getNode(id);
-                String nodeName = n.toString();
-                System.out.println(nodeName);
-            }
-        });*/
-
-/*		ViewerPipe fromViewer = _viewer.newViewerPipe();
+		/*		ViewerPipe fromViewer = _viewer.newViewerPipe();
         fromViewer.addViewerListener(new ViewerListener(){
 
 			@Override
 			public void viewClosed(String viewName) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
@@ -215,30 +193,31 @@ public class Visualizer {
 			@Override
 			public void buttonReleased(String id) {
 				// TODO Auto-generated method stub
-				
+
 			}
-        	
+
         });
         fromViewer.addSink(_graph);
         fromViewer.pump();*/
-/*        while(true){
-       
+		/*        while(true){
+
                 fromViewer.pump();
 
         }*/
-		
-		 
+
+
 		View view = _viewer.getDefaultView();
-		 
-		 
-		 
-		   // We connect back the viewer to the graph, 
-		   // the graph becomes a sink for the viewer. 
-		   // We also install us as a viewer listener to 
-		   // intercept the graphic events. 
+
+
+
+		// We connect back the viewer to the graph, 
+		// the graph becomes a sink for the viewer. 
+		// We also install us as a viewer listener to 
+		// intercept the graphic events. 
 		ViewerPipe fromViewer = _viewer.newViewerPipe();
-		   NodeClickListener clisten = new NodeClickListener(fromViewer, view, _graph); 
-		   fromViewer.addViewerListener((ViewerListener) clisten); 
+		NodeClickListener clisten = new NodeClickListener(fromViewer, view, _graph); 
+		fromViewer.addViewerListener((ViewerListener) clisten); 
+
 	}
 
 	/**
@@ -248,27 +227,27 @@ public class Visualizer {
 	 * @param currentBestSol the current best solution schedule from the A* algorithm
 	 */
 	public void UpdateGraph(Solution currentBestSol) {
-		
+
 		//Get the hash map of the processes
-		HashMap<Integer, Processor> processorWithSolution =currentBestSol.getProcess();
-		
+		_processorWithSolution = currentBestSol.getProcess();
+
 		//Set all nodes to black to reset previous visualization
 		for(Vertex vertex : _DAG.vertexSet()){
 			_graph.getNode(vertex.getName()).setAttribute("ui.style", "fill-color:#"+ "000000" +";");
 		}
-		
-		for(int i = 1; i < processorWithSolution.keySet().size() + 1; i++){
-			List<ProcessInfo> processes = processorWithSolution.get(i).getProcesses();
+
+		for(int i = 1; i < _processorWithSolution.keySet().size() + 1; i++){
+			List<ProcessInfo> processes = _processorWithSolution.get(i).getProcesses();
 			for(ProcessInfo processInfo : processes){
 				String colorCode = getColor(i);
-				
+
 				_graph.getNode(processInfo.getVertex().getName()).setAttribute("ui.style", "fill-color:#"+ colorCode +";");
 			}
 		}
-		
+
 	}
-	
-	
+
+
 	/**
 	 * Get the color code
 	 * 
