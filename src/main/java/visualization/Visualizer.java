@@ -112,6 +112,7 @@ public class Visualizer {
 	 */
 	public void displayGraph() {
 		_viewer = _graph.display();
+		_viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);
 		View view = _viewer.getDefaultView();
 
 		// We connect back the viewer to the graph, 
