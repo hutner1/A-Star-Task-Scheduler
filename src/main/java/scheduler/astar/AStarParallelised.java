@@ -56,7 +56,7 @@ public class AStarParallelised extends AStar{
 			threadQueue[0] = _solutionSpace;
 		} else {
 			while ((sol = _solutionSpace.poll()) != null) {
-				threadQueue[0].add(sol);
+				threadQueue[index].add(sol);
 				index++;
 
 				if (index == _numberOfThreads) { //loop back to zero for equal loading (hopefully)
