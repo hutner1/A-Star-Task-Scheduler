@@ -128,7 +128,7 @@ public class Solution implements Comparable<Solution>{
 		}
 	}
 
-	
+
 	/**
 	 * Helper function that calls all three parts of the proposed cost function
 	 * and returns the maximum of those three values
@@ -274,31 +274,12 @@ public class Solution implements Comparable<Solution>{
 				Solution child = createDuplicateSolution();
 				child.addProcess(v, i);
 				//TODO child.printTree();
-				if (child.isBelowUpperBound()) {
-					children.add(child);
-					//TODO System.out.println(child.maxCostFunction());
-				}
+				children.add(child);
+				//TODO System.out.println(child.maxCostFunction());
+
 			} 
 		}
 		return children;
-	}
-
-	/**
-	 * Checks if a possible solution is still able to be optimal
-	 * @return
-	 */
-	private boolean isBelowUpperBound() {
-
-		int maxTimeRemaining = 0;
-
-		for (Vertex v : _schedulableProcesses) {
-			maxTimeRemaining += v.getWeight();
-		}
-		for (Vertex v : _nonschedulableProcesses) {
-			maxTimeRemaining += v.getWeight();
-		}
-
-		return (getTime() + maxTimeRemaining) <= _upperBound;
 	}
 
 	/**
@@ -365,12 +346,12 @@ public class Solution implements Comparable<Solution>{
 
 		return true;
 	}
-	
+
 	//TODO hash code
 	/**
 	public int hashCode(){
 	}
-	*/
+	 */
 
 	/**
 	 * Sets the static mapping of bottom levels for all vertices in the graph
@@ -383,8 +364,8 @@ public class Solution implements Comparable<Solution>{
 	public HashMap<Integer, Processor> getProcess(){
 		return _processors;
 	}
-	
-	
+
+
 
 }
 
