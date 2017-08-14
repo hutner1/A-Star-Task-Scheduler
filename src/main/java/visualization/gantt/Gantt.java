@@ -53,9 +53,6 @@ public class Gantt extends ApplicationFrame{
 	}
 
 	private static IntervalCategoryDataset createDataset() {
-
-		//ArrayList<String> names = (ArrayList) createProcessNames();
-
 		
 		TaskSeries ts = new TaskSeries("Best Solution");
 		
