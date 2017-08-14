@@ -26,9 +26,9 @@ Optional:
 ````
 
 ## Collaborators
-* Hunter Bao (hbao448) - hbao448@aucklanduni.ac.nz
-* Jack Huang (j-x-huang) - xhua451@aucklanduni.ac.nz
-* Injae Park (ipar569) - ipar569@aucklanduni.ac.nz
-* David Qi (RustedWheel) - yqi955@aucklanduni.ac.nz
-* Yao Jian Yap (RemRinRamChi) - yyap601@aucklanduni.ac.nz
-* Justin Chuk (hchuk) - hchu167@aucklanduni.ac.nz
+* Hunter Bao (hbao448) - hbao448@aucklanduni.ac.nz - 101514440
+* Jack Huang (j-x-huang) - xhua451@aucklanduni.ac.nz - 907007421
+* Injae Park (ipar569) - ipar569@aucklanduni.ac.nz - 479814816
+* David Qi (RustedWheel) - yqi955@aucklanduni.ac.nz - 311493182
+* Yao Jian Yap (RemRinRamChi) - yyap601@aucklanduni.ac.nz - 983729282
+* Justin Chuk (hchuk) - hchu167@aucklanduni.ac.nz - 863910247
