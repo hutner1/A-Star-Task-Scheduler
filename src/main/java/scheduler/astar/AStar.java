@@ -43,7 +43,6 @@ public class AStar {
 		//Pop solution and create children solutions for that, readd children to queue
 		//Pop most efficient child and add create children, readd
 		//Repeat until child is a complete graph, that is the optimal schedule
-		while(runSequentially()) {
 			HashMap<Vertex, Integer> btmLevel = new HashMap<Vertex, Integer>();
 			List<Vertex> schedulable = new ArrayList<Vertex>(); // dependencies all met
 			List<Vertex> nonschedulable = new ArrayList<Vertex>(); // dependencies not met
@@ -102,9 +101,7 @@ public class AStar {
 			
 			
 			return bestCurrentSolution;
-		}
-		
-		return null; //run AStarParallelised
+
 
 	}
 	
