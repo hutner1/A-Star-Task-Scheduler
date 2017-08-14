@@ -13,7 +13,6 @@ import scheduler.topologicalsort.Schedule;
 import scheduler.topologicalsort.ScheduleGenerator;
 import scheduler.topologicalsort.Sorter;
 import visualization.Visualizer;
-import visualization.gantt.Gantt;
 
 /**
  * This is the main class for the task scheduler program.
@@ -38,8 +37,6 @@ public class Main {
 				graphVisualizer = new Visualizer();
 				graphVisualizer.add(dataReader.getGraph());
 				graphVisualizer.displayGraph();
-				//Gantt g = new Gantt("Test", 2);
-				//g.launch();
 			}
 			
 			//Create the optimal schedule
