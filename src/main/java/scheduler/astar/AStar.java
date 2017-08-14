@@ -7,9 +7,9 @@ import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-import scheduler.basicmilestone.Vertex;
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
 import scheduler.graphstructures.DefaultWeightedEdge;
+import scheduler.graphstructures.Vertex;
 import visualization.Visualizer;
 
 /**
@@ -105,6 +105,7 @@ public class AStar {
 				if(_visualizer != null){
 					_visualizer.UpdateGraph(bestCurrentSolution);
 				}
+
 				
 			}
 			

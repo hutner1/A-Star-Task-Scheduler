@@ -1,4 +1,4 @@
-package scheduler.basicmilestone;
+package scheduler.graphstructures;
 /**
  * This class is used to store information about a node
  * while it is processed in an algorithm.

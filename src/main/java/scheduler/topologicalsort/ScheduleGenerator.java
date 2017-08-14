@@ -1,6 +1,8 @@
-package scheduler.basicmilestone;
+package scheduler.topologicalsort;
 
 import java.util.List;
+
+import scheduler.graphstructures.Vertex;
 
 /**
  * This class makes a valid schedule based on a topological sort

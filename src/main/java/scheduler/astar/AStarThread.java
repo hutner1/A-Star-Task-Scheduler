@@ -3,8 +3,8 @@ package scheduler.astar;
 import java.util.PriorityQueue;
 import java.util.Set;
 
-import scheduler.basicmilestone.Vertex;
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
+import scheduler.graphstructures.Vertex;
 import visualization.Visualizer;
 
 /**

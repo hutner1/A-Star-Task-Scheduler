@@ -1,6 +1,8 @@
-package scheduler.basicmilestone;
+package scheduler.topologicalsort;
 
 import java.util.HashMap;
+
+import scheduler.graphstructures.Vertex;
 
 /**
  * This class stores all the vertices in the graph

@@ -3,10 +3,9 @@ package scheduler.dfsbranchandbound;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
-import scheduler.basicmilestone.Vertex;
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
 import scheduler.graphstructures.DefaultWeightedEdge;
+import scheduler.graphstructures.Vertex;
 
 /**
  * This class generates an optimal solution using Depth First Search Branch & Bound algorithm
