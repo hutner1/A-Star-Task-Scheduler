@@ -42,9 +42,6 @@ public class Visualizer {
 			"size:3px;" +
 			"arrow-shape: arrow; " +
 			"arrow-size: 12px, 6px;" +
-			/*shape:cubic-curve;*/
-			/*shape:blob;*/
-			/*fill-color: rgb(127,0,55);*/
 			"}" +
 
     		"node{" +
@@ -115,100 +112,7 @@ public class Visualizer {
 	 */
 	public void displayGraph() {
 		_viewer = _graph.display();
-		/*		HierarchicalLayout hl = new HierarchicalLayout();
-		_viewer.enableAutoLayout(hl);*/
-		/*_viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);*/
-		/*View view = _viewer.getDefaultView();*/
-
-		/*ViewerPipe fromViewer = _viewer.newViewerPipe();
-		fromViewer.addViewerListener(this);
-		fromViewer.addSink(_graph);*/
-		/*view.setViewCenter(2, 3, 4);*/
-
-		/*ProxyPipe fromViewer = _viewer.newViewerPipe();
-        fromViewer.addSink(_graph);*/
-
-		/*Viewer viewer = new Viewer(_graph,Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
-		viewer.enableAutoLayout();
-		View viewPanel = viewer.addDefaultView(false);*/
-		/*viewPanel.addMouseListener(new MouseListener l);*/
-		/*		viewPanel.addMouseListener(new MouseListener() {
-		    public void mouseClicked(MouseEvent e) {
-		    	System.out.println("camera: " + e.getSource().getClass().getName());
-		        Point3 gu = view.getCamera().transformPxToGu(e.getX(), e.getY());
-		        Node node = graph.addNode(e.getWhen());
-		        node.setAttribute("xyz", gu.x, gu.y, 0);
-
-		    }
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-		});*/
-
-
-		/*ViewerPipe fromViewer = viewer.newViewerPipe();*/
-		/*fromViewer.addViewerListener(n);*/
-		/*fromViewer.addSink(_graph);
-		fromViewer.pump();*/
-
-
-		/*		ViewerPipe fromViewer = _viewer.newViewerPipe();
-        fromViewer.addViewerListener(new ViewerListener(){
-
-			@Override
-			public void viewClosed(String viewName) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void buttonPushed(String id) {
-				// TODO Auto-generated method stub
-				Node n  = _graph.getNode(id);
-                String nodeName = n.toString();
-                System.out.println(nodeName);
-			}
-
-			@Override
-			public void buttonReleased(String id) {
-				// TODO Auto-generated method stub
-
-			}
-
-        });
-        fromViewer.addSink(_graph);
-        fromViewer.pump();*/
-		/*        while(true){
-
-                fromViewer.pump();
-
-        }*/
-
-
 		View view = _viewer.getDefaultView();
-
-
 
 		// We connect back the viewer to the graph, 
 		// the graph becomes a sink for the viewer. 
