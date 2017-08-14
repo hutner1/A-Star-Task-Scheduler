@@ -113,8 +113,8 @@ public class Visualizer {
 	public void displayGraph() {
 		_viewer = _graph.display();
     
-    // hides the window when it's closed so that it doesn't stop the program
-    _viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);
+	    // hides the window when it's closed so that it doesn't stop the program
+	    // TODO proper hiding _viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);
 
 		View view = _viewer.getDefaultView();
 

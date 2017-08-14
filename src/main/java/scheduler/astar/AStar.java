@@ -90,8 +90,8 @@ public class AStar {
 				}
 				_closedSolutions.add(bestCurrentSolution);
 				bestCurrentSolution = _solutionSpace.poll();
-				System.out.println(bestCurrentSolution.maxCostFunction());
-				System.out.println("Solution space size : " + _solutionSpace.size());
+				//TODO System.out.println(bestCurrentSolution.maxCostFunction());
+				//TODO System.out.println("Solution space size : " + _solutionSpace.size());
 				
 				if(_visualizer != null){
 					_visualizer.UpdateGraph(bestCurrentSolution);

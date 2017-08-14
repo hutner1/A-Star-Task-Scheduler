@@ -273,10 +273,10 @@ public class Solution implements Comparable<Solution>{
 			for (int i = 1; i <= _numberOfProcessors; i++) {
 				Solution child = createDuplicateSolution();
 				child.addProcess(v, i);
-				child.printTree();
+				//TODO child.printTree();
 				if (child.isBelowUpperBound()) {
 					children.add(child);
-					System.out.println(child.maxCostFunction());
+					//TODO System.out.println(child.maxCostFunction());
 				}
 			} 
 		}
