@@ -54,11 +54,6 @@ public class Main {
 			long totalTime = endTime - startTime;
 			System.out.println("\n Took " + totalTime/1000000 + "ms" + " : " + totalTime/1000000000 + " seconds");
 			
-			if(inputParser.isVisualise() == true){
-				Gantt g = new Gantt("Test", optimalSolution);
-				g.launch();
-			}
-			
 		}
 	}
 }
