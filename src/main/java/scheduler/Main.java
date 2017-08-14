@@ -9,9 +9,6 @@ import scheduler.astar.AStar;
 import scheduler.astar.AStarParallelised;
 import scheduler.astar.Solution;
 import scheduler.graphstructures.Vertex;
-import scheduler.topologicalsort.Schedule;
-import scheduler.topologicalsort.ScheduleGenerator;
-import scheduler.topologicalsort.Sorter;
 import visualization.Visualizer;
 
 /**
