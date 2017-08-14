@@ -118,21 +118,6 @@ public class Solution implements Comparable<Solution>{
 	 * individual start time
 	 */
 	public int compareTo(Solution s) {
-		/*if (s.getTime() == this.getTime()) {
-			if (s._scheduledProcesses.size() > this._scheduledProcesses.size()) {
-				return -1;
-			} else if (s._scheduledProcesses.size() < this._scheduledProcesses.size()) {
-				return 1;
-			} else {
-				return 0;
-			}
-		} else if (s.getTime() > this.getTime()) {
-			return -1;
-		} else {
-			return 1;
-		}*/
-
-
 		int maxThis = maxCostFunction();
 		int maxOther = s.maxCostFunction();
 
@@ -143,6 +128,7 @@ public class Solution implements Comparable<Solution>{
 		}
 	}
 
+	
 	/**
 	 * Helper function that calls all three parts of the proposed cost function
 	 * and returns the maximum of those three values
@@ -379,6 +365,12 @@ public class Solution implements Comparable<Solution>{
 
 		return true;
 	}
+	
+	//TODO hash code
+	/**
+	public int hashCode(){
+	}
+	*/
 
 	/**
 	 * Sets the static mapping of bottom levels for all vertices in the graph
@@ -388,16 +380,6 @@ public class Solution implements Comparable<Solution>{
 		_btmLevels = btmLevels;
 	}
 
-	/*public boolean scheduled(Vertex v) {
-
-		for (Processor p : _processors.values()) {
-			if (p.isScheduled(v)) {
-				return true;
-			}
-		}
-		return false;
-	}*/
-	
 	public HashMap<Integer, Processor> getProcess(){
 		return _processors;
 	}

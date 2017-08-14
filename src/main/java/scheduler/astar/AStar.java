@@ -69,15 +69,6 @@ public class AStar {
 			emptySolution.setBtmLevels(btmLevel);
 			_solutionSpace.add(emptySolution);
 			
-			/*
-			// creating all possible valid schedules with only the root nodes
-			for (Vertex v : _graph.vertexSet()) {
-				if (_graph.inDegreeOf(v) == 0) { //get source nodes
-					Solution s = new Solution(upperBound, _numberOfProcessors, _graph, new ArrayList<Vertex>(), schedulable, nonschedulable);
-					s.addProcess(v, 1);
-					solutionSpace.add(s); //list of solutions starting source node
-				} 
-			}*/
 			
 			// BEST priority solution
 			Solution bestCurrentSolution = _solutionSpace.poll();
@@ -111,40 +102,6 @@ public class AStar {
 			
 			
 			return bestCurrentSolution;
-
-
-
-			/*
-			List<Solution> initialSolutions = new ArrayList<Solution>();
-
-
-			for (Vertex v : _graph.vertexSet()) {
-				if (_graph.inDegreeOf(v) == 0) { //get source nodes
-					Solution s = new Solution(_numberOfProcessors);
-					s.addProcess(v, 1, _graph);
-					initialSolutions.add(s); //list of solutions starting source node
-					schedulableProcesses.add(v); 
-				} else {
-					nonschedulableProcesses.add(v);
-				}
-			}
-
-			Solution bestInitialSolution = null; 
-			int minTime = Integer.MAX_VALUE;
-
-			for (Solution s : initialSolutions) {
-				if (s.getTime() < minTime) {
-					bestInitialSolution = s;
-					minTime = s.getTime(); //min time of the source nodes
-				}
-			}
-
-			for (Vertex v : schedulableProcesses) {
-				for (int i = 1; i <= _numberOfProcessors; i++) {
-					bestInitialSolution.addProcess(v, i, _graph);
-					updateSchedulable(v, scheduledProcesses, schedulableProcesses, nonschedulableProcesses);
-				}
-			}*/
 		}
 		
 		return null; //run AStarParallelised

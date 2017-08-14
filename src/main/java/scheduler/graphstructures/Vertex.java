@@ -11,12 +11,6 @@ public class Vertex {
 	private String _name;
 	private int _weight;
 	private int _bottomLvl;
-	private int _touchCount;
-	
-	/*public Vertex(String name, int weight) {
-		this.name = name;
-		this.weight = weight;
-	}*/
 	
 	public Vertex(String name) {
 		this._name = name;
@@ -49,19 +43,8 @@ public class Vertex {
 			return _bottomLvl;
 		}
 		
-		/**
-		 * Get the number of times this vertex is accessed in a solution
-		 * To be used in the A* implementation
-		 * @return int number of use
-		 */
-		public int getTouchCount() {
-			return _touchCount;
-		}
-		
 		
 		//---Setter Methods---
-		
-		
 		/**
 		 * Set the weight of a node
 		 * @param weight
