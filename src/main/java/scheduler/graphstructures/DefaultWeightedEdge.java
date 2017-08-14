@@ -1,7 +1,5 @@
 package scheduler.graphstructures;
 
-import scheduler.basicmilestone.Vertex;
-
 /**
  * An edge with weight 
  */

@@ -1,6 +1,6 @@
 package scheduler.astar;
 
-import scheduler.basicmilestone.Vertex;
+import scheduler.graphstructures.Vertex;
 
 /**
  * Task's start/end time on a processor in a schedule

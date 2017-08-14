@@ -8,10 +8,10 @@ import io.OutputWriter;
 import scheduler.astar.AStar;
 import scheduler.astar.AStarParallelised;
 import scheduler.astar.Solution;
-import scheduler.basicmilestone.Schedule;
-import scheduler.basicmilestone.ScheduleGenerator;
-import scheduler.basicmilestone.Sorter;
-import scheduler.basicmilestone.Vertex;
+import scheduler.graphstructures.Vertex;
+import scheduler.topologicalsort.Schedule;
+import scheduler.topologicalsort.ScheduleGenerator;
+import scheduler.topologicalsort.Sorter;
 import visualization.Visualizer;
 import visualization.gantt.Gantt;
 

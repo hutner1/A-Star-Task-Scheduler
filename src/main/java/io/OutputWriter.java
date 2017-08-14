@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import scheduler.astar.Solution;
-import scheduler.basicmilestone.Schedule;
-import scheduler.basicmilestone.Vertex;
 import scheduler.dfsbranchandbound.SolutionGenerator;
+import scheduler.graphstructures.Vertex;
+import scheduler.topologicalsort.Schedule;
 
 /**
  * Writes optimal solution to a file

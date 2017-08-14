@@ -6,10 +6,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-
-import scheduler.basicmilestone.Vertex;
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
 import scheduler.graphstructures.DefaultWeightedEdge;
+import scheduler.graphstructures.Vertex;
 
 /**
  * Represent partial/complete solution

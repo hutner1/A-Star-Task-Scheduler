@@ -1,4 +1,4 @@
-package scheduler.basicmilestone;
+package scheduler.topologicalsort;
 
 /**
  * This class stores the information needed

@@ -21,9 +21,9 @@ import org.graphstream.ui.view.ViewerPipe;
 import scheduler.astar.ProcessInfo;
 import scheduler.astar.Processor;
 import scheduler.astar.Solution;
-import scheduler.basicmilestone.Vertex;
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
 import scheduler.graphstructures.DefaultWeightedEdge;
+import scheduler.graphstructures.Vertex;
 
 
 public class Visualizer {

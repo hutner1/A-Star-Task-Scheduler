@@ -2,8 +2,6 @@ package scheduler.graphstructures;
 
 import java.util.ArrayList;
 
-import scheduler.basicmilestone.Vertex;
-
 /**
  * A Directed Graph with edge weights 
  */

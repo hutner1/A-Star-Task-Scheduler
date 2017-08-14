@@ -1,4 +1,4 @@
-package scheduler.basicmilestone;
+package scheduler.topologicalsort;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -7,6 +7,7 @@ import java.util.List;
 
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
 import scheduler.graphstructures.DefaultWeightedEdge;
+import scheduler.graphstructures.Vertex;
 
 /**
  * This class creates a topological sort of a graph of 

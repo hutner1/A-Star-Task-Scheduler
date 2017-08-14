@@ -8,8 +8,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import scheduler.basicmilestone.Vertex;
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
+import scheduler.graphstructures.Vertex;
 
 /**
  * Reads an input file for a task digraph and stores the digraph and order information

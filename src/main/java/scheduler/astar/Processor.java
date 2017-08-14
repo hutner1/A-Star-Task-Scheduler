@@ -3,7 +3,7 @@ package scheduler.astar;
 import java.util.ArrayList;
 import java.util.List;
 
-import scheduler.basicmilestone.Vertex;
+import scheduler.graphstructures.Vertex;
 
 /**
  * Processor containing tasks ran on it 
