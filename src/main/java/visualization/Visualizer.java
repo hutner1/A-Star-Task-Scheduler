@@ -29,7 +29,10 @@ import scheduler.graphstructures.DefaultDirectedWeightedGraph;
 import scheduler.graphstructures.DefaultWeightedEdge;
 import scheduler.graphstructures.Vertex;
 
-
+/**
+ * This class visualize the scheduling process with GraphStream
+ * 
+ */
 public class Visualizer {
 
 	//Set the style for the graph using CSS
@@ -56,14 +59,15 @@ public class Visualizer {
 	private DefaultDirectedWeightedGraph _DAG;
 	private HashMap<Integer, Processor> _processorWithSolution = null;
 
-
+	
 	public Visualizer(){
+		
+		//Creates the graph and initializes its attributes
 		System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
 		_graph = new SingleGraph("Input Graph");
 		_graph.addAttribute("ui.quality");
 		_graph.addAttribute("ui.antialias");
 		_graph.setAttribute("stylesheet", _stylesheet);
-
 	}
 
 
@@ -71,16 +75,22 @@ public class Visualizer {
 	 * This adds the nodes and edges from the directed weight graph into the graph stream
 	 * data structure
 	 * 
-	 * @param DAG the directed weighted graph input
+	 * @param DAG The directed weighted graph input
 	 * 
 	 */
 	public void add(DefaultDirectedWeightedGraph DAG) {
 
 		_DAG = DAG;
+		
+		//Add all nodes of the DAG to the graph
 		for(Vertex vertex : DAG.vertexSet()){
 			Node n =_graph.addNode(vertex.getName());
+			
+			//Set the size of the nodes to be bigger if they are source node or a leaf
 			if(DAG.inDegreeOf(vertex) == 0){
 				n.addAttribute("ui.style", " size:40px;");
+				
+				//Allocate the position of the source node on the graph
 				n.setAttribute("y", 300);
 				n.setAttribute("x", 0);
 
@@ -90,10 +100,13 @@ public class Visualizer {
 			} else {
 				n.addAttribute("ui.style", " size:25px;");
 			}
+			
+			//Labels the node with their name
 			n.addAttribute("ui.label", n.getId());
 		}
 
 
+		//Add all edges of the DAG to the graph
 		for(DefaultWeightedEdge edge : DAG.edgeSet()){
 			String source = DAG.getEdgeSource(edge).getName();
 			String target = DAG.getEdgeTarget(edge).getName();
@@ -107,24 +120,22 @@ public class Visualizer {
 	/**
 	 * 
 	 * This method displays the graph onto the screen, and also add action listeners
-	 * to mouse action (not yet implemented)
+	 * to node click action 
 	 * 
 	 */
 	public void displayGraph() {
+		
+		//Displays the graph
 		_viewer = _graph.display();
-    
-	    // hides the window when it's closed so that it doesn't stop the program
-	    // TODO proper hiding _viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);
 
 		View view = _viewer.getDefaultView();
 
-		// We connect back the viewer to the graph, 
-		// the graph becomes a sink for the viewer. 
-		// We also install us as a viewer listener to 
-		// intercept the graphic events. 
+		//Connect back the viewer to the graph, the graph becomes a sink for the viewer. 
 		ViewerPipe fromViewer = _viewer.newViewerPipe();
-		NodeClickListener clisten = new NodeClickListener(fromViewer, view, _graph); 
-		fromViewer.addViewerListener((ViewerListener) clisten); 
+		
+		//Create and add an viewer listener to intercept node click events
+		NodeClickListener nodeClickListener = new NodeClickListener(fromViewer, view, _graph); 
+		fromViewer.addViewerListener((ViewerListener) nodeClickListener); 
 
 	}
 
@@ -132,7 +143,7 @@ public class Visualizer {
 	 * Updates the status/ visual of the graph based on the current best schedule.
 	 * The color of nodes changes accordingly to the processor that it is assigned to
 	 * 
-	 * @param currentBestSol the current best solution schedule from the A* algorithm
+	 * @param currentBestSol The current best solution schedule from the A* algorithm
 	 */
 	public void UpdateGraph(Solution currentBestSol) {
 
@@ -144,6 +155,7 @@ public class Visualizer {
 			_graph.getNode(vertex.getName()).setAttribute("ui.style", "fill-color:#"+ "000000" +";");
 		}
 
+		//Set the color for each node/task in the current schedule
 		for(int i = 1; i < _processorWithSolution.keySet().size() + 1; i++){
 			List<ProcessInfo> processes = _processorWithSolution.get(i).getProcesses();
 			for(ProcessInfo processInfo : processes){
@@ -160,7 +172,7 @@ public class Visualizer {
 	 * Get the color code
 	 * 
 	 * @param index the index used to retrieve the color code from the array
-	 * @return String the color code
+	 * @return String The color code
 	 */
 	public String getColor(int index){
 		String[] colors = {	"ffffff", "e74c3c", "FFC300", "1d8348", "8e44ad", "2874a6", 

@@ -14,9 +14,8 @@ import org.graphstream.ui.view.ViewerPipe;
 
 /**
  * Listener to handle click of nodes. 
- * The custom graph stream library uses a tight loop to pump mouse click events 
- * to the graph stream lib, but we take a signal based approach to this by using hte native java  
- * mouse listener, and on each event trigger the pump to the graph stream library 
+ * Instead of using a tight loop to pump mouse click events, a signal based approach is used instead.
+ * Prints out the name of the node upon click event on a specific node.
  * 
  */ 
 public class NodeClickListener implements ViewerListener , MouseInputListener{  
@@ -26,62 +25,56 @@ public class NodeClickListener implements ViewerListener , MouseInputListener{
 
 	/**
 	 * Constructor 
-	 * @param _viewerPipe - Viewer Pipe of the graph UI 
-	 * @param _view - View of the current graph in swing 
-	 * @param g - graph object for the current graph in use 
+	 * @param _viewerPipe Viewer Pipe of the graph UI 
+	 * @param _view View of the current graph
+	 * @param _graph The current Graph displayed/ in used
 	 */ 
 	public NodeClickListener(ViewerPipe viewerPipe, View view, Graph graph) { 
 		this._viewerPipe = viewerPipe; 
 		this._view = view; 
 		this._graph = graph; 
-		// Keep piping back while grph is out to hook mouse clicks 
 		this._view.addMouseListener(this); 
 
 	} 
 
-
 	/**
-	 * Close the view when graph is no longer needed and detach all listeners 
-	 * @param id - inherited by interface, not used
+	 * Detach all listeners if the graph is closed
+	 * @param id Unused parameter inherited from the interface
 	 */ 
 	public void viewClosed(String id) { 
 		_view.removeMouseListener(this); 
 
 	} 
-	
+
 	/**
 	 * Displays the node/task information once clicked
-	 * @param id - id string of the node
+	 * @param id Name of the node
 	 */ 
 	public void buttonPushed(String id) { 
-
+		
+		//Prints out the node name
 		System.out.println("Button pushed on node "+id); 
 		Node n = _graph.getNode(id); 
 
 	} 
 
-
-
 	@Override 
 	/**
-	 * Mouse release event to pump on release 
+	 * Pump the action on mouse release event
 	 */ 
 	public void mouseReleased(MouseEvent e) { 
-		
+
 		_viewerPipe.pump(); 
 
 	} 
-
 
 	/**
 	 * Inherited function unused 
 	 */ 
 	public void buttonReleased(String id) { 
 		// TODO Auto-generated method stub 
-		
+
 	} 
-
-
 
 	/**
 	 * Inherited function unused 
