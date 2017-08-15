@@ -39,23 +39,28 @@ public class InputParser {
 	 * fully parse the required information from the command line input
 	 */
 	public void parse() {
-
-		checkInputLength();
+		
+		checkInputLengthAndHelp();
 		parseFileName();
 		parseProcessors();
 		parseOptions();
 
 	}
-
+	
 	/**
 	 * This method checks to see whether or not the command line input has the required arguments,
-	 * and terminates execution if it is not.
+	 * and terminates execution if it is not. If the input argument is "--help" instead, print
+	 * out the help message.
 	 */
-	private void checkInputLength() {
-		//Error for when no arguments are supplied - Hunter
-		if(_input.length < 2) {
-			ErrorMessenger.reportError("Error! Please follow the correct input format");
+	private void checkInputLengthAndHelp() {
+		
+		if((_input.length == 1) && (_input[0].equals("--help"))) {
+			ErrorMessenger.showHelpMessage();			
+		} else if(_input.length < 2){
+			//Error for when no arguments are supplied
+			ErrorMessenger.reportError("Error! Please follow the correct input format!");
 		}
+		
 	}
 
 	/**
