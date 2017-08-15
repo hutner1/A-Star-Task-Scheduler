@@ -176,7 +176,7 @@ public class Visualizer {
 	 */
 	public String getColor(int index){
 		String[] colors = {	"ffffff", "e74c3c", "FFC300", "1d8348", "8e44ad", "2874a6", 
-				"e67e22", "5d6d7e", "45b39d", "aed6f1", "f4f6f7", "cc5c92", "f0a0a0"};
+				"e67e22", "5d6d7e", "45b39d", "aed6f1", "d9fc67", "cc5c92", "f0a0a0"};
 
 		return colors[index];
 	}
