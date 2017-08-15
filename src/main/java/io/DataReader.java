@@ -51,9 +51,17 @@ public class DataReader {
 			String text = _reader.readLine();
 			String[] headerArray = text.split("\"");
 			_digraphName = headerArray[1];
+					
+			// move to next line to check if the line is not needed
+			text = _reader.readLine();
+			
+			// Gracefully takes care of unneeded lines
+			while(!text.trim().substring(text.trim().length() - 1).equals(";")||!text.contains("[Weight=")){
+				text = _reader.readLine();
+			}
 
-			//Read the input file until last line reached 
-			while ((text = _reader.readLine()) != null && !(text.equals("}")) ) {
+			// Read the input file until last line reached 
+			while (text != null && !(text.equals("}")) ) {
 				//add input file's entries in order so that output file is just input file with extra attributes
 				_verticesAndEdgesInfo.add(text);
 
@@ -111,12 +119,13 @@ public class DataReader {
 					}
 					_verticesAndEdgesRead.add(vertexString);
 				}
-
+				text = _reader.readLine();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+
 	
 	/**
 	 * Resets the data in the stored ArrayLists and Graphs

@@ -34,9 +34,6 @@ public class AStar {
 	 * Execute A* algorithm
 	 * @return
 	 */
-	protected boolean runSequentially() {
-		return true; //for sequential solution only
-	}
 	public Solution execute() {
 
 		//Create initial solution and add to priority queue

@@ -22,15 +22,9 @@ public class AStarParallelised extends AStar{
 		super(graph, numberOfProcessors, Visualizer);
 		this._numberOfThreads = numberOfThreads;
 	}
-	@Override
-	protected boolean runSequentially() {
-		return _solutionSpace.size() < (_numberOfThreads + 1000);
-	}
+
 	@Override
 	public Solution execute() {
-		if (runSequentially()) {
-			return super.execute();  //If solution was found in non-parallel search, return
-		}
 		return executeInParallel();
 	}
 
@@ -41,46 +35,21 @@ public class AStarParallelised extends AStar{
 	 */
 	@SuppressWarnings("unchecked")
 	protected Solution executeInParallel() {
-		//Fields to loop through solutions
-		Solution sol = null;
-		int index = 0;
-		//Make queues that store execution threads
-		PriorityQueue<Solution>[] threadQueue = new PriorityQueue[_numberOfThreads];
 
-		for (int i = 0; i < _numberOfThreads ; i++) {
-			threadQueue[i] = new PriorityQueue<Solution>(1000);
-		}
 
-		//For one thread, just add everything to the first queue
-		if (_numberOfThreads == 1) {
-			threadQueue[0] = _solutionSpace;
-		} else {
-			while ((sol = _solutionSpace.poll()) != null) {
-				threadQueue[index].add(sol);
-				index++;
 
-				if (index == _numberOfThreads) { //loop back to zero for equal loading (hopefully)
-					index = 0;
-				}
-			}
-		}
-
-		_solutionSpace = null;
-
-		//Start threading process. Index 1 is used as Index 0 is reserved for the main thread
-		for (int i = 1; i < _numberOfThreads; i++) {
-			AStarThreads[i] = new AStarThread(i, _graph, threadQueue[i], _closedSolutions, _numberOfProcessors, _visualizer);
+		//Start threading process. 
+		for (int i = 0; i < _numberOfThreads; i++) {
+			AStarThreads[i] = new AStarThread(i, _graph, _solutionSpace, _closedSolutions, _numberOfProcessors, _visualizer);
 			//Add the custom thread with all the AStar fields into a thread
 			threads[i] = new Thread(AStarThreads[i]);
 			threads[i].run();
 		}
 
-		//Initialise main thread (read all about it in SOFTENG 370)
-		AStarThreads[0] = new AStarThread(0, _graph, threadQueue[0], _closedSolutions, _numberOfProcessors, _visualizer);
-		AStarThreads[0].run();
+
 
 		//Try to join threads once the threads have finished
-		for (int i = 1; i <_numberOfThreads; i++) {
+		for (int i = 0; i <_numberOfThreads; i++) {
 			try {
 				threads[i].join();
 			} catch (Exception e) {
