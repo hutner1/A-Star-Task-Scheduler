@@ -2,6 +2,8 @@ package visualization;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.event.MouseInputListener; 
 
@@ -10,7 +12,10 @@ import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.ui.view.View;
 import org.graphstream.ui.view.ViewerListener;
-import org.graphstream.ui.view.ViewerPipe; 
+import org.graphstream.ui.view.ViewerPipe;
+
+import scheduler.astar.ProcessInfo;
+import scheduler.astar.Processor; 
 
 /**
  * Listener to handle click of nodes. 
@@ -22,6 +27,7 @@ public class NodeClickListener implements ViewerListener , MouseInputListener{
 	private ViewerPipe _viewerPipe = null; 
 	private View _view = null; 
 	private Graph _graph = null; 
+	private HashMap<String, List<Object>> _scheduledVertices = null;
 
 	/**
 	 * Constructor 
@@ -51,11 +57,29 @@ public class NodeClickListener implements ViewerListener , MouseInputListener{
 	 * @param id Name of the node
 	 */ 
 	public void buttonPushed(String id) { 
-		
+
 		//Prints out the node name
-		System.out.println("Button pushed on node "+id); 
+		/*System.out.println("Button pushed on node "+id)*/; 
 		Node n = _graph.getNode(id); 
 
+		if(_scheduledVertices == null){
+			
+			System.out.println("No schedule found"); 
+			
+		} else if(n.getAttribute("ui.style").toString().contains("fill-color:#000000;")){
+			
+			System.out.println("This task is not scheduled yet");
+			
+		} else {
+			
+			List<Object> scheduleInfo = _scheduledVertices.get(id);
+			System.out.println("");
+			System.out.println("Task: "+id);
+			System.out.println("Processor number: " + (int) scheduleInfo.get(0));
+			System.out.println("Start time: " + ((ProcessInfo) scheduleInfo.get(1)).startTime());
+			System.out.println("End time: " + ((ProcessInfo) scheduleInfo.get(1)).endTime());
+			
+		}
 	} 
 
 	@Override 
@@ -66,6 +90,10 @@ public class NodeClickListener implements ViewerListener , MouseInputListener{
 
 		_viewerPipe.pump(); 
 
+	} 
+
+	public void setCurrentSolution(HashMap<String, List<Object>> scheduledVertices) { 
+		_scheduledVertices = scheduledVertices;
 	} 
 
 	/**

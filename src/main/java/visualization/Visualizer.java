@@ -57,7 +57,7 @@ public class Visualizer {
 	private Graph _graph;
 	private Viewer _viewer;
 	private DefaultDirectedWeightedGraph _DAG;
-	private HashMap<Integer, Processor> _processorWithSolution = null;
+	private NodeClickListener _nodeClickListener;
 
 	
 	public Visualizer(){
@@ -68,6 +68,7 @@ public class Visualizer {
 		_graph.addAttribute("ui.quality");
 		_graph.addAttribute("ui.antialias");
 		_graph.setAttribute("stylesheet", _stylesheet);
+		_graph.addAttribute("ui.title", "Scheduling Visualization");
 	}
 
 
@@ -134,8 +135,8 @@ public class Visualizer {
 		ViewerPipe fromViewer = _viewer.newViewerPipe();
 		
 		//Create and add an viewer listener to intercept node click events
-		NodeClickListener nodeClickListener = new NodeClickListener(fromViewer, view, _graph); 
-		fromViewer.addViewerListener((ViewerListener) nodeClickListener); 
+		_nodeClickListener = new NodeClickListener(fromViewer, view, _graph); 
+		fromViewer.addViewerListener((ViewerListener) _nodeClickListener); 
 
 	}
 
@@ -148,7 +149,9 @@ public class Visualizer {
 	public void UpdateGraph(Solution currentBestSol) {
 
 		//Get the hash map of the processes
-		_processorWithSolution = currentBestSol.getProcess();
+		HashMap<Integer, Processor> processorWithSolution = currentBestSol.getProcess();
+		HashMap<String, List<Object>> scheduledVertices = new HashMap<String, List<Object>>();
+		
 
 		//Set all nodes to black to reset previous visualization
 		for(Vertex vertex : _DAG.vertexSet()){
@@ -156,14 +159,21 @@ public class Visualizer {
 		}
 
 		//Set the color for each node/task in the current schedule
-		for(int i = 1; i < _processorWithSolution.keySet().size() + 1; i++){
-			List<ProcessInfo> processes = _processorWithSolution.get(i).getProcesses();
+		for(int i = 1; i < processorWithSolution.keySet().size() + 1; i++){
+			List<ProcessInfo> processes = processorWithSolution.get(i).getProcesses();
 			for(ProcessInfo processInfo : processes){
 				String colorCode = getColor(i);
-
-				_graph.getNode(processInfo.getVertex().getName()).setAttribute("ui.style", "fill-color:#"+ colorCode +";");
+				String vertexName = processInfo.getVertex().getName();
+				_graph.getNode(vertexName).setAttribute("ui.style", "fill-color:#"+ colorCode +";");
+				
+				List<Object> schedule = new ArrayList<Object>();
+				schedule.add(i);
+				schedule.add(processInfo);
+				scheduledVertices.put(vertexName, schedule);
+				
 			}
 		}
+		_nodeClickListener.setCurrentSolution(scheduledVertices);
 
 	}
 
