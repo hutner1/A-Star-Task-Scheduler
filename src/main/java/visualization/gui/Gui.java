@@ -4,6 +4,7 @@ package visualization.gui;
 
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -15,11 +16,14 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import org.graphstream.ui.view.View;
+
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
 import visualization.Visualizer;
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.BorderLayout;
 
@@ -28,6 +32,7 @@ public class Gui {
 	public JFrame frame;
 	protected JPanel _cards;
 	protected JPanel _graphPage;
+	private JPanel panel;
 
 	/**
 	 * Launch the application.
@@ -67,13 +72,17 @@ public class Gui {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 600, 450);
+		frame.setBounds(100, 100, 900, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		
+		panel = new JPanel();
+		panel.setBounds(20, 35, 680, 520);
+
+		frame.getContentPane().add(panel);
 		
 		_cards = new JPanel(new CardLayout());
-		
-		frame.getContentPane().add(_cards, BorderLayout.CENTER);
-		
+		panel.add(_cards);
 		_graphPage = new GraphPage(_visualizer);
 		_cards.add(_graphPage, "name_3915657358581");
 		
@@ -85,4 +94,8 @@ public class Gui {
 		
 	}
 	
+
+
 }
+
+

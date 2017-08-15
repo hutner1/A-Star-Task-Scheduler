@@ -50,6 +50,7 @@ public class Visualizer {
 
     		"node{" +
     		"text-size:16px;"+
+    		"size:30px;"+
     		"text-color:rgb(255,255,255);"+
     		"stroke-mode:plain;"+
     		"stroke-width:2px;"+
