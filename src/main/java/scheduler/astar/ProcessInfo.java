@@ -27,5 +27,9 @@ public class ProcessInfo {
 		return _vertex;
 	}
 	
+	public String getTaskName() {
+		return _vertex.getName();
+	}
+	
 	
 }

@@ -10,6 +10,7 @@ import scheduler.astar.AStarParallelised;
 import scheduler.astar.Solution;
 import scheduler.graphstructures.Vertex;
 import visualization.Visualizer;
+import visualization.gantt.Gantt;
 
 /**
  * This is the main class for the task scheduler program.
@@ -34,6 +35,7 @@ public class Main {
 				graphVisualizer = new Visualizer();
 				graphVisualizer.add(dataReader.getGraph());
 				graphVisualizer.displayGraph();
+				
 			}
 			
 			//Create the optimal schedule
@@ -48,6 +50,11 @@ public class Main {
 			long totalTime = endTime - startTime;
 			System.out.println("\n Took " + totalTime/1000000 + "ms" + " : " + totalTime/1000000000 + " seconds");
 			
+			if(inputParser.isVisualise() == true){
+				Gantt gantt = new Gantt("Test", optimalSolution);
+				gantt.launch();
+				
+			}
 		}
 	}
 }
