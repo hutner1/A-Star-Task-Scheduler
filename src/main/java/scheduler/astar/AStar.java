@@ -11,6 +11,7 @@ import scheduler.graphstructures.DefaultDirectedWeightedGraph;
 import scheduler.graphstructures.DefaultWeightedEdge;
 import scheduler.graphstructures.Vertex;
 import visualization.Visualizer;
+import visualization.gui.Gui;
 
 /**
  * AStar creates optimal solution with A*
@@ -21,13 +22,15 @@ public class AStar {
 	protected PriorityQueue<Solution> _solutionSpace;
 	protected Set<Solution> _closedSolutions;
 	protected Visualizer _visualizer;
+	protected Gui _gui;
 	
-	public AStar(DefaultDirectedWeightedGraph graph, int numberOfProcessors, Visualizer graphVisualizer) {
+	public AStar(DefaultDirectedWeightedGraph graph, int numberOfProcessors, Visualizer graphVisualizer, Gui gui) {
 		_graph = graph;
 		_numberOfProcessors = numberOfProcessors;
 		_solutionSpace = new PriorityQueue<Solution>();
 		_closedSolutions = new CopyOnWriteArraySet<Solution>(); //threadsafe set
 		_visualizer = graphVisualizer;
+		_gui = gui;
 	}
 
 	/**
@@ -91,6 +94,9 @@ public class AStar {
 				
 				if(_visualizer != null){
 					_visualizer.UpdateGraph(bestCurrentSolution);
+				}
+				if(_gui!=null){
+					_gui.updateGraphGui();
 				}
 
 				

@@ -17,6 +17,7 @@ import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.stream.ProxyPipe;
 import org.graphstream.stream.SinkAdapter;
 import org.graphstream.ui.layout.HierarchicalLayout;
+import org.graphstream.ui.swingViewer.ViewPanel;
 import org.graphstream.ui.view.View;
 import org.graphstream.ui.view.Viewer;
 import org.graphstream.ui.view.ViewerListener;
@@ -123,7 +124,7 @@ public class Visualizer {
 	 * to node click action 
 	 * 
 	 */
-	public void displayGraph() {
+	public View displayGraph() {
 		
 		//Displays the graph
 		_viewer = _graph.display();
@@ -136,9 +137,15 @@ public class Visualizer {
 		//Create and add an viewer listener to intercept node click events
 		NodeClickListener nodeClickListener = new NodeClickListener(fromViewer, view, _graph); 
 		fromViewer.addViewerListener((ViewerListener) nodeClickListener); 
-
+		return view;
 	}
-
+	public ViewPanel displayGraphGUI() {
+		_viewer = new Viewer(_graph, Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
+		ViewPanel viewPanel = _viewer.addDefaultView(false);
+		_viewer.enableAutoLayout();
+		/*view.setViewCenter(2, 3, 4);*/
+		return viewPanel;
+	}
 	/**
 	 * Updates the status/ visual of the graph based on the current best schedule.
 	 * The color of nodes changes accordingly to the processor that it is assigned to
