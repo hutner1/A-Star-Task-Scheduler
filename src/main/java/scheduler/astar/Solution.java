@@ -123,7 +123,9 @@ public class Solution implements Comparable<Solution>{
 
 		if (maxThis < maxOther) {
 			return -1;
-		}  else {
+		}  else if (maxThis == maxOther) {
+			return 0;
+		} else {
 			return 1;
 		}
 	}
