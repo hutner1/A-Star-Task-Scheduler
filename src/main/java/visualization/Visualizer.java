@@ -145,7 +145,7 @@ public class Visualizer {
 		_nodeClickListener = new NodeClickListener(fromViewer, view, _graph); 
 		fromViewer.addViewerListener((ViewerListener) _nodeClickListener); 
 
-
+		return view;
 	}
 	
 	/**
