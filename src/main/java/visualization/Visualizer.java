@@ -49,6 +49,7 @@ public class Visualizer {
 			"}" +
 
     		"node{" +
+    		"size:20px;"+
     		"text-size:16px;"+
     		"text-color:rgb(255,255,255);"+
     		"stroke-mode:plain;"+
@@ -125,11 +126,14 @@ public class Visualizer {
 	 * 
 	 */
 	public View displayGraph() {
-		
-		//Displays the graph
-		_viewer = _graph.display();
 
-		View view = _viewer.getDefaultView();
+
+		//Displays the graph
+		_viewer = new Viewer(_graph,
+                Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
+
+		View view = _viewer.addDefaultView(false);
+		_viewer.enableAutoLayout();
 
 		//Connect back the viewer to the graph, the graph becomes a sink for the viewer. 
 		ViewerPipe fromViewer = _viewer.newViewerPipe();

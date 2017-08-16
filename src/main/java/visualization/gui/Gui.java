@@ -22,12 +22,14 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 
 public class Gui {
 	protected Visualizer _visualizer;
 	public JFrame frame;
 	protected JPanel _cards;
 	protected JPanel _graphPage;
+	private JPanel panel;
 
 	/**
 	 * Launch the application.
@@ -67,12 +69,18 @@ public class Gui {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 600, 450);
+		frame.setBounds(100, 100, 850, 580);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		
+		panel = new JPanel();
+		panel.setBounds(30, 15, 600, 500);
+		frame.getContentPane().add(panel);
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		_cards = new JPanel(new CardLayout());
-		
-		frame.getContentPane().add(_cards, BorderLayout.CENTER);
+		panel.add(_cards);
+		_cards.setPreferredSize(new Dimension(600,500));
 		
 		_graphPage = new GraphPage(_visualizer);
 		_cards.add(_graphPage, "name_3915657358581");
