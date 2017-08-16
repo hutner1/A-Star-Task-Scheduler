@@ -74,14 +74,28 @@ public class Gui {
 
 		_graphPage = new GraphPage(_visualizer);
 		_graphPage.setPreferredSize(new Dimension(600,530));
-		_cards.add(_graphPage, "name_3915657358581");
-
+		_cards.add(_graphPage, "Graph");
+		JPanel gantt = new JPanel();
+		
+		_cards.add(gantt,"Gantt");
+		
+		CardLayout cardLayout = (CardLayout) _cards.getLayout();
 		JButton btnNewButton = new JButton("Tree Graph");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cardLayout.show(_cards, "Graph");
+			}
+		});
 		btnNewButton.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
 		btnNewButton.setBounds(671, 24, 133, 45);
 		frame.getContentPane().add(btnNewButton);
 
 		JButton btnGanttChart = new JButton("Gantt Chart");
+		btnGanttChart.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cardLayout.show(_cards, "Gantt");
+			}
+		});
 		btnGanttChart.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
 		btnGanttChart.setBounds(671, 82, 133, 45);
 		frame.getContentPane().add(btnGanttChart);
