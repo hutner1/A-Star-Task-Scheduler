@@ -60,4 +60,5 @@ public class Vertex {
 		public void setBottomLevel(int val) {
 			_bottomLvl = val;
 		}
+		
 }
