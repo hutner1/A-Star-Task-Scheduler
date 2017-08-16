@@ -38,7 +38,7 @@ public class Main {
 			if(inputParser.isVisualise() == true){
 				graphVisualizer = new Visualizer();
 				graphVisualizer.add(dataReader.getGraph());
-				graphVisualizer.displayGraph();
+				//graphVisualizer.displayGraph();
 				final Visualizer graphVisualizer2 = graphVisualizer;
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override

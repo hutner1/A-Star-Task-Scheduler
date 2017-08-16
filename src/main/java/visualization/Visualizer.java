@@ -51,6 +51,7 @@ public class Visualizer {
     		"node{" +
     		"size:20px;"+
     		"text-size:16px;"+
+    		"size:30px;"+
     		"text-color:rgb(255,255,255);"+
     		"stroke-mode:plain;"+
     		"stroke-width:2px;"+
@@ -143,13 +144,7 @@ public class Visualizer {
 		fromViewer.addViewerListener((ViewerListener) nodeClickListener); 
 		return view;
 	}
-	public ViewPanel displayGraphGUI() {
-		_viewer = new Viewer(_graph, Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
-		ViewPanel viewPanel = _viewer.addDefaultView(false);
-		_viewer.enableAutoLayout();
-		/*view.setViewCenter(2, 3, 4);*/
-		return viewPanel;
-	}
+	
 	/**
 	 * Updates the status/ visual of the graph based on the current best schedule.
 	 * The color of nodes changes accordingly to the processor that it is assigned to
