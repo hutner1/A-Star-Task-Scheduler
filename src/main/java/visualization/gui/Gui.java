@@ -36,11 +36,8 @@ public class Gui {
 	private JPanel panel;
 
 	/**
-	 * Launch the application.
-	 * @throws UnsupportedLookAndFeelException 
-	 * @throws IllegalAccessException 
-	 * @throws InstantiationException 
-	 * @throws ClassNotFoundException 
+	 *This part is there for just testing reason.
+	 *This is needed to use WindowsBuilder which is a Swing Builder.
 	 */
 	public static void main(String[] agrs) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException{
 		 UIManager.setLookAndFeel(
@@ -62,8 +59,8 @@ public class Gui {
 	/**
 	 * Create the application.
 	 */
-	public Gui(Visualizer DAG) {
-		_visualizer = DAG;
+	public Gui(Visualizer visualizer) {
+		_visualizer = visualizer;
 		initialize();
 		
 	}
@@ -101,6 +98,11 @@ public class Gui {
 		frame.getContentPane().add(btnGanttChart);
 		
 		JButton btnClose = new JButton("Close");
+		btnClose.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frame.dispose();
+			}
+		});
 		btnClose.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
 		btnClose.setBounds(671, 470, 133, 45);
 		frame.getContentPane().add(btnClose);
