@@ -125,7 +125,7 @@ public class Visualizer {
 	 * to node click action 
 	 * 
 	 */
-	public View displayGraph() {
+	public ViewPanel displayGraph() {
 		_viewer = new Viewer(_graph, Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
 		ViewPanel view = _viewer.addDefaultView(false);
 		_viewer.enableAutoLayout();

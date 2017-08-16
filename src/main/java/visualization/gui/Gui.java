@@ -72,19 +72,31 @@ public class Gui {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 900, 600);
+		frame.setBounds(100, 100, 910, 610);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		panel = new JPanel();
-		panel.setBounds(20, 35, 680, 520);
-
-		frame.getContentPane().add(panel);
-		
 		_cards = new JPanel(new CardLayout());
-		panel.add(_cards);
+		_cards.setBounds(25, 20, 693, 530);
+		frame.getContentPane().add(_cards);
 		_graphPage = new GraphPage(_visualizer);
+		_graphPage.setPreferredSize(new Dimension(600,530));
 		_cards.add(_graphPage, "name_3915657358581");
+		
+		JButton btnNewButton = new JButton("Tree Graph");
+		btnNewButton.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
+		btnNewButton.setBounds(741, 20, 133, 45);
+		frame.getContentPane().add(btnNewButton);
+		
+		JButton btnGanttChart = new JButton("Gantt Chart");
+		btnGanttChart.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
+		btnGanttChart.setBounds(741, 76, 133, 45);
+		frame.getContentPane().add(btnGanttChart);
+		
+		JButton btnClose = new JButton("Close");
+		btnClose.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
+		btnClose.setBounds(741, 505, 133, 45);
+		frame.getContentPane().add(btnClose);
 		
 	}
 	
@@ -93,9 +105,6 @@ public class Gui {
 		_graphPage.repaint();
 		
 	}
-	
-
-
 }
 
 
