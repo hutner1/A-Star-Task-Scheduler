@@ -1,14 +1,9 @@
 package visualization.gui;
 
-
-
-import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -16,16 +11,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import org.graphstream.ui.view.View;
-
-import scheduler.graphstructures.DefaultDirectedWeightedGraph;
 import visualization.Visualizer;
 
 import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
 public class Gui {
@@ -40,8 +29,8 @@ public class Gui {
 	 *This is needed to use WindowsBuilder which is a Swing Builder.
 	 */
 	public static void main(String[] agrs) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException{
-		 UIManager.setLookAndFeel(
-		            UIManager.getSystemLookAndFeelClassName());
+		UIManager.setLookAndFeel(
+				UIManager.getSystemLookAndFeelClassName());
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -51,7 +40,7 @@ public class Gui {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				
+
 			}
 		});
 	}
@@ -62,7 +51,7 @@ public class Gui {
 	public Gui(Visualizer visualizer) {
 		_visualizer = visualizer;
 		initialize();
-		
+
 	}
 
 	/**
@@ -73,30 +62,30 @@ public class Gui {
 		frame.setBounds(100, 100, 850, 580);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
+
 		panel = new JPanel();
 		panel.setBounds(30, 15, 600, 500);
 		frame.getContentPane().add(panel);
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
+
 		_cards = new JPanel(new CardLayout());
 		panel.add(_cards);
 		_cards.setPreferredSize(new Dimension(600,500));
-		
+
 		_graphPage = new GraphPage(_visualizer);
 		_graphPage.setPreferredSize(new Dimension(600,530));
 		_cards.add(_graphPage, "name_3915657358581");
-		
+
 		JButton btnNewButton = new JButton("Tree Graph");
 		btnNewButton.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
 		btnNewButton.setBounds(671, 24, 133, 45);
 		frame.getContentPane().add(btnNewButton);
-		
+
 		JButton btnGanttChart = new JButton("Gantt Chart");
 		btnGanttChart.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
 		btnGanttChart.setBounds(671, 82, 133, 45);
 		frame.getContentPane().add(btnGanttChart);
-		
+
 		JButton btnClose = new JButton("Close");
 		btnClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -106,13 +95,13 @@ public class Gui {
 		btnClose.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
 		btnClose.setBounds(671, 470, 133, 45);
 		frame.getContentPane().add(btnClose);
-		
+
 	}
-	
+
 	public void updateGraphGui(){
 		_graphPage.revalidate();
 		_graphPage.repaint();
-		
+
 	}
 }
 
