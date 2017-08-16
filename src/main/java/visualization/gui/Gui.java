@@ -92,17 +92,17 @@ public class Gui {
 		
 		JButton btnNewButton = new JButton("Tree Graph");
 		btnNewButton.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
-		btnNewButton.setBounds(741, 20, 133, 45);
+		btnNewButton.setBounds(671, 24, 133, 45);
 		frame.getContentPane().add(btnNewButton);
 		
 		JButton btnGanttChart = new JButton("Gantt Chart");
 		btnGanttChart.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
-		btnGanttChart.setBounds(741, 76, 133, 45);
+		btnGanttChart.setBounds(671, 82, 133, 45);
 		frame.getContentPane().add(btnGanttChart);
 		
 		JButton btnClose = new JButton("Close");
 		btnClose.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
-		btnClose.setBounds(741, 505, 133, 45);
+		btnClose.setBounds(671, 470, 133, 45);
 		frame.getContentPane().add(btnClose);
 		
 	}

@@ -126,14 +126,14 @@ public class Visualizer {
 	 * to node click action 
 	 * 
 	 */
-	public View displayGraph() {
+	public ViewPanel displayGraph() {
 
 
 		//Displays the graph
 		_viewer = new Viewer(_graph,
                 Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
 
-		View view = _viewer.addDefaultView(false);
+		ViewPanel view = _viewer.addDefaultView(false);
 		_viewer.enableAutoLayout();
 
 		//Connect back the viewer to the graph, the graph becomes a sink for the viewer. 
