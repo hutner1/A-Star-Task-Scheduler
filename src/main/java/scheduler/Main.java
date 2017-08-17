@@ -40,9 +40,9 @@ public class Main {
 			if(inputParser.isVisualise() == true){
 				graphVisualizer = new Visualizer();
 				graphVisualizer.add(dataReader.getGraph());
-
-				//graphVisualizer.displayGraph();
 				final Visualizer graphVisualizer2 = graphVisualizer;
+				//graphVisualizer.displayGraph();
+				
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
@@ -56,12 +56,19 @@ public class Main {
 						
 					}
 				});
+				try {
+					TimeUnit.SECONDS.sleep(1);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			//Create the optimal schedule
 			/*Sorter sorter = new Sorter(dataReader.getGraph());
 			List<Vertex> tSort = sorter.generateSort();
 			Schedule sol = ScheduleGenerator.makeSolution(tSort);*/
 			long startTime = System.nanoTime();
+			
 			AStar aStar = new AStar(dataReader.getGraph(),inputParser.getProcessors(), graphVisualizer, gui);
 			Solution optimalSolution = aStar.execute();
 			outWriter.createScheduleAStar(dataReader.getGraphName(),dataReader.getInfo(),dataReader.getRead(),optimalSolution,dataReader.getMapping());
