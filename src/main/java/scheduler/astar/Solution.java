@@ -1,7 +1,6 @@
 package scheduler.astar;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +42,7 @@ public class Solution implements Comparable<Solution>{
 	/**
 	 * The greatest last end time on all processors
 	 */
-	public int getTime() {
+	public int getLastFinishTime() {
 		int maximumTime = 0;
 
 		for (Processor p : _processors.values()) {

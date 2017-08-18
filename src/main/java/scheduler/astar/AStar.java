@@ -35,71 +35,88 @@ public class AStar {
 	 * @return
 	 */
 	public Solution execute() {
-
+		initialiseSolutionSpace();
+		return findOptimalSolution();
+	}
+	
+	/**
+	 * Inintialise the solution space and bottom level information
+	 */
+	protected void initialiseSolutionSpace(){
 		//Create initial solution and add to priority queue
 		//Pop solution and create children solutions for that, readd children to queue
 		//Pop most efficient child and add create children, readd
 		//Repeat until child is a complete graph, that is the optimal schedule
-			HashMap<Vertex, Integer> btmLevel = new HashMap<Vertex, Integer>();
-			List<Vertex> schedulable = new ArrayList<Vertex>(); // dependencies all met
-			List<Vertex> nonschedulable = new ArrayList<Vertex>(); // dependencies not met
-			// fill lists of schedulables
+		HashMap<Vertex, Integer> btmLevel = new HashMap<Vertex, Integer>();
+		List<Vertex> schedulable = new ArrayList<Vertex>(); // dependencies all met
+		List<Vertex> nonschedulable = new ArrayList<Vertex>(); // dependencies not met
+		// fill lists of schedulables
+		
+		// Upper bound of run time if all tasks are run in order
+		int upperBound = 0;
+		
+		for (Vertex v : _graph.vertexSet()) {
+			if (_graph.inDegreeOf(v) == 0) { //get source nodes
+				schedulable.add(v);
+			} else {
+				nonschedulable.add(v);
+			}
+			upperBound += v.getWeight();
+			btmLevel.put(v, getBottomLevel(v));
+		}
+		
+		// Create empty solution and then commence the looping
+		Solution emptySolution = new Solution(upperBound, _numberOfProcessors, _graph, new ArrayList<Vertex>(), schedulable, nonschedulable);
+		emptySolution.setBtmLevels(btmLevel);
+		_solutionSpace.add(emptySolution);	
+	}
+	
+	
+	/**
+	 * Finds the optimal solution using A* algorithm
+	 * @return optimal solution
+	 */
+	protected Solution findOptimalSolution(){
+		// BEST priority solution
+		Solution bestCurrentSolution = _solutionSpace.poll();
 			
-			// Upper bound of run time if all tasks are run in order
-			int upperBound = 0;
+		// For PARALLELISATION, just in case that at the start, the first thread 
+		// did not populate the solution space faste enough for the subsequent threads
+		// TODO what if solution space too small like 2 tasks - YaoJian will understand
+		while(bestCurrentSolution == null){
+			bestCurrentSolution = _solutionSpace.poll();
+		}
+		
+		// if not complete, consider the children in generating the solution and poll again
+		while (!bestCurrentSolution.isCompleteSchedule()) {
 			
-			for (Vertex v : _graph.vertexSet()) {
-				if (_graph.inDegreeOf(v) == 0) { //get source nodes
-					schedulable.add(v);
-				} else {
-					nonschedulable.add(v);
-				}
-				upperBound += v.getWeight();
-				btmLevel.put(v, getBottomLevel(v));
+			while (_closedSolutions.contains(bestCurrentSolution)) {
+				bestCurrentSolution = _solutionSpace.poll();
 			}
 			
-			
-			
-			// Create empty solution and then commence the looping
-			Solution emptySolution = new Solution(upperBound, _numberOfProcessors, _graph, new ArrayList<Vertex>(), schedulable, nonschedulable);
-			emptySolution.setBtmLevels(btmLevel);
-			_solutionSpace.add(emptySolution);
-			
-			
-			// BEST priority solution
-			Solution bestCurrentSolution = _solutionSpace.poll();
-			
-			// if not complete, consider the children in generating the solution and poll again
-			while (!bestCurrentSolution.isCompleteSchedule()) {
-				
-				while (_closedSolutions.contains(bestCurrentSolution)) {
-					bestCurrentSolution = _solutionSpace.poll();
-				}
-				
-				for (Solution s : bestCurrentSolution.createChildren()) {
-					if (!_solutionSpace.contains(s)) {
-						_solutionSpace.add(s);
-						if (s.maxCostFunction() == bestCurrentSolution.maxCostFunction()) {
-							break;
-						}
+			for (Solution s : bestCurrentSolution.createChildren()) {
+				if (!_solutionSpace.contains(s)) {
+					_solutionSpace.add(s);
+					if (s.maxCostFunction() == bestCurrentSolution.maxCostFunction()) {
+						break;
 					}
 				}
-				_closedSolutions.add(bestCurrentSolution);
-				bestCurrentSolution = _solutionSpace.poll();
-				//TODO System.out.println(bestCurrentSolution.maxCostFunction());
-				//TODO System.out.println("Solution space size : " + _solutionSpace.size());
-				
-				if(_visualizer != null){
-					_visualizer.UpdateGraph(bestCurrentSolution);
-				}
-
-				
 			}
+			_closedSolutions.add(bestCurrentSolution);
+			bestCurrentSolution = _solutionSpace.poll();
+			//TODO System.out.println(bestCurrentSolution.maxCostFunction());
+			//TODO System.out.println("Solution space size : " + _solutionSpace.size());
 			
-			
-			return bestCurrentSolution;
-
-
+			/**
+			 * updates the graph that's 
+			 */
+			if(_visualizer != null){
+				_visualizer.UpdateGraph(bestCurrentSolution);
+			}
+		
+		}
+		
+		return bestCurrentSolution;
 	}
 	
 	/**
