@@ -30,12 +30,11 @@ import scheduler.astar.Solution;
 public class Gantt extends ApplicationFrame{
 
 	private static Solution _sol;
-
+	private static JFreeChart _chart;
+	private boolean _launched = false;
 	public Gantt(String title) {
 		super(title);
-		JPanel jpanel = createDemoPanel();
-		jpanel.setPreferredSize(new Dimension(500, 270));
-		setContentPane(jpanel);
+
 	}
 
 
@@ -44,16 +43,15 @@ public class Gantt extends ApplicationFrame{
 		_sol = solution;
 		
 		JPanel jpanel = createDemoPanel();
-		jpanel.setPreferredSize(new Dimension(500, 270));
+		jpanel.setPreferredSize(new Dimension(1200, 800));
 		setContentPane(jpanel);
 		
 	}
 
 	private static JFreeChart createChart(IntervalCategoryDataset dataset) {
-		final JFreeChart chart = GanttChartFactory.createGanttChart(
+		_chart = GanttChartFactory.createGanttChart(
 				"Gantt Chart Demo", "Task", "Value", dataset, false, true, true);
-		
-        CategoryPlot plot = (CategoryPlot) chart.getPlot();
+        CategoryPlot plot = (CategoryPlot) _chart.getPlot();
         CustomGanttRenderer renderer = new CustomGanttRenderer();
         renderer.setShadowVisible(false);
         plot.setRenderer(renderer);
@@ -62,8 +60,8 @@ public class Gantt extends ApplicationFrame{
         //remove reflection
         BarRenderer br = (BarRenderer) plot.getRenderer();
         br.setBarPainter(new StandardBarPainter());
-        
-		return chart;
+        _chart.setNotify(true);
+		return _chart;
 	}
 
 	private static IntervalCategoryDataset createDataset() {
@@ -124,9 +122,16 @@ public class Gantt extends ApplicationFrame{
 		return p.endTime();
 	}
 
-
-	private void update(Solution s) {
-		//TODO
+	
+	public void updateSolution(Solution sol) {
+		_sol = sol;
+		_chart.getCategoryPlot().setDataset(createDataset());
+		//_chart.getXYPlot().setDataset(_chart.getXYPlot().getDataset());
+		
+	}
+	
+	public void setSolution(Solution sol) {
+		_sol = sol;
 	}
 
 	public static JPanel createDemoPanel() {
@@ -135,11 +140,19 @@ public class Gantt extends ApplicationFrame{
 		chartpanel.setMouseWheelEnabled(true);
 		return chartpanel;
 	}
+	
+	public boolean hasLaunched() {
+		return _launched ;
+	}
 
 	public void launch() {
+		JPanel jpanel = createDemoPanel();
+		jpanel.setPreferredSize(new Dimension(500, 270));
+		setContentPane(jpanel);
 		this.pack();
 		RefineryUtilities.centerFrameOnScreen(this);
 		this.setVisible(true);
+		_launched= true;
 	}
 
 
