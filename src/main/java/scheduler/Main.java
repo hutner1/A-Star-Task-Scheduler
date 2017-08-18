@@ -44,7 +44,6 @@ public class Main {
 			Schedule sol = ScheduleGenerator.makeSolution(tSort);*/
 			long startTime = System.nanoTime();
 			AStar aStar;
-			System.out.println("Your computer has " + Runtime.getRuntime().availableProcessors() + " cores.");
 			if(inputParser.isParallelise() && inputParser.getCores() > 1){
 				aStar = new AStarParallelised(dataReader.getGraph(), inputParser.getProcessors(), inputParser.getCores(), graphVisualizer);
 			} else {

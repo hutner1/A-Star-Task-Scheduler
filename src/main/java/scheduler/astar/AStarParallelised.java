@@ -51,7 +51,8 @@ public class AStarParallelised extends AStar{
 			_aStarThreads[i] = new AStarThread(i, _graph, _solutionSpace, _closedSolutions, _numberOfProcessors, _visualizer);
 			//Add the custom thread with all the AStar fields into a thread
 			_threads[i] = new Thread(_aStarThreads[i]);
-			_threads[i].run();
+			_threads[i].setName("Thread-"+i);
+			_threads[i].start();
 		}
 
 		//Try to join threads once the threads have finished

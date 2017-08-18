@@ -1,7 +1,7 @@
 package scheduler.astar;
 
-import java.util.PriorityQueue;
 import java.util.Set;
+import java.util.concurrent.PriorityBlockingQueue;
 
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
 import visualization.Visualizer;
@@ -23,7 +23,7 @@ public class AStarThread extends AStar implements Runnable{
 	 * @param numberOfProcessors number of processors the task scheduling is done on
 	 * @param Visualizer graph visualization
 	 */
-	public AStarThread(int id, DefaultDirectedWeightedGraph graph, PriorityQueue<Solution> solutionSpace, Set<Solution> closedSolutions, int numberOfProcessors, Visualizer Visualizer) {
+	public AStarThread(int id, DefaultDirectedWeightedGraph graph, PriorityBlockingQueue<Solution> solutionSpace, Set<Solution> closedSolutions, int numberOfProcessors, Visualizer Visualizer) {
 		super(graph, numberOfProcessors, Visualizer);
 		this._threadNo = id;
 		this._solutionSpace = solutionSpace;

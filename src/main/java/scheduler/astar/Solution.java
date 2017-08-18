@@ -327,14 +327,15 @@ public class Solution implements Comparable<Solution>{
 	 */
 	@Override
 	public boolean equals(Object o) {
-		Solution s = (Solution)o;
-
+		Solution otherSolution = (Solution)o;
+		
+		// Store the processors' processes' info
 		ArrayList<String> processesThisSolution = new ArrayList<String>();
 		ArrayList<String> processesOtherSolution = new ArrayList<String>();
 
 		for (int i = 1; i <= _numberOfProcessors; i++) {
 			processesThisSolution.add(_processors.get(i).getProcessesString());
-			processesOtherSolution.add(s._processors.get(i).getProcessesString());
+			processesOtherSolution.add(otherSolution._processors.get(i).getProcessesString());
 		}
 
 		for (String processorString : processesThisSolution) {

@@ -3,9 +3,9 @@ package scheduler.astar;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.PriorityBlockingQueue;
 
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
 import scheduler.graphstructures.DefaultWeightedEdge;
@@ -18,14 +18,14 @@ import visualization.Visualizer;
 public class AStar {
 	protected DefaultDirectedWeightedGraph _graph;
 	protected int _numberOfProcessors;
-	protected PriorityQueue<Solution> _solutionSpace;
+	protected PriorityBlockingQueue<Solution> _solutionSpace;
 	protected Set<Solution> _closedSolutions;
 	protected Visualizer _visualizer;
 	
 	public AStar(DefaultDirectedWeightedGraph graph, int numberOfProcessors, Visualizer graphVisualizer) {
 		_graph = graph;
 		_numberOfProcessors = numberOfProcessors;
-		_solutionSpace = new PriorityQueue<Solution>();
+		_solutionSpace = new PriorityBlockingQueue<Solution>();
 		_closedSolutions = new CopyOnWriteArraySet<Solution>(); //threadsafe set
 		_visualizer = graphVisualizer;
 	}
@@ -44,8 +44,8 @@ public class AStar {
 	 */
 	protected void initialiseSolutionSpace(){
 		//Create initial solution and add to priority queue
-		//Pop solution and create children solutions for that, readd children to queue
-		//Pop most efficient child and add create children, readd
+		//Pop solution and create children solutions for that, read children to queue
+		//Pop most efficient child and add create children, read
 		//Repeat until child is a complete graph, that is the optimal schedule
 		HashMap<Vertex, Integer> btmLevel = new HashMap<Vertex, Integer>();
 		List<Vertex> schedulable = new ArrayList<Vertex>(); // dependencies all met
@@ -81,18 +81,22 @@ public class AStar {
 		Solution bestCurrentSolution = _solutionSpace.poll();
 			
 		// For PARALLELISATION, just in case that at the start, the first thread 
-		// did not populate the solution space faste enough for the subsequent threads
+		// did not populate the solution space fast enough for the subsequent threads
 		// TODO what if solution space too small like 2 tasks - YaoJian will understand
 		while(bestCurrentSolution == null){
 			bestCurrentSolution = _solutionSpace.poll();
 		}
 		
+		
 		// if not complete, consider the children in generating the solution and poll again
 		while (!bestCurrentSolution.isCompleteSchedule()) {
+			System.out.println("C: "+_closedSolutions.size());
 			
-			while (_closedSolutions.contains(bestCurrentSolution)) {
+			while ((_closedSolutions.contains(bestCurrentSolution)) || (bestCurrentSolution == null)) {
 				bestCurrentSolution = _solutionSpace.poll();
 			}
+			
+			System.out.println("SS: "+_solutionSpace.size());
 			
 			for (Solution s : bestCurrentSolution.createChildren()) {
 				if (!_solutionSpace.contains(s)) {
@@ -103,7 +107,10 @@ public class AStar {
 				}
 			}
 			_closedSolutions.add(bestCurrentSolution);
-			bestCurrentSolution = _solutionSpace.poll();
+			
+			while(bestCurrentSolution == null){
+				bestCurrentSolution = _solutionSpace.poll();
+			}
 			//TODO System.out.println(bestCurrentSolution.maxCostFunction());
 			//TODO System.out.println("Solution space size : " + _solutionSpace.size());
 			
