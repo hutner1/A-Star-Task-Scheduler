@@ -51,13 +51,13 @@ public class Main {
 			long totalTime = endTime - startTime;
 			System.out.println("\n Took " + totalTime/1000000 + "ms" + " : " + totalTime/1000000000 + " seconds");
 			
-			/*
+			
 			if(inputParser.isVisualise() == true){
 				gantt = new Gantt("Test");
 				gantt.setSolution(optimalSolution);
 				gantt.launch();
 				
-			}*/
+			}
 			
 		}
 	}
