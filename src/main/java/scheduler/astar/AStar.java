@@ -11,7 +11,11 @@ import scheduler.graphstructures.DefaultDirectedWeightedGraph;
 import scheduler.graphstructures.DefaultWeightedEdge;
 import scheduler.graphstructures.Vertex;
 import visualization.Visualizer;
+
 import visualization.gantt.Gantt;
+
+import visualization.gui.Gui;
+
 
 /**
  * AStar creates optimal solution with A*
@@ -23,14 +27,18 @@ public class AStar {
 	protected Set<Solution> _closedSolutions;
 	protected Visualizer _visualizer;
 	protected Gantt _gantt;
+	private int _counter=0;
 	
 	public AStar(DefaultDirectedWeightedGraph graph, int numberOfProcessors, Visualizer graphVisualizer, Gantt gantt) {
+
 		_graph = graph;
 		_numberOfProcessors = numberOfProcessors;
 		_solutionSpace = new PriorityQueue<Solution>();
 		_closedSolutions = new CopyOnWriteArraySet<Solution>(); //threadsafe set
 		_visualizer = graphVisualizer;
+
 		_gantt = gantt;
+
 	}
 
 	/**
@@ -92,10 +100,7 @@ public class AStar {
 				//TODO System.out.println(bestCurrentSolution.maxCostFunction());
 				//TODO System.out.println("Solution space size : " + _solutionSpace.size());
 				
-				if(_visualizer != null){
-					_visualizer.UpdateGraph(bestCurrentSolution);
-				}
-				
+
 				if (_gantt != null) {
 					if (_gantt.hasLaunched()) {
 						_gantt.updateSolution(bestCurrentSolution);
@@ -108,9 +113,22 @@ public class AStar {
 				
 
 				
+
+				if(_visualizer != null){  
+			              if(_counter == 15){  
+			                  _counter = 0;  
+			                  _visualizer.UpdateGraph(bestCurrentSolution);  
+			                } else {  
+			                  _counter++;  
+			                }  
+			          
+			              } 
+	
 			}
 			
-			
+			if(_visualizer != null){
+				_visualizer.UpdateGraph(bestCurrentSolution);
+			}
 			return bestCurrentSolution;
 
 
