@@ -60,7 +60,7 @@ public class Visualizer {
 	private Graph _graph;
 	private Viewer _viewer;
 	private DefaultDirectedWeightedGraph _DAG;
-	private NodeClickListener _nodeClickListener;
+	private NodeClickListener _nodeClickListener = new NodeClickListener();
 
 	
 	public Visualizer(){
@@ -176,7 +176,8 @@ public class Visualizer {
 				
 				List<Object> schedule = new ArrayList<Object>();
 				schedule.add(i);
-				schedule.add(processInfo);
+				schedule.add(processInfo.startTime()); 
+		        schedule.add(processInfo.endTime()); 
 				scheduledVertices.put(vertexName, schedule);
 				
 			}

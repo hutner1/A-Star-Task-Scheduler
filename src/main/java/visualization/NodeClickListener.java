@@ -42,6 +42,10 @@ public class NodeClickListener implements ViewerListener , MouseInputListener{
 		this._view.addMouseListener(this); 
 
 	} 
+	
+	public NodeClickListener(){
+	
+	}
 
 	/**
 	 * Detach all listeners if the graph is closed
@@ -76,8 +80,10 @@ public class NodeClickListener implements ViewerListener , MouseInputListener{
 			System.out.println("");
 			System.out.println("Task: "+id);
 			System.out.println("Processor number: " + (int) scheduleInfo.get(0));
-			System.out.println("Start time: " + ((ProcessInfo) scheduleInfo.get(1)).startTime());
-			System.out.println("End time: " + ((ProcessInfo) scheduleInfo.get(1)).endTime());
+			System.out.println("Start time: " + scheduleInfo.get(1));
+			 
+		      System.out.println("End time: " + scheduleInfo.get(2));
+		 
 			
 		}
 	} 

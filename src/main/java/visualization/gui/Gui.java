@@ -19,6 +19,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Color;
 import javax.swing.border.LineBorder;
+import javax.swing.JTextField;
 
 public class Gui {
 	protected Visualizer _visualizer;
@@ -28,6 +29,7 @@ public class Gui {
 	private JPanel panel;
 	private JButton _active;
 	private JButton _notActive;
+	private JTextField textField;
 
 
 	/**
@@ -135,6 +137,12 @@ public class Gui {
 
 		btnClose.setBounds(671, 465, 140, 50);
 		frame.getContentPane().add(btnClose);
+		
+		textField = new JTextField();
+		textField.setFont(new Font("SansSerif", Font.PLAIN, 15));
+		textField.setBounds(671, 143, 140, 311);
+		frame.getContentPane().add(textField);
+		textField.setColumns(10);
 
 	}
 
