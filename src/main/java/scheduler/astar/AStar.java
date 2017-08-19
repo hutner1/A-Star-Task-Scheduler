@@ -95,7 +95,7 @@ public class AStar {
 				if(_visualizer != null){
 					_visualizer.UpdateGraph(bestCurrentSolution);
 				}
-				/*
+				
 				if (_gantt != null) {
 					if (_gantt.hasLaunched()) {
 						_gantt.updateSolution(bestCurrentSolution);
@@ -104,7 +104,7 @@ public class AStar {
 						_gantt.launch();
 					}
 				}
-				*/
+				
 				
 
 				

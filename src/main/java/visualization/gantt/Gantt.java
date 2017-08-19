@@ -29,12 +29,13 @@ import scheduler.astar.Solution;
 
 public class Gantt extends ApplicationFrame{
 
+	private static String _title;
 	private static Solution _sol;
 	private static JFreeChart _chart;
 	private boolean _launched = false;
 	public Gantt(String title) {
 		super(title);
-
+		_title = title;
 	}
 
 
@@ -50,7 +51,7 @@ public class Gantt extends ApplicationFrame{
 
 	private static JFreeChart createChart(IntervalCategoryDataset dataset) {
 		_chart = GanttChartFactory.createGanttChart(
-				"Gantt Chart Demo", "Task", "Value", dataset, false, true, true);
+				_title, "Task", "Value", dataset, false, true, true);
 		
         CategoryPlot plot = (CategoryPlot) _chart.getPlot();
         CustomGanttRenderer renderer = new CustomGanttRenderer();
