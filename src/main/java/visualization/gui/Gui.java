@@ -74,7 +74,7 @@ public class Gui {
 		frame.setBounds(100, 100, 850, 580);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
+		frame.setResizable(false);
 		
 		//Initializing the panel with a card layout to store graphs. 
 		_cards = new JPanel(new CardLayout());

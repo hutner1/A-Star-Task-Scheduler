@@ -28,7 +28,7 @@ public class AStar {
 	protected Visualizer _visualizer;
 	protected Gantt _gantt;
 	private int _counter=0;
-	
+
 	public AStar(DefaultDirectedWeightedGraph graph, int numberOfProcessors, Visualizer graphVisualizer, Gantt gantt) {
 
 		_graph = graph;
@@ -51,85 +51,88 @@ public class AStar {
 		//Pop solution and create children solutions for that, readd children to queue
 		//Pop most efficient child and add create children, readd
 		//Repeat until child is a complete graph, that is the optimal schedule
-			HashMap<Vertex, Integer> btmLevel = new HashMap<Vertex, Integer>();
-			List<Vertex> schedulable = new ArrayList<Vertex>(); // dependencies all met
-			List<Vertex> nonschedulable = new ArrayList<Vertex>(); // dependencies not met
-			// fill lists of schedulables
-			
-			// Upper bound of run time if all tasks are run in order
-			int upperBound = 0;
-			
-			for (Vertex v : _graph.vertexSet()) {
-				if (_graph.inDegreeOf(v) == 0) { //get source nodes
-					schedulable.add(v);
-				} else {
-					nonschedulable.add(v);
-				}
-				upperBound += v.getWeight();
-				btmLevel.put(v, getBottomLevel(v));
+		HashMap<Vertex, Integer> btmLevel = new HashMap<Vertex, Integer>();
+		List<Vertex> schedulable = new ArrayList<Vertex>(); // dependencies all met
+		List<Vertex> nonschedulable = new ArrayList<Vertex>(); // dependencies not met
+		// fill lists of schedulables
+
+		// Upper bound of run time if all tasks are run in order
+		int upperBound = 0;
+
+		for (Vertex v : _graph.vertexSet()) {
+			if (_graph.inDegreeOf(v) == 0) { //get source nodes
+				schedulable.add(v);
+			} else {
+				nonschedulable.add(v);
 			}
-			
-			
-			
-			// Create empty solution and then commence the looping
-			Solution emptySolution = new Solution(upperBound, _numberOfProcessors, _graph, new ArrayList<Vertex>(), schedulable, nonschedulable);
-			emptySolution.setBtmLevels(btmLevel);
-			_solutionSpace.add(emptySolution);
-			
-			
-			// BEST priority solution
-			Solution bestCurrentSolution = _solutionSpace.poll();
-			
-			// if not complete, consider the children in generating the solution and poll again
-			while (!bestCurrentSolution.isCompleteSchedule()) {
-				
-				while (_closedSolutions.contains(bestCurrentSolution)) {
-					bestCurrentSolution = _solutionSpace.poll();
-				}
-				
-				for (Solution s : bestCurrentSolution.createChildren()) {
-					if (!_solutionSpace.contains(s)) {
-						_solutionSpace.add(s);
-						if (s.maxCostFunction() == bestCurrentSolution.maxCostFunction()) {
-							break;
-						}
+			upperBound += v.getWeight();
+			btmLevel.put(v, getBottomLevel(v));
+		}
+
+
+
+		// Create empty solution and then commence the looping
+		Solution emptySolution = new Solution(upperBound, _numberOfProcessors, _graph, new ArrayList<Vertex>(), schedulable, nonschedulable);
+		emptySolution.setBtmLevels(btmLevel);
+		_solutionSpace.add(emptySolution);
+
+
+		// BEST priority solution
+		Solution bestCurrentSolution = _solutionSpace.poll();
+
+		// if not complete, consider the children in generating the solution and poll again
+		while (!bestCurrentSolution.isCompleteSchedule()) {
+
+			while (_closedSolutions.contains(bestCurrentSolution)) {
+				bestCurrentSolution = _solutionSpace.poll();
+			}
+
+			for (Solution s : bestCurrentSolution.createChildren()) {
+				if (!_solutionSpace.contains(s)) {
+					_solutionSpace.add(s);
+					if (s.maxCostFunction() == bestCurrentSolution.maxCostFunction()) {
+						break;
 					}
 				}
-				_closedSolutions.add(bestCurrentSolution);
-				bestCurrentSolution = _solutionSpace.poll();
-				//TODO System.out.println(bestCurrentSolution.maxCostFunction());
-				//TODO System.out.println("Solution space size : " + _solutionSpace.size());
-				
-				if (_gantt != null) {
-  					if (_gantt.hasLaunched()) {
-  						_gantt.updateSolution(bestCurrentSolution);
-  					} else {
-  						_gantt.setSolution(bestCurrentSolution);
-  						_gantt.launch();
-  					}
-  				}
-				
-				if(_visualizer != null){  
-			              if(_counter == 15){  
-			                  _counter = 0;  
-			                  _visualizer.UpdateGraph(bestCurrentSolution);  
-			                  
-			                } else {  
-			                  _counter++;  
-			                }  
-			          
-			              } 
-	
 			}
-			
-			if(_visualizer != null){
-				_visualizer.UpdateGraph(bestCurrentSolution);
+			_closedSolutions.add(bestCurrentSolution);
+			bestCurrentSolution = _solutionSpace.poll();
+			//TODO System.out.println(bestCurrentSolution.maxCostFunction());
+			//TODO System.out.println("Solution space size : " + _solutionSpace.size());
+
+			if (_gantt != null) {
+				if (_gantt.hasLaunched()) {
+					if(_counter == 15){  
+					_gantt.updateSolution(bestCurrentSolution);
+					}
+				} else {
+					_gantt.setSolution(bestCurrentSolution);
+					_gantt.launch();
+				}
 			}
-			return bestCurrentSolution;
+
+			if(_visualizer != null){  
+				if(_counter == 15){  
+					_counter = 0;  
+					_visualizer.UpdateGraph(bestCurrentSolution);  
+
+				} else {  
+					_counter++;  
+				}  
+
+			} 
+
+		}
+
+		if(_visualizer != null){
+			_visualizer.UpdateGraph(bestCurrentSolution);
+			_gantt.updateSolution(bestCurrentSolution);
+		}
+		return bestCurrentSolution;
 
 
 	}
-	
+
 	/**
 	 * Get children vertices
 	 * @param vertex
@@ -142,7 +145,7 @@ public class AStar {
 		}
 		return children;
 	}
-	
+
 	/**
 	 * Returns the bottom level of a vertex
 	 * @param vertex
@@ -164,6 +167,6 @@ public class AStar {
 			return myWeight + btmLvl;
 		}
 	}
-	
+
 
 }
