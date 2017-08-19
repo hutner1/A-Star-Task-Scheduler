@@ -32,7 +32,7 @@ public class Gantt extends ApplicationFrame{
 	private static String _title;
 	private static Solution _sol;
 	private static JFreeChart _chart;
-	private boolean _launched = false;
+	public boolean _launched = false;
 	public Gantt(String title) {
 		super(title);
 		_title = title;
@@ -170,9 +170,9 @@ public class Gantt extends ApplicationFrame{
 		JPanel jpanel = createDemoPanel();
 		jpanel.setPreferredSize(new Dimension(1200, 800));
 		setContentPane(jpanel);
-		this.pack();
-		RefineryUtilities.centerFrameOnScreen(this);
-		this.setVisible(true);
+		//this.pack();
+		//RefineryUtilities.centerFrameOnScreen(this);
+		//this.setVisible(true);
 		_launched= true;
 	}
 

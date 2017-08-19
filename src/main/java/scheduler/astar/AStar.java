@@ -100,24 +100,20 @@ public class AStar {
 				//TODO System.out.println(bestCurrentSolution.maxCostFunction());
 				//TODO System.out.println("Solution space size : " + _solutionSpace.size());
 				
-
 				if (_gantt != null) {
-					if (_gantt.hasLaunched()) {
-						_gantt.updateSolution(bestCurrentSolution);
-					} else {
-						_gantt.setSolution(bestCurrentSolution);
-						_gantt.launch();
-					}
-				}
+  					if (_gantt.hasLaunched()) {
+  						_gantt.updateSolution(bestCurrentSolution);
+  					} else {
+  						_gantt.setSolution(bestCurrentSolution);
+  						_gantt.launch();
+  					}
+  				}
 				
-				
-
-				
-
 				if(_visualizer != null){  
 			              if(_counter == 15){  
 			                  _counter = 0;  
 			                  _visualizer.UpdateGraph(bestCurrentSolution);  
+			                  
 			                } else {  
 			                  _counter++;  
 			                }  
