@@ -60,7 +60,7 @@ public class Visualizer {
 	private Graph _graph;
 	private Viewer _viewer;
 	private DefaultDirectedWeightedGraph _DAG;
-	private NodeClickListener _nodeClickListener;
+	private NodeClickListener _nodeClickListener = new NodeClickListener();
 
 	
 	public Visualizer(){

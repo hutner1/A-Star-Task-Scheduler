@@ -23,6 +23,7 @@ public class AStar {
 	protected Set<Solution> _closedSolutions;
 	protected Visualizer _visualizer;
 	protected Gui _gui;
+	private int _counter=0;
 	
 	public AStar(DefaultDirectedWeightedGraph graph, int numberOfProcessors, Visualizer graphVisualizer, Gui gui) {
 		_graph = graph;
@@ -92,17 +93,21 @@ public class AStar {
 				//TODO System.out.println(bestCurrentSolution.maxCostFunction());
 				//TODO System.out.println("Solution space size : " + _solutionSpace.size());
 				
-				if(_visualizer != null){
-					_visualizer.UpdateGraph(bestCurrentSolution);
-				}
-				if(_gui!=null){
-					_gui.updateGraphGui();
-				}
-
-				
+				if(_visualizer != null){  
+			              if(_counter == 15){  
+			                  _counter = 0;  
+			                  _visualizer.UpdateGraph(bestCurrentSolution);  
+			                } else {  
+			                  _counter++;  
+			                }  
+			          
+			              } 
+	
 			}
 			
-			
+			if(_visualizer != null){
+				_visualizer.UpdateGraph(bestCurrentSolution);
+			}
 			return bestCurrentSolution;
 
 

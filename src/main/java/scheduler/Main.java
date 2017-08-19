@@ -61,7 +61,6 @@ public class Main {
 					}
 				});
 				
-					TimeUnit.SECONDS.sleep(2);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

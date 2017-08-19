@@ -42,7 +42,9 @@ public class NodeClickListener implements ViewerListener , MouseInputListener{
 		this._view.addMouseListener(this); 
 
 	} 
-
+	public NodeClickListener(){
+	
+	}
 	/**
 	 * Detach all listeners if the graph is closed
 	 * @param id Unused parameter inherited from the interface
