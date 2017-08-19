@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -16,6 +17,8 @@ import visualization.Visualizer;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Color;
+import javax.swing.border.LineBorder;
 
 public class Gui {
 	protected Visualizer _visualizer;
@@ -23,6 +26,9 @@ public class Gui {
 	protected JPanel _cards;
 	protected JPanel _graphPage;
 	private JPanel panel;
+	private JButton _active;
+	private JButton _notActive;
+
 
 	/**
 	 *This part is there for just testing reason.
@@ -59,16 +65,20 @@ public class Gui {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.setTitle("Imagine Breaker - Task Scheduler");
+		frame.getContentPane().setBackground(new Color(239,239,239));
 		frame.setBounds(100, 100, 850, 580);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
 		panel = new JPanel();
 		panel.setBounds(30, 15, 600, 500);
+		
 		frame.getContentPane().add(panel);
-		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
 
 		_cards = new JPanel(new CardLayout());
+		_cards.setBorder(new LineBorder(new Color(180,235,250), 5, true));
 		panel.add(_cards);
 		_cards.setPreferredSize(new Dimension(600,500));
 
@@ -80,34 +90,50 @@ public class Gui {
 		_cards.add(gantt,"Gantt");
 		
 		CardLayout cardLayout = (CardLayout) _cards.getLayout();
-		JButton btnNewButton = new JButton("Tree Graph");
-		btnNewButton.addActionListener(new ActionListener() {
+		
+		
+		JButton graphButton = new CustomButton("Tree Graph");
+		JButton ganttButton = new CustomButton("Gantt Chart");
+		_active = graphButton;
+		graphButton.setBackground(new Color(255, 135, 135));
+		
+		graphButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cardLayout.show(_cards, "Graph");
+				_active = graphButton;
+				_notActive = ganttButton;
+				changeActive();
 			}
 		});
-		btnNewButton.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
-		btnNewButton.setBounds(671, 24, 133, 45);
-		frame.getContentPane().add(btnNewButton);
+		
+		
+		
+		graphButton.setBounds(671, 15, 140, 50);
+		frame.getContentPane().add(graphButton);
 
-		JButton btnGanttChart = new JButton("Gantt Chart");
-		btnGanttChart.addActionListener(new ActionListener() {
+		
+		ganttButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cardLayout.show(_cards, "Gantt");
+				_active = ganttButton;
+				_notActive = graphButton;
+				changeActive();
 			}
 		});
-		btnGanttChart.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
-		btnGanttChart.setBounds(671, 82, 133, 45);
-		frame.getContentPane().add(btnGanttChart);
 
-		JButton btnClose = new JButton("Close");
+		
+		ganttButton.setBounds(671, 82, 140, 50);
+		frame.getContentPane().add(ganttButton);
+
+		JButton btnClose = new CustomButton("Close");
 		btnClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				frame.dispose();
+				
 			}
 		});
-		btnClose.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
-		btnClose.setBounds(671, 470, 133, 45);
+
+		btnClose.setBounds(671, 465, 140, 50);
 		frame.getContentPane().add(btnClose);
 
 	}
@@ -115,6 +141,12 @@ public class Gui {
 	public void updateGraphGui(){
 		_graphPage.revalidate();
 		_graphPage.repaint();
+
+	}
+	
+	private void changeActive(){
+		_active.setBackground(new Color(255, 135, 135));
+		_notActive.setBackground(new Color(255, 59, 63));
 
 	}
 }

@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import io.DataReader;
 import io.InputParser;
@@ -42,8 +43,11 @@ public class Main {
 				graphVisualizer.add(dataReader.getGraph());
 				final Visualizer graphVisualizer2 = graphVisualizer;
 				//graphVisualizer.displayGraph();
-				
-				SwingUtilities.invokeLater(new Runnable() {
+				try {
+					 // Set cross-platform Java L&F (also called "Metal")
+			        UIManager.setLookAndFeel(
+			            UIManager.getCrossPlatformLookAndFeelClassName());
+					SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
 						try {
@@ -56,9 +60,9 @@ public class Main {
 						
 					}
 				});
-				try {
+				
 					TimeUnit.SECONDS.sleep(2);
-				} catch (InterruptedException e) {
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}

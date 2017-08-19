@@ -39,7 +39,7 @@ public class Visualizer {
 	//Set the style for the graph using CSS
 	private String _stylesheet = 
 			"graph {" +
-					"fill-color: rgb(225,225,225);" +
+					"fill-color: rgb(250,250,250);" +
 					"}" + 
 
 			"edge {" +
