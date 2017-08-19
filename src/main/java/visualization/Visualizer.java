@@ -155,7 +155,9 @@ public class Visualizer {
 
 		//Set all nodes to black to reset previous visualization
 		for(Vertex vertex : _DAG.vertexSet()){
+			
 			_graph.getNode(vertex.getName()).setAttribute("ui.style", "fill-color:#"+ "000000" +";");
+			
 		}
 
 		//Set the color for each node/task in the current schedule
@@ -168,7 +170,8 @@ public class Visualizer {
 				
 				List<Object> schedule = new ArrayList<Object>();
 				schedule.add(i);
-				schedule.add(processInfo);
+				schedule.add(processInfo.startTime());
+				schedule.add(processInfo.endTime());
 				scheduledVertices.put(vertexName, schedule);
 				
 			}

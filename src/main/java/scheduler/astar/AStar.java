@@ -21,7 +21,8 @@ public class AStar {
 	protected PriorityBlockingQueue<Solution> _solutionSpace;
 	protected Set<Solution> _closedSolutions;
 	protected Visualizer _visualizer;
-	
+	protected int _counter = 0;
+
 	public AStar(DefaultDirectedWeightedGraph graph, int numberOfProcessors, Visualizer graphVisualizer) {
 		_graph = graph;
 		_numberOfProcessors = numberOfProcessors;
@@ -38,7 +39,7 @@ public class AStar {
 		initialiseSolutionSpace();
 		return findOptimalSolution();
 	}
-	
+
 	/**
 	 * Inintialise the solution space and bottom level information
 	 */
@@ -51,10 +52,10 @@ public class AStar {
 		List<Vertex> schedulable = new ArrayList<Vertex>(); // dependencies all met
 		List<Vertex> nonschedulable = new ArrayList<Vertex>(); // dependencies not met
 		// fill lists of schedulables
-		
+
 		// Upper bound of run time if all tasks are run in order
 		int upperBound = 0;
-		
+
 		for (Vertex v : _graph.vertexSet()) {
 			if (_graph.inDegreeOf(v) == 0) { //get source nodes
 				schedulable.add(v);
@@ -64,14 +65,14 @@ public class AStar {
 			upperBound += v.getWeight();
 			btmLevel.put(v, getBottomLevel(v));
 		}
-		
+
 		// Create empty solution and then commence the looping
 		Solution emptySolution = new Solution(upperBound, _numberOfProcessors, _graph, new ArrayList<Vertex>(), schedulable, nonschedulable);
 		emptySolution.setBtmLevels(btmLevel);
 		_solutionSpace.add(emptySolution);	
 	}
-	
-	
+
+
 	/**
 	 * Finds the optimal solution using A* algorithm
 	 * @return optimal solution
@@ -79,7 +80,7 @@ public class AStar {
 	protected Solution findOptimalSolution(){
 		// BEST priority solution
 		Solution bestCurrentSolution = _solutionSpace.poll();
-			
+
 		// For PARALLELISATION, just in case that at the start, the first thread 
 		// did not populate the solution space fast enough for the subsequent threads
 		// TODO what if solution space too small like 2 tasks - YaoJian will understand
@@ -87,17 +88,18 @@ public class AStar {
 			bestCurrentSolution = _solutionSpace.poll();
 		}
 		
-		
 		// if not complete, consider the children in generating the solution and poll again
 		while (!bestCurrentSolution.isCompleteSchedule()) {
 			//System.out.println("C: "+_closedSolutions.size());
+
 			
+
 			while ((_closedSolutions.contains(bestCurrentSolution)) || (bestCurrentSolution == null)) {
 				bestCurrentSolution = _solutionSpace.poll();
 			}
-			
+
 			//System.out.println("SS: "+_solutionSpace.size());
-			
+
 			for (Solution s : bestCurrentSolution.createChildren()) {
 				if (!_solutionSpace.contains(s)) {
 					_solutionSpace.add(s);
@@ -107,25 +109,37 @@ public class AStar {
 				}
 			}
 			_closedSolutions.add(bestCurrentSolution);
-			
+
 			while(bestCurrentSolution == null){
 				bestCurrentSolution = _solutionSpace.poll();
 			}
 			//TODO System.out.println(bestCurrentSolution.maxCostFunction());
 			//TODO System.out.println("Solution space size : " + _solutionSpace.size());
-			
+
 			/**
 			 * updates the graph that's 
 			 */
 			if(_visualizer != null){
-				_visualizer.UpdateGraph(bestCurrentSolution);
+
+				if(_counter == 15){
+					_counter = 0;
+					_visualizer.UpdateGraph(bestCurrentSolution);
+				} else {
+					_counter++;
+				}
+
 			}
-		
+
 		}
 		
+		if(_visualizer != null){
+			_visualizer.UpdateGraph(bestCurrentSolution);
+		}
+		
+
 		return bestCurrentSolution;
 	}
-	
+
 	/**
 	 * Get children vertices
 	 * @param vertex
@@ -138,7 +152,7 @@ public class AStar {
 		}
 		return children;
 	}
-	
+
 	/**
 	 * Returns the bottom level of a vertex
 	 * @param vertex
@@ -160,6 +174,6 @@ public class AStar {
 			return myWeight + btmLvl;
 		}
 	}
-	
+
 
 }
