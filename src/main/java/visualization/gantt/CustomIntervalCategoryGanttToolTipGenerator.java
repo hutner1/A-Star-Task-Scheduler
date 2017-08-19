@@ -11,7 +11,11 @@ import org.jfree.data.category.IntervalCategoryDataset;
 import org.jfree.data.gantt.Task;
 import org.jfree.data.gantt.TaskSeriesCollection;
 import org.jfree.data.time.TimePeriod;
-
+/**
+ * Used to display tooltips. Currently does not work
+ * @author Jack
+ *
+ */
 public class CustomIntervalCategoryGanttToolTipGenerator
    extends IntervalCategoryToolTipGenerator
 {

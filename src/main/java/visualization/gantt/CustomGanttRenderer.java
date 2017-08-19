@@ -19,6 +19,11 @@ import org.jfree.chart.renderer.category.GanttRenderer;
 import org.jfree.data.gantt.GanttCategoryDataset;
 import org.jfree.ui.RectangleEdge;
 
+/**
+ * Renders/paints the gantt chart
+ * @author Jack
+ *
+ */
 public class CustomGanttRenderer extends GanttRenderer {
 
 	private int row;

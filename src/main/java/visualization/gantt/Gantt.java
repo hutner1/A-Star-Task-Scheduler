@@ -42,13 +42,15 @@ public class Gantt extends ApplicationFrame{
 	public Gantt(String title,Solution solution) {
 		super(title);
 		_sol = solution;
-		
-		JPanel jpanel = createDemoPanel();
-		jpanel.setPreferredSize(new Dimension(1200, 800));
-		setContentPane(jpanel);
-		
 	}
-
+	
+	/**
+	 * Creates a gantt chart using data set. This gantt chart has no legend and 
+	 * the x axis represent seconds
+	 * A custom renderer to use to add colours to the chart. 
+	 * @param dataset
+	 * @return
+	 */
 	private static JFreeChart createChart(IntervalCategoryDataset dataset) {
 		_chart = GanttChartFactory.createGanttChart(
 				_title, "Task", "Value", dataset, false, true, true);
@@ -66,7 +68,12 @@ public class Gantt extends ApplicationFrame{
         
 		return _chart;
 	}
-
+	/**
+	 * createDataset looks at the best solution then loops over all its processors.
+	 * For each processor it reads the start and finish times of each task in the processor,
+	 * in order to create a subtask that will be displayed on the gantt chart.
+	 * @return
+	 */
 	private static IntervalCategoryDataset createDataset() {
 		
 		
@@ -125,7 +132,10 @@ public class Gantt extends ApplicationFrame{
 		return p.endTime();
 	}
 
-	
+	/**
+	 * Tells the chart to repaint itself with the dataset of the given solution
+	 * @param sol
+	 */
 	public void updateSolution(Solution sol) {
 		_sol = sol;
 		_chart.getCategoryPlot().setDataset(createDataset());
@@ -136,21 +146,29 @@ public class Gantt extends ApplicationFrame{
 	public void setSolution(Solution sol) {
 		_sol = sol;
 	}
-
+	/**
+	 * Creates the jpanel 
+	 * @return
+	 */
 	public static JPanel createDemoPanel() {
 		JFreeChart jfreechart = createChart(createDataset());
 		ChartPanel chartpanel = new ChartPanel(jfreechart);
 		chartpanel.setMouseWheelEnabled(true);
 		return chartpanel;
 	}
-	
+	/**
+	 * Checks if this panel has been created
+	 * @return
+	 */
 	public boolean hasLaunched() {
 		return _launched ;
 	}
-
+	/**
+	 * Inialises the gantt chart, makes the JPanel and puts it in a frame
+	 */
 	public void launch() {
 		JPanel jpanel = createDemoPanel();
-		jpanel.setPreferredSize(new Dimension(500, 270));
+		jpanel.setPreferredSize(new Dimension(1200, 800));
 		setContentPane(jpanel);
 		this.pack();
 		RefineryUtilities.centerFrameOnScreen(this);
