@@ -4,6 +4,9 @@ import java.util.PriorityQueue;
 
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
 import visualization.Visualizer;
+
+import visualization.gantt.Gantt;
+
 import visualization.gui.Gui;
 
 /**
@@ -19,8 +22,10 @@ public class AStarParallelised extends AStar{
 	AStarThread[] AStarThreads = new AStarThread[_numberOfThreads];
 	Thread[] threads = new Thread[_numberOfThreads];
 
-	public AStarParallelised(DefaultDirectedWeightedGraph graph, int numberOfProcessors, int numberOfThreads, Visualizer Visualizer, Gui gui) {
-		super(graph, numberOfProcessors, Visualizer,gui);
+
+	public AStarParallelised(DefaultDirectedWeightedGraph graph, int numberOfProcessors, int numberOfThreads, Visualizer Visualizer, Gantt gantt) {
+		super(graph, numberOfProcessors, Visualizer, gantt);
+
 		this._numberOfThreads = numberOfThreads;
 	}
 
@@ -41,7 +46,9 @@ public class AStarParallelised extends AStar{
 
 		//Start threading process. 
 		for (int i = 0; i < _numberOfThreads; i++) {
-			AStarThreads[i] = new AStarThread(i, _graph, _solutionSpace, _closedSolutions, _numberOfProcessors, _visualizer,_gui);
+
+			AStarThreads[i] = new AStarThread(i, _graph, _solutionSpace, _closedSolutions, _numberOfProcessors, _visualizer, _gantt);
+
 			//Add the custom thread with all the AStar fields into a thread
 			threads[i] = new Thread(AStarThreads[i]);
 			threads[i].run();

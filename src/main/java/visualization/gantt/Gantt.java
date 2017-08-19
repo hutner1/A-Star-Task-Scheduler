@@ -29,31 +29,33 @@ import scheduler.astar.Solution;
 
 public class Gantt extends ApplicationFrame{
 
+	private static String _title;
 	private static Solution _sol;
-
+	private static JFreeChart _chart;
+	private boolean _launched = false;
 	public Gantt(String title) {
 		super(title);
-		JPanel jpanel = createDemoPanel();
-		jpanel.setPreferredSize(new Dimension(500, 270));
-		setContentPane(jpanel);
+		_title = title;
 	}
 
 
 	public Gantt(String title,Solution solution) {
 		super(title);
 		_sol = solution;
-		
-		JPanel jpanel = createDemoPanel();
-		jpanel.setPreferredSize(new Dimension(500, 270));
-		setContentPane(jpanel);
-		
 	}
-
+	
+	/**
+	 * Creates a gantt chart using data set. This gantt chart has no legend and 
+	 * the x axis represent seconds
+	 * A custom renderer to use to add colours to the chart. 
+	 * @param dataset
+	 * @return
+	 */
 	private static JFreeChart createChart(IntervalCategoryDataset dataset) {
-		final JFreeChart chart = GanttChartFactory.createGanttChart(
-				"Gantt Chart Demo", "Task", "Value", dataset, false, true, true);
+		_chart = GanttChartFactory.createGanttChart(
+				_title, "Task", "Value", dataset, false, true, true);
 		
-        CategoryPlot plot = (CategoryPlot) chart.getPlot();
+        CategoryPlot plot = (CategoryPlot) _chart.getPlot();
         CustomGanttRenderer renderer = new CustomGanttRenderer();
         renderer.setShadowVisible(false);
         plot.setRenderer(renderer);
@@ -62,10 +64,16 @@ public class Gantt extends ApplicationFrame{
         //remove reflection
         BarRenderer br = (BarRenderer) plot.getRenderer();
         br.setBarPainter(new StandardBarPainter());
+        _chart.setNotify(true);
         
-		return chart;
+		return _chart;
 	}
-
+	/**
+	 * createDataset looks at the best solution then loops over all its processors.
+	 * For each processor it reads the start and finish times of each task in the processor,
+	 * in order to create a subtask that will be displayed on the gantt chart.
+	 * @return
+	 */
 	private static IntervalCategoryDataset createDataset() {
 		
 		
@@ -124,22 +132,48 @@ public class Gantt extends ApplicationFrame{
 		return p.endTime();
 	}
 
-
-	private void update(Solution s) {
-		//TODO
+	/**
+	 * Tells the chart to repaint itself with the dataset of the given solution
+	 * @param sol
+	 */
+	public void updateSolution(Solution sol) {
+		_sol = sol;
+		_chart.getCategoryPlot().setDataset(createDataset());
+		//_chart.getXYPlot().setDataset(_chart.getXYPlot().getDataset());
+		
 	}
-
+	
+	public void setSolution(Solution sol) {
+		_sol = sol;
+	}
+	/**
+	 * Creates the jpanel 
+	 * @return
+	 */
 	public static JPanel createDemoPanel() {
 		JFreeChart jfreechart = createChart(createDataset());
 		ChartPanel chartpanel = new ChartPanel(jfreechart);
 		chartpanel.setMouseWheelEnabled(true);
 		return chartpanel;
 	}
-
+	/**
+	 * Checks if this panel has been created
+	 * @return
+	 */
+	public boolean hasLaunched() {
+		return _launched ;
+	}
+	/**
+	 * Inialises the gantt chart, makes the JPanel and puts it in a frame
+	 */
 	public void launch() {
+		JPanel jpanel = createDemoPanel();
+		jpanel.setPreferredSize(new Dimension(1200, 800));
+		setContentPane(jpanel);
 		this.pack();
 		RefineryUtilities.centerFrameOnScreen(this);
 		this.setVisible(true);
+		_launched= true;
 	}
 
 

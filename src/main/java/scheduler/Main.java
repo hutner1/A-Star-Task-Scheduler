@@ -31,6 +31,9 @@ public class Main {
 
 		DataReader dataReader = new DataReader(inputParser.getFile());
 		Visualizer graphVisualizer = null;
+
+		Gantt gantt = null;
+
 		Gui gui = null;
 		
 		
@@ -41,6 +44,10 @@ public class Main {
 			if(inputParser.isVisualise() == true){
 				graphVisualizer = new Visualizer();
 				graphVisualizer.add(dataReader.getGraph());
+
+				graphVisualizer.displayGraph();
+				gantt = new Gantt("Test");
+
 				final Visualizer graphVisualizer2 = graphVisualizer;
 				//graphVisualizer.displayGraph();
 				try {
@@ -60,6 +67,7 @@ public class Main {
 						
 					}
 				});
+
 				
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -71,19 +79,23 @@ public class Main {
 			List<Vertex> tSort = sorter.generateSort();
 			Schedule sol = ScheduleGenerator.makeSolution(tSort);*/
 			long startTime = System.nanoTime();
-			
-			AStar aStar = new AStar(dataReader.getGraph(),inputParser.getProcessors(), graphVisualizer, gui);
+
+			AStar aStar = new AStar(dataReader.getGraph(),inputParser.getProcessors(), graphVisualizer, gantt);
 			Solution optimalSolution = aStar.execute();
 			outWriter.createScheduleAStar(dataReader.getGraphName(),dataReader.getInfo(),dataReader.getRead(),optimalSolution,dataReader.getMapping());
 			long endTime = System.nanoTime();
 			long totalTime = endTime - startTime;
 			System.out.println("\n Took " + totalTime/1000000 + "ms" + " : " + totalTime/1000000000 + " seconds");
 			
+			/*
 			if(inputParser.isVisualise() == true){
-				Gantt gantt = new Gantt("Test", optimalSolution);
+				gantt = new Gantt("Test");
+				gantt.setSolution(optimalSolution);
 				gantt.launch();
 				
 			}
+			*/
+			
 		}
 	}
 }
