@@ -24,11 +24,12 @@ public class AStarThread extends AStar implements Runnable{
 	 * @param numberOfProcessors number of processors the task scheduling is done on
 	 * @param Visualizer graph visualization
 	 */
-	public AStarThread(int id, DefaultDirectedWeightedGraph graph, PriorityBlockingQueue<Solution> solutionSpace, Set<Solution> closedSolutions, int numberOfProcessors, Visualizer Visualizer, AStarParallelised asp) {
+	public AStarThread(int id, DefaultDirectedWeightedGraph graph, PriorityBlockingQueue<Solution> solutionSpace, Set<Solution> closedSolutions, int numberOfProcessors, Visualizer Visualizer, int upperBound, AStarParallelised asp) {
 		super(graph, numberOfProcessors, Visualizer);
 		this._threadNo = id;
 		this._solutionSpace = solutionSpace;
 		this._closedSolutions = closedSolutions;
+		this._upperBound = upperBound;
 		this._asp = asp;
 	}
 	

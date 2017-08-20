@@ -48,7 +48,7 @@ public class AStarParallelised extends AStar{
 	protected Solution executeInParallel() {
 		//Start threading process, assign each thread(core) an ASTarThread with shared solution space and closed solution space
 		for (int i = 0; i < _numberOfThreads; i++) {
-			_aStarThreads[i] = new AStarThread(i, _graph, _solutionSpace, _closedSolutions, _numberOfProcessors, _visualizer,this);
+			_aStarThreads[i] = new AStarThread(i, _graph, _solutionSpace, _closedSolutions, _numberOfProcessors, _visualizer, _upperBound,this);
 			//Add the custom thread with all the AStar fields into a thread
 			_threads[i] = new Thread(_aStarThreads[i]);
 			_threads[i].setName("Thread-"+i);
