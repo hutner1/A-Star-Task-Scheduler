@@ -77,18 +77,10 @@ public class AStarParallelised extends AStar{
 	 * @return the OPTIMAL solution
 	 */
 	private Solution getBestSolution(AStarThread[] aStarThreads) {
-		/*Solution bestSolution = aStarThreads[0].getSolution();
-		System.out.println("Timmeeweema  : "+bestSolution.getLastFinishTime());
-		for (int i = 1; i < _numberOfThreads; i++) {
-			System.out.println("Timmeeweema  : "+aStarThreads[i].getSolution().getLastFinishTime());
-			if (bestSolution.getLastFinishTime()< aStarThreads[i].getSolution().getLastFinishTime()) {
-				bestSolution = aStarThreads[i].getSolution(); //update the best solution
-			}
-		}*/
-
+		//Loop through all the threads
 		for (int i = 0; i < _numberOfThreads; i++) {
 			if (aStarThreads[i].getSolution() != null) {
-				System.out.println("Timmeeweema  : "+aStarThreads[i].getSolution().getLastFinishTime());
+				System.out.println("Finish time  : "+aStarThreads[i].getSolution().getLastFinishTime());
 				return aStarThreads[i].getSolution();
 			}
 		}

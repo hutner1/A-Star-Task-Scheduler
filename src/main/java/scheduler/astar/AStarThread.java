@@ -42,7 +42,7 @@ public class AStarThread extends AStar implements Runnable{
 		System.out.println("Thread " + _threadNo + " --> "+System.nanoTime()/1000000000 + " seconds");
 		for(int i = 0; i<_asp._numberOfThreads; i++){
 			if(i != _threadNo){
-				_asp._threads[i].stop();
+				_asp._threads[i].stop(); //Return the solution that one thread has
 			}
 		}
 	}

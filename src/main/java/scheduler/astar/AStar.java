@@ -26,7 +26,7 @@ public class AStar {
 	public AStar(DefaultDirectedWeightedGraph graph, int numberOfProcessors, Visualizer graphVisualizer) {
 		_graph = graph;
 		_numberOfProcessors = numberOfProcessors;
-		_solutionSpace = new PriorityBlockingQueue<Solution>();
+		_solutionSpace = new PriorityBlockingQueue<Solution>(); //data structure does not permit null elements
 		_closedSolutions = new CopyOnWriteArraySet<Solution>(); //threadsafe set
 		_visualizer = graphVisualizer;
 	}
