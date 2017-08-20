@@ -147,4 +147,44 @@ public class DefaultDirectedWeightedGraph {
 	public int getEdgeWeight(DefaultWeightedEdge edge) {
 		return edge.getWeight();
 	}
+	
+	/**
+	 * Get parents vertices
+	 * @param vertex
+	 * @return parents vertices
+	 */
+	public ArrayList<Vertex> getParents(Vertex vertex){
+		ArrayList<Vertex> parents = new ArrayList<>();
+		for(DefaultWeightedEdge e : incomingEdgesOf(vertex)){
+			parents.add(getEdgeSource(e));
+		}
+		return parents;
+	}
+
+	/**
+	 * Get children vertices
+	 * @param vertex
+	 * @return children vertices
+	 */
+	public ArrayList<Vertex> getChildren(Vertex vertex){
+		ArrayList<Vertex> children = new ArrayList<>();
+		for(DefaultWeightedEdge e : outgoingEdgesOf(vertex)){
+			children.add(getEdgeTarget(e));
+		}
+		return children;
+	}
+	
+	/**
+	 * Returns root nodes of the digraph
+	 * @return root nodes of the digraph
+	 */
+	public ArrayList<Vertex> returnRootVertices(){
+		ArrayList<Vertex> rootVertices = new ArrayList<>();
+		for (Vertex v: vertexSet()) {
+			if (inDegreeOf(v)==0) {
+				rootVertices.add(v);
+			}
+		}
+		return rootVertices;
+	}
 }

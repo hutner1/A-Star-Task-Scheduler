@@ -6,16 +6,18 @@ package scheduler.graphstructures;
  * Name and weight will be set when initializing the Vertex.
  * 
  * BottomLvl will be set later, it is the level from the leaf 
+ * Visited is used by topological sort to indicate that the node is visited
  */
 public class Vertex {
 	private String _name;
 	private int _weight;
 	private int _bottomLvl;
+	private boolean _visited;
 	
 	public Vertex(String name) {
-		this._name = name;
+		_name = name;
+		_visited = false;
 	}
-	
 	
 	//---Getter Methods---
 	
@@ -43,6 +45,14 @@ public class Vertex {
 			return _bottomLvl;
 		}
 		
+		/**
+		 * Check to see if node is visited
+		 * @return visited status
+		 */
+		public boolean isVisited(){
+			return _visited;
+		}
+		
 		
 		//---Setter Methods---
 		/**
@@ -59,6 +69,13 @@ public class Vertex {
 		 */
 		public void setBottomLevel(int val) {
 			_bottomLvl = val;
+		}
+		
+		/**
+		 * Set that the node is visited
+		 */
+		public void setVisited(){
+			_visited = true;
 		}
 		
 }

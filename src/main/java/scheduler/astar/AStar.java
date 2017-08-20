@@ -22,6 +22,7 @@ public class AStar {
 	protected Set<Solution> _closedSolutions;
 	protected Visualizer _visualizer;
 	protected int _counter = 0;
+	protected int _upperBound;
 
 	public AStar(DefaultDirectedWeightedGraph graph, int numberOfProcessors, Visualizer graphVisualizer) {
 		_graph = graph;
@@ -53,8 +54,6 @@ public class AStar {
 		List<Vertex> nonschedulable = new ArrayList<Vertex>(); // dependencies not met
 		// fill lists of schedulables
 
-		// Upper bound of run time if all tasks are run in order
-		int upperBound = 0;
 
 		for (Vertex v : _graph.vertexSet()) {
 			if (_graph.inDegreeOf(v) == 0) { //get source nodes
@@ -62,12 +61,15 @@ public class AStar {
 			} else {
 				nonschedulable.add(v);
 			}
-			upperBound += v.getWeight();
 			btmLevel.put(v, getBottomLevel(v));
 		}
 
+		ListScheduler listScheduler = new ListScheduler(_graph, _numberOfProcessors);
+		_upperBound = listScheduler.getResult();
+		System.out.println("Upper bound:" + _upperBound);
+		
 		// Create empty solution and then commence the looping
-		Solution emptySolution = new Solution(upperBound, _numberOfProcessors, _graph, new ArrayList<Vertex>(), schedulable, nonschedulable);
+		Solution emptySolution = new Solution(_upperBound, _numberOfProcessors, _graph, new ArrayList<Vertex>(), schedulable, nonschedulable);
 		emptySolution.setBtmLevels(btmLevel);
 		_solutionSpace.add(emptySolution);	
 	}
@@ -92,8 +94,6 @@ public class AStar {
 		while (!bestCurrentSolution.isCompleteSchedule()) {
 			//System.out.println("C: "+_closedSolutions.size());
 
-			
-
 			while ((_closedSolutions.contains(bestCurrentSolution)) || (bestCurrentSolution == null)) {
 				bestCurrentSolution = _solutionSpace.poll();
 			}
@@ -101,9 +101,12 @@ public class AStar {
 			//System.out.println("SS: "+_solutionSpace.size());
 
 			for (Solution s : bestCurrentSolution.createChildren()) {
-				if (!_solutionSpace.contains(s)) {
-					_solutionSpace.add(s);
-					if (s.maxCostFunction() == bestCurrentSolution.maxCostFunction()) {
+				int childCost = s.maxCostFunction();
+				if (childCost > _upperBound){
+					// DO NOTHING AS IT WILL NOT BE CONSIDERED
+				} else if (!_solutionSpace.contains(s)) {
+					_solutionSpace.add(s); // TODO move to after if statement?
+					if (childCost == bestCurrentSolution.maxCostFunction()) {
 						break;
 					}
 				}
