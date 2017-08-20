@@ -22,7 +22,6 @@ public class AStar {
 	protected Set<Solution> _closedSolutions;
 	protected Visualizer _visualizer;
 	protected static int _counter = 0;
-	protected int _counter = 0;
 	protected int _upperBound;
 
 	public AStar(DefaultDirectedWeightedGraph graph, int numberOfProcessors, Visualizer graphVisualizer) {
