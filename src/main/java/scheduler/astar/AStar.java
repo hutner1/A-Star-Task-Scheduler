@@ -21,6 +21,7 @@ public class AStar {
 	protected PriorityBlockingQueue<Solution> _solutionSpace;
 	protected Set<Solution> _closedSolutions;
 	protected Visualizer _visualizer;
+	protected static int _counter = 0;
 	protected int _counter = 0;
 	protected int _upperBound;
 
