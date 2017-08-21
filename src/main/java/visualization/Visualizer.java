@@ -29,6 +29,7 @@ import scheduler.astar.Solution;
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
 import scheduler.graphstructures.DefaultWeightedEdge;
 import scheduler.graphstructures.Vertex;
+import visualization.gui.Gui;
 
 /**
  * This class visualize the scheduling process with GraphStream
@@ -133,10 +134,11 @@ public class Visualizer {
 		//Displays the graph
 		_viewer = new Viewer(_graph,
                 Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
-
+		
 		ViewPanel view = _viewer.addDefaultView(false);
+		
 		_viewer.enableAutoLayout();
-
+		
 		//Connect back the viewer to the graph, the graph becomes a sink for the viewer. 
 		ViewerPipe fromViewer = _viewer.newViewerPipe();
 		
@@ -148,6 +150,9 @@ public class Visualizer {
 		return view;
 	}
 	
+	public void setGuiListener(Gui gui){
+		_nodeClickListener._gui = gui;
+	}
 	/**
 	 * Updates the status/ visual of the graph based on the current best schedule.
 	 * The color of nodes changes accordingly to the processor that it is assigned to

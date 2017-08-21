@@ -33,8 +33,6 @@ public class Main {
 		Visualizer graphVisualizer = null;
 
 		Gantt gantt = null;
-
-		Gui gui = null;
 		
 		
 		while(dataReader.hasMoreGraphs()) {
@@ -61,14 +59,15 @@ public class Main {
 							
 							Gui window = new Gui(graphVisualizer2);
 							window.frame.setVisible(true);
+							graphVisualizer2.setGuiListener(window);
+							
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
 						
 					}
 				});
-
-				
+					
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
