@@ -26,6 +26,8 @@ import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Color;
+
+import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -85,7 +87,7 @@ public class Gui {
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
 		try {
-			frame.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("resources\\back8.jpg")))));
+			frame.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("resources\\back13.jpg")))));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -169,6 +171,9 @@ public class Gui {
 		infoArea.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		infoArea.setBounds(734, 248, 140, 246);
 		infoArea.setBorder(new LineBorder(new Color(13, 90, 150), 1, true));
+		/*Border roundedBorder = new LineBorder(new Color(13, 90, 150), 5, true);
+		infoArea.setBorder(roundedBorder);*/
+		
 		infoArea.setBackground(new Color(250,250,250));
 		infoArea.setLineWrap(true);
         infoArea.setWrapStyleWord(true);
@@ -188,9 +193,9 @@ public class Gui {
 		txtrTask.setForeground(new Color(255, 255, 255));
 		txtrTask.setBackground(new Color(184, 38, 1));
 		//129, 55, 114
-		txtrTask.setBorder(new LineBorder(new Color(184, 38, 1), 2, true));
+		txtrTask.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		txtrTask.setEditable(false);
-		txtrTask.setBounds(734, 215, 140, 30);
+		txtrTask.setBounds(734, 220, 140, 30);
 		txtrTask.setMargin(new Insets(5,5,5,5));
 		
 		frame.getContentPane().add(txtrTask);

@@ -27,6 +27,8 @@ class CustomButton extends JButton {
         this.setBackground(new Color(13, 90, 150));
         this.setForeground(Color.white);
         this.setFont(new Font("SansSerif", Font.BOLD, 18));
+        this.setContentAreaFilled(false);
+        this.setOpaque(false);
     }
 
     @Override
@@ -36,8 +38,15 @@ class CustomButton extends JButton {
         } else {
             g.setColor(getBackground());
         }
-        g.fillRect(0, 0, getWidth(), getHeight());
+        /*g.fillRect(0, 0, getWidth(), getHeight());*/
+        g.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 6, 6);
+
+        /*g.setColor(getBackground().darker().darker().darker());*/
+        g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 6, 6);
+        
         super.paintComponent(g);
+        
+        
     }
 
     @Override
