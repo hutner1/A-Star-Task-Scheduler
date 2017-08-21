@@ -43,7 +43,7 @@ public class AStarParallelised extends AStar{
 
 	/**
 	 * Execute the A* algorithm in parallel using separate threads
-	 * @return optimal solution
+	 * @return optimal solution found in parallel
 	 */
 	protected Solution executeInParallel() {
 		//Start threading process, assign each thread(core) an ASTarThread with shared solution space and closed solution space
@@ -74,7 +74,7 @@ public class AStarParallelised extends AStar{
 	/**
 	 * Compares all AStarThreads that ran and return the optimal solution
 	 * @param aStarThreads Array of AStarThreads that ran
-	 * @return the OPTIMAL solution
+	 * @return the OPTIMAL solution found in parallel
 	 */
 	private Solution getBestSolution(AStarThread[] aStarThreads) {
 		//Loop through all the threads

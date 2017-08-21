@@ -19,7 +19,7 @@ public class AStarThread extends AStar implements Runnable{
 	 * AStarThread constructor
 	 * @param id thread identifier (a number to identify)
 	 * @param graph task digraph
-	 * @param solutionSpace shared OPEN solution space (PriorityQueue)
+	 * @param solutionSpace shared OPEN solution space (PriorityBlockingQueue)
 	 * @param closedSolutions shared CLOSED solution space (Set)
 	 * @param numberOfProcessors number of processors the task scheduling is done on
 	 * @param Visualizer graph visualization

@@ -24,6 +24,12 @@ public class AStar {
 	protected static int _counter = 0;
 	protected int _upperBound;
 
+	/**
+	 * AStar's constructor
+	 * @param graph task digraph
+	 * @param numberOfProcessors number of processors to do task scheduling on
+	 * @param graphVisualizer the visualizer
+	 */
 	public AStar(DefaultDirectedWeightedGraph graph, int numberOfProcessors, Visualizer graphVisualizer) {
 		_graph = graph;
 		_numberOfProcessors = numberOfProcessors;
@@ -34,7 +40,7 @@ public class AStar {
 
 	/**
 	 * Execute A* algorithm
-	 * @return
+	 * @return optimal solution found sequentially
 	 */
 	public Solution execute() {
 		initialiseSolutionSpace();
