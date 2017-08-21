@@ -154,6 +154,8 @@ public class Gantt extends ApplicationFrame{
 		JFreeChart jfreechart = createChart(createDataset());
 		ChartPanel chartpanel = new ChartPanel(jfreechart);
 		chartpanel.setMouseWheelEnabled(true);
+		jfreechart.setBackgroundPaint(new Color(250,250,250));
+        
 		return chartpanel;
 	}
 	/**

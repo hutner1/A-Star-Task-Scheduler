@@ -4,10 +4,15 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
@@ -74,15 +79,21 @@ public class Gui {
 		//Initializing the outer container/frame for the gui.
 		frame = new JFrame();
 		frame.setTitle("Imagine Breaker - Task Scheduler");
-		frame.getContentPane().setBackground(new Color(239,239,239));
+		frame.getContentPane().setBackground(new Color(213, 213, 213));
 		frame.setBounds(50, 50, 890, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
+/*		try {
+			frame.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("back8.jpg")))));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+		/*frame.setContentPane(new JLabel(new ImageIcon("C:\\Users\\Computer\\Downloads\\back4.png")));*/
 		
 		//Initializing the panel with a card layout to store graphs. 
 		_cards = new JPanel(new CardLayout());
-		_cards.setBorder(new LineBorder(new Color(180,235,250), 5, true));
+		_cards.setBorder(new LineBorder(new Color(144, 153, 162), 2, true));
 		_cards.setBounds(15, 15, 700, 540);
 		_cards.setPreferredSize(new Dimension(700,540));
 		CardLayout cardLayout = (CardLayout) _cards.getLayout();
@@ -108,7 +119,7 @@ public class Gui {
 		JButton graphButton = new CustomButton("Tree Graph");
 		
 		_active = graphButton;
-		graphButton.setBackground(new Color(255, 135, 135));
+		graphButton.setBackground(new Color(148, 166, 204));
 		
 		graphButton.setBounds(734, 15, 140, 50);
 		frame.getContentPane().add(graphButton);
@@ -157,7 +168,8 @@ public class Gui {
 		infoArea.setEditable(false);
 		infoArea.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		infoArea.setBounds(734, 248, 140, 246);
-		
+		infoArea.setBorder(new LineBorder(new Color(144, 153, 162), 1, true));
+		infoArea.setBackground(new Color(250,250,250));
 		infoArea.setLineWrap(true);
         infoArea.setWrapStyleWord(true);
         infoArea.setMargin(new Insets(5,5,5,5));
@@ -174,9 +186,10 @@ public class Gui {
 		txtrTask.setFont(new Font("SansSerif", Font.BOLD, 20));
 		txtrTask.setText("Task");
 		txtrTask.setForeground(new Color(255, 255, 255));
-		txtrTask.setBackground(new Color(0, 153, 51));
+		txtrTask.setBackground(new Color(150, 133, 143));
+		txtrTask.setBorder(new LineBorder(new Color(150, 133, 143), 2, true));
 		txtrTask.setEditable(false);
-		txtrTask.setBounds(734, 198, 140, 50);
+		txtrTask.setBounds(734, 215, 140, 30);
 		txtrTask.setMargin(new Insets(5,5,5,5));
 		
 		frame.getContentPane().add(txtrTask);
@@ -187,8 +200,8 @@ public class Gui {
 	 * Change the color of the active button on the GUI
 	 */
 	private void changeActive(){
-		_active.setBackground(new Color(255, 135, 135));
-		_notActive.setBackground(new Color(255, 59, 63));
+		_active.setBackground(new Color(148, 166, 204));
+		_notActive.setBackground(new Color(109, 121, 147));
 
 	}
 	

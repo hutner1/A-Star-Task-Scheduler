@@ -11,7 +11,7 @@ import javax.swing.border.LineBorder;
 
 class CustomButton extends JButton {
 
-    private Color hoverBackgroundColor = new Color(255, 155, 155);
+    private Color hoverBackgroundColor = new Color(148, 166, 204);
 
     public CustomButton() {
         this(null);
@@ -24,7 +24,7 @@ class CustomButton extends JButton {
        Border empty = BorderFactory.createEmptyBorder();
         this.setBorder(empty);
         this.setFocusable(false);
-        this.setBackground(new Color(255, 59, 63));
+        this.setBackground(new Color(109, 121, 147));
         this.setForeground(Color.white);
         this.setFont(new Font("SansSerif", Font.BOLD, 18));
     }
