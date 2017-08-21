@@ -85,7 +85,7 @@ public class Gui {
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
 		try {
-			frame.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("back8.jpg")))));
+			frame.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("resources\\back8.jpg")))));
         } catch (IOException e) {
             e.printStackTrace();
         }
