@@ -16,7 +16,7 @@ public class TestAStarParallelised {
 	
 	@Test
 	public void testConstructor(){
-		AStar alg = new AStarParallelised(_graph, 2, 3, null);
+		AStar alg = new AStarParallelised(_graph, 2, 3, null,null);
 		assertEquals(alg._numberOfProcessors, 2);
 		assertEquals(_graph.edgeSet().size(),0);
 	}
