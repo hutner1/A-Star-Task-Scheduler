@@ -15,6 +15,7 @@ import visualization.Visualizer;
 import visualization.gantt.Gantt;
 
 import visualization.gui.Gui;
+import visualization.gui.StatisticTable;
 
 
 /**
@@ -36,6 +37,8 @@ public class AStar {
 	
 	protected Visualizer _visualizer;
 	
+	protected StatisticTable _stats;
+	
 	//Upper bound obtained from list scheduling
 	protected int _upperBound;
 	protected Gantt _gantt;
@@ -50,13 +53,14 @@ public class AStar {
 	 * @param numberOfProcessors number of processors to do task scheduling on
 	 * @param graphVisualizer the visualizer
 	 */
-	public AStar(DefaultDirectedWeightedGraph graph, int numberOfProcessors, Visualizer graphVisualizer, Gantt gantt) {
+	public AStar(DefaultDirectedWeightedGraph graph, int numberOfProcessors, Visualizer graphVisualizer, Gantt gantt, StatisticTable stats) {
 		_graph = graph;
 		_numberOfProcessors = numberOfProcessors;
 		_solutionSpace = new PriorityBlockingQueue<Solution>(); //data structure does not permit null elements
 		_closedSolutions = new CopyOnWriteArraySet<Solution>(); //threadsafe set
 		_visualizer = graphVisualizer;
 		_gantt = gantt;
+		_stats = stats;
 	}
 
 
@@ -116,7 +120,7 @@ public class AStar {
 		// TODO what if solution space too small like 2 tasks - YaoJian will understand
 		while(bestCurrentSolution == null){
 			bestCurrentSolution = _solutionSpace.poll();
-			_solPopped ++;
+			/*_solPopped ++;*/
 		}
 
 		// if not complete, consider the children in generating the solution and poll again
@@ -173,7 +177,13 @@ public class AStar {
 				}  
 
 			} 
-
+			
+			if(_stats != null){  
+				if(_counter == 10){  
+					_stats.updateStats(_solCreated, _solPopped, _solPruned, -1, bestCurrentSolution.maxCostFunction());
+				}
+			} 
+			
 		}
 		if(_visualizer != null){
 			_visualizer.UpdateGraph(bestCurrentSolution);

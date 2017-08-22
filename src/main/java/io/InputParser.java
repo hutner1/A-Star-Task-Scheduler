@@ -23,7 +23,7 @@ public class InputParser {
 	private String[] _input;
 	private int _numberOfProcessors;
 	private boolean _visualise = false;
-	private int _cores;
+	private int _cores = 1;;
 	private boolean _parallelise = false;
 	private String _outputFileName;
 	private File _file;

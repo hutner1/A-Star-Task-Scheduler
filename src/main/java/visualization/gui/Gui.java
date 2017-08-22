@@ -178,6 +178,7 @@ public class Gui {
 				changeActive();
 			}
 		});
+		/*statButton.setEnabled(false);*/
 
 		//Creating a button for exit.
 		JButton btnClose = new CustomButton("Close");
@@ -257,6 +258,10 @@ public class Gui {
 	public void noInfoToShow(String task){
 		txtrTask.setText("Task "+task);
 		infoArea.setText("This task is not scheduled yet");
+	}
+	
+	public void schedulingFinished(){
+		statButton.setEnabled(true);;
 	}
 }
 

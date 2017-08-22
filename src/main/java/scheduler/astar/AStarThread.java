@@ -9,6 +9,7 @@ import visualization.Visualizer;
 import visualization.gantt.Gantt;
 
 import visualization.gui.Gui;
+import visualization.gui.StatisticTable;
 
 
 /**
@@ -29,8 +30,8 @@ public class AStarThread extends AStar implements Runnable{
 	 * @param numberOfProcessors number of processors the task scheduling is done on
 	 * @param Visualizer graph visualization
 	 */
-	public AStarThread(int id, DefaultDirectedWeightedGraph graph, PriorityBlockingQueue<Solution> solutionSpace, Set<Solution> closedSolutions, int numberOfProcessors, Visualizer Visualizer, int upperBound, AStarParallelised asp, Gantt gantt) {
-		super(graph, numberOfProcessors, Visualizer, gantt);
+	public AStarThread(int id, DefaultDirectedWeightedGraph graph, PriorityBlockingQueue<Solution> solutionSpace, Set<Solution> closedSolutions, int numberOfProcessors, Visualizer Visualizer, int upperBound, AStarParallelised asp, Gantt gantt, StatisticTable stats) {
+		super(graph, numberOfProcessors, Visualizer, gantt, stats);
 		this._threadNo = id;
 		this._solutionSpace = solutionSpace;
 		this._closedSolutions = closedSolutions;

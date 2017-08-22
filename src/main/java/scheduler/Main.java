@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.table.DefaultTableModel;
 
 import io.DataReader;
 import io.InputParser;
@@ -94,9 +95,9 @@ public class Main {
 			// decide whether to parallelise A* based on user input
 			AStar aStar;
 			if(inputParser.isParallelise() && inputParser.getCores() > 1){
-				aStar = new AStarParallelised(dataReader.getGraph(), inputParser.getProcessors(), inputParser.getCores(), graphVisualizer, gantt);
+				aStar = new AStarParallelised(dataReader.getGraph(), inputParser.getProcessors(), inputParser.getCores(), graphVisualizer, gantt, stats);
 			} else {
-				aStar = new AStar(dataReader.getGraph(),inputParser.getProcessors(), graphVisualizer, gantt);
+				aStar = new AStar(dataReader.getGraph(),inputParser.getProcessors(), graphVisualizer, gantt, stats);
 			}
 
 			// write the optimal schedule to the output file
@@ -111,7 +112,12 @@ public class Main {
 			
 			if(stats != null){
 				stats.updateStats(aStar.getSolCreated(), aStar.getSolPopped(), aStar.getSolPruned(), (int) (totalTime/1000000), optimalSolution.getLastFinishTime());
+				DefaultTableModel model = (DefaultTableModel)stats.getTable().getModel();
+
+				model.setValueAt("Optimal Finish Time", 6, 0);
+
 			}
+			
 			
 			
 			/*
