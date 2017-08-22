@@ -33,7 +33,7 @@ public class Gantt extends ApplicationFrame{
 	private static Solution _sol;
 	private static JFreeChart _chart;
 	private boolean _launched = false;
-	private JPanel jpanel;
+	public JPanel jpanel;
 	public Gantt(String title) {
 		super(title);
 		_title = title;
@@ -145,6 +145,7 @@ public class Gantt extends ApplicationFrame{
 	public void setSolution(Solution sol) {
 		_sol = sol;
 	}
+	
 	/**
 	 * Creates the jpanel 
 	 * @return

@@ -135,7 +135,7 @@ public class AStar {
 			}
 			//TODO System.out.println(bestCurrentSolution.maxCostFunction());
 			//TODO System.out.println("Solution space size : " + _solutionSpace.size());
-			}
+			
 			_closedSolutions.add(bestCurrentSolution);
 			bestCurrentSolution = _solutionSpace.poll();
 			
@@ -164,7 +164,7 @@ public class AStar {
 
 			} 
 	
-
+	}
 		if(_visualizer != null){
 			_visualizer.UpdateGraph(bestCurrentSolution);
 			_gantt.updateSolution(bestCurrentSolution);
