@@ -22,7 +22,8 @@ public class TestSolution {
 			v.setWeight(10);
 			_graph.addVertex(v);
 			AStar alg = new AStar(_graph, 1, null,null);
-			assertEquals(0, alg._upperBound);
+			Solution sol = alg.execute();
+			assertEquals(sol.getLastFinishTime(),10);
 		}
 		
 		@Test
@@ -31,7 +32,8 @@ public class TestSolution {
 			while(dataReader.hasMoreGraphs()) {
 			dataReader.readNextGraph();
 			AStar alg = new AStar(dataReader.getGraph(), 1, null,null);
-			assertEquals(0, alg._upperBound);
+			Solution sol = alg.execute();
+			assertEquals(sol.getLastFinishTime(),640);
 			}
 		}
 		
