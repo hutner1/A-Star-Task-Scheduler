@@ -91,6 +91,7 @@ public class TestDefaultDirectedWeightedGraph {
 		assertTrue(_testGraph.edgesOf(_root1).contains(_e1));
 		assertEquals(_testGraph.outgoingEdgesOf(_root1).size(), 1);
 		assertTrue(_testGraph.outgoingEdgesOf(_root1).contains(_e1));
+		assertTrue(_testGraph.getDirectChildren(_root1).contains(_intermediate));
 
 		assertEquals(_testGraph.inDegreeOf(_root2),0);
 		assertEquals(_testGraph.incomingEdgesOf(_root2).size(),0);
@@ -98,6 +99,7 @@ public class TestDefaultDirectedWeightedGraph {
 		assertTrue(_testGraph.edgesOf(_root2).contains(_e2));
 		assertEquals(_testGraph.outgoingEdgesOf(_root2).size(), 1);
 		assertTrue(_testGraph.outgoingEdgesOf(_root2).contains(_e2));
+		assertTrue(_testGraph.getDirectChildren(_root2).contains(_intermediate));
 	}
 	
 	/**
@@ -111,6 +113,8 @@ public class TestDefaultDirectedWeightedGraph {
 		assertEquals(_testGraph.edgesOf(_leaf1).size(),1);
 		assertTrue(_testGraph.edgesOf(_leaf1).contains(_e3));
 		assertEquals(_testGraph.outgoingEdgesOf(_leaf1).size(), 0);
+		assertTrue(_testGraph.getDirectParents(_leaf1).contains(_intermediate));
+
 
 		assertEquals(_testGraph.inDegreeOf(_leaf2),1);
 		assertEquals(_testGraph.incomingEdgesOf(_leaf2).size(),1);
@@ -118,6 +122,7 @@ public class TestDefaultDirectedWeightedGraph {
 		assertEquals(_testGraph.edgesOf(_leaf2).size(),1);
 		assertTrue(_testGraph.edgesOf(_leaf2).contains(_e4));
 		assertEquals(_testGraph.outgoingEdgesOf(_leaf2).size(), 0);
+		assertTrue(_testGraph.getDirectParents(_leaf2).contains(_intermediate));
 	}	
 	
 	/**
@@ -137,6 +142,10 @@ public class TestDefaultDirectedWeightedGraph {
 		assertEquals(_testGraph.outgoingEdgesOf(_intermediate).size(), 2);
 		assertTrue(_testGraph.outgoingEdgesOf(_intermediate).contains(_e3));
 		assertTrue(_testGraph.outgoingEdgesOf(_intermediate).contains(_e4));
+		assertTrue(_testGraph.getDirectParents(_intermediate).contains(_root1));
+		assertTrue(_testGraph.getDirectParents(_intermediate).contains(_root2));
+		assertTrue(_testGraph.getDirectChildren(_intermediate).contains(_leaf1));
+		assertTrue(_testGraph.getDirectChildren(_intermediate).contains(_leaf2));
 	}
 
 	/**

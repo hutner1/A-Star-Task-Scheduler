@@ -24,4 +24,5 @@ public class TestListScheduler {
 			assertEquals(640,ls.getResult());
 		}
 	}
+
 }
