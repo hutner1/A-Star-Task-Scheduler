@@ -44,7 +44,14 @@ public class Main {
 			List<Vertex> tSort = sorter.generateSort();
 			Schedule sol = ScheduleGenerator.makeSolution(tSort);*/
 			long startTime = System.nanoTime();
-			AStar aStar = new AStar(dataReader.getGraph(),inputParser.getProcessors(), graphVisualizer, gantt);
+
+      AStar aStar;
+			if(inputParser.isParallelise() && inputParser.getCores() > 1){
+				aStar = new AStarParallelised(dataReader.getGraph(), inputParser.getProcessors(), inputParser.getCores(), graphVisualizer);
+			} else {
+				aStar = new AStar(dataReader.getGraph(),inputParser.getProcessors(), graphVisualizer);
+			}
+
 			Solution optimalSolution = aStar.execute();
 			outWriter.createScheduleAStar(dataReader.getGraphName(),dataReader.getInfo(),dataReader.getRead(),optimalSolution,dataReader.getMapping());
 			long endTime = System.nanoTime();
