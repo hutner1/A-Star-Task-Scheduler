@@ -108,13 +108,21 @@ public class AStar {
 
 			//System.out.println("SS: "+_solutionSpace.size());
 
-			for (Solution s : bestCurrentSolution.createChildren()) {
+			List<Solution> childSolutions = bestCurrentSolution.createChildren();
+			
+			for (int i = 0; i < childSolutions.size(); i++) {
+			Solution s = childSolutions.get(i);
 				int childCost = s.maxCostFunction();
 				if (childCost > _upperBound){
 					// DO NOTHING AS IT WILL NOT BE CONSIDERED
-				} else if (!_solutionSpace.contains(s)) {
+				} else if (!_solutionSpace.contains(s) && !_closedSolutions.contains(s)) {
 					_solutionSpace.add(s); // TODO move to after if statement?
 					if (childCost == bestCurrentSolution.maxCostFunction()) {
+						if (i < childSolutions.size() - 1) {
+							_solutionSpace.add(bestCurrentSolution);
+						} else {
+							_closedSolutions.add(bestCurrentSolution);
+						}
 						break;
 					}
 				}
