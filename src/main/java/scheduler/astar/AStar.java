@@ -73,7 +73,7 @@ public class AStar {
 		// fill lists of schedulables
 
 		for (Vertex v : _graph.vertexSet()) {
-			if (_graph.getParents(v).isEmpty()) { //get source nodes
+			if (_graph.inDegreeOf(v) == 0) { //get source nodes
 				schedulable.add(v);
 			} else {
 				nonschedulable.add(v);
@@ -121,23 +121,15 @@ public class AStar {
 
 			//System.out.println("SS: "+_solutionSpace.size());
 
-			List<Solution> childSolutions = bestCurrentSolution.createChildren();
-			
-			for (int i = 0; i < childSolutions.size(); i++) {
-			Solution s = childSolutions.get(i);
+			for (Solution s : bestCurrentSolution.createChildren()) {
 				int childCost = s.maxCostFunction();
 				_solCreated ++;
 				if (childCost > _upperBound){
 					_solPruned ++;
 					// DO NOTHING AS IT WILL NOT BE CONSIDERED
-				} else if (!_solutionSpace.contains(s) && !_closedSolutions.contains(s)) {
+				} else if (!_solutionSpace.contains(s)) {
 					_solutionSpace.add(s); // TODO move to after if statement?
 					if (childCost == bestCurrentSolution.maxCostFunction()) {
-						if (i < childSolutions.size() - 1) {
-							_solutionSpace.add(bestCurrentSolution);
-						} else {
-							_closedSolutions.add(bestCurrentSolution);
-						}
 						break;
 					}
 				}

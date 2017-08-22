@@ -77,4 +77,5 @@ public class Vertex {
 	public void setVisited(){
 		_visited = true;
 	}
+		
 }

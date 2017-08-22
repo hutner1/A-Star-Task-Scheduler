@@ -32,14 +32,14 @@ public class Solution implements Comparable<Solution>{
 		for (int i = 1; i <= numberOfProcessors; i++) {
 			_processors.put(i, new Processor());
 		}
-
+		
 		_upperBound = upperBound;
 		_scheduledProcesses = new ArrayList<Vertex>(scheduled);
 		_schedulableProcesses = new ArrayList<Vertex>(schedulable);
 		_nonschedulableProcesses = new ArrayList<Vertex>(nonschedulable);
 	}
 
-
+	
 	public Solution(int numberOfProcessors, DefaultDirectedWeightedGraph graph){
 		_numberOfProcessors = numberOfProcessors;
 		_processors = new HashMap<Integer, Processor>();
@@ -48,9 +48,9 @@ public class Solution implements Comparable<Solution>{
 		for (int i = 1; i <= numberOfProcessors; i++) {
 			_processors.put(i, new Processor());
 		}
-
+		
 	}
-
+	
 	/**
 	 * The greatest last end time on all processors
 	 */
@@ -81,20 +81,18 @@ public class Solution implements Comparable<Solution>{
 		for (int i = 1; i <= _numberOfProcessors; i++) {
 			int latestParentEndTime = 0;
 			for (DefaultWeightedEdge e : _graph.incomingEdgesOf(v)) {
-			//	if (e.getWeight() != 0) {
-					Vertex parent = _graph.getEdgeSource(e);
-					if (_processors.get(i).isScheduled(parent)) {
+				Vertex parent = _graph.getEdgeSource(e);
+				if (_processors.get(i).isScheduled(parent)) {
 
-						int parentEndTime = _processors.get(i).endTimeOf(parent);
-						if (processorNumber != i) {
-							parentEndTime += _graph.getEdgeWeight(e);
-						}
+					int parentEndTime = _processors.get(i).endTimeOf(parent);
+					if (processorNumber != i) {
+						parentEndTime += _graph.getEdgeWeight(e);
+					}
 
-						if (parentEndTime > latestParentEndTime) {
-							latestParentEndTime = parentEndTime;
-						}
+					if (parentEndTime > latestParentEndTime) {
+						latestParentEndTime = parentEndTime;
+					}
 
-				//	}
 				}
 			}
 			startingTimes.add(latestParentEndTime);
@@ -122,7 +120,7 @@ public class Solution implements Comparable<Solution>{
 		// saying that this task has been scheduled and update the list of schedulables
 		updateSchedulable(v);
 	}
-
+	
 	/**
 	 * For ListScheduler's usage only, adds a process at earliest possible time
 	 * @param v
@@ -138,7 +136,7 @@ public class Solution implements Comparable<Solution>{
 				processorNumber = i;
 			}
 		}
-
+		
 		_processors.get(processorNumber).addProcess(v,earliestDataReadyTime(v, processorNumber));
 	}
 
@@ -212,7 +210,7 @@ public class Solution implements Comparable<Solution>{
 
 		int idleTime = 0;
 		int totalWeight = 0;
-
+		
 		for (Processor p : _processors.values()) {
 			idleTime += p.idleTime();
 		}
@@ -220,7 +218,7 @@ public class Solution implements Comparable<Solution>{
 		for (Vertex v : _graph.vertexSet()) {
 			totalWeight += v.getWeight();
 		}
-
+		
 		int totalTime = idleTime + totalWeight;
 
 		return totalTime/_numberOfProcessors;
@@ -278,12 +276,12 @@ public class Solution implements Comparable<Solution>{
 		_scheduledProcesses.add(parent);
 		_schedulableProcesses.remove(parent);
 
-		for (Vertex child : _graph.getChildren(parent)) {
-			
+		for (DefaultWeightedEdge outEdge : _graph.outgoingEdgesOf(parent)) {
+			Vertex child = _graph.getEdgeTarget(outEdge);
+
 			boolean canBeScheduled = true;
-			
-			for (Vertex childsParent : _graph.getParents(child)) {
-				if (!_scheduledProcesses.contains(childsParent)) { 
+			for (DefaultWeightedEdge inEdge : _graph.incomingEdgesOf(child)) {
+				if (!_scheduledProcesses.contains(_graph.getEdgeSource(inEdge))) { 
 					canBeScheduled = false;
 				}
 			}
@@ -366,7 +364,7 @@ public class Solution implements Comparable<Solution>{
 	@Override
 	public boolean equals(Object o) {
 		Solution otherSolution = (Solution)o;
-
+		
 		// Store the processors' processes' info
 		ArrayList<String> processesThisSolution = new ArrayList<String>();
 		ArrayList<String> processesOtherSolution = new ArrayList<String>();
