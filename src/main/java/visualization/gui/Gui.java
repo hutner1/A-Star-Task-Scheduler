@@ -178,7 +178,7 @@ public class Gui {
 		btnClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				frame.dispose();
-				
+				System.exit(0);
 			}
 		});
 
