@@ -131,11 +131,12 @@ public class Gantt extends ApplicationFrame{
 		//_chart.getXYPlot().setDataset(_chart.getXYPlot().getDataset());
 		jpanel.removeAll();
 		
-		JFreeChart jfreechart = createChart(createDataset()); 
-	    ChartPanel chartpanel = new ChartPanel(jfreechart); 
-	    chartpanel.setMouseWheelEnabled(true); 
-	     
-	    jpanel.add(chartpanel); 
+
+		JFreeChart jfreechart = createChart(createDataset());
+		ChartPanel chartpanel = new ChartPanel(jfreechart);
+		chartpanel.setMouseWheelEnabled(true);
+		
+		jpanel.add(chartpanel);
 		jpanel.revalidate();
 		jpanel.repaint();
 		

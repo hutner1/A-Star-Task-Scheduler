@@ -66,4 +66,3 @@ buildNumber.properties
 
 # don't track dot output files
 *.dot
-!test-examples/*

@@ -181,8 +181,9 @@ public class Visualizer {
 				
 				List<Object> schedule = new ArrayList<Object>();
 				schedule.add(i);
-				schedule.add(processInfo.startTime()); 
-		        schedule.add(processInfo.endTime()); 
+
+				schedule.add(processInfo.startTime());
+				schedule.add(processInfo.endTime());
 				scheduledVertices.put(vertexName, schedule);
 				
 			}

@@ -1,7 +1,6 @@
 package scheduler.astar;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +25,6 @@ public class Solution implements Comparable<Solution>{
 	private static HashMap<Vertex, Integer> _btmLevels;
 
 	public Solution(int upperBound, int numberOfProcessors, DefaultDirectedWeightedGraph graph, List<Vertex> scheduled, List<Vertex> schedulable, List<Vertex> nonschedulable) {
-		_upperBound = upperBound;
 		_numberOfProcessors = numberOfProcessors;
 		_processors = new HashMap<Integer, Processor>();
 		_graph = graph;
@@ -34,16 +32,29 @@ public class Solution implements Comparable<Solution>{
 		for (int i = 1; i <= numberOfProcessors; i++) {
 			_processors.put(i, new Processor());
 		}
-
+		
+		_upperBound = upperBound;
 		_scheduledProcesses = new ArrayList<Vertex>(scheduled);
 		_schedulableProcesses = new ArrayList<Vertex>(schedulable);
 		_nonschedulableProcesses = new ArrayList<Vertex>(nonschedulable);
 	}
 
+	
+	public Solution(int numberOfProcessors, DefaultDirectedWeightedGraph graph){
+		_numberOfProcessors = numberOfProcessors;
+		_processors = new HashMap<Integer, Processor>();
+		_graph = graph;
+
+		for (int i = 1; i <= numberOfProcessors; i++) {
+			_processors.put(i, new Processor());
+		}
+		
+	}
+	
 	/**
 	 * The greatest last end time on all processors
 	 */
-	public int getTime() {
+	public int getLastFinishTime() {
 		int maximumTime = 0;
 
 		for (Processor p : _processors.values()) {
@@ -108,6 +119,25 @@ public class Solution implements Comparable<Solution>{
 
 		// saying that this task has been scheduled and update the list of schedulables
 		updateSchedulable(v);
+	}
+	
+	/**
+	 * For ListScheduler's usage only, adds a process at earliest possible time
+	 * @param v
+	 */
+	public void addProcessAtEarliestPossibleTime(Vertex v){
+		int minTime = Integer.MAX_VALUE;
+		int processorNumber = 1;
+
+		for (int i = 1; i <= _numberOfProcessors; i++) {
+			int earliestTime = earliestDataReadyTime(v, i);
+			if (earliestTime < minTime) {
+				minTime = earliestTime;
+				processorNumber = i;
+			}
+		}
+		
+		_processors.get(processorNumber).addProcess(v,earliestDataReadyTime(v, processorNumber));
 	}
 
 	@Override
@@ -179,12 +209,17 @@ public class Solution implements Comparable<Solution>{
 	private int idleTimePlusComputationLoad() {
 
 		int idleTime = 0;
-
+		int totalWeight = 0;
+		
 		for (Processor p : _processors.values()) {
 			idleTime += p.idleTime();
 		}
 
-		int totalTime = idleTime + _upperBound;
+		for (Vertex v : _graph.vertexSet()) {
+			totalWeight += v.getWeight();
+		}
+		
+		int totalTime = idleTime + totalWeight;
 
 		return totalTime/_numberOfProcessors;
 	}
@@ -328,14 +363,15 @@ public class Solution implements Comparable<Solution>{
 	 */
 	@Override
 	public boolean equals(Object o) {
-		Solution s = (Solution)o;
-
+		Solution otherSolution = (Solution)o;
+		
+		// Store the processors' processes' info
 		ArrayList<String> processesThisSolution = new ArrayList<String>();
 		ArrayList<String> processesOtherSolution = new ArrayList<String>();
 
 		for (int i = 1; i <= _numberOfProcessors; i++) {
 			processesThisSolution.add(_processors.get(i).getProcessesString());
-			processesOtherSolution.add(s._processors.get(i).getProcessesString());
+			processesOtherSolution.add(otherSolution._processors.get(i).getProcessesString());
 		}
 
 		for (String processorString : processesThisSolution) {
@@ -368,11 +404,8 @@ public class Solution implements Comparable<Solution>{
 	}
 
 	public int getUpperBound() {
-		 
-	    return _upperBound;
-	 
-	  }
-	 
 
+		return _upperBound;
+	}
 }
 

@@ -23,6 +23,7 @@ public class InputParser {
 	private int _numberOfProcessors;
 	private boolean _visualise = false;
 	private int _cores;
+	private boolean _parallelise = false;
 	private String _outputFileName;
 	private File _file;
 
@@ -148,7 +149,7 @@ public class InputParser {
 
 			if (commandLine.hasOption("p"))
 			{
-
+				_parallelise = true; //Parallelisation opted for
 				//Check whether the p option is repeated, if yes output error
 				if(commandLine.getOptionValues("p").length > 1){
 					ErrorMessenger.reportError("Parse error: This option cannot be repeated!");
@@ -240,6 +241,14 @@ public class InputParser {
 		return _visualise;
 	}
 
+	
+	/**
+	 * @return whether parallelisation is opted for
+	 */
+	public boolean isParallelise(){
+		return _parallelise;
+	}
+	
 	/**
 	 * 
 	 * @return name of output file
