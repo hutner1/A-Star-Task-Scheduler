@@ -194,7 +194,7 @@ public class Gui {
 		txtrTask.setFont(new Font("SansSerif", Font.BOLD, 20));
 		txtrTask.setText("Task");
 		txtrTask.setForeground(new Color(255, 255, 255));
-		txtrTask.setBackground(new Color(231, 76, 60));
+		txtrTask.setBackground(new Color(150, 63, 13));
 		//129, 55, 114
 		txtrTask.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		txtrTask.setEditable(false);
