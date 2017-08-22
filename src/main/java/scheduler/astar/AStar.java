@@ -23,10 +23,20 @@ import visualization.gui.Gui;
 public class AStar {
 	protected DefaultDirectedWeightedGraph _graph;
 	protected int _numberOfProcessors;
+	
+	/**
+	 * OPEN solutions
+	 */
 	protected PriorityBlockingQueue<Solution> _solutionSpace;
+	
+	/**
+	 * CLOSED solutions
+	 */
 	protected Set<Solution> _closedSolutions;
+	
 	protected Visualizer _visualizer;
-
+	
+	//Upper bound obtained from list scheduling
 	protected int _upperBound;
 	protected Gantt _gantt;
 	protected static int _counter=0;
@@ -213,14 +223,26 @@ public class AStar {
 		}
 	}
 	
+	/**
+	 * TODO
+	 * @return
+	 */
 	public int getSolCreated(){
 		return _solCreated;
 	}
 	
+	/**
+	 * TODO
+	 * @return
+	 */	
 	public int getSolPruned(){
 		return _solPruned;
 	}
 	
+	/**
+	 * TODO
+	 * @return
+	 */	
 	public int getSolPopped(){
 		return _solPopped;
 	}

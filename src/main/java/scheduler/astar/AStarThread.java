@@ -46,6 +46,7 @@ public class AStarThread extends AStar implements Runnable{
 	public void run() {
 		_bestSolution = findOptimalSolution();
 		System.out.println("Thread " + _threadNo + " --> "+System.nanoTime()/1000000000 + " seconds");
+		// fisrt thread to finish will stop other threads from running
 		for(int i = 0; i<_asp._numberOfThreads; i++){
 			if(i != _threadNo){
 				_asp._threads[i].stop(); //Return the solution that one thread has

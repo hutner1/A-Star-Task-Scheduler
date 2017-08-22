@@ -132,7 +132,8 @@ public class Processor {
 	}
 	
 	/**
-	 * @return the list of scheduled tasks
+	 * Returns the list of scheduled tasks on the processor 
+	 * @return the list of scheduled tasks on the processor 
 	 */
 	public List<ProcessInfo> getProcesses() {
 		return processes;
@@ -140,7 +141,7 @@ public class Processor {
 
 	/**
 	 * Checks to see how long the processor has been idle states for
-	 * @return
+	 * @return time the processor has been idle for
 	 */
 	public int idleTime() {
 		int idleTime = earliestNextProcess;

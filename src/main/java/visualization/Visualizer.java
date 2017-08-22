@@ -63,7 +63,9 @@ public class Visualizer {
 	private DefaultDirectedWeightedGraph _DAG;
 	private NodeClickListener _nodeClickListener = new NodeClickListener();
 
-	
+	/**
+	 * TODO
+	 */
 	public Visualizer(){
 		
 		//Creates the graph and initializes its attributes
@@ -149,10 +151,14 @@ public class Visualizer {
 
 		return view;
 	}
-	
+
+	/**
+	 * TODO
+	 */	
 	public void setGuiListener(Gui gui){
 		_nodeClickListener._gui = gui;
 	}
+	
 	/**
 	 * Updates the status/ visual of the graph based on the current best schedule.
 	 * The color of nodes changes accordingly to the processor that it is assigned to

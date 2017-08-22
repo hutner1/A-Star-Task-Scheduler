@@ -344,7 +344,7 @@ public class Solution implements Comparable<Solution>{
 	}
 
 	/**
-	 * Debugging
+	 * Debugging //TODO
 	 */
 	private void printTree() {
 		for (int i = 1; i <= _numberOfProcessors; i++) {
@@ -420,7 +420,7 @@ public class Solution implements Comparable<Solution>{
 		return true;
 	}
 
-	//TODO hash code
+	//TODO hash code, remove it?
 	/**
 	public int hashCode(){
 	}

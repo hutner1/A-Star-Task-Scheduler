@@ -214,6 +214,10 @@ public class InputParser {
 		}
 	}
 
+	/**
+	 * Shows the Help message from the "--help" option, 
+	 * displaying all the possible options
+	 */
 	public static void showHelpMessage(){
 		
 		System.out.println("java -jar scheduler.jar INPUT.dot P [OPTION]");
@@ -231,7 +235,7 @@ public class InputParser {
 	// Getter Methods
 	
 	/**
-	 * 
+	 * Get number of cores to use when calculating the optimum schedule
 	 * @return number of cores to use when calculating the optimum schedule
 	 */
 	public int getCores() {
@@ -239,7 +243,7 @@ public class InputParser {
 	}
 
 	/**
-	 * 
+	 * Get number of processors available for the schedule 
 	 * @return number of processors available for the schedule
 	 */
 	public int getProcessors() {
@@ -247,7 +251,7 @@ public class InputParser {
 	}
 	
 	/**
-	 * 
+	 * Determine whether or not to provide visualisation
 	 * @return boolean representing whether or not to provide visual representation
 	 */
 	public boolean isVisualise() {
@@ -256,6 +260,7 @@ public class InputParser {
 
 	
 	/**
+	 * Determine whether parallelisation is opted for 
 	 * @return whether parallelisation is opted for
 	 */
 	public boolean isParallelise(){
@@ -263,7 +268,7 @@ public class InputParser {
 	}
 	
 	/**
-	 * 
+	 * Get the output file name
 	 * @return name of output file
 	 */
 	public String getOutputFileName() {
@@ -271,7 +276,7 @@ public class InputParser {
 	}
 
 	/**
-	 * 
+	 * Get the input file
 	 * @return input file
 	 */
 	public File getFile() {

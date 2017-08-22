@@ -82,7 +82,7 @@ public class OutputWriter {
 		record(_outputFile, "}");
 	}
 	
-  	
+  	// TODO can delete this
 	public void createScheduleDFS(String digraphName, ArrayList<String> weightInfos, ArrayList<String> verticesAndEdges, SolutionGenerator solutionGenerator, HashMap<String, Vertex> vertexMapping){
 
 		//record first line of output file which contains the title

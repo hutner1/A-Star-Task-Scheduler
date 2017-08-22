@@ -24,6 +24,7 @@ import visualization.gui.Gui;
 public class Main {
 
 	public static void main(String[] args) {
+		// 1. Instantiate InputParser to parse the command line arguments.
 		InputParser inputParser = new InputParser(args);
 		try {
 			inputParser.parse();
@@ -32,15 +33,18 @@ public class Main {
 			e.printStackTrace();
 		}
 		
+		// 2. Instantiate OutputWriter to write to the output file.
 		OutputWriter outWriter = new OutputWriter(inputParser.getOutputFileName());
 		outWriter.initialise();
 
+		// 3. Instantiate DataReader to read the input file
 		DataReader dataReader = new DataReader(inputParser.getFile());
+		
+		// 4. Declare the visualisers
 		Visualizer graphVisualizer = null;
-
 		Gantt gantt = null;
 		
-		
+		// 5. Find optimal solution for all the input task graphs.
 		while(dataReader.hasMoreGraphs()) {
 			System.out.println("More graphs in file? " + dataReader.hasMoreGraphs());
 			dataReader.readNextGraph();
@@ -79,13 +83,11 @@ public class Main {
 					e.printStackTrace();
 				}
 			}
-			//Create the optimal schedule
-			/*Sorter sorter = new Sorter(dataReader.getGraph());
-			List<Vertex> tSort = sorter.generateSort();
-			Schedule sol = ScheduleGenerator.makeSolution(tSort);*/
+			
+			// start timing //TODO will this be included in final?
 			long startTime = System.nanoTime();
 
-
+			// decide whether to parallelise A* based on user input
 			AStar aStar;
 			if(inputParser.isParallelise() && inputParser.getCores() > 1){
 				aStar = new AStarParallelised(dataReader.getGraph(), inputParser.getProcessors(), inputParser.getCores(), graphVisualizer, gantt);
@@ -93,6 +95,7 @@ public class Main {
 				aStar = new AStar(dataReader.getGraph(),inputParser.getProcessors(), graphVisualizer, gantt);
 			}
 
+			// write the optimal schedule to the output file
 			Solution optimalSolution = aStar.execute();
 			outWriter.createScheduleAStar(dataReader.getGraphName(),dataReader.getVerticesAndEdgesInfo(),dataReader.getVerticesAndEdgesRead(),optimalSolution,dataReader.getMapping());
 			long endTime = System.nanoTime();
