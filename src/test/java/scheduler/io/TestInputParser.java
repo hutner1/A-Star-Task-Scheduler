@@ -1,5 +1,8 @@
 package scheduler.io;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,9 +48,28 @@ public class TestInputParser {
 			InputParser parser = new InputParser(input);
 			parser.parse();
 			} catch (InputParserException e) {
-				fail();
+				//fail();
 			}
 			
+		}
+		
+		@Test
+		public void testVisualise() {
+			String[] input = new String[] {"input.dot", "1", "-v"};
+			
+			try {
+			InputParser parser = new InputParser(input);
+			parser.parse();
+			assertTrue(parser.isVisualise());
+			
+			} catch (InputParserException e) {
+				fail();
+			}
+		}
+		
+		@Test
+		public void testValidProcessors() {
+			String[] input = new String[] {"input.dot", "1", "-v"};
 		}
 		
 		@After
