@@ -4,6 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import io.DataReader;
 import io.InputParser;
+import io.InputParserException;
 import io.OutputWriter;
 import scheduler.astar.AStar;
 import scheduler.astar.AStarParallelised;
@@ -19,7 +20,12 @@ public class Main {
 
 	public static void main(String[] args) {
 		InputParser inputParser = new InputParser(args);
-		inputParser.parse();
+		try {
+			inputParser.parse();
+		} catch (InputParserException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		OutputWriter outWriter = new OutputWriter(inputParser.getOutputFileName());
 		outWriter.initialise();

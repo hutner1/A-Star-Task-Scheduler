@@ -45,7 +45,7 @@ public class TestInputParser {
 			InputParser parser = new InputParser(input);
 			parser.parse();
 			} catch (InputParserException e) {
-				e.printStackTrace();
+				fail();
 			}
 			
 		}

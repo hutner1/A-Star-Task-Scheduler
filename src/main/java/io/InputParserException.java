@@ -15,7 +15,6 @@ public class InputParserException extends Exception {
 	 */
 	public InputParserException(String msg) {
 		super(msg + "\nType --help to see the input requirements");
-		System.exit(0);
 	}
 
 }
