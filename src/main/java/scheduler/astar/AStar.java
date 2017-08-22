@@ -64,7 +64,7 @@ public class AStar {
 
 
 		for (Vertex v : _graph.vertexSet()) {
-			if (_graph.inDegreeOf(v) == 0) { //get source nodes
+			if (_graph.getParents(v).isEmpty()) { //get source nodes
 				schedulable.add(v);
 			} else {
 				nonschedulable.add(v);

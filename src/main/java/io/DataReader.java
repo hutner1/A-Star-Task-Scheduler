@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
 import scheduler.graphstructures.Vertex;
@@ -121,12 +122,40 @@ public class DataReader {
 				}
 				text = _reader.readLine();
 			}
+			createVirtualEdges();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	
+	/**
+	 * Creates extra virtual edges in the graph between equivalent nodes, so that only one scheduling order is considered
+	 */
+	private void createVirtualEdges() {
+		
+		HashMap<String, List<Vertex>> equivalentVertices = new HashMap<String, List<Vertex>>();
+		
+		for (Vertex v : _mapping.values()) {
+			String vertexString = _digraph.getVertexString(v);
+			
+			if (equivalentVertices.containsKey(vertexString)) {
+				equivalentVertices.get(vertexString).add(v);
+			} else {
+				List<Vertex> vertices = new ArrayList<Vertex>();
+				vertices.add(v);
+				equivalentVertices.put(vertexString, vertices);
+			}
+		}
+		
+		for (List<Vertex> vertices : equivalentVertices.values()) {
+			if (vertices.size() > 1) {
+				for (int i = 0; i < vertices.size() - 1; i++) {
+					_digraph.addChild(vertices.get(i), vertices.get(i+1));
+				}
+			}
+		}
+	}
+
 	/**
 	 * Resets the data in the stored ArrayLists and Graphs
 	 */
