@@ -47,6 +47,7 @@ public class Gui {
 	private JTextArea infoArea;
 	private JTextField txtrTask;
 	private Gantt _gantt;
+	private StatisticTable _stats;
 
 	/**
 	 *This part is there for just testing reason.
@@ -59,7 +60,7 @@ public class Gui {
 			@Override
 			public void run() {
 				try {
-					Gui window = new Gui(null,null);
+					Gui window = new Gui(null,null,null);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -72,9 +73,10 @@ public class Gui {
 	/**
 	 * Create the application.
 	 */
-	public Gui(Visualizer visualizer,Gantt gantt) {
+	public Gui(Visualizer visualizer,Gantt gantt,StatisticTable stats) {
 		_visualizer = visualizer;
 		_gantt = gantt;
+		_stats = stats;
 		initialize();
 
 	}
@@ -120,10 +122,9 @@ public class Gui {
 
 		_cards.add(ganttPanel,"Gantt");
 		
-		StatisticTable stats = new StatisticTable(4);
-		stats.setPreferredSize(new Dimension(1200, 800));
+		_stats.setPreferredSize(new Dimension(1200, 800));
 		/*stats.setBackground(new Color(250,250,250));*/
-		_cards.add(stats,"Stats");
+		_cards.add(_stats,"Stats");
 		
 		//Initializing the button related to the gantt chart for usage.
 		ganttButton = new CustomButton("Gantt Chart");

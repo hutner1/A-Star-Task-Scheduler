@@ -16,6 +16,7 @@ import scheduler.graphstructures.Vertex;
 import visualization.Visualizer;
 import visualization.gantt.Gantt;
 import visualization.gui.Gui;
+import visualization.gui.StatisticTable;
 
 
 /**
@@ -43,6 +44,7 @@ public class Main {
 		// 4. Declare the visualisers
 		Visualizer graphVisualizer = null;
 		Gantt gantt = null;
+		StatisticTable stats = null;
 		
 		// 5. Find optimal solution for all the input task graphs.
 		while(dataReader.hasMoreGraphs()) {
@@ -55,8 +57,10 @@ public class Main {
 
 				graphVisualizer.displayGraph();
 				gantt = new Gantt("");
+				stats = new StatisticTable(inputParser.getCores());
 				final Gantt gant2 = gantt;
 				final Visualizer graphVisualizer2 = graphVisualizer;
+				final StatisticTable stats2 = stats;
 				//graphVisualizer.displayGraph();
 				try {
 					 // Set cross-platform Java L&F (also called "Metal")
@@ -67,7 +71,7 @@ public class Main {
 					public void run() {
 						try {
 							
-							Gui window = new Gui(graphVisualizer2,gant2);
+							Gui window = new Gui(graphVisualizer2,gant2,stats2);
 							window.frame.setVisible(true);
 							graphVisualizer2.setGuiListener(window);
 							
@@ -104,6 +108,11 @@ public class Main {
 			System.out.println(aStar.getSolCreated());
 			System.out.println(aStar.getSolPopped());
 			System.out.println(aStar.getSolPruned());
+			
+			if(stats != null){
+				stats.updateStats(aStar.getSolCreated(), aStar.getSolPopped(), aStar.getSolPruned(), (int) (totalTime/1000000), optimalSolution.getLastFinishTime());
+			}
+			
 			
 			/*
 			if(inputParser.isVisualise() == true){
