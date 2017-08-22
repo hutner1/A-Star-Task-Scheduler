@@ -35,6 +35,10 @@ public class Gantt extends ApplicationFrame{
 	private static JFreeChart _chart;
 	private boolean _launched = false;
 	public JPanel jpanel;
+	/**
+	 * Constructor for Gantt chart class with title parameter
+	 * @param title
+	 */
 	public Gantt(String title) {
 		super(title);
 		_title = title;
@@ -43,11 +47,16 @@ public class Gantt extends ApplicationFrame{
 	}
 
 
+	/**
+	 * Constructor for Gantt chart class with title and solution parameters
+	 * @param title
+	 * @param solution
+	 */
 	public Gantt(String title,Solution solution) {
 		super(title);
 		_sol = solution;
 	}
-	
+
 	/**
 	 * Creates a gantt chart using data set. This gantt chart has no legend and 
 	 * the x axis represent seconds
@@ -58,19 +67,19 @@ public class Gantt extends ApplicationFrame{
 	private static JFreeChart createChart(IntervalCategoryDataset dataset) {
 		_chart = GanttChartFactory.createGanttChart(
 				_title, "Task", "Value", dataset, false, true, true);
-		
-        CategoryPlot plot = (CategoryPlot) _chart.getPlot();
-        TaskSeriesCollection tsc = (TaskSeriesCollection) dataset;
-        CustomGanttRenderer renderer = new CustomGanttRenderer(tsc.getSeries(0));
-        renderer.setShadowVisible(false);
-        plot.setRenderer(renderer);
-        
-        
-        //remove reflection
-        BarRenderer br = (BarRenderer) plot.getRenderer();
-        br.setBarPainter(new StandardBarPainter());
-        _chart.setNotify(true);
-        
+
+		CategoryPlot plot = (CategoryPlot) _chart.getPlot();
+		TaskSeriesCollection tsc = (TaskSeriesCollection) dataset;
+		CustomGanttRenderer renderer = new CustomGanttRenderer(tsc.getSeries(0));
+		renderer.setShadowVisible(false);
+		plot.setRenderer(renderer);
+
+
+		//remove reflection
+		BarRenderer br = (BarRenderer) plot.getRenderer();
+		br.setBarPainter(new StandardBarPainter());
+		_chart.setNotify(true);
+
 		return _chart;
 	}
 	/**
@@ -80,14 +89,14 @@ public class Gantt extends ApplicationFrame{
 	 * @return
 	 */
 	private static IntervalCategoryDataset createDataset() {
-		
-		
+
+
 		TaskSeries ts = new TaskSeries("Best Solution");
-		
+
 		HashMap<Integer, Processor> processors = _sol.getProcess();
-		
+
 		int processNo = processors.size();
-		
+
 		for (int i = 1; i <= processNo; i++) {
 			List<ProcessInfo> processList = processors.get(i).getProcesses();
 			String processName = "Processor " + i;
@@ -100,26 +109,36 @@ public class Gantt extends ApplicationFrame{
 			for (ProcessInfo p: processList) {
 				int startTime = getTaskStart(p);
 				int endTime = getTaskEnd(p);
-				
+
 				main.addSubtask(new TaskNumeric(p.getTaskName(), startTime, endTime));
 
-				
+
 			}
 			ts.add(main);
 		}
-		
+
 		TaskSeriesCollection taskSeriesCollection = new TaskSeriesCollection();
 		taskSeriesCollection.add(ts);
-		
+
 		return taskSeriesCollection;
-		
+
 	}
 
 
+	/**
+	 * This method returns the start time for a task
+	 * @param ProcessInfo p, storing vertex start and end time
+	 * @return int
+	 */
 	private static int getTaskStart(ProcessInfo p) {
 		return p.startTime();
 	}
 
+	/**
+	 * This method returns the end time for a task
+	 * @param ProcessInfo p, storing vertex start and end time
+	 * @return int
+	 */
 	private static int getTaskEnd(ProcessInfo p) {
 		return p.endTime();
 	}
@@ -133,22 +152,26 @@ public class Gantt extends ApplicationFrame{
 		//_chart.getCategoryPlot().setDataset(createDataset());
 		//_chart.getXYPlot().setDataset(_chart.getXYPlot().getDataset());
 		jpanel.removeAll();
-		
+
 
 		JFreeChart jfreechart = createChart(createDataset());
 		ChartPanel chartpanel = new ChartPanel(jfreechart);
 		chartpanel.setMouseWheelEnabled(true);
-		
+
 		jpanel.add(chartpanel);
 		jpanel.revalidate();
 		jpanel.repaint();
-		
+
 	}
-	
+
+	/**
+	 * Setter method for solution
+	 * @param sol
+	 */
 	public void setSolution(Solution sol) {
 		_sol = sol;
 	}
-	
+
 	/**
 	 * Creates the jpanel 
 	 * @return
@@ -179,7 +202,7 @@ public class Gantt extends ApplicationFrame{
 		RefineryUtilities.centerFrameOnScreen(this);
 		this.setVisible(true);
 		_launched= true;
-	
+
 	}
 
 
