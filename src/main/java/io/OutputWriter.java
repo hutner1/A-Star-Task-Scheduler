@@ -114,7 +114,8 @@ public class OutputWriter {
 			writer.println(line);
 			writer.close();
 		} catch(IOException e){
-			InputParserException.reportError("An I/O Error Occurred when trying to write to " + file.toString());
+			//InputParserException("An I/O Error Occurred when trying to write to " + file.toString());
+			e.printStackTrace();
 		}
 	}
 

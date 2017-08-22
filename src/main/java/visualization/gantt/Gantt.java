@@ -131,6 +131,7 @@ public class Gantt extends ApplicationFrame{
 		//_chart.getXYPlot().setDataset(_chart.getXYPlot().getDataset());
 		jpanel.removeAll();
 		
+
 		JFreeChart jfreechart = createChart(createDataset());
 		ChartPanel chartpanel = new ChartPanel(jfreechart);
 		chartpanel.setMouseWheelEnabled(true);
@@ -152,7 +153,9 @@ public class Gantt extends ApplicationFrame{
 		JFreeChart jfreechart = createChart(createDataset());
 		ChartPanel chartpanel = new ChartPanel(jfreechart);
 		chartpanel.setMouseWheelEnabled(true);
-		return chartpanel;
+		jpanel = chartpanel;
+		_launched = true;
+		return jpanel;
 	}
 	/**
 	 * Checks if this panel has been created
@@ -172,6 +175,7 @@ public class Gantt extends ApplicationFrame{
 		RefineryUtilities.centerFrameOnScreen(this);
 		this.setVisible(true);
 		_launched= true;
+	
 	}
 
 

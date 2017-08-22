@@ -404,9 +404,8 @@ public class Solution implements Comparable<Solution>{
 	}
 
 	public int getUpperBound() {
+
 		return _upperBound;
 	}
-
-
 }
 
