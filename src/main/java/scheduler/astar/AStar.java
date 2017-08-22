@@ -149,11 +149,6 @@ public class AStar {
 			while(bestCurrentSolution == null){
 				bestCurrentSolution = _solutionSpace.poll();
 			}
-			//TODO System.out.println(bestCurrentSolution.maxCostFunction());
-			//TODO System.out.println("Solution space size : " + _solutionSpace.size());
-
-			_closedSolutions.add(bestCurrentSolution);
-			bestCurrentSolution = _solutionSpace.poll();
 
 			//TODO System.out.println(bestCurrentSolution.maxCostFunction());
 			//TODO System.out.println("Solution space size : " + _solutionSpace.size());
