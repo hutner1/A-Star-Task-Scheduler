@@ -76,7 +76,7 @@ public class ListScheduler {
 		vertex.setVisited();
 		
 		// recursively visit unvisited children until no more unvisited children left
-		for(Vertex child:_digraph.getChildren(vertex)){
+		for(Vertex child:_digraph.getDirectChildren(vertex)){
 			if(!child.isVisited()){
 				topologicalSort(child,sortedTasks);
 			}

@@ -5,7 +5,9 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-
+/**
+ * Tests to make sure that the DefaultWeightedEdge class functions as expected 
+ */
 public class TestDefaultWeightedEdge {
 	private DefaultWeightedEdge _testEdge;
 	private final int _weight = 100;
@@ -24,6 +26,9 @@ public class TestDefaultWeightedEdge {
 		assertEquals(_testEdge.getWeight(), _weight);
 	}
 	
+	/**
+	 * Test the contains() method of a DefaultWeightedEdge
+	 */
 	@Test
 	public void testContains(){
 		assertTrue(_testEdge.contains(sourceVertex));

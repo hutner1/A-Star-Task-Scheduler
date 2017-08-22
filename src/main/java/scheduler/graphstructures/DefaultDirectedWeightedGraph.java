@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * A Directed Graph with edge weights 
+ * A Directed Graph with edge weights
+ * 
+ * This graph caches the incoming and outgoing edges of all vertices
+ * after the graph's vertices and edges are finalised, when
+ * incomingEdgesOf() and outgoingEdgesOf() are called to any vertex.
  */
 public class DefaultDirectedWeightedGraph {
 	// NODES
@@ -104,14 +108,6 @@ public class DefaultDirectedWeightedGraph {
 	}
 
 	/**
-	 * Remove the edge from the graph
-	 * @param edge edge to remove
-	 */
-	public void removeEdge(DefaultWeightedEdge edge) {
-		_edges.remove(edge);		
-	}
-
-	/**
 	 * Returns the number of incoming edges
 	 * @param vertex
 	 * @return number of incoming edges
@@ -153,7 +149,7 @@ public class DefaultDirectedWeightedGraph {
 	 * @param vertex
 	 * @return parents vertices
 	 */
-	public ArrayList<Vertex> getParents(Vertex vertex){
+	public ArrayList<Vertex> getDirectParents(Vertex vertex){
 		ArrayList<Vertex> parents = new ArrayList<>();
 		for(DefaultWeightedEdge e : incomingEdgesOf(vertex)){
 			parents.add(getEdgeSource(e));
@@ -166,7 +162,7 @@ public class DefaultDirectedWeightedGraph {
 	 * @param vertex
 	 * @return children vertices
 	 */
-	public ArrayList<Vertex> getChildren(Vertex vertex){
+	public ArrayList<Vertex> getDirectChildren(Vertex vertex){
 		ArrayList<Vertex> children = new ArrayList<>();
 		for(DefaultWeightedEdge e : outgoingEdgesOf(vertex)){
 			children.add(getEdgeTarget(e));
