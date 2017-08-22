@@ -43,6 +43,7 @@ public class Gui {
 	private JButton _notActive;
 	private JTextArea infoArea;
 	private JTextField txtrTask;
+	private Gantt _gantt;
 
 	/**
 	 *This part is there for just testing reason.
@@ -55,7 +56,7 @@ public class Gui {
 			@Override
 			public void run() {
 				try {
-					Gui window = new Gui(null);
+					Gui window = new Gui(null,null);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -68,8 +69,9 @@ public class Gui {
 	/**
 	 * Create the application.
 	 */
-	public Gui(Visualizer visualizer) {
+	public Gui(Visualizer visualizer,Gantt gantt) {
 		_visualizer = visualizer;
+		_gantt = gantt;
 		initialize();
 
 	}
@@ -108,8 +110,8 @@ public class Gui {
 		_cards.add(_graphPage, "Graph");
 		
 		//Initializing the Gantt chart than adding it to the cards panel.
-		Gantt gantt = new Gantt(null);
-		JPanel ganttPanel = gantt.createDemoPanel();
+
+		JPanel ganttPanel = _gantt.createDemoPanel();
 		ganttPanel.setPreferredSize(new Dimension(1200, 800));
 
 		_cards.add(ganttPanel,"Gantt");

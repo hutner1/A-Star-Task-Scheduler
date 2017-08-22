@@ -44,8 +44,8 @@ public class Main {
 				graphVisualizer.add(dataReader.getGraph());
 
 				graphVisualizer.displayGraph();
-				gantt = new Gantt("Test");
-
+				gantt = new Gantt("");
+				final Gantt gant2 = gantt;
 				final Visualizer graphVisualizer2 = graphVisualizer;
 				//graphVisualizer.displayGraph();
 				try {
@@ -57,7 +57,7 @@ public class Main {
 					public void run() {
 						try {
 							
-							Gui window = new Gui(graphVisualizer2);
+							Gui window = new Gui(graphVisualizer2,gant2);
 							window.frame.setVisible(true);
 							graphVisualizer2.setGuiListener(window);
 							

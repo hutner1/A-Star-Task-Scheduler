@@ -112,7 +112,6 @@ public class AStar {
 					}
 				} else {
 					_gantt.setSolution(bestCurrentSolution);
-					_gantt.launch();
 				}
 			}
 
