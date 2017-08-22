@@ -112,6 +112,7 @@ public class Gui {
 		//Initializing the Gantt chart than adding it to the cards panel.
 
 		JPanel ganttPanel = _gantt.createDemoPanel();
+		
 		ganttPanel.setPreferredSize(new Dimension(1200, 800));
 
 		_cards.add(ganttPanel,"Gantt");
