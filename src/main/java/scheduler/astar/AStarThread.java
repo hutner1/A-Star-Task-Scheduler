@@ -5,6 +5,7 @@ import java.util.concurrent.PriorityBlockingQueue;
 
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
 import visualization.Visualizer;
+import visualization.gantt.Gantt;
 
 /**
  * AStar runnable class that will be added to allow solution search in parallel
