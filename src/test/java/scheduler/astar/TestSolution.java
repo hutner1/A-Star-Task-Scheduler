@@ -15,15 +15,14 @@ public class TestSolution {
 		
 		//Data structures to use
 		DefaultDirectedWeightedGraph _graph = new DefaultDirectedWeightedGraph();
-		/**
+		
 		@Test
 		public void testSingleNodeSolution(){
 			Vertex v = new Vertex("test");
 			v.setWeight(10);
 			_graph.addVertex(v);
 			AStar alg = new AStar(_graph, 1, null,null);
-			Solution sol = alg.execute();
-			assertEquals(10, sol.getLastFinishTime());
+			assertEquals(0, alg._upperBound);
 		}
 		
 		@Test
@@ -32,9 +31,8 @@ public class TestSolution {
 			while(dataReader.hasMoreGraphs()) {
 			dataReader.readNextGraph();
 			AStar alg = new AStar(dataReader.getGraph(), 1, null,null);
-			Solution sol = alg.execute();
-			assertEquals(640, sol.getLastFinishTime());
+			assertEquals(0, alg._upperBound);
 			}
 		}
-		*/
+		
 }
