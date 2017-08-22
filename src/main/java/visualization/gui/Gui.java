@@ -90,7 +90,21 @@ public class Gui {
 		frame.setTitle("Imagine Breaker - Task Scheduler");
 		frame.getContentPane().setBackground(new Color(213, 213, 213));
 		frame.setBounds(50, 50, 890, 600);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		/*frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);*/
+		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frame.addWindowListener(new java.awt.event.WindowAdapter() {
+			@Override
+			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+				Runtime.getRuntime().addShutdownHook(new Thread() {
+					public void run(){
+						System.out.println("Shutting down all threads");	
+					}
+				});
+				System.exit(0);
+			}
+		});
+
+
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
 		try {
@@ -184,6 +198,13 @@ public class Gui {
 		JButton btnClose = new CustomButton("Close");
 		btnClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+
+				Runtime.getRuntime().addShutdownHook(new Thread() {
+					public void run(){
+						System.out.println("Shutting down all threads");	
+					}
+				});
+
 				frame.dispose();
 				System.exit(0);
 			}
@@ -259,7 +280,7 @@ public class Gui {
 		txtrTask.setText("Task "+task);
 		infoArea.setText("This task is not scheduled yet");
 	}
-	
+
 	public void schedulingFinished(){
 		statButton.setEnabled(true);;
 	}

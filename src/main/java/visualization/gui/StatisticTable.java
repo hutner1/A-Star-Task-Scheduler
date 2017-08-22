@@ -27,27 +27,35 @@ public class StatisticTable extends JPanel{
 	 * Constructor for the statistics table
 	 * @param Core
 	 */
-	public StatisticTable(int Core){
+	public StatisticTable(int Cores, int processors){
 
 		setLayout(new BorderLayout());
 		/*setBackground(new Color(250,250,250));*/
 
-		Object[][] data = new Object[7][2];
+		Object[][] data = new Object[8][2];
 
 		data[0][0] = "Number of cores";
-		data[0][1] = Core;
-		data[1][0] = "Solutions created";
-		data[1][1] = "Processing...";
-		data[2][0] = "Solutions popped";
+		
+		if(Cores == 0){
+			data[0][1] = 1;
+		} else {
+			data[0][1] = Cores;
+		}
+		
+		data[1][0] = "Number of processors";
+		data[1][1] = processors;
+		data[2][0] = "Solutions created";
 		data[2][1] = "Processing...";
-		data[3][0] = "Solutions pruned";
+		data[3][0] = "Solutions popped";
 		data[3][1] = "Processing...";
-		data[4][0] = "Memory usage (MB)";
+		data[4][0] = "Solutions pruned";
 		data[4][1] = "Processing...";
-		data[5][0] = "Time taken(ms)";
+		data[5][0] = "Memory usage (MB)";
 		data[5][1] = "Processing...";
-		data[6][0] = "Current Optimal Solution Time";
+		data[6][0] = "Time taken (sec)";
 		data[6][1] = "Processing...";
+		data[7][0] = "Current Optimal Solution Time";
+		data[7][1] = "Processing...";
 
 		_table = new JTable(new Model(data, _columns));
 		_table.getTableHeader().setReorderingAllowed(false);
@@ -84,7 +92,7 @@ public class StatisticTable extends JPanel{
 	 * @param solPruned
 	 * @param time
 	 */
-	public void updateStats(int solCreated, int solPopped, int solPruned, int time){
+	public void updateStats(int solCreated, int solPopped, int solPruned, double time){
 		updateStats(solCreated, solPopped, solPruned, time, null);
 	}
 
@@ -96,7 +104,7 @@ public class StatisticTable extends JPanel{
 	 * @param time
 	 * @param finishTime
 	 */
-	public void updateStats(int solCreated, int solPopped, int solPruned, int time, Integer finishTime){
+	public void updateStats(int solCreated, int solPopped, int solPruned, double time, Integer finishTime){
 
 		/*		_solCreated = solCreated;
 		_solPopped = solPopped;
@@ -106,17 +114,17 @@ public class StatisticTable extends JPanel{
 
 		DefaultTableModel model = (DefaultTableModel)_table.getModel();
 
-		model.setValueAt(solCreated, 1, 1);
-		model.setValueAt(solPopped, 2, 1);
-		model.setValueAt(solPruned, 3, 1);
-		model.setValueAt((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())/1024/1024, 4, 1);
+		model.setValueAt(solCreated, 2, 1);
+		model.setValueAt(solPopped, 3, 1);
+		model.setValueAt(solPruned, 4, 1);
+		model.setValueAt((Runtime.getRuntime().totalMemory())/1024/1024, 5, 1);
 		
 		if(!(time < 1)){
-			model.setValueAt(time, 5, 1);
+			model.setValueAt(time/1000, 6, 1);
 		}
 		
 		if(finishTime != null){
-			model.setValueAt(finishTime, 6, 1);
+			model.setValueAt(finishTime, 7, 1);
 		}
 
 	}
