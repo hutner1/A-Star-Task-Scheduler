@@ -403,6 +403,9 @@ public class Solution implements Comparable<Solution>{
 		return _processors;
 	}
 
+	public int getUpperBound() {
+		return _upperBound;
+	}
 
 
 }
