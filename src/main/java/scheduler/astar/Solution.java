@@ -1,9 +1,11 @@
 package scheduler.astar;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Queue;
 
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
 import scheduler.graphstructures.DefaultWeightedEdge;
@@ -22,6 +24,7 @@ public class Solution implements Comparable<Solution>{
 	private List<Vertex> _scheduledProcesses;
 	private List<Vertex> _schedulableProcesses;
 	private List<Vertex> _nonschedulableProcesses;
+	private Queue<Solution> _children;
 
 	private DefaultDirectedWeightedGraph _graph;
 	private static HashMap<Vertex, Integer> _btmLevels;
@@ -61,7 +64,7 @@ public class Solution implements Comparable<Solution>{
 			_processors.put(i, new Processor());
 		}
 	}
-	
+
 	/**
 	 * The greatest last end time on all the processors
 	 */
@@ -136,7 +139,7 @@ public class Solution implements Comparable<Solution>{
 		// saying that this task has been scheduled and update the list of schedulables
 		updateSchedulable(v);
 	}
-	
+
 	/**
 	 * For ListScheduler's usage only, adds a process at earliest possible time on
 	 * any processor.
@@ -153,7 +156,7 @@ public class Solution implements Comparable<Solution>{
 				processorNumber = i;
 			}
 		}
-		
+
 		_processors.get(processorNumber).addProcess(v,earliestDataReadyTime(v, processorNumber));
 	}
 
@@ -233,7 +236,7 @@ public class Solution implements Comparable<Solution>{
 
 		int idleTime = 0;
 		int totalWeight = 0;
-		
+
 		for (Processor p : _processors.values()) {
 			idleTime += p.idleTime();
 		}
@@ -241,7 +244,7 @@ public class Solution implements Comparable<Solution>{
 		for (Vertex v : _graph.vertexSet()) {
 			totalWeight += v.getWeight();
 		}
-		
+
 		int totalTime = idleTime + totalWeight;
 
 		return totalTime/_numberOfProcessors;
@@ -328,19 +331,23 @@ public class Solution implements Comparable<Solution>{
 	 * to be below the upper bound
 	 * @return
 	 */
-	public List<Solution> createChildren() {
-		List<Solution> children = new ArrayList<Solution>();
-		for (Vertex v : _schedulableProcesses) {
-			for (int i = 1; i <= _numberOfProcessors; i++) {
-				Solution child = createDuplicateSolution();
-				child.addProcess(v, i);
-				//TODO child.printTree();
-				children.add(child);
-				//TODO System.out.println(child.maxCostFunction());
+	public Queue<Solution> createChildren() {
 
-			} 
+		if (_children == null) {
+			_children = new ArrayDeque<Solution>();
+			for (Vertex v : _schedulableProcesses) {
+				for (int i = 1; i <= _numberOfProcessors; i++) {
+					Solution child = createDuplicateSolution();
+					child.addProcess(v, i);
+					//TODO child.printTree();
+					_children.add(child);
+					//TODO System.out.println(child.maxCostFunction());
+				} 
+			}
+
 		}
-		return children;
+
+		return _children;
 	}
 
 	/**
@@ -399,7 +406,7 @@ public class Solution implements Comparable<Solution>{
 	@Override
 	public boolean equals(Object o) {
 		Solution otherSolution = (Solution)o;
-		
+
 		// Store the processors' processes' info
 		ArrayList<String> processesThisSolution = new ArrayList<String>();
 		ArrayList<String> processesOtherSolution = new ArrayList<String>();
