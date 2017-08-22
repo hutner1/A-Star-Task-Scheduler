@@ -1,5 +1,6 @@
 package visualization.gantt;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.util.HashMap;
@@ -37,6 +38,8 @@ public class Gantt extends ApplicationFrame{
 	public Gantt(String title) {
 		super(title);
 		_title = title;
+		jpanel = new JPanel();
+		jpanel.setLayout(new BorderLayout());
 	}
 
 
@@ -154,7 +157,7 @@ public class Gantt extends ApplicationFrame{
 		JFreeChart jfreechart = createChart(createDataset());
 		ChartPanel chartpanel = new ChartPanel(jfreechart);
 		chartpanel.setMouseWheelEnabled(true);
-		jpanel = chartpanel;
+		jpanel.add(chartpanel);
 		_launched = true;
 		return jpanel;
 	}
