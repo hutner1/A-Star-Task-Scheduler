@@ -46,7 +46,7 @@ public class AStar {
 		_solutionSpace = new PriorityBlockingQueue<Solution>(); //data structure does not permit null elements
 		_closedSolutions = new CopyOnWriteArraySet<Solution>(); //threadsafe set
 		_visualizer = graphVisualizer;
-    _gantt = gantt;
+		_gantt = gantt;
 	}
 
 
@@ -84,7 +84,7 @@ public class AStar {
 		ListScheduler listScheduler = new ListScheduler(_graph, _numberOfProcessors);
 		_upperBound = listScheduler.getResult();
 		System.out.println("Upper bound:" + _upperBound);
-		
+
 		// Create empty solution and then commence the looping
 		Solution emptySolution = new Solution(_upperBound, _numberOfProcessors, _graph, new ArrayList<Vertex>(), schedulable, nonschedulable);
 		emptySolution.setBtmLevels(btmLevel);
@@ -99,20 +99,24 @@ public class AStar {
 	protected Solution findOptimalSolution(){
 		// BEST priority solution
 		Solution bestCurrentSolution = _solutionSpace.poll();
-
+		_solPopped ++;
+		
 		// For PARALLELISATION, just in case that at the start, the first thread 
 		// did not populate the solution space fast enough for the subsequent threads
 		// TODO what if solution space too small like 2 tasks - YaoJian will understand
 		while(bestCurrentSolution == null){
 			bestCurrentSolution = _solutionSpace.poll();
+			_solPopped ++;
 		}
-		
+
 		// if not complete, consider the children in generating the solution and poll again
 		while (!bestCurrentSolution.isCompleteSchedule()) {
 			//System.out.println("C: "+_closedSolutions.size());
 
 			while ((_closedSolutions.contains(bestCurrentSolution)) || (bestCurrentSolution == null)) {
 				bestCurrentSolution = _solutionSpace.poll();
+				_solPopped ++;
+				_solPruned ++;
 			}
 
 			//System.out.println("SS: "+_solutionSpace.size());
@@ -122,7 +126,9 @@ public class AStar {
 			for (int i = 0; i < childSolutions.size(); i++) {
 			Solution s = childSolutions.get(i);
 				int childCost = s.maxCostFunction();
+				_solCreated ++;
 				if (childCost > _upperBound){
+					_solPruned ++;
 					// DO NOTHING AS IT WILL NOT BE CONSIDERED
 				} else if (!_solutionSpace.contains(s) && !_closedSolutions.contains(s)) {
 					_solutionSpace.add(s); // TODO move to after if statement?
@@ -143,18 +149,17 @@ public class AStar {
 			}
 			//TODO System.out.println(bestCurrentSolution.maxCostFunction());
 			//TODO System.out.println("Solution space size : " + _solutionSpace.size());
-			
+
 			_closedSolutions.add(bestCurrentSolution);
 			bestCurrentSolution = _solutionSpace.poll();
-			
-			_solCreated ++;
+
 			//TODO System.out.println(bestCurrentSolution.maxCostFunction());
 			//TODO System.out.println("Solution space size : " + _solutionSpace.size());
 
 			if (_gantt != null) {
 				if (_gantt.hasLaunched()) {
 					if(_counter == 10){  
-					_gantt.updateSolution(bestCurrentSolution);
+						_gantt.updateSolution(bestCurrentSolution);
 					}
 				} else {
 					_gantt.setSolution(bestCurrentSolution);
@@ -171,8 +176,8 @@ public class AStar {
 				}  
 
 			} 
-	
-	}
+
+		}
 		if(_visualizer != null){
 			_visualizer.UpdateGraph(bestCurrentSolution);
 			_gantt.updateSolution(bestCurrentSolution);
@@ -215,6 +220,17 @@ public class AStar {
 			return myWeight + btmLvl;
 		}
 	}
-
-
+	
+	public int getSolCreated(){
+		return _solCreated;
+	}
+	
+	public int getSolPruned(){
+		return _solPruned;
+	}
+	
+	public int getSolPopped(){
+		return _solPopped;
+	}
+	
 }

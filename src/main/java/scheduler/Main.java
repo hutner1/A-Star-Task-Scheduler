@@ -98,6 +98,9 @@ public class Main {
 			long endTime = System.nanoTime();
 			long totalTime = endTime - startTime;
 			System.out.println("\n Took " + totalTime/1000000 + "ms" + " : " + totalTime/1000000000 + " seconds");
+			System.out.println(aStar.getSolCreated());
+			System.out.println(aStar.getSolPopped());
+			System.out.println(aStar.getSolPruned());
 			
 			/*
 			if(inputParser.isVisualise() == true){
@@ -107,7 +110,6 @@ public class Main {
 				
 			}
 			*/
-			
 			
 		}
 	}
