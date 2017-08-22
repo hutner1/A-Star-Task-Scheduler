@@ -31,8 +31,8 @@ public class Main {
 		try {
 			inputParser.parse();
 		} catch (InputParserException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(e.getMessage());
+			System.exit(0);
 		}
 		
 		// 2. Instantiate OutputWriter to write to the output file.
