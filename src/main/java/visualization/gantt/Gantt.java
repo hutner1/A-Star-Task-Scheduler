@@ -32,7 +32,8 @@ public class Gantt extends ApplicationFrame{
 	private static String _title;
 	private static Solution _sol;
 	private static JFreeChart _chart;
-	public boolean _launched = false;
+	private boolean _launched = false;
+	private JPanel jpanel;
 	public Gantt(String title) {
 		super(title);
 		_title = title;
@@ -56,7 +57,8 @@ public class Gantt extends ApplicationFrame{
 				_title, "Task", "Value", dataset, false, true, true);
 		
         CategoryPlot plot = (CategoryPlot) _chart.getPlot();
-        CustomGanttRenderer renderer = new CustomGanttRenderer();
+        TaskSeriesCollection tsc = (TaskSeriesCollection) dataset;
+        CustomGanttRenderer renderer = new CustomGanttRenderer(tsc.getSeries(0));
         renderer.setShadowVisible(false);
         plot.setRenderer(renderer);
         
@@ -86,15 +88,18 @@ public class Gantt extends ApplicationFrame{
 		for (int i = 1; i <= processNo; i++) {
 			List<ProcessInfo> processList = processors.get(i).getProcesses();
 			String processName = "Processor " + i;
-			TaskNumeric main = new TaskNumeric(processName, 0, processors.get(i).getTime());
+			TaskNumeric main;
+			if (_sol.getProcess().get(i).getTime() == 0) {
+				main = new TaskNumeric(processName, 0, 0);
+			} else {
+				main = new TaskNumeric(processName, 0, _sol.getUpperBound());
+			}
 			for (ProcessInfo p: processList) {
 				int startTime = getTaskStart(p);
 				int endTime = getTaskEnd(p);
 				
 				main.addSubtask(new TaskNumeric(p.getTaskName(), startTime, endTime));
-				System.out.println(processName);
-				System.out.println(startTime);
-				System.out.println(endTime);
+
 				
 			}
 			ts.add(main);
@@ -103,22 +108,6 @@ public class Gantt extends ApplicationFrame{
 		TaskSeriesCollection taskSeriesCollection = new TaskSeriesCollection();
 		taskSeriesCollection.add(ts);
 		
-		
-		
-		/*
-		TaskSeries ts = new TaskSeries("Temp Solution");
-		
-		TaskNumeric p0 = new TaskNumeric("Processor 0", 1, 10);
-		p0.addSubtask(new TaskNumeric("A",1,5));
-		p0.addSubtask(new TaskNumeric("B",5,10));
-		ts.add(p0);
-		ts.add(new TaskNumeric("Processor 1", 2,9));
-		
-
-		
-		TaskSeriesCollection taskSeriesCollection = new TaskSeriesCollection();
-		taskSeriesCollection.add(ts);
-		*/
 		return taskSeriesCollection;
 		
 	}
@@ -138,8 +127,13 @@ public class Gantt extends ApplicationFrame{
 	 */
 	public void updateSolution(Solution sol) {
 		_sol = sol;
-		_chart.getCategoryPlot().setDataset(createDataset());
+		//_chart.getCategoryPlot().setDataset(createDataset());
 		//_chart.getXYPlot().setDataset(_chart.getXYPlot().getDataset());
+		jpanel.removeAll();
+		
+		jpanel = createDemoPanel();
+		jpanel.revalidate();
+		jpanel.repaint();
 		
 	}
 	
@@ -150,12 +144,10 @@ public class Gantt extends ApplicationFrame{
 	 * Creates the jpanel 
 	 * @return
 	 */
-	public static JPanel createDemoPanel() {
+	public JPanel createDemoPanel() {
 		JFreeChart jfreechart = createChart(createDataset());
 		ChartPanel chartpanel = new ChartPanel(jfreechart);
 		chartpanel.setMouseWheelEnabled(true);
-		jfreechart.setBackgroundPaint(new Color(250,250,250));
-        
 		return chartpanel;
 	}
 	/**
@@ -169,13 +161,14 @@ public class Gantt extends ApplicationFrame{
 	 * Inialises the gantt chart, makes the JPanel and puts it in a frame
 	 */
 	public void launch() {
-		JPanel jpanel = createDemoPanel();
-		jpanel.setPreferredSize(new Dimension(1200, 800));
+		jpanel = createDemoPanel();
+		//jpanel.setPreferredSize(new Dimension(1200, 800));
 		setContentPane(jpanel);
-		//this.pack();
-		//RefineryUtilities.centerFrameOnScreen(this);
-		//this.setVisible(true);
+		this.pack();
+		RefineryUtilities.centerFrameOnScreen(this);
+		this.setVisible(true);
 		_launched= true;
+	
 	}
 
 
