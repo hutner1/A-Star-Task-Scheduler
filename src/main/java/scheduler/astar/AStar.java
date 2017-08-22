@@ -164,7 +164,7 @@ public class AStar {
 
 			} 
 
-		
+		}
 
 		if(_visualizer != null){
 			_visualizer.UpdateGraph(bestCurrentSolution);

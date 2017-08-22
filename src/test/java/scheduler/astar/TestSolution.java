@@ -15,7 +15,7 @@ public class TestSolution {
 		
 		//Data structures to use
 		DefaultDirectedWeightedGraph _graph = new DefaultDirectedWeightedGraph();
-		/**
+		
 		@Test
 		public void testSingleNodeSolution(){
 			Vertex v = new Vertex("test");
@@ -36,5 +36,4 @@ public class TestSolution {
 			assertEquals(640, sol.getLastFinishTime());
 			}
 		}
-		*/
 }
