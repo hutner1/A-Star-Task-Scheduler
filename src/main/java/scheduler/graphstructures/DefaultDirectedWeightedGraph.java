@@ -1,7 +1,9 @@
 package scheduler.graphstructures;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * A Directed Graph with edge weights 
@@ -14,6 +16,8 @@ public class DefaultDirectedWeightedGraph {
 	// Store incoming and outgoing edges of each task vertex 
 	private HashMap<Vertex, ArrayList<DefaultWeightedEdge>> _incomingEdges;
 	private HashMap<Vertex, ArrayList<DefaultWeightedEdge>> _outgoingEdges;
+	private HashMap<Vertex, ArrayList<Vertex>> _parents;
+	private HashMap<Vertex, ArrayList<Vertex>> _children;
 
 	/**
 	 * Constructor for digraph
@@ -23,15 +27,17 @@ public class DefaultDirectedWeightedGraph {
 		_edges = new ArrayList<>();
 		_incomingEdges = new HashMap<>();
 		_outgoingEdges = new HashMap<>();
+		_parents = new HashMap<>();
+		_children = new HashMap<>();
 	}
-	
+
 	/**
 	 * Add node to digraph
 	 */
 	public void addVertex(Vertex vertex){
 		_vertices.add(vertex);
 	}
-	
+
 	/**
 	 * Add edge to digraph
 	 */
@@ -40,21 +46,21 @@ public class DefaultDirectedWeightedGraph {
 		_edges.add(edge);
 		return edge;
 	}
-	
+
 	/**
 	 * Return the set of nodes in the graph 
 	 */
 	public ArrayList<Vertex> vertexSet(){
 		return _vertices;
 	}
-	
+
 	/**
 	 * Return the set of edge in the graph 
 	 */
 	public ArrayList<DefaultWeightedEdge> edgeSet(){
 		return _edges;
 	}
-	
+
 	/**
 	 * Get all edges connected to the vertex
 	 * @param vertex vertex to get edges for
@@ -66,22 +72,23 @@ public class DefaultDirectedWeightedGraph {
 		edges.addAll(outgoingEdgesOf(vertex));
 		return edges;
 	}
-	
+
 	/** 
 	 * Get all edges pointing to the vertex
 	 * @param vertex vertex to get incoming edges for
 	 * @return all edges pointing to the vertex // TODO 
 	 */
 	public ArrayList<DefaultWeightedEdge> incomingEdgesOf(Vertex vertex){
-		if(_incomingEdges.get(vertex)==null){
-			ArrayList<DefaultWeightedEdge> edges = new ArrayList<>();
-			for(DefaultWeightedEdge edge : _edges){
-				if(edge.getDest().equals(vertex)){
-					edges.add(edge);
-				}
+		//if(_incomingEdges.get(vertex)==null){
+		ArrayList<DefaultWeightedEdge> edges = new ArrayList<>();
+		for(DefaultWeightedEdge edge : _edges){
+			if(edge.getDest().equals(vertex)){
+				edges.add(edge);
 			}
-			_incomingEdges.put(vertex, edges);	
 		}
+		Collections.sort(edges);
+		_incomingEdges.put(vertex, edges);	
+		//}
 		return _incomingEdges.get(vertex);
 	}
 	// MAKE IF EFFICIENT initialise them first // TODO
@@ -91,24 +98,17 @@ public class DefaultDirectedWeightedGraph {
 	 * @return all edges going out from the vertex // TODO
 	 */
 	public ArrayList<DefaultWeightedEdge> outgoingEdgesOf(Vertex vertex){
-		if(_outgoingEdges.get(vertex)==null){
-			ArrayList<DefaultWeightedEdge> edges = new ArrayList<>();
-			for(DefaultWeightedEdge edge : _edges){
-				if(edge.getSource().equals(vertex)){
-					edges.add(edge);
-				}
+		//if(_outgoingEdges.get(vertex)==null){
+		ArrayList<DefaultWeightedEdge> edges = new ArrayList<>();
+		for(DefaultWeightedEdge edge : _edges){
+			if(edge.getSource().equals(vertex)){
+				edges.add(edge);
 			}
-			_outgoingEdges.put(vertex, edges);
 		}
+		Collections.sort(edges);
+		_outgoingEdges.put(vertex, edges);
+		//}
 		return _outgoingEdges.get(vertex);
-	}
-
-	/**
-	 * Remove the edge from the graph
-	 * @param edge edge to remove
-	 */
-	public void removeEdge(DefaultWeightedEdge edge) {
-		_edges.remove(edge);		
 	}
 
 	/**
@@ -129,7 +129,7 @@ public class DefaultDirectedWeightedGraph {
 	public Vertex getEdgeSource(DefaultWeightedEdge edge) {
 		return edge.getSource();
 	}
-	
+
 	/**
 	 * Get the source of the edge
 	 * @param edge
@@ -147,33 +147,7 @@ public class DefaultDirectedWeightedGraph {
 	public int getEdgeWeight(DefaultWeightedEdge edge) {
 		return edge.getWeight();
 	}
-	
-	/**
-	 * Get parents vertices
-	 * @param vertex
-	 * @return parents vertices
-	 */
-	public ArrayList<Vertex> getParents(Vertex vertex){
-		ArrayList<Vertex> parents = new ArrayList<>();
-		for(DefaultWeightedEdge e : incomingEdgesOf(vertex)){
-			parents.add(getEdgeSource(e));
-		}
-		return parents;
-	}
 
-	/**
-	 * Get children vertices
-	 * @param vertex
-	 * @return children vertices
-	 */
-	public ArrayList<Vertex> getChildren(Vertex vertex){
-		ArrayList<Vertex> children = new ArrayList<>();
-		for(DefaultWeightedEdge e : outgoingEdgesOf(vertex)){
-			children.add(getEdgeTarget(e));
-		}
-		return children;
-	}
-	
 	/**
 	 * Returns root nodes of the digraph
 	 * @return root nodes of the digraph
@@ -186,5 +160,82 @@ public class DefaultDirectedWeightedGraph {
 			}
 		}
 		return rootVertices;
+	}
+
+	public String getVertexString(Vertex v) {
+		String infoString = "";
+
+		infoString += v.getWeight();
+		for (DefaultWeightedEdge e : incomingEdgesOf(v)) {
+			infoString += e.sourceString();
+		}
+		for (DefaultWeightedEdge e : outgoingEdgesOf(v)) {
+			infoString += e.destString();
+		}
+
+		return infoString;
+	}
+
+
+
+	/**
+	 * Creates an artificial edge between two vertices
+	 * @param parent
+	 * @param child
+	 */
+	public void addChild(Vertex parent, Vertex child) {
+
+		ArrayList<Vertex> childrenList;
+
+		if (_children.get(parent) == null) {
+			childrenList = createChildren(parent);
+			_children.put(parent, childrenList);
+		} else {
+			childrenList = _children.get(parent);
+		}
+
+		childrenList.add(child);
+
+		ArrayList<Vertex> parentList;
+
+		if (_parents.get(child) == null) {
+			parentList = createParents(child);
+			_parents.put(child, parentList);
+		} else {
+			parentList = _parents.get(child);
+		}
+
+		parentList.add(parent);
+	}
+
+	private ArrayList<Vertex> createParents(Vertex v) {
+		ArrayList<Vertex> parentList = new ArrayList<Vertex>();
+		for (DefaultWeightedEdge e : incomingEdgesOf(v)) {
+			parentList.add(e.getSource());
+		}
+		return parentList;
+	}
+
+	private ArrayList<Vertex> createChildren(Vertex v) {
+		ArrayList<Vertex> childrenList = new ArrayList<Vertex>();
+		for (DefaultWeightedEdge e : outgoingEdgesOf(v)) {
+			childrenList.add(e.getDest());
+		}
+		return childrenList;
+	}
+
+	public List<Vertex> getChildren(Vertex v) {
+		if (_children.get(v) == null) {
+			_children.put(v, createChildren(v));
+		} 
+		return _children.get(v);
+	}
+
+
+	public List<Vertex> getParents(Vertex v) {
+		if (_parents.get(v) == null) {
+			_parents.put(v, createParents(v));
+		} 
+		return _parents.get(v);
 	}
 }
