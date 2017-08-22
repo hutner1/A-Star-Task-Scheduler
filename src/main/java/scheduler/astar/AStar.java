@@ -28,11 +28,11 @@ public class AStar {
 	protected Visualizer _visualizer;
 
 	protected int _upperBound;
-	private Gantt _gantt;
-  private static int _counter=0;
-	private static int _solCreated=0;
-	private static int _solPopped=0;
-	private static int _solPruned=0;
+	protected Gantt _gantt;
+	protected static int _counter=0;
+	protected static int _solCreated=0;
+	protected static int _solPopped=0;
+	protected static int _solPruned=0;
 
 	/**
 	 * AStar's constructor
@@ -164,7 +164,7 @@ public class AStar {
 
 			} 
 
-		}
+		
 
 		if(_visualizer != null){
 			_visualizer.UpdateGraph(bestCurrentSolution);
