@@ -14,15 +14,17 @@ import scheduler.dfsbranchandbound.SolutionGenerator;
 import scheduler.graphstructures.Vertex;
 
 /**
- * Writes optimal solution to a file
- *
+ * Writes optimal solution to a file.
+ * 
+ * The ordering of the information on nodes and edges will be the
+ * same as the input file.
  */
 public class OutputWriter {
 
 	private File _outputFile;
 
 	/**
-	 * Construct OutputWriter with the  name of output file before the ".dot" is appended to it
+	 * Initialise OutputWriter with the output file name with ".dot" appended to it
 	 * @param outputName name of output file before the ".dot" is appended to it
 	 */
 	public OutputWriter(String outputName) {
@@ -46,16 +48,24 @@ public class OutputWriter {
 		}
 	}
 
-	public void createScheduleAStar(String digraphName, ArrayList<String> weightInfos, ArrayList<String> verticesAndEdges, Solution solution, HashMap<String, Vertex> vertexMapping){
+	/**
+	 * Outputs the optimal schedule to a file, while considering the order demonstrated in the input file.
+	 * @param digraphName name of input task digraph
+	 * @param verticesAndEdgesInfo lines on vertices and edges as they are read from the input file
+	 * @param verticesAndEdgesRead list of vertices and edges(resprsented as ">") in the order they are read
+	 * @param solution optimal solution
+	 * @param vertexMapping map for mapping from vertex name to Vertex instance
+	 */
+	public void createScheduleAStar(String digraphName, ArrayList<String> verticesAndEdgesInfo, ArrayList<String> verticesAndEdgesRead, Solution solution, HashMap<String, Vertex> vertexMapping){
 
 		//record first line of output file which contains the title
 		record(_outputFile, "digraph \"" + digraphName +"\" {");
 
 		//record the weight info together with the start time and processor, in order according to input file 
-		for(String info : weightInfos){
-			int currentPos = weightInfos.indexOf(info);
+		for(String info : verticesAndEdgesInfo){
+			int currentPos = verticesAndEdgesInfo.indexOf(info);
 			// edge would be ">"
-			String vertexOrEdge = verticesAndEdges.get(currentPos);
+			String vertexOrEdge = verticesAndEdgesRead.get(currentPos);
 
 			// record initially recorded edge info directly back to file as no extra info is needed
 			if(vertexOrEdge.equals(">")){

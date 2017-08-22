@@ -347,13 +347,18 @@ public class Solution implements Comparable<Solution>{
 		}
 	}
 
+	/**
+	 * Returns the additional information on task vertex tha needs to be added to output file
+	 * @param vertex vertex to obtain optimal solution's information on 
+	 * @return String representing optimal solution's information on vertex
+	 */
 	public String getVertexString(Vertex vertex) {
 		for (int i = 1; i <= _numberOfProcessors; i++) {
 			if (_processors.get(i).isScheduled(vertex)) {				
 				return ", Start=" + _processors.get(i).getProcess(vertex).startTime() + ", Processor=" + i;
 			}
 		}
-		return null;
+		return null; // TODO
 	}
 
 	/**

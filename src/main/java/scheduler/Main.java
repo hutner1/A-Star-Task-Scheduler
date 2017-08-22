@@ -86,7 +86,7 @@ public class Main {
 			long startTime = System.nanoTime();
 
 
-      AStar aStar;
+			AStar aStar;
 			if(inputParser.isParallelise() && inputParser.getCores() > 1){
 				aStar = new AStarParallelised(dataReader.getGraph(), inputParser.getProcessors(), inputParser.getCores(), graphVisualizer, gantt);
 			} else {
@@ -94,7 +94,7 @@ public class Main {
 			}
 
 			Solution optimalSolution = aStar.execute();
-			outWriter.createScheduleAStar(dataReader.getGraphName(),dataReader.getInfo(),dataReader.getRead(),optimalSolution,dataReader.getMapping());
+			outWriter.createScheduleAStar(dataReader.getGraphName(),dataReader.getVerticesAndEdgesInfo(),dataReader.getVerticesAndEdgesRead(),optimalSolution,dataReader.getMapping());
 			long endTime = System.nanoTime();
 			long totalTime = endTime - startTime;
 			System.out.println("\n Took " + totalTime/1000000 + "ms" + " : " + totalTime/1000000000 + " seconds");

@@ -11,11 +11,12 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 /**
- * This class is used to parse the command line input from the user and then determine
+ * This class parses the command line input from the user and then determine
  * the output file name, number of processors to schedule for, number of cores to use
  * and whether or not to provide a visual representation of the scheduling process.
- * @author Hunter
  *
+ * Uses Apache Commons Cli library to parse the optional commands that starts with a 
+ * dash "-", followed by the option's alphabet
  */
 public class InputParser {
 

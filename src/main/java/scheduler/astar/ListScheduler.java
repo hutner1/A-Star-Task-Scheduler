@@ -11,10 +11,8 @@ import scheduler.graphstructures.Vertex;
 
 /**
  * ListScheduler finds a possible finish time using task scheduling that's
- * based on a specialised (TODO later) topological sort.
- * 
- * The topological sort starts with a root vertex and then looks at 
- * branches that have the largest communication time + weight first. //TODO later
+ * based on assigning tasks to the processor which allows the earliest possible start 
+ * after doing a topological sort.
  * 
  * The finish time can be used to set an upper bound for the A* algorithm .
  */
