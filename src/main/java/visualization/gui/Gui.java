@@ -114,6 +114,11 @@ public class Gui {
 
 		_cards.add(ganttPanel,"Gantt");
 		
+		StatisticTable stats = new StatisticTable(4);
+		stats.setPreferredSize(new Dimension(1200, 800));
+		/*stats.setBackground(new Color(250,250,250));*/
+		_cards.add(stats,"Stats");
+		
 		//Initializing the button related to the gantt chart for usage.
 		JButton ganttButton = new CustomButton("Gantt Chart");
 		
@@ -150,7 +155,20 @@ public class Gui {
 				changeActive();
 			}
 		});
-
+		
+		CustomButton statButton = new CustomButton("Statistics Chart");
+		statButton.setText("Statistics");
+		statButton.setBounds(734, 137, 140, 50);
+		frame.getContentPane().add(statButton);
+		statButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cardLayout.show(_cards, "Stats");
+				_notActive = ganttButton;
+				_notActive = graphButton;
+				_active = statButton;
+				changeActive();
+			}
+		});
 		
 		//Creating a button for exit.
 		JButton btnClose = new CustomButton("Close");
@@ -183,11 +201,6 @@ public class Gui {
         infoArea.setMargin(new Insets(5,5,5,5));
 		
         frame.getContentPane().add(infoArea);
-		
-		CustomButton statButton = new CustomButton("Gantt Chart");
-		statButton.setText("Statistics");
-		statButton.setBounds(734, 137, 140, 50);
-		frame.getContentPane().add(statButton);
 		
 		txtrTask = new JTextField();
 		txtrTask.setHorizontalAlignment(SwingConstants.CENTER);

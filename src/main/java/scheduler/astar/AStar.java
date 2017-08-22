@@ -28,6 +28,9 @@ public class AStar {
 	protected Visualizer _visualizer;
 	protected Gantt _gantt;
 	private static int _counter=0;
+	private static int _solCreated=0;
+	private static int _solPopped=0;
+	private static int _solPruned=0;
 
 	public AStar(DefaultDirectedWeightedGraph graph, int numberOfProcessors, Visualizer graphVisualizer, Gantt gantt) {
 
@@ -97,6 +100,8 @@ public class AStar {
 			}
 			_closedSolutions.add(bestCurrentSolution);
 			bestCurrentSolution = _solutionSpace.poll();
+			
+			_solCreated ++;
 			//TODO System.out.println(bestCurrentSolution.maxCostFunction());
 			//TODO System.out.println("Solution space size : " + _solutionSpace.size());
 
