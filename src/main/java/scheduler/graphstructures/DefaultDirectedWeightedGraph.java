@@ -12,8 +12,8 @@ public class DefaultDirectedWeightedGraph {
 	// EDGES
 	private ArrayList<DefaultWeightedEdge> _edges;
 	// Store incoming and outgoing edges of each task vertex 
-	private static HashMap<Vertex, ArrayList<DefaultWeightedEdge>> _incomingEdges;
-	private static HashMap<Vertex, ArrayList<DefaultWeightedEdge>> _outgoingEdges;
+	private HashMap<Vertex, ArrayList<DefaultWeightedEdge>> _incomingEdges;
+	private HashMap<Vertex, ArrayList<DefaultWeightedEdge>> _outgoingEdges;
 
 	/**
 	 * Constructor for digraph
