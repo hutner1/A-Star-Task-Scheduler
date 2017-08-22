@@ -102,7 +102,7 @@ public class AStar {
 
 			if (_gantt != null) {
 				if (_gantt.hasLaunched()) {
-					if(_counter == 15){  
+					if(_counter == 10){  
 					_gantt.updateSolution(bestCurrentSolution);
 					}
 				} else {
@@ -112,7 +112,7 @@ public class AStar {
 			}
 
 			if(_visualizer != null){  
-				if(_counter == 15){  
+				if(_counter == 10){  
 					_counter = 0;  
 					_visualizer.UpdateGraph(bestCurrentSolution);  
 

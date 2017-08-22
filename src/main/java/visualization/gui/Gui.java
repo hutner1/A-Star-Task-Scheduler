@@ -87,7 +87,7 @@ public class Gui {
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
 		try {
-			frame.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("resources\\back13.jpg")))));
+			frame.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("resources\\back5.jpg")))));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -171,6 +171,9 @@ public class Gui {
 		infoArea.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		infoArea.setBounds(734, 248, 140, 246);
 		infoArea.setBorder(new LineBorder(new Color(13, 90, 150), 1, true));
+		infoArea.setBorder(BorderFactory.createCompoundBorder( 
+                infoArea.getBorder(),  
+                BorderFactory.createEmptyBorder(5, 5, 5, 5))); 
 		/*Border roundedBorder = new LineBorder(new Color(13, 90, 150), 5, true);
 		infoArea.setBorder(roundedBorder);*/
 		
@@ -191,7 +194,7 @@ public class Gui {
 		txtrTask.setFont(new Font("SansSerif", Font.BOLD, 20));
 		txtrTask.setText("Task");
 		txtrTask.setForeground(new Color(255, 255, 255));
-		txtrTask.setBackground(new Color(184, 38, 1));
+		txtrTask.setBackground(new Color(231, 76, 60));
 		//129, 55, 114
 		txtrTask.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		txtrTask.setEditable(false);
