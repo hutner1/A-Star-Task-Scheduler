@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -40,7 +41,9 @@ public class Gui {
 	protected JPanel _graphPage;
 	private JPanel panel;
 	private JButton _active;
-	private JButton _notActive;
+	private JButton ganttButton;
+	private JButton statButton;
+	private JButton[] _notActive ={ganttButton,statButton};;
 	private JTextArea infoArea;
 	private JTextField txtrTask;
 	private Gantt _gantt;
@@ -123,7 +126,7 @@ public class Gui {
 		_cards.add(stats,"Stats");
 		
 		//Initializing the button related to the gantt chart for usage.
-		JButton ganttButton = new CustomButton("Gantt Chart");
+		ganttButton = new CustomButton("Gantt Chart");
 		
 		//Initializing the buttons
 		JButton graphButton = new CustomButton("Tree Graph");
@@ -139,7 +142,8 @@ public class Gui {
 			public void actionPerformed(ActionEvent e) {
 				cardLayout.show(_cards, "Graph");
 				_active = graphButton;
-				_notActive = ganttButton;
+				_notActive[0] = ganttButton;
+				_notActive[1] = statButton;
 				changeActive();
 			}
 		});
@@ -154,21 +158,22 @@ public class Gui {
 			public void actionPerformed(ActionEvent e) {
 				cardLayout.show(_cards, "Gantt");
 				_active = ganttButton;
-				_notActive = graphButton;
+				_notActive[0] = graphButton;
+				_notActive[1] = statButton;
 				changeActive();
 			}
 		});
 		
-		CustomButton statButton = new CustomButton("Statistics Chart");
+		statButton = new CustomButton("Statistics Chart");
 		statButton.setText("Statistics");
 		statButton.setBounds(734, 137, 140, 50);
 		frame.getContentPane().add(statButton);
 		statButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cardLayout.show(_cards, "Stats");
-				_notActive = ganttButton;
-				_notActive = graphButton;
 				_active = statButton;
+				_notActive[0] = graphButton;
+				_notActive[1] = ganttButton;
 				changeActive();
 			}
 		});
@@ -226,7 +231,8 @@ public class Gui {
 	 */
 	private void changeActive(){
 		_active.setBackground(new Color(6, 47, 79));
-		_notActive.setBackground(new Color(13, 90, 150));
+		for(int i =0; i<_notActive.length;i++)
+		_notActive[i].setBackground(new Color(13, 90, 150));
 
 	}
 	
