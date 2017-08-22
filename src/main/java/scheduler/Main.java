@@ -49,7 +49,7 @@ public class Main {
 			if(inputParser.isParallelise() && inputParser.getCores() > 1){
 				aStar = new AStarParallelised(dataReader.getGraph(), inputParser.getProcessors(), inputParser.getCores(), graphVisualizer);
 			} else {
-				aStar = new AStar(dataReader.getGraph(),inputParser.getProcessors(), graphVisualizer);
+				aStar = new AStar(dataReader.getGraph(),inputParser.getProcessors(), graphVisualizer, gantt);
 			}
 
 			Solution optimalSolution = aStar.execute();
@@ -66,6 +66,7 @@ public class Main {
 				
 			}
 			*/
+			
 			
 		}
 	}

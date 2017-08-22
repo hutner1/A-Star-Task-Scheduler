@@ -24,6 +24,7 @@ public class AStar {
 	protected Visualizer _visualizer;
 	protected static int _counter = 0;
 	protected int _upperBound;
+	private Gantt _gantt;
 
 	/**
 	 * AStar's constructor
@@ -38,6 +39,16 @@ public class AStar {
 		_solutionSpace = new PriorityBlockingQueue<Solution>(); //data structure does not permit null elements
 		_closedSolutions = new CopyOnWriteArraySet<Solution>(); //threadsafe set
 		_visualizer = graphVisualizer;
+	}
+
+	//Temporary
+	public AStar(DefaultDirectedWeightedGraph graph, int processors, Visualizer graphVisualizer, Gantt gantt) {
+		_graph = graph;
+		_numberOfProcessors = processors;
+		_solutionSpace = new PriorityBlockingQueue<Solution>(); //data structure does not permit null elements
+		_closedSolutions = new CopyOnWriteArraySet<Solution>(); //threadsafe set
+		_visualizer = graphVisualizer;
+		_gantt = gantt;
 	}
 
 	/**
@@ -130,22 +141,33 @@ public class AStar {
 			/**
 			 * updates the graph that's 
 			 */
+			
 			if(_visualizer != null){
-
+				if (!_gantt.hasLaunched()){
+					_gantt.setSolution(bestCurrentSolution);
+					_gantt.launch();
+				}
 				if(_counter == 15){
 					_counter = 0;
 					_visualizer.UpdateGraph(bestCurrentSolution);
+						_gantt.updateSolution(bestCurrentSolution);
+					
 				} else {
 					_counter++;
 				}
 
 			}
+			
 
 		}
 		
-		if(_visualizer != null){
-			_visualizer.UpdateGraph(bestCurrentSolution);
-		}
+		//if(_visualizer != null){
+		//	_visualizer.UpdateGraph(bestCurrentSolution);
+		//}
+		
+
+		
+		
 		
 
 		return bestCurrentSolution;
