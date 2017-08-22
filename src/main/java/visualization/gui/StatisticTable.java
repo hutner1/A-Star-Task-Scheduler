@@ -71,8 +71,9 @@ public class StatisticTable extends JPanel{
 		model.setValueAt(solCreated, 1, 1);
 		model.setValueAt(solPopped, 2, 1);
 		model.setValueAt(solPruned, 3, 1);
-		model.setValueAt(time, 4, 1);
-		model.setValueAt(finishTime, 5, 1);
+		
+		model.setValueAt((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())/1024/1024, 4, 1);
+		model.setValueAt(time, 5, 1);
 		
 		if(finishTime != null){
 			model.setValueAt(finishTime, 6, 1);
