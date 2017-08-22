@@ -1,4 +1,4 @@
-package scheduler.graphstructures;
+package scheduler.io;
 import static org.junit.Assert.*;
 
 import java.io.File;
@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.After;
 import io.InputParser;
+import io.InputParserException;
 
 public class TestInputParser {
 		File _file;
@@ -28,10 +29,25 @@ public class TestInputParser {
 			
 			String[] input = new String[] {"input.dot", "1"};
 			
+			try {
 			InputParser parser = new InputParser(input);
 			parser.parse();
-			assertEquals("input-output",parser.getOutputFileName());
-			assertEquals(1, parser.getProcessors());
+			} catch (InputParserException e) {
+				fail();
+			}
+		}
+		
+		@Test
+		public void testNonValidNoOption() {
+			String[] input = new String[] {"input.dot", "0"};
+			
+			try {
+			InputParser parser = new InputParser(input);
+			parser.parse();
+			} catch (InputParserException e) {
+				e.printStackTrace();
+			}
+			
 		}
 		
 		@After

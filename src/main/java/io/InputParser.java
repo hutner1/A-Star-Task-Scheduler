@@ -38,13 +38,15 @@ public class InputParser {
 	/**
 	 * This method calls the helper methods from within the class in order to
 	 * fully parse the required information from the command line input
+	 * @throws InputParserException 
 	 */
-	public void parse() {
+	public void parse() throws InputParserException {
 		
 		checkInputLengthAndHelp();
 		parseFileName();
 		parseProcessors();
 		parseOptions();
+		
 
 	}
 	
@@ -52,14 +54,15 @@ public class InputParser {
 	 * This method checks to see whether or not the command line input has the required arguments,
 	 * and terminates execution if it is not. If the input argument is "--help" instead, print
 	 * out the help message.
+	 * @throws InputParserException 
 	 */
-	private void checkInputLengthAndHelp() {
+	private void checkInputLengthAndHelp() throws InputParserException {
 		
 		if((_input.length == 1) && (_input[0].equals("--help"))) {
-			ErrorMessenger.showHelpMessage();			
+			showHelpMessage();			
 		} else if(_input.length < 2){
 			//Error for when no arguments are supplied
-			ErrorMessenger.reportError("Error! Please follow the correct input format!");
+			throw new InputParserException("Error! Please follow the correct input format!");
 		}
 		
 	}
@@ -67,15 +70,16 @@ public class InputParser {
 	/**
 	 * This method parses the file name and terminates execution if the file is not
 	 * in the specified ".dot" format.
+	 * @throws InputParserException 
 	 */
-	private void parseFileName() {
+	private void parseFileName() throws InputParserException {
 		//Read the file name from the input arguments - by David Qi
 		String inputFileName = _input[0];
 
 		//Verify that the file exists with correct extension. type - David Qi
 		_file = new File(inputFileName);
 		if(!(_file.exists() && inputFileName.substring(inputFileName.lastIndexOf(".") + 1, inputFileName.length()).equals("dot"))){
-			ErrorMessenger.reportError("Error! The file is either not found or is of wrong type!");
+			throw new InputParserException("Error! The file is either not found or is of wrong type!");
 
 		}
 		//Set the default output file name
@@ -85,30 +89,29 @@ public class InputParser {
 	/**
 	 * This method parses the number of processors that the schedule is to be run on,
 	 * and terminates execution if a number less than 1 is given.
+	 * @throws InputParserException 
 	 */
-	private void parseProcessors() {
+	private void parseProcessors() throws InputParserException {
 
 		//Read the number of processors from the input argument - David Qi
 		String Processors = _input[1];
 
 		//Verify the validity of the argument for the number of processors and store it - David Qi
-		try{
+
 			_numberOfProcessors = Integer.parseInt(Processors);
 
 			//Check that the number of processors is of valid value
 			if(_numberOfProcessors < 1){
-				throw new NumberFormatException();
+				throw new InputParserException("Invalid input for the number of processors!");
 			}
 
-		} catch (NumberFormatException e) {
-			ErrorMessenger.reportError("Invalid input for the number of processors!");
-		}
 	}
 
 	/**
 	 * This method parses the optional command line parameters
+	 * @throws InputParserException 
 	 */
-	private void parseOptions() {
+	private void parseOptions() throws InputParserException {
 		//Create the Common CLI command line options for each optional command
 		CommandLine commandLine;
 		Option option_V = Option.builder("v")
@@ -152,24 +155,19 @@ public class InputParser {
 				_parallelise = true; //Parallelisation opted for
 				//Check whether the p option is repeated, if yes output error
 				if(commandLine.getOptionValues("p").length > 1){
-					ErrorMessenger.reportError("Parse error: This option cannot be repeated!");
+					throw new InputParserException("Parse error: This option cannot be repeated!");
 				}
 
 				//Stored the number of cores to be used, output error if the 
 				//entered argument cannot be parsed into an integer (invalid input)
-				try{
 					_cores = Integer.parseInt(commandLine.getOptionValue("p"));
 
 					//Double check that the core count is valid
 					if(_cores < 1) {
-						throw new NumberFormatException();
+						throw new InputParserException("Parse error: Invalid input for the number of cores!");
 					}
 
-				} catch (NumberFormatException e) {
-
-					ErrorMessenger.reportError("Parse error: Invalid input for the number of cores!");
-
-				}
+			
 
 				System.out.print("Option p is present.  The number of cores is: ");
 				System.out.println(_cores);
@@ -182,7 +180,7 @@ public class InputParser {
 
 				//Check whether the o option is repeated, if yes output error
 				if(commandLine.getOptionValues("o").length > 1){
-					ErrorMessenger.reportError("Parse error: This option cannot be repeated!");
+					throw new InputParserException("Parse error: This option cannot be repeated!");
 				}
 
 				//Check if the output file name is empty/ invalid
@@ -191,7 +189,7 @@ public class InputParser {
 					//If the name is valid, change the output file name to the entered one
 					_outputFileName = commandLine.getOptionValue("o"); 
 				} else {
-					ErrorMessenger.reportError("Parse error: Invalid input for the output name!");
+					throw new InputParserException("Parse error: Invalid input for the output name!");
 				}
 
 				System.out.print("Option o is present.  The output name is: ");
@@ -205,16 +203,30 @@ public class InputParser {
 				String[] remainderArgs = commandLine.getArgs();
 
 				if(remainderArgs.length > 0) {
-					ErrorMessenger.reportError("Parse error: Invalid argument found!");
+					throw new InputParserException("Parse error: Invalid argument found!");
 				}
 
 			}
 
 		} catch (ParseException exception) {
-			ErrorMessenger.reportError("Parse error: " + exception.getMessage());
+			throw new InputParserException("Parse error: " + exception.getMessage());
 		}
 	}
 
+	public static void showHelpMessage(){
+		
+		System.out.println("java -jar scheduler.jar INPUT.dot P [OPTION]");
+		System.out.println("");
+		System.out.println("INPUT.dot	a task graph with integer weights in dot format");
+		System.out.println("P		number of processors to schedule the INPUT graph on");
+		System.out.println("");
+		System.out.println("Optional:");
+		System.out.println("-p N		use N cores for execution in parallel (default is sequential)");
+		System.out.println("-v		visualise the search");
+		System.out.println("-o OUTPUT	output file is named OUTPUT (default is INPUT-output.dot)");
+		System.exit(0);
+	}
+	
 	// Getter Methods
 	
 	/**
