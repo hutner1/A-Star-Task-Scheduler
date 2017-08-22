@@ -15,7 +15,8 @@ import org.graphstream.ui.view.ViewerListener;
 import org.graphstream.ui.view.ViewerPipe;
 
 import scheduler.astar.ProcessInfo;
-import scheduler.astar.Processor; 
+import scheduler.astar.Processor;
+import visualization.gui.Gui; 
 
 /**
  * Listener to handle click of nodes. 
@@ -28,7 +29,7 @@ public class NodeClickListener implements ViewerListener , MouseInputListener{
 	private View _view = null; 
 	private Graph _graph = null; 
 	private HashMap<String, List<Object>> _scheduledVertices = null;
-
+	protected Gui _gui;
 	/**
 	 * Constructor 
 	 * @param _viewerPipe Viewer Pipe of the graph UI 
@@ -42,7 +43,9 @@ public class NodeClickListener implements ViewerListener , MouseInputListener{
 		this._view.addMouseListener(this); 
 
 	} 
-
+	public NodeClickListener(){
+	
+	}
 	/**
 	 * Detach all listeners if the graph is closed
 	 * @param id Unused parameter inherited from the interface
@@ -69,6 +72,7 @@ public class NodeClickListener implements ViewerListener , MouseInputListener{
 		} else if(n.getAttribute("ui.style").toString().contains("fill-color:#000000;")){
 			
 			System.out.println("This task is not scheduled yet");
+			_gui.noInfoToShow(id);
 			
 		} else {
 			
@@ -77,11 +81,12 @@ public class NodeClickListener implements ViewerListener , MouseInputListener{
 			System.out.println("Task: "+id);
 			System.out.println("Processor number: " + (int) scheduleInfo.get(0));
 			System.out.println("Start time: " + scheduleInfo.get(1));
-			System.out.println("End time: " + scheduleInfo.get(2));
-			
+		  System.out.println("End time: " + scheduleInfo.get(2));
+		  _gui.showInfoOnTextArea(id,(int) scheduleInfo.get(0),scheduleInfo.get(1),scheduleInfo.get(2));
+
 		}
 	} 
-
+	
 	@Override 
 	/**
 	 * Pump the action on mouse release event

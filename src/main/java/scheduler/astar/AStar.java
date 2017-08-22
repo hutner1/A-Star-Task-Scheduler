@@ -11,7 +11,11 @@ import scheduler.graphstructures.DefaultDirectedWeightedGraph;
 import scheduler.graphstructures.DefaultWeightedEdge;
 import scheduler.graphstructures.Vertex;
 import visualization.Visualizer;
+
 import visualization.gantt.Gantt;
+
+import visualization.gui.Gui;
+
 
 /**
  * AStar creates optimal solution with A*
@@ -22,9 +26,13 @@ public class AStar {
 	protected PriorityBlockingQueue<Solution> _solutionSpace;
 	protected Set<Solution> _closedSolutions;
 	protected Visualizer _visualizer;
-	protected static int _counter = 0;
+
 	protected int _upperBound;
 	private Gantt _gantt;
+  private static int _counter=0;
+	private static int _solCreated=0;
+	private static int _solPopped=0;
+	private static int _solPruned=0;
 
 	/**
 	 * AStar's constructor
@@ -32,24 +40,15 @@ public class AStar {
 	 * @param numberOfProcessors number of processors to do task scheduling on
 	 * @param graphVisualizer the visualizer
 	 */
-	public AStar(DefaultDirectedWeightedGraph graph, int numberOfProcessors, Visualizer graphVisualizer) {
-
+	public AStar(DefaultDirectedWeightedGraph graph, int numberOfProcessors, Visualizer graphVisualizer, Gantt gantt) {
 		_graph = graph;
 		_numberOfProcessors = numberOfProcessors;
 		_solutionSpace = new PriorityBlockingQueue<Solution>(); //data structure does not permit null elements
 		_closedSolutions = new CopyOnWriteArraySet<Solution>(); //threadsafe set
 		_visualizer = graphVisualizer;
+    _gantt = gantt;
 	}
 
-	//Temporary
-	public AStar(DefaultDirectedWeightedGraph graph, int processors, Visualizer graphVisualizer, Gantt gantt) {
-		_graph = graph;
-		_numberOfProcessors = processors;
-		_solutionSpace = new PriorityBlockingQueue<Solution>(); //data structure does not permit null elements
-		_closedSolutions = new CopyOnWriteArraySet<Solution>(); //threadsafe set
-		_visualizer = graphVisualizer;
-		_gantt = gantt;
-	}
 
 	/**
 	 * Execute A* algorithm
@@ -72,7 +71,6 @@ public class AStar {
 		List<Vertex> schedulable = new ArrayList<Vertex>(); // dependencies all met
 		List<Vertex> nonschedulable = new ArrayList<Vertex>(); // dependencies not met
 		// fill lists of schedulables
-
 
 		for (Vertex v : _graph.vertexSet()) {
 			if (_graph.inDegreeOf(v) == 0) { //get source nodes
@@ -137,40 +135,43 @@ public class AStar {
 			}
 			//TODO System.out.println(bestCurrentSolution.maxCostFunction());
 			//TODO System.out.println("Solution space size : " + _solutionSpace.size());
-
-			/**
-			 * updates the graph that's 
-			 */
-			
-			if(_visualizer != null){
-				if (!_gantt.hasLaunched()){
-					_gantt.setSolution(bestCurrentSolution);
-					_gantt.launch();
-				}
-				if(_counter == 15){
-					_counter = 0;
-					_visualizer.UpdateGraph(bestCurrentSolution);
-						_gantt.updateSolution(bestCurrentSolution);
-					
-				} else {
-					_counter++;
-				}
-
 			}
+			_closedSolutions.add(bestCurrentSolution);
+			bestCurrentSolution = _solutionSpace.poll();
 			
+			_solCreated ++;
+			//TODO System.out.println(bestCurrentSolution.maxCostFunction());
+			//TODO System.out.println("Solution space size : " + _solutionSpace.size());
+
+			if (_gantt != null) {
+				if (_gantt.hasLaunched()) {
+					if(_counter == 10){  
+					_gantt.updateSolution(bestCurrentSolution);
+					}
+				} else {
+					_gantt.setSolution(bestCurrentSolution);
+				}
+			}
+
+			if(_visualizer != null){  
+				if(_counter == 10){  
+					_counter = 0;  
+					_visualizer.UpdateGraph(bestCurrentSolution);  
+
+				} else {  
+					_counter++;  
+				}  
+
+			} 
 
 		}
-		
-		//if(_visualizer != null){
-		//	_visualizer.UpdateGraph(bestCurrentSolution);
-		//}
-		
 
-		
-		
-		
-
+		if(_visualizer != null){
+			_visualizer.UpdateGraph(bestCurrentSolution);
+			_gantt.updateSolution(bestCurrentSolution);
+		}
 		return bestCurrentSolution;
+
 	}
 
 	/**

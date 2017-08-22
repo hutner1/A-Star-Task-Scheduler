@@ -2,6 +2,9 @@ package scheduler;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+
 import io.DataReader;
 import io.InputParser;
 import io.OutputWriter;
@@ -11,6 +14,8 @@ import scheduler.astar.Solution;
 import scheduler.graphstructures.Vertex;
 import visualization.Visualizer;
 import visualization.gantt.Gantt;
+import visualization.gui.Gui;
+
 
 /**
  * This is the main class for the task scheduler program.
@@ -26,7 +31,10 @@ public class Main {
 
 		DataReader dataReader = new DataReader(inputParser.getFile());
 		Visualizer graphVisualizer = null;
+
 		Gantt gantt = null;
+		
+		
 		while(dataReader.hasMoreGraphs()) {
 			System.out.println("More graphs in file? " + dataReader.hasMoreGraphs());
 			dataReader.readNextGraph();
@@ -34,20 +42,47 @@ public class Main {
 			if(inputParser.isVisualise() == true){
 				graphVisualizer = new Visualizer();
 				graphVisualizer.add(dataReader.getGraph());
+
 				graphVisualizer.displayGraph();
-				gantt = new Gantt("Test");
-				
+				gantt = new Gantt("");
+				final Gantt gant2 = gantt;
+				final Visualizer graphVisualizer2 = graphVisualizer;
+				//graphVisualizer.displayGraph();
+				try {
+					 // Set cross-platform Java L&F (also called "Metal")
+			        UIManager.setLookAndFeel(
+			            UIManager.getCrossPlatformLookAndFeelClassName());
+					SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						try {
+							
+							Gui window = new Gui(graphVisualizer2,gant2);
+							window.frame.setVisible(true);
+							graphVisualizer2.setGuiListener(window);
+							
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						
+					}
+				});
+					
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-			
 			//Create the optimal schedule
 			/*Sorter sorter = new Sorter(dataReader.getGraph());
 			List<Vertex> tSort = sorter.generateSort();
 			Schedule sol = ScheduleGenerator.makeSolution(tSort);*/
 			long startTime = System.nanoTime();
 
+
       AStar aStar;
 			if(inputParser.isParallelise() && inputParser.getCores() > 1){
-				aStar = new AStarParallelised(dataReader.getGraph(), inputParser.getProcessors(), inputParser.getCores(), graphVisualizer);
+				aStar = new AStarParallelised(dataReader.getGraph(), inputParser.getProcessors(), inputParser.getCores(), graphVisualizer, gantt);
 			} else {
 				aStar = new AStar(dataReader.getGraph(),inputParser.getProcessors(), graphVisualizer, gantt);
 			}
