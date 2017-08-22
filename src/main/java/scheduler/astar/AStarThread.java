@@ -5,7 +5,11 @@ import java.util.concurrent.PriorityBlockingQueue;
 
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
 import visualization.Visualizer;
+
 import visualization.gantt.Gantt;
+
+import visualization.gui.Gui;
+
 
 /**
  * AStar runnable class that will be added to allow solution search in parallel
@@ -15,7 +19,7 @@ public class AStarThread extends AStar implements Runnable{
 	int _threadNo; //Number identifier for thread
 	private Solution _bestSolution = null;
 	private AStarParallelised _asp;
-	
+
 	/**
 	 * AStarThread constructor
 	 * @param id thread identifier (a number to identify)
@@ -25,8 +29,8 @@ public class AStarThread extends AStar implements Runnable{
 	 * @param numberOfProcessors number of processors the task scheduling is done on
 	 * @param Visualizer graph visualization
 	 */
-	public AStarThread(int id, DefaultDirectedWeightedGraph graph, PriorityBlockingQueue<Solution> solutionSpace, Set<Solution> closedSolutions, int numberOfProcessors, Visualizer Visualizer, int upperBound, AStarParallelised asp) {
-		super(graph, numberOfProcessors, Visualizer);
+	public AStarThread(int id, DefaultDirectedWeightedGraph graph, PriorityBlockingQueue<Solution> solutionSpace, Set<Solution> closedSolutions, int numberOfProcessors, Visualizer Visualizer, int upperBound, AStarParallelised asp, Gantt gantt) {
+		super(graph, numberOfProcessors, Visualizer, gantt);
 		this._threadNo = id;
 		this._solutionSpace = solutionSpace;
 		this._closedSolutions = closedSolutions;

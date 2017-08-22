@@ -17,6 +17,7 @@ import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.stream.ProxyPipe;
 import org.graphstream.stream.SinkAdapter;
 import org.graphstream.ui.layout.HierarchicalLayout;
+import org.graphstream.ui.swingViewer.ViewPanel;
 import org.graphstream.ui.view.View;
 import org.graphstream.ui.view.Viewer;
 import org.graphstream.ui.view.ViewerListener;
@@ -28,6 +29,7 @@ import scheduler.astar.Solution;
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
 import scheduler.graphstructures.DefaultWeightedEdge;
 import scheduler.graphstructures.Vertex;
+import visualization.gui.Gui;
 
 /**
  * This class visualize the scheduling process with GraphStream
@@ -38,7 +40,7 @@ public class Visualizer {
 	//Set the style for the graph using CSS
 	private String _stylesheet = 
 			"graph {" +
-					"fill-color: rgb(225,225,225);" +
+					"fill-color: rgb(250,250,250);" +
 					"}" + 
 
 			"edge {" +
@@ -48,7 +50,9 @@ public class Visualizer {
 			"}" +
 
     		"node{" +
+    		"size:20px;"+
     		"text-size:16px;"+
+    		"size:30px;"+
     		"text-color:rgb(255,255,255);"+
     		"stroke-mode:plain;"+
     		"stroke-width:2px;"+
@@ -57,7 +61,7 @@ public class Visualizer {
 	private Graph _graph;
 	private Viewer _viewer;
 	private DefaultDirectedWeightedGraph _DAG;
-	private NodeClickListener _nodeClickListener;
+	private NodeClickListener _nodeClickListener = new NodeClickListener();
 
 	
 	public Visualizer(){
@@ -124,22 +128,31 @@ public class Visualizer {
 	 * to node click action 
 	 * 
 	 */
-	public void displayGraph() {
-		
+	public ViewPanel displayGraph() {
+
+
 		//Displays the graph
-		_viewer = _graph.display();
-
-		View view = _viewer.getDefaultView();
-
+		_viewer = new Viewer(_graph,
+                Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
+		
+		ViewPanel view = _viewer.addDefaultView(false);
+		
+		_viewer.enableAutoLayout();
+		
 		//Connect back the viewer to the graph, the graph becomes a sink for the viewer. 
 		ViewerPipe fromViewer = _viewer.newViewerPipe();
 		
 		//Create and add an viewer listener to intercept node click events
+
 		_nodeClickListener = new NodeClickListener(fromViewer, view, _graph); 
 		fromViewer.addViewerListener((ViewerListener) _nodeClickListener); 
 
+		return view;
 	}
-
+	
+	public void setGuiListener(Gui gui){
+		_nodeClickListener._gui = gui;
+	}
 	/**
 	 * Updates the status/ visual of the graph based on the current best schedule.
 	 * The color of nodes changes accordingly to the processor that it is assigned to
@@ -168,6 +181,7 @@ public class Visualizer {
 				
 				List<Object> schedule = new ArrayList<Object>();
 				schedule.add(i);
+
 				schedule.add(processInfo.startTime());
 				schedule.add(processInfo.endTime());
 				scheduledVertices.put(vertexName, schedule);
