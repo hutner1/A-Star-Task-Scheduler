@@ -21,61 +21,61 @@ public class Vertex {
 	
 	//---Getter Methods---
 	
-		/**
-		 * Get the name of Vertex
-		 * @return String name
-		 */
-		public String getName(){
-			return _name;
-		}
-		
-		/**
-		 * Get the weight of Vertex
-		 * @return int weight
-		 */
-		public int getWeight() {
-			return _weight;
-		}
-		
-		/**
-		 * Get the critical path from one node
-		 * @return int critical path from one node
-		 */
-		public int getBottomLevel() {
-			return _bottomLvl;
-		}
-		
-		/**
-		 * Check to see if node is visited
-		 * @return visited status
-		 */
-		public boolean isVisited(){
-			return _visited;
-		}
-		
-		
-		//---Setter Methods---
-		/**
-		 * Set the weight of a node
-		 * @param weight
-		 */
-		public void setWeight(int w) {
-			this._weight = w;
-		}
-		
-		/**
-		 * Set new value to the bottomLvl
-		 * @param value from bottomLvl
-		 */
-		public void setBottomLevel(int val) {
-			_bottomLvl = val;
-		}
-		
-		/**
-		 * Set that the node is visited
-		 */
-		public void setVisited(){
-			_visited = true;
-		}
+	/**
+	 * Get the name of Vertex
+	 * @return String name
+	 */
+	public String getName(){
+		return _name;
+	}
+	
+	/**
+	 * Get the weight of Vertex
+	 * @return int weight
+	 */
+	public int getWeight() {
+		return _weight;
+	}
+	
+	/**
+	 * Get the critical path from one node
+	 * @return int critical path from one node
+	 */
+	public int getBottomLevel() {
+		return _bottomLvl;
+	}
+	
+	/**
+	 * Check to see if node is visited
+	 * @return visited status
+	 */
+	public boolean isVisited(){
+		return _visited;
+	}
+	
+	
+	//---Setter Methods---
+	/**
+	 * Set the weight of a node
+	 * @param weight
+	 */
+	public void setWeight(int w) {
+		this._weight = w;
+	}
+	
+	/**
+	 * Set new value to the bottomLvl
+	 * @param value from bottomLvl
+	 */
+	public void setBottomLevel(int val) {
+		_bottomLvl = val;
+	}
+	
+	/**
+	 * Set that the node is visited
+	 */
+	public void setVisited(){
+		_visited = true;
+	}
 		
 }
