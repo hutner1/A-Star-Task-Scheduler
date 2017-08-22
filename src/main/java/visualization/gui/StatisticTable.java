@@ -12,20 +12,24 @@ public class StatisticTable extends JPanel{
 
 	private JTable _table;
 	private final static String[] _columns = { "Statistics", "No." };
-/*	private int _solCreated;
+	/*	private int _solCreated;
 	private int _solPopped;
 	private int _solPruned;
 	private int _timeTaken;
 	private Integer _optimalFinishTime;*/
 
 
+	/**
+	 * Constructor for the statistics table
+	 * @param Core
+	 */
 	public StatisticTable(int Core){
-		
+
 		setLayout(new BorderLayout());
 		/*setBackground(new Color(250,250,250));*/
-		
+
 		Object[][] data = new Object[7][2];
-		
+
 		data[0][0] = "Number of cores";
 		data[0][1] = Core;
 		data[1][0] = "Solutions created";
@@ -47,38 +51,53 @@ public class StatisticTable extends JPanel{
 		_table.setRowSelectionAllowed(false);
 		_table.getColumnModel().getColumn(0).setPreferredWidth(200);
 		_table.getColumnModel().getColumn(1).setPreferredWidth(200);
-		
+
 		JScrollPane scroll = new JScrollPane(_table);
 		/*scroll.setBackground(new Color(250,250,250));*/
 		add(scroll);
 	}
 
 
+	/**
+	 * Method to update all the statistics in the table
+	 * @param solCreated
+	 * @param solPopped
+	 * @param solPruned
+	 * @param time
+	 */
 	public void updateStats(int solCreated, int solPopped, int solPruned, int time){
 		updateStats(solCreated, solPopped, solPruned, time, null);
 	}
 
+	/**
+	 * Method to update all the statistics in the table with finish time
+	 * @param solCreated
+	 * @param solPopped
+	 * @param solPruned
+	 * @param time
+	 * @param finishTime
+	 */
 	public void updateStats(int solCreated, int solPopped, int solPruned, int time, Integer finishTime){
 
-/*		_solCreated = solCreated;
+		/*		_solCreated = solCreated;
 		_solPopped = solPopped;
 		_solPruned = solPruned;
 		_timeTaken = time;
 		_optimalFinishTime = finishtime;*/
-		
+
 		DefaultTableModel model = (DefaultTableModel)_table.getModel();
 
 		model.setValueAt(solCreated, 1, 1);
 		model.setValueAt(solPopped, 2, 1);
 		model.setValueAt(solPruned, 3, 1);
-		
+
 		model.setValueAt((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())/1024/1024, 4, 1);
 		model.setValueAt(time, 5, 1);
-		
+
 		if(finishTime != null){
 			model.setValueAt(finishTime, 6, 1);
 		}
-		
+
 	}
 
 	@SuppressWarnings("serial")
@@ -88,6 +107,9 @@ public class StatisticTable extends JPanel{
 			super(data, column);
 		}
 
+		/* (non-Javadoc)
+		 * @see javax.swing.table.DefaultTableModel#isCellEditable(int, int)
+		 */
 		@Override
 		public boolean isCellEditable(int row, int column) {
 			return false;
