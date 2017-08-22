@@ -11,10 +11,12 @@ import scheduler.graphstructures.Vertex;
 
 /**
  * Represent partial/complete solution
- * Comparable because needed for comparison in priority queue (polling for best solution)
+ * 
+ * Comparable because needed for comparison in priority queue 
+ * using maxCostFunction() (polling for best solution)
  */
 public class Solution implements Comparable<Solution>{
-	private int _upperBound;
+	private int _upperBound; // TODO to be removed, as only used in A*
 	private HashMap<Integer, Processor> _processors;
 	private int _numberOfProcessors;
 	private List<Vertex> _scheduledProcesses;
@@ -24,35 +26,44 @@ public class Solution implements Comparable<Solution>{
 	private DefaultDirectedWeightedGraph _graph;
 	private static HashMap<Vertex, Integer> _btmLevels;
 
+	/**
+	 * Create a solution with list of scheduled, schedulable, non-schedulable and the task digraph.
+	 * Empty processors are created to store tasks.
+	 * @param numberOfProcessors
+	 * @param graph
+	 * @param scheduled scheduled tasks
+	 * @param schedulable tasks with ran dependencies
+	 * @param nonschedulable tasks with dependencies not run
+	 */
 	public Solution(int upperBound, int numberOfProcessors, DefaultDirectedWeightedGraph graph, List<Vertex> scheduled, List<Vertex> schedulable, List<Vertex> nonschedulable) {
-		_numberOfProcessors = numberOfProcessors;
-		_processors = new HashMap<Integer, Processor>();
-		_graph = graph;
-
-		for (int i = 1; i <= numberOfProcessors; i++) {
-			_processors.put(i, new Processor());
-		}
-		
+		this(numberOfProcessors, graph);
 		_upperBound = upperBound;
 		_scheduledProcesses = new ArrayList<Vertex>(scheduled);
 		_schedulableProcesses = new ArrayList<Vertex>(schedulable);
 		_nonschedulableProcesses = new ArrayList<Vertex>(nonschedulable);
 	}
 
-	
+	/**
+	 * Meant to be called directly only by ListScheduler which will
+	 * allocate tasks in correct order because of topological sorting,
+	 * hence schedulable and non-schedulables don't need to be tracked.
+	 * 
+	 * Create a solution with the task digraph.
+	 * Empty processors are created to store tasks.
+	 * @param numberOfProcessors
+	 * @param graph
+	 */
 	public Solution(int numberOfProcessors, DefaultDirectedWeightedGraph graph){
 		_numberOfProcessors = numberOfProcessors;
 		_processors = new HashMap<Integer, Processor>();
 		_graph = graph;
-
 		for (int i = 1; i <= numberOfProcessors; i++) {
 			_processors.put(i, new Processor());
 		}
-		
 	}
 	
 	/**
-	 * The greatest last end time on all processors
+	 * The greatest last end time on all the processors
 	 */
 	public int getLastFinishTime() {
 		int maximumTime = 0;
@@ -67,10 +78,15 @@ public class Solution implements Comparable<Solution>{
 	}
 
 	/**
-	 * Returns the earliest time that a vertex can start on the given processor number
-	 * @param v
-	 * @param processorNumber
-	 * @return
+	 * Returns the earliest time that a vertex can start on the given processor number.
+	 * 
+	 * Does this by looping through all the Processors and then getting the latest start time depending
+	 * on the location of the parent task and also the communication time. Then returns the larger one
+	 * of the latest start time depending on parents and the latest finishing time on the current Processor.
+	 * 
+	 * @param v task vertex
+	 * @param processorNumber number of the processor to allocate task on 
+	 * @return earliest possible task allocation time on selected processor
 	 */
 	private int earliestDataReadyTime(Vertex v, int processorNumber) {
 
@@ -109,9 +125,9 @@ public class Solution implements Comparable<Solution>{
 	}
 
 	/**
-	 * Adds a process to a processor at its earliest possible time
-	 * @param v
-	 * @param processorNumber
+	 * Adds a process to a processor at its earliest possible start time
+	 * @param v task vertex
+	 * @param processorNumber processor to allocate task on
 	 */
 	public void addProcess(Vertex v, int processorNumber) {
 
@@ -122,8 +138,9 @@ public class Solution implements Comparable<Solution>{
 	}
 	
 	/**
-	 * For ListScheduler's usage only, adds a process at earliest possible time
-	 * @param v
+	 * For ListScheduler's usage only, adds a process at earliest possible time on
+	 * any processor.
+	 * @param v task vertex
 	 */
 	public void addProcessAtEarliestPossibleTime(Vertex v){
 		int minTime = Integer.MAX_VALUE;
@@ -163,8 +180,14 @@ public class Solution implements Comparable<Solution>{
 
 	/**
 	 * Helper function that calls all three parts of the proposed cost function
-	 * and returns the maximum of those three values
-	 * @return
+	 * and returns the maximum of those three values.
+	 * 
+	 * Parts
+	 * 1. maximum of start time and bottom level of any task in schedule
+	 * 2. idle time plus computation load
+	 * 3. maximum of earliest start time and bottom level of any free tasks
+	 * 
+	 * @return the cost function 
 	 */
 	public int maxCostFunction() {
 		ArrayList<Integer> costs = new ArrayList<Integer>();
@@ -245,7 +268,7 @@ public class Solution implements Comparable<Solution>{
 
 	/**
 	 * Returns the earliest time that a vertex can start on any processor
-	 * @param v
+	 * @param v task vertex
 	 * @return
 	 */
 	private int minimalDataReadyTime(Vertex v) {
@@ -266,6 +289,7 @@ public class Solution implements Comparable<Solution>{
 	 * This method updates the list of schedulable and nonschedulable processes.
 	 * It checks the children processes of the parent input and if all of the parent processes
 	 * of the child have already been scheduled
+	 * 
 	 * @param parent Parent process to be updated
 	 * @param scheduled List of processes already scheduled
 	 * @param schedulable List of processes available to be scheduled
@@ -333,7 +357,10 @@ public class Solution implements Comparable<Solution>{
 
 	/**
 	 * Creates a hard copy of current solution
-	 * @return
+	 * 
+	 * Used by createChildren() when adding children tasks to the current schedule
+	 * 
+	 * @return Hard copy of the current solution
 	 */
 	public Solution createDuplicateSolution() {
 		Solution s = new Solution(_upperBound, _numberOfProcessors, _graph, _scheduledProcesses, _schedulableProcesses, _nonschedulableProcesses);
@@ -349,6 +376,9 @@ public class Solution implements Comparable<Solution>{
 
 	/**
 	 * Returns the additional information on task vertex tha needs to be added to output file
+	 * 
+	 * Used by OutputWriter obj of the io package to print out the optimal schedule's information on each task.
+	 * 
 	 * @param vertex vertex to obtain optimal solution's information on 
 	 * @return String representing optimal solution's information on vertex
 	 */
