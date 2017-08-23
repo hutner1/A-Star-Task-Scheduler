@@ -6,6 +6,7 @@ import scheduler.graphstructures.Vertex;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import org.junit.Test;
 
@@ -44,6 +45,39 @@ public class TestSolution {
 			Solution sol = alg.execute();
 			assertEquals(sol.getLastFinishTime(),640);
 		}
+	}
+	
+	@Test
+	public void testEqual(){
+		
+		Vertex v = new Vertex("ASD");
+		v.setWeight(10);
+		
+		Vertex v2 = new Vertex("hello");
+		v2.setWeight(15);
+		
+		_graph.addVertex(v);
+		_graph.addVertex(v2);
+		
+		ArrayList<Vertex> scheduledProcesses = new ArrayList<Vertex>();
+		ArrayList<Vertex> schedulableProcesses = new ArrayList<Vertex>();
+		ArrayList<Vertex> nonschedulableProcesses = new ArrayList<Vertex>();
+		
+		schedulableProcesses.add(v);
+		schedulableProcesses.add(v2);
+		
+		Solution solA = new Solution(200, 2, _graph, scheduledProcesses, schedulableProcesses, nonschedulableProcesses);
+		Solution solB = new Solution(200, 2, _graph, scheduledProcesses, schedulableProcesses, nonschedulableProcesses);
+		
+		solA.addProcess(v, 1);
+		solB.addProcess(v, 2);
+		
+		assertTrue(solA.equals(solB));
+		
+		solB.addProcess(v2, 2);
+		solA.addProcess(v, 2);
+		
+		assertFalse(solA.equals(solB));
 	}
 
 }
