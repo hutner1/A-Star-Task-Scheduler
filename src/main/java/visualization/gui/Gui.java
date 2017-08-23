@@ -118,7 +118,7 @@ public class Gui {
 
 		//Initializing the panel with a card layout to store graphs. 
 		_cards = new JPanel(new CardLayout());
-		_cards.setBorder(new LineBorder(new Color(13, 90, 150)));
+		_cards.setBorder(new LineBorder(new Color(13, 90, 150),2));
 		_cards.setBounds(15, 15, 700, 540);
 		_cards.setPreferredSize(new Dimension(700,540));
 		CardLayout cardLayout = (CardLayout) _cards.getLayout();
@@ -129,7 +129,7 @@ public class Gui {
 		wrapPanel.setLayout(null);
 		wrapPanel.setBounds(0, 0, 580, 540);
 		JPanel wrapPanel2 = new JPanel();
-		wrapPanel2.setBounds(0, -2, 580, 540);
+		wrapPanel2.setBounds(0, -4, 580, 540);
 		_graphPage = new GraphPage(_visualizer);
 		_graphPage.setPreferredSize(new Dimension(580,540));
 		
