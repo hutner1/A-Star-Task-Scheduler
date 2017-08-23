@@ -119,22 +119,6 @@ public class Main {
 				model.setValueAt("Optimal Finish Time", 7, 0);
 			}
 			
-/*			if(stats != null){
-				s
-
-			}*/
-			
-			
-			
-			/*
-			if(inputParser.isVisualise() == true){
-				gantt = new Gantt("Test");
-				gantt.setSolution(optimalSolution);
-				gantt.launch();
-				
-			}
-			*/
-			
 		}
 	}
 }
