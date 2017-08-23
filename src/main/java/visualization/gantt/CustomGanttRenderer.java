@@ -231,14 +231,14 @@ public class CustomGanttRenderer extends GanttRenderer {
 			if (state.getInfo() != null) {
 				EntityCollection entities = state.getEntityCollection();
 				if (entities != null) {
-					//System.out.println("Here 0");
+					System.out.println("Here 0");
 					String tip = null;
 					CategoryToolTipGenerator cttg = new CustomIntervalCategoryGanttToolTipGenerator();
 							//getToolTipGenerator(row, column);
 					if (cttg != null) {
 						if (cttg instanceof
 								CustomIntervalCategoryGanttToolTipGenerator) {
-							//System.out.println("Here 1");
+							System.out.println("Here 1");
 							tip =
 									((CustomIntervalCategoryGanttToolTipGenerator)cttg).generateToolTip(
 											dataset, row, column,
@@ -246,7 +246,7 @@ public class CustomGanttRenderer extends GanttRenderer {
 											);
 						}
 						else {
-							//System.out.println("Here 2");
+							System.out.println("Here 2");
 							tip = cttg.generateToolTip(
 									dataset, row, column
 									);

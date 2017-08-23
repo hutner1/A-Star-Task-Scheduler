@@ -16,6 +16,9 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.util.ArrayList;
 
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.RowSpec;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import java.awt.Font;
