@@ -33,7 +33,6 @@ public class TestDataReader {
 		try {
 			_file.createNewFile();
 			PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(_file,true)));
-
 			writer.println("digraph \"testGraph\" {");
 			writer.println("	A	 [Weight=10];");
 			writer.println("	B	 [Weight=20];");
@@ -55,8 +54,9 @@ public class TestDataReader {
 
 	@Test
 	public void testGetGraphName() {
-
-
+		_dataReader.readNextGraph();
+		assertEquals("testGraph",_dataReader.getGraphName());
+		
 	}
 
 	@Test
