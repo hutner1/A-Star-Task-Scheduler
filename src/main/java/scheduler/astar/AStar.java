@@ -109,6 +109,10 @@ public class AStar {
 
 	/**
 	 * Finds the optimal solution using A* algorithm
+	 *
+	 * All the null checks in the code are for when solution space is polled too quickly in 
+	 * parallelised AStar
+	 *
 	 * @return optimal solution
 	 */
 	protected Solution findOptimalSolution(){
@@ -116,18 +120,16 @@ public class AStar {
 		Solution bestCurrentSolution = _solutionSpace.poll();
 		_solPopped ++;
 
-		// For PARALLELISATION, just in case that at the start, the first thread 
-		// did not populate the solution space fast enough for the subsequent threads
-		// TODO what if solution space too small like 2 tasks - YaoJian will understand
 		while(bestCurrentSolution == null){
 			bestCurrentSolution = _solutionSpace.poll();
 			/*_solPopped ++;*/
 		}
 
-		// if not complete, consider the children in generating the solution and poll again
+		// keep polling until the best cost solution is a complete schedule, hence an optimal solution
 		while (!bestCurrentSolution.isCompleteSchedule()) {
 			//System.out.println("C: "+_closedSolutions.size());
-
+			
+			// if solution is not already examined
 			while ((_closedSolutions.contains(bestCurrentSolution)) || (bestCurrentSolution == null)) {
 				bestCurrentSolution = _solutionSpace.poll();
 				if (bestCurrentSolution != null) {
@@ -138,12 +140,13 @@ public class AStar {
 			}
 
 			//System.out.println("SS: "+_solutionSpace.size());
-
+			
+			// expand the solution
 			Queue<Solution> childSolutions = bestCurrentSolution.createChildren();
 
 			Solution s;
 			boolean fullyExpanded = true;
-
+			
 			while ((s = childSolutions.poll()) != null) {
 				int childCost = s.maxCostFunction();
 				_solCreated ++;
