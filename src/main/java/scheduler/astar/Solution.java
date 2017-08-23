@@ -175,13 +175,7 @@ public class Solution implements Comparable<Solution>{
 		if (maxThis < maxOther) {
 			return -1;
 		}  else if (maxThis == maxOther) {
-			if (!_partiallyExpanded && s._partiallyExpanded) {
-				return -1;
-			} else if (_partiallyExpanded && !s._partiallyExpanded) {
-				return 1;
-			} else {
-				return 0;
-			}
+			return s._scheduledProcesses.size() - _scheduledProcesses.size();
 		} else {
 			return 1;
 		}
@@ -206,7 +200,7 @@ public class Solution implements Comparable<Solution>{
 		costs.add(idleTimePlusComputationLoad());
 		costs.add(maximumEndTimeOfFreeVertices());
 
-		//System.out.println(costs.toString());
+		System.out.println(costs.toString());
 
 		return Collections.max(costs);
 	}
