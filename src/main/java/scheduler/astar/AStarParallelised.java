@@ -6,6 +6,7 @@ import visualization.Visualizer;
 import visualization.gantt.Gantt;
 
 import visualization.gui.Gui;
+import visualization.gui.StatisticTable;
 
 /**
  * AStar thread class that will be added to allow solution search in parallel
@@ -29,8 +30,8 @@ public class AStarParallelised extends AStar{
 	 * @param numberOfThreads number of cores to use for scheduling
 	 * @param Visualizer the visualizer // TODO
 	 */
-	public AStarParallelised(DefaultDirectedWeightedGraph graph, int numberOfProcessors, int numberOfThreads, Visualizer Visualizer, Gantt gantt) {
-		super(graph, numberOfProcessors, Visualizer, gantt);
+	public AStarParallelised(DefaultDirectedWeightedGraph graph, int numberOfProcessors, int numberOfThreads, Visualizer Visualizer, Gantt gantt, StatisticTable stats) {
+		super(graph, numberOfProcessors, Visualizer, gantt, stats);
 		_numberOfThreads = numberOfThreads;
 		_threads = new Thread[_numberOfThreads];
 		_aStarThreads = new AStarThread[_numberOfThreads];
@@ -41,6 +42,7 @@ public class AStarParallelised extends AStar{
 	 */
 	@Override
 	public Solution execute() {
+		// first initialise the solution space for sharing between threads
 		initialiseSolutionSpace();
 		return executeInParallel();
 	}
@@ -50,23 +52,23 @@ public class AStarParallelised extends AStar{
 	 * @return optimal solution found in parallel
 	 */
 	protected Solution executeInParallel() {
-		//Start threading process, assign each thread(core) an ASTarThread with shared solution space and closed solution space
+		// Start threading process, assign each thread(core) an ASTarThread with shared solution space and closed solution space
 		for (int i = 0; i < _numberOfThreads; i++) {
 
-			_aStarThreads[i] = new AStarThread(i, _graph, _solutionSpace, _closedSolutions, _numberOfProcessors, _visualizer, _upperBound,this, _gantt);
+			_aStarThreads[i] = new AStarThread(i, _graph, _solutionSpace, _closedSolutions, _numberOfProcessors, _visualizer, _upperBound,this, _gantt, _stats);
 
 			//Add the custom thread with all the AStar fields into a thread
 			_threads[i] = new Thread(_aStarThreads[i]);
 			_threads[i].setName("Thread-"+i);
 		}
 		
+		// Start the threads
 		for (Thread t : _threads) {
 			t.start();
 		}
 
 
-
-		//Try to join threads once the threads have finished
+		// Wait for all the threads to finish
 		for (int i = 0; i <_numberOfThreads; i++) {
 			try {
 				_threads[i].join();

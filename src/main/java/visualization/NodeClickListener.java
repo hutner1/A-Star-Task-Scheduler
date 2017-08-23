@@ -30,8 +30,16 @@ public class NodeClickListener implements ViewerListener , MouseInputListener{
 	private Graph _graph = null; 
 	private HashMap<String, List<Object>> _scheduledVertices = null;
 	protected Gui _gui;
+
 	/**
-	 * Constructor 
+	 *  Constructor with no parameters
+	 */
+	public NodeClickListener(){
+
+	}
+
+	/**
+	 * Constructor with three parameters
 	 * @param _viewerPipe Viewer Pipe of the graph UI 
 	 * @param _view View of the current graph
 	 * @param _graph The current Graph displayed/ in used
@@ -43,9 +51,7 @@ public class NodeClickListener implements ViewerListener , MouseInputListener{
 		this._view.addMouseListener(this); 
 
 	} 
-	public NodeClickListener(){
-	
-	}
+
 	/**
 	 * Detach all listeners if the graph is closed
 	 * @param id Unused parameter inherited from the interface
@@ -66,27 +72,27 @@ public class NodeClickListener implements ViewerListener , MouseInputListener{
 		Node n = _graph.getNode(id); 
 
 		if(_scheduledVertices == null){
-			
+
 			System.out.println("No schedule found"); 
-			
+
 		} else if(n.getAttribute("ui.style").toString().contains("fill-color:#000000;")){
-			
+
 			System.out.println("This task is not scheduled yet");
 			_gui.noInfoToShow(id);
-			
+
 		} else {
-			
+
 			List<Object> scheduleInfo = _scheduledVertices.get(id);
 			System.out.println("");
 			System.out.println("Task: "+id);
 			System.out.println("Processor number: " + (int) scheduleInfo.get(0));
 			System.out.println("Start time: " + scheduleInfo.get(1));
-		  System.out.println("End time: " + scheduleInfo.get(2));
-		  _gui.showInfoOnTextArea(id,(int) scheduleInfo.get(0),scheduleInfo.get(1),scheduleInfo.get(2));
+			System.out.println("End time: " + scheduleInfo.get(2));
+			_gui.showInfoOnTextArea(id,(int) scheduleInfo.get(0),scheduleInfo.get(1),scheduleInfo.get(2));
 
 		}
 	} 
-	
+
 	@Override 
 	/**
 	 * Pump the action on mouse release event
@@ -97,6 +103,10 @@ public class NodeClickListener implements ViewerListener , MouseInputListener{
 
 	} 
 
+	/**
+	 * Method to set the current solution
+	 * @param scheduledVertices
+	 */
 	public void setCurrentSolution(HashMap<String, List<Object>> scheduledVertices) { 
 		_scheduledVertices = scheduledVertices;
 	} 

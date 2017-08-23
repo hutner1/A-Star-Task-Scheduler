@@ -11,11 +11,12 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 /**
- * This class is used to parse the command line input from the user and then determine
+ * This class parses the command line input from the user and then determine
  * the output file name, number of processors to schedule for, number of cores to use
  * and whether or not to provide a visual representation of the scheduling process.
- * @author Hunter
  *
+ * Uses Apache Commons Cli library to parse the optional commands that starts with a 
+ * dash "-", followed by the option's alphabet
  */
 public class InputParser {
 
@@ -153,6 +154,10 @@ public class InputParser {
 			if (commandLine.hasOption("p"))
 			{
 				_parallelise = true; //Parallelisation opted for
+				
+				/*int processors = Runtime.getRuntime().availableProcessors();
+				System.out.print(processors);*/
+				
 				//Check whether the p option is repeated, if yes output error
 				if(commandLine.getOptionValues("p").length > 1){
 					throw new InputParserException("Parse error: This option cannot be repeated!");
@@ -213,6 +218,10 @@ public class InputParser {
 		}
 	}
 
+	/**
+	 * Shows the Help message from the "--help" option, 
+	 * displaying all the possible options
+	 */
 	public static void showHelpMessage(){
 		
 		System.out.println("java -jar scheduler.jar INPUT.dot P [OPTION]");
@@ -230,7 +239,7 @@ public class InputParser {
 	// Getter Methods
 	
 	/**
-	 * 
+	 * Get number of cores to use when calculating the optimum schedule
 	 * @return number of cores to use when calculating the optimum schedule
 	 */
 	public int getCores() {
@@ -238,7 +247,7 @@ public class InputParser {
 	}
 
 	/**
-	 * 
+	 * Get number of processors available for the schedule 
 	 * @return number of processors available for the schedule
 	 */
 	public int getProcessors() {
@@ -246,7 +255,7 @@ public class InputParser {
 	}
 	
 	/**
-	 * 
+	 * Determine whether or not to provide visualisation
 	 * @return boolean representing whether or not to provide visual representation
 	 */
 	public boolean isVisualise() {
@@ -255,6 +264,7 @@ public class InputParser {
 
 	
 	/**
+	 * Determine whether parallelisation is opted for 
 	 * @return whether parallelisation is opted for
 	 */
 	public boolean isParallelise(){
@@ -262,7 +272,7 @@ public class InputParser {
 	}
 	
 	/**
-	 * 
+	 * Get the output file name
 	 * @return name of output file
 	 */
 	public String getOutputFileName() {
@@ -270,7 +280,7 @@ public class InputParser {
 	}
 
 	/**
-	 * 
+	 * Get the input file
 	 * @return input file
 	 */
 	public File getFile() {

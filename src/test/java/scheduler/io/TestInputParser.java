@@ -14,6 +14,9 @@ import org.junit.After;
 import io.InputParser;
 import io.InputParserException;
 
+/**
+ * Tests to make sure that the InputParser class functions as expected 
+ */
 public class TestInputParser {
 		File _file;
 		@Before 
@@ -28,6 +31,9 @@ public class TestInputParser {
 			}
 		}
 		
+		/**
+		 * Test input with no option given
+		 */
 		@Test
 		public void testValidNoOption() {
 			
@@ -43,6 +49,9 @@ public class TestInputParser {
 			assertEquals(1, parser.getProcessors());
 		}
 		
+		/**
+		 * Test input with zero processors
+		 */
 		@Test
 		public void testInvalidProcessorsNoOption() {
 			String[] input = new String[] {"input.dot", "0"};
@@ -56,7 +65,9 @@ public class TestInputParser {
 			
 		}
 		
-		
+		/**
+		 * Test input with all options chosen
+		 */
 		@Test
 		public void testAllOptionsValid() {
 			String[] input = new String[] {"input.dot", "1", "-v", "-p", "2", "-o", "Yuan Wei.dot"};
@@ -77,6 +88,9 @@ public class TestInputParser {
 			assertEquals("Yuan Wei.dot", parser.getOutputFileName());
 		}
 		
+		/**
+		 * Test input with all options chosen in another order
+		 */
 		@Test
 		public void testAllOptionsValidOtherOrder() {
 			String[] input = new String[] {"input.dot", "1", "-o", "Yuan Wei.dot", "-p", "1", "-v" };
@@ -97,6 +111,9 @@ public class TestInputParser {
 			assertEquals("Yuan Wei.dot", parser.getOutputFileName());
 		}
 		
+		/**
+		 * Test input with file and processes added last
+		 */
 		@Test
 		public void testFileAndProcessesLast() {
 			String[] input = new String[] {"-o", "Yuan Wei.dot", "-p", "1", "-v", "input.dot", "1" };
@@ -110,6 +127,9 @@ public class TestInputParser {
 			}
 		}
 		
+		/**
+		 * Test input with zero cores/threads
+		 */
 		@Test
 		public void testInvalidCores() {
 			String[] input = new String[] {"input.dot", "1", "-p", "0"};
@@ -122,6 +142,9 @@ public class TestInputParser {
 			
 		}
 		
+		/**
+		 * Test input with invalid output file name
+		 */
 		@Test
 		public void testInvalidOutputName() {
 			String[] input = new String[] {"input.dot", "3", "-o", "asdf"};
@@ -134,8 +157,11 @@ public class TestInputParser {
 			
 		}
 		
+		/**
+		 * Test input with invalid option (capitalised)
+		 */
 		@Test
-		public void testInvalidCaptitalOption() {
+		public void testInvalidCapitalOption() {
 			String[] input = new String[] {"input.dot", "3", "-O", "asdf.dot"};
 			InputParser parser;
 			try {
@@ -146,6 +172,9 @@ public class TestInputParser {
 			
 		}
 		
+		/**
+		 * Test input with invalid input file without an extension
+		 */
 		@Test
 		public void testInvalidInputFile() {
 			String[] input = new String[] {"input", "3"};
@@ -157,6 +186,9 @@ public class TestInputParser {
 			}
 		}
 		
+		/**
+		 * Test input with no options and in wrong order
+		 */
 		@Test
 		public void testWrongOrderNoOptions() {
 			String[] input = new String[] {"3", "input.dot", };
@@ -168,6 +200,9 @@ public class TestInputParser {
 			}
 		}
 		
+		/**
+		 * Test input with wrong order for all options
+		 */
 		@Test
 		public void testWrongOrderAllOptions() {
 			String[] input = new String[] {"input.dot", "1", "-v", "-p", "1", "Yuan Wei.dot", "-o"};
@@ -179,6 +214,9 @@ public class TestInputParser {
 			}
 		}
 		
+		/**
+		 * Test input with an option but no argument
+		 */
 		@Test
 		public void testOptionNoArgument() {
 			String[] input = new String[] {"input.dot", "1", "-p"};
@@ -190,6 +228,9 @@ public class TestInputParser {
 			}
 		}
 		
+		/**
+		 * Test input with multiple parameters after an option
+		 */
 		@Test
 		public void testMultipleParametersAfterOption() {
 			String[] input = new String[] {"input.dot", "1", "-p", "1", "2"};
@@ -201,6 +242,9 @@ public class TestInputParser {
 			}
 		}
 		
+		/**
+		 * Test input with an option without the preceding dash
+		 */
 		@Test
 		public void testNoDash() {
 			String[] input = new String[] {"input.dot", "1", "p", "1"};

@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Basic tests to make sure that the Vertex class functions as expected 
+ * Tests to make sure that the Vertex class functions as expected 
  */
 public class TestVertex {
 	private final int _weight = 100;

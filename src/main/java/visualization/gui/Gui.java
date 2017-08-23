@@ -47,6 +47,7 @@ public class Gui {
 	private JTextArea infoArea;
 	private JTextField txtrTask;
 	private Gantt _gantt;
+	private StatisticTable _stats;
 
 	/**
 	 *This part is there for just testing reason.
@@ -59,7 +60,7 @@ public class Gui {
 			@Override
 			public void run() {
 				try {
-					Gui window = new Gui(null,null);
+					Gui window = new Gui(null,null,null);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -72,9 +73,10 @@ public class Gui {
 	/**
 	 * Create the application.
 	 */
-	public Gui(Visualizer visualizer,Gantt gantt) {
+	public Gui(Visualizer visualizer,Gantt gantt,StatisticTable stats) {
 		_visualizer = visualizer;
 		_gantt = gantt;
+		_stats = stats;
 		initialize();
 
 	}
@@ -88,16 +90,30 @@ public class Gui {
 		frame.setTitle("Imagine Breaker - Task Scheduler");
 		frame.getContentPane().setBackground(new Color(213, 213, 213));
 		frame.setBounds(50, 50, 890, 600);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		/*frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);*/
+		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		frame.addWindowListener(new java.awt.event.WindowAdapter() {
+			@Override
+			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+				Runtime.getRuntime().addShutdownHook(new Thread() {
+					public void run(){
+						System.out.println("Shutting down all threads");	
+					}
+				});
+				System.exit(0);
+			}
+		});
+
+
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
 		try {
 			frame.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("resources\\back5.jpg")))));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		/*frame.setContentPane(new JLabel(new ImageIcon("C:\\Users\\Computer\\Downloads\\back4.png")));*/
-		
+
 		//Initializing the panel with a card layout to store graphs. 
 		_cards = new JPanel(new CardLayout());
 		_cards.setBorder(new LineBorder(new Color(13, 90, 150), 2, true));
@@ -105,38 +121,37 @@ public class Gui {
 		_cards.setPreferredSize(new Dimension(700,540));
 		CardLayout cardLayout = (CardLayout) _cards.getLayout();
 		frame.getContentPane().add(_cards);
-		
+
 		//Initializing the graph from GraphStream than adding it to the cards panel.
 		_graphPage = new GraphPage(_visualizer);
 		_graphPage.setPreferredSize(new Dimension(700,540));
-		
+
 		_cards.add(_graphPage, "Graph");
-		
+
 		//Initializing the Gantt chart than adding it to the cards panel.
 
 		JPanel ganttPanel = _gantt.createDemoPanel();
-		
+
 		ganttPanel.setPreferredSize(new Dimension(1200, 800));
 
 		_cards.add(ganttPanel,"Gantt");
-		
-		StatisticTable stats = new StatisticTable(4);
-		stats.setPreferredSize(new Dimension(1200, 800));
+
+		_stats.setPreferredSize(new Dimension(1200, 800));
 		/*stats.setBackground(new Color(250,250,250));*/
-		_cards.add(stats,"Stats");
-		
+		_cards.add(_stats,"Stats");
+
 		//Initializing the button related to the gantt chart for usage.
 		ganttButton = new CustomButton("Gantt Chart");
-		
+
 		//Initializing the buttons
 		JButton graphButton = new CustomButton("Tree Graph");
-		
+
 		_active = graphButton;
 		graphButton.setBackground(new Color(6, 47, 79));
-		
+
 		graphButton.setBounds(734, 15, 140, 50);
 		frame.getContentPane().add(graphButton);
-		
+
 		//Adding an action listener for the button related to the tree graph.
 		graphButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -147,8 +162,8 @@ public class Gui {
 				changeActive();
 			}
 		});
-		
-		
+
+
 		//Giving looks to the gantt chart button
 		ganttButton.setBounds(734, 76, 140, 50);
 		frame.getContentPane().add(ganttButton);
@@ -163,7 +178,7 @@ public class Gui {
 				changeActive();
 			}
 		});
-		
+
 		statButton = new CustomButton("Statistics Chart");
 		statButton.setText("Statistics");
 		statButton.setBounds(734, 137, 140, 50);
@@ -177,11 +192,19 @@ public class Gui {
 				changeActive();
 			}
 		});
-		
+		/*statButton.setEnabled(false);*/
+
 		//Creating a button for exit.
 		JButton btnClose = new CustomButton("Close");
 		btnClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+
+				Runtime.getRuntime().addShutdownHook(new Thread() {
+					public void run(){
+						System.out.println("Shutting down all threads");	
+					}
+				});
+
 				frame.dispose();
 				System.exit(0);
 			}
@@ -189,7 +212,7 @@ public class Gui {
 
 		btnClose.setBounds(734, 505, 140, 50);
 		frame.getContentPane().add(btnClose);
-		
+
 		//TODO
 		infoArea = new JTextArea();
 		infoArea.setText("Press the node to see the info");
@@ -198,18 +221,18 @@ public class Gui {
 		infoArea.setBounds(734, 248, 140, 246);
 		infoArea.setBorder(new LineBorder(new Color(13, 90, 150), 1, true));
 		infoArea.setBorder(BorderFactory.createCompoundBorder( 
-                infoArea.getBorder(),  
-                BorderFactory.createEmptyBorder(5, 5, 5, 5))); 
+				infoArea.getBorder(),  
+				BorderFactory.createEmptyBorder(5, 5, 5, 5))); 
 		/*Border roundedBorder = new LineBorder(new Color(13, 90, 150), 5, true);
 		infoArea.setBorder(roundedBorder);*/
-		
+
 		infoArea.setBackground(new Color(250,250,250));
 		infoArea.setLineWrap(true);
-        infoArea.setWrapStyleWord(true);
-        infoArea.setMargin(new Insets(5,5,5,5));
-		
-        frame.getContentPane().add(infoArea);
-		
+		infoArea.setWrapStyleWord(true);
+		infoArea.setMargin(new Insets(5,5,5,5));
+
+		frame.getContentPane().add(infoArea);
+
 		txtrTask = new JTextField();
 		txtrTask.setHorizontalAlignment(SwingConstants.CENTER);
 		txtrTask.setFont(new Font("SansSerif", Font.BOLD, 20));
@@ -221,35 +244,45 @@ public class Gui {
 		txtrTask.setEditable(false);
 		txtrTask.setBounds(734, 220, 140, 30);
 		txtrTask.setMargin(new Insets(5,5,5,5));
-		
+
 		frame.getContentPane().add(txtrTask);
 
 	}
-	
+
 	/**
 	 * Change the color of the active button on the GUI
 	 */
 	private void changeActive(){
 		_active.setBackground(new Color(6, 47, 79));
 		for(int i =0; i<_notActive.length;i++)
-		_notActive[i].setBackground(new Color(13, 90, 150));
+			_notActive[i].setBackground(new Color(13, 90, 150));
 
 	}
-	
+
 	/**
-	 * 
+	 * This method shows the vertex info on a text area
+	 * @param task
+	 * @param pNo
+	 * @param startTime
+	 * @param endTime
 	 */
 	public void showInfoOnTextArea(String task, int pNo, Object startTime, Object endTime){
 		txtrTask.setText("Task "+task);
 		infoArea.setText("Processor Number: "+pNo+"\n\nStart Time: " + startTime + "\n\nEnd Time: "+endTime);
-		
+
 	}
+
 	/**
-	 * 
+	 * This method shows default info for an unscheduled task
+	 * @param task
 	 */
 	public void noInfoToShow(String task){
 		txtrTask.setText("Task "+task);
 		infoArea.setText("This task is not scheduled yet");
+	}
+
+	public void schedulingFinished(){
+		statButton.setEnabled(true);;
 	}
 }
 

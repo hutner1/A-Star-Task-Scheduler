@@ -17,8 +17,20 @@ import scheduler.graphstructures.Vertex;
 public class DataReader {
 
 	private String _digraphName;
-	private ArrayList<String> _verticesAndEdgesRead; //Records vertices and edges as they are being read
-	private ArrayList<String> _verticesAndEdgesInfo; //Records vertices and edges' info
+	
+	/**
+	 * Records the vertices with their names and edges with ">" as they are being read.
+	 * 
+	 * It is used alongside _verticesAndEdgesInfo, so that the lines recorded can be
+	 * identified as lines associated with a vertex/edge and additional information
+	 * will be added if it was a vertex. 
+	 */
+	private ArrayList<String> _verticesAndEdgesRead; 
+	/**
+	 * Records the exact lines of vertices and edges' information as they are being read
+	 */
+	private ArrayList<String> _verticesAndEdgesInfo;
+	// Stores the currently read graph
 	private DefaultDirectedWeightedGraph _digraph;
 	private HashMap<String,Vertex> _mapping;
 	private BufferedReader _reader;
@@ -173,22 +185,42 @@ public class DataReader {
 	
 	// Getter Methods
 	
+	/**
+	 * Returns the name of the input digraph
+	 * @return name of input digraph
+	 */
 	public String getGraphName() {
 		return _digraphName;
 	}
 
-	public ArrayList<String> getRead() {
+	/**
+	 * Get the list of vertices and edges(resprsented as ">") in the order they are read
+	 * @return list of vertices and edges(resprsented as ">") in the order they are read
+	 */
+	public ArrayList<String> getVerticesAndEdgesRead() {
 		return _verticesAndEdgesRead;
 	}
 
-	public ArrayList<String> getInfo() {
+	/**
+	 * Get the lines on vertices and edges as they are read from the input file
+	 * @return lines on vertices and edges as they are read from the input file
+	 */
+	public ArrayList<String> getVerticesAndEdgesInfo() {
 		return _verticesAndEdgesInfo;
 	}
 
+	/**
+	 * Get the graph that was constructed from the information in the input file
+	 * @return graph that was just constructed from the information in the input file
+	 */
 	public DefaultDirectedWeightedGraph getGraph() {
 		return _digraph;
 	}
 	
+	/**
+	 * Get the map for the mapping from the vertex name to its Vertex instance
+	 * @return map for the mapping from the vertex name to its Vertex instance
+	 */
 	public HashMap<String, Vertex> getMapping() {
 		return _mapping;
 	}

@@ -24,33 +24,44 @@ import org.jfree.data.category.IntervalCategoryDataset;
  *
  */
 public class GanttChartFactory extends ChartFactory{
-	   protected static ChartTheme currentTheme = new StandardChartTheme("JFree");
+	protected static ChartTheme currentTheme = new StandardChartTheme("JFree"); //Generic theme for Gantt chart used
 
-	    public static JFreeChart createGanttChart(String title,
-	            String categoryAxisLabel, String valueAxisLabel,
-	            IntervalCategoryDataset dataset, boolean legend, boolean tooltips,
-	            boolean urls) {
+	/**
+	 * This static method makes the skeleton of the Gantt Chart
+	 * @param title
+	 * @param categoryAxisLabel
+	 * @param valueAxisLabel
+	 * @param dataset
+	 * @param legend
+	 * @param tooltips
+	 * @param urls
+	 * @return
+	 */
+	public static JFreeChart createGanttChart(String title,
+			String categoryAxisLabel, String valueAxisLabel,
+			IntervalCategoryDataset dataset, boolean legend, boolean tooltips,
+			boolean urls) {
 
-	        CategoryAxis categoryAxis = new CategoryAxis(categoryAxisLabel);
-	        ValueAxis valueAxis = new NumberAxis(valueAxisLabel);
+		CategoryAxis categoryAxis = new CategoryAxis(categoryAxisLabel);
+		ValueAxis valueAxis = new NumberAxis(valueAxisLabel);
 
-	        CategoryItemRenderer renderer = new GanttRenderer();
-	        if (tooltips) {
-	            renderer.setBaseToolTipGenerator(
-	                    new IntervalCategoryToolTipGenerator(
-	                    "{1}: {3} - {4}", NumberFormat.getNumberInstance()));
-	        }
-	        if (urls) {
-	            renderer.setBaseItemURLGenerator(
-	                    new StandardCategoryURLGenerator());
-	        }
+		CategoryItemRenderer renderer = new GanttRenderer();
+		if (tooltips) {
+			renderer.setBaseToolTipGenerator(
+					new IntervalCategoryToolTipGenerator(
+							"{1}: {3} - {4}", NumberFormat.getNumberInstance()));
+		}
+		if (urls) {
+			renderer.setBaseItemURLGenerator(
+					new StandardCategoryURLGenerator());
+		}
 
-	        CategoryPlot plot = new CategoryPlot(dataset, categoryAxis, valueAxis,
-	                renderer);
-	        plot.setOrientation(PlotOrientation.HORIZONTAL);
-	        JFreeChart chart = new JFreeChart(title, JFreeChart.DEFAULT_TITLE_FONT,
-	                plot, legend);
-	        currentTheme.apply(chart);
-	        return chart;
-	    }
+		CategoryPlot plot = new CategoryPlot(dataset, categoryAxis, valueAxis,
+				renderer);
+		plot.setOrientation(PlotOrientation.HORIZONTAL);
+		JFreeChart chart = new JFreeChart(title, JFreeChart.DEFAULT_TITLE_FONT,
+				plot, legend);
+		currentTheme.apply(chart);
+		return chart;
+	}
 }

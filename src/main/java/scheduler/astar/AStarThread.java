@@ -9,6 +9,7 @@ import visualization.Visualizer;
 import visualization.gantt.Gantt;
 
 import visualization.gui.Gui;
+import visualization.gui.StatisticTable;
 
 
 /**
@@ -29,8 +30,8 @@ public class AStarThread extends AStar implements Runnable{
 	 * @param numberOfProcessors number of processors the task scheduling is done on
 	 * @param Visualizer graph visualization
 	 */
-	public AStarThread(int id, DefaultDirectedWeightedGraph graph, PriorityBlockingQueue<Solution> solutionSpace, Set<Solution> closedSolutions, int numberOfProcessors, Visualizer Visualizer, int upperBound, AStarParallelised asp, Gantt gantt) {
-		super(graph, numberOfProcessors, Visualizer, gantt);
+	public AStarThread(int id, DefaultDirectedWeightedGraph graph, PriorityBlockingQueue<Solution> solutionSpace, Set<Solution> closedSolutions, int numberOfProcessors, Visualizer Visualizer, int upperBound, AStarParallelised asp, Gantt gantt, StatisticTable stats) {
+		super(graph, numberOfProcessors, Visualizer, gantt, stats);
 		this._threadNo = id;
 		this._solutionSpace = solutionSpace;
 		this._closedSolutions = closedSolutions;
@@ -46,6 +47,7 @@ public class AStarThread extends AStar implements Runnable{
 	public void run() {
 		_bestSolution = findOptimalSolution();
 		System.out.println("Thread " + _threadNo + " --> "+System.nanoTime()/1000000000 + " seconds");
+		// fisrt thread to finish will stop other threads from running
 		for(int i = 0; i<_asp._numberOfThreads; i++){
 			if(i != _threadNo){
 				_asp._threads[i].stop(); //Return the solution that one thread has

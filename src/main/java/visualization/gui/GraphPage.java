@@ -17,16 +17,16 @@ import java.awt.GridLayout;
 
 public class GraphPage extends JPanel {
 	ViewPanel _view;
-	
+
 	/**
 	 * Create the panel.
 	 */
 	public GraphPage(Visualizer graphVisualizer) {
-		
+
 		_view = graphVisualizer.displayGraph();
-		
+
 		this.add(_view);
-		
+
 		setLayout(new GridLayout(1, 0, 0, 0));
 	}
 
