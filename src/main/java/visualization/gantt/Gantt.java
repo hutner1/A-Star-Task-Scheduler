@@ -34,7 +34,7 @@ public class Gantt extends ApplicationFrame{
 	private static Solution _sol;
 	private static JFreeChart _chart;
 	private boolean _launched = false;
-	public JPanel jpanel;
+	public JPanel _jpanel;
 	/**
 	 * Constructor for Gantt chart class with title parameter
 	 * @param title
@@ -42,8 +42,8 @@ public class Gantt extends ApplicationFrame{
 	public Gantt(String title) {
 		super(title);
 		_title = title;
-		jpanel = new JPanel();
-		jpanel.setLayout(new BorderLayout());
+		_jpanel = new JPanel();
+		_jpanel.setLayout(new BorderLayout());
 	}
 
 
@@ -66,7 +66,7 @@ public class Gantt extends ApplicationFrame{
 	 */
 	private static JFreeChart createChart(IntervalCategoryDataset dataset) {
 		_chart = GanttChartFactory.createGanttChart(
-				_title, "Task", "Value", dataset, false, true, true);
+				_title, "Processors", "Time", dataset, false, true, true);
 
 		CategoryPlot plot = (CategoryPlot) _chart.getPlot();
 		TaskSeriesCollection tsc = (TaskSeriesCollection) dataset;
@@ -151,16 +151,16 @@ public class Gantt extends ApplicationFrame{
 		_sol = sol;
 		//_chart.getCategoryPlot().setDataset(createDataset());
 		//_chart.getXYPlot().setDataset(_chart.getXYPlot().getDataset());
-		jpanel.removeAll();
+		_jpanel.removeAll();
 
 
 		JFreeChart jfreechart = createChart(createDataset());
 		ChartPanel chartpanel = new ChartPanel(jfreechart);
 		chartpanel.setMouseWheelEnabled(true);
 
-		jpanel.add(chartpanel);
-		jpanel.revalidate();
-		jpanel.repaint();
+		_jpanel.add(chartpanel);
+		_jpanel.revalidate();
+		_jpanel.repaint();
 
 	}
 
@@ -180,9 +180,9 @@ public class Gantt extends ApplicationFrame{
 		JFreeChart jfreechart = createChart(createDataset());
 		ChartPanel chartpanel = new ChartPanel(jfreechart);
 		chartpanel.setMouseWheelEnabled(true);
-		jpanel.add(chartpanel);
+		_jpanel.add(chartpanel);
 		_launched = true;
-		return jpanel;
+		return _jpanel;
 	}
 	/**
 	 * Checks if this panel has been created
@@ -195,9 +195,9 @@ public class Gantt extends ApplicationFrame{
 	 * Inialises the gantt chart, makes the JPanel and puts it in a frame
 	 */
 	public void launch() {
-		jpanel = createDemoPanel();
+		_jpanel = createDemoPanel();
 		//jpanel.setPreferredSize(new Dimension(1200, 800));
-		setContentPane(jpanel);
+		setContentPane(_jpanel);
 		this.pack();
 		RefineryUtilities.centerFrameOnScreen(this);
 		this.setVisible(true);
