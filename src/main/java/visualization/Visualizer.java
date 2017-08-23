@@ -198,7 +198,6 @@ public class Visualizer {
 
 	}
 
-
 	/**
 	 * Get the color code
 	 * 

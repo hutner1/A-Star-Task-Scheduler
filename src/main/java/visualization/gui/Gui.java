@@ -48,6 +48,7 @@ public class Gui {
 	private JTextField txtrTask;
 	private Gantt _gantt;
 	private StatisticTable _stats;
+	private int _numProcessor;
 
 	/**
 	 *This part is there for just testing reason.
@@ -60,7 +61,7 @@ public class Gui {
 			@Override
 			public void run() {
 				try {
-					Gui window = new Gui(null,null,null);
+					Gui window = new Gui(null,null,null,1);
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -73,10 +74,11 @@ public class Gui {
 	/**
 	 * Create the application.
 	 */
-	public Gui(Visualizer visualizer,Gantt gantt,StatisticTable stats) {
+	public Gui(Visualizer visualizer,Gantt gantt,StatisticTable stats,int numProcessor) {
 		_visualizer = visualizer;
 		_gantt = gantt;
 		_stats = stats;
+		_numProcessor = numProcessor;
 		initialize();
 
 	}
@@ -116,17 +118,31 @@ public class Gui {
 
 		//Initializing the panel with a card layout to store graphs. 
 		_cards = new JPanel(new CardLayout());
-		_cards.setBorder(new LineBorder(new Color(13, 90, 150), 2, true));
+		_cards.setBorder(new LineBorder(new Color(13, 90, 150)));
 		_cards.setBounds(15, 15, 700, 540);
 		_cards.setPreferredSize(new Dimension(700,540));
 		CardLayout cardLayout = (CardLayout) _cards.getLayout();
 		frame.getContentPane().add(_cards);
 
 		//Initializing the graph from GraphStream than adding it to the cards panel.
+		JPanel wrapPanel = new JPanel();
+		wrapPanel.setLayout(null);
+		wrapPanel.setBounds(0, 0, 580, 540);
+		JPanel wrapPanel2 = new JPanel();
+		wrapPanel2.setBounds(0, -2, 580, 540);
 		_graphPage = new GraphPage(_visualizer);
-		_graphPage.setPreferredSize(new Dimension(700,540));
-
-		_cards.add(_graphPage, "Graph");
+		_graphPage.setPreferredSize(new Dimension(580,540));
+		
+		wrapPanel2.add(_graphPage);
+		wrapPanel.add(wrapPanel2);
+		
+		JPanel legend = new Legend(_numProcessor);
+		legend.setBounds(580, 0, 120, 540);
+		
+		wrapPanel.add(legend);
+		
+		
+		_cards.add(wrapPanel, "Graph");
 
 		//Initializing the Gantt chart than adding it to the cards panel.
 

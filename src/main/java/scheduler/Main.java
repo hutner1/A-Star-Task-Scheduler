@@ -62,6 +62,7 @@ public class Main {
 				final Gantt gant2 = gantt;
 				final Visualizer graphVisualizer2 = graphVisualizer;
 				final StatisticTable stats2 = stats;
+				final int numProc = inputParser.getProcessors();
 				//graphVisualizer.displayGraph();
 				try {
 					 // Set cross-platform Java L&F (also called "Metal")
@@ -72,7 +73,7 @@ public class Main {
 					public void run() {
 						try {
 							
-							Gui window = new Gui(graphVisualizer2,gant2,stats2);
+							Gui window = new Gui(graphVisualizer2,gant2,stats2,numProc);
 							window.frame.setVisible(true);
 							graphVisualizer2.setGuiListener(window);
 							
