@@ -168,13 +168,10 @@ public class AStar {
 				}
 
 			}
-			//if(fullyExpanded){
+			if(fullyExpanded){
 				_closedSolutions.add(bestCurrentSolution);
-			//}
-
-			while(bestCurrentSolution == null){
-				bestCurrentSolution = _solutionSpace.poll();
 			}
+
 
 			//TODO System.out.println(bestCurrentSolution.maxCostFunction());
 			//TODO System.out.println("Solution space size : " + _solutionSpace.size());
@@ -206,6 +203,11 @@ public class AStar {
 				}
 			} 
 
+			bestCurrentSolution = _solutionSpace.poll();
+			while(bestCurrentSolution == null){
+				bestCurrentSolution = _solutionSpace.poll();
+			}
+			
 		}
 
 		return bestCurrentSolution;
