@@ -28,12 +28,16 @@ public class TestAStarParallelised {
 	}
 	
 	/**
-	 * TODO: Test for getting the topological sort result for a fork-join graph
+	 * Test for getting the AStarParallelised optimal result for a fork-join graph
 	 */
+	@Test
 	public void testOne(){
 		DataReader dataReader = new DataReader(new File("test-examples/test1.dot"));
 		while(dataReader.hasMoreGraphs()) {
 			dataReader.readNextGraph();
+			AStar as = new AStarParallelised(dataReader.getGraph(), 1, 2,null,null,null);
+			Solution sol = as.execute();
+			assertEquals(sol.getLastFinishTime(),640);
 		}
 	}
 }

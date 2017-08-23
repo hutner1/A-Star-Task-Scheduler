@@ -49,7 +49,9 @@ public class TestSolution {
 			assertEquals(sol.getLastFinishTime(),640);
 		}
 	}
-	
+	/**
+	 * Test for solution equality when adding vertices to a solution
+	 */
 	@Test
 	public void testEqual(){
 		
