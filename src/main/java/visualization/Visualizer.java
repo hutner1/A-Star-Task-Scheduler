@@ -134,7 +134,7 @@ public class Visualizer {
 
 		//Displays the graph
 		_viewer = new Viewer(_graph,
-				Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
+				Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
 
 		ViewPanel view = _viewer.addDefaultView(false);
 

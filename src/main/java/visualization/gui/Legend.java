@@ -3,24 +3,18 @@ package visualization.gui;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import java.awt.GridLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import java.util.ArrayList;
 
-import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import java.awt.Font;
 import java.awt.FlowLayout;
 import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
 
 public class Legend extends JPanel {
 	private int _proNo;
@@ -41,25 +35,31 @@ public class Legend extends JPanel {
 		mainPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		
 		panel.setBounds(0, 50, 120, 333);
+		panel.setBorder(new LineBorder(Color.black));
 		add(panel);
 		
 		JTextArea help = new JTextArea();
 		help.setLineWrap(true);
 		help.setEditable(false);
 		help.setWrapStyleWord(true);
-		help.setText("** The processors are where each task is assigned to.");
+		help.setText("\n** The processors are where each task is assigned to.");
 		help.setFont(new Font("SansSerif", Font.ITALIC, 15));
-		help.setBounds(0, 385, 120, 155);
+		help.setBounds(0, 380, 120, 160);
+		help.setBorder(new LineBorder(Color.black));
+		help.setBorder(BorderFactory.createCompoundBorder( 
+				help.getBorder(),  
+				BorderFactory.createEmptyBorder(5, 5, 5, 5))); 
 		add(help);
 		
 		JTextField title = new JTextField();
 		title.setForeground(new Color(255, 255, 255));
-		title.setBackground(new Color(51, 102, 255));
+		title.setBackground(new Color(13, 90, 150));
 		title.setEditable(false);
 		title.setText("Processors");
 		title.setFont(new Font("SansSerif", Font.BOLD, 17));
-		title.setBounds(0, 0, 120, 50);
+		title.setBounds(0, -1, 120, 50);
 		title.setHorizontalAlignment(JTextField.CENTER);
+		title.setBorder(BorderFactory.createEmptyBorder());
 		title.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT); 
 		add(title);
 		ArrayList<JPanel> legends = new ArrayList<JPanel>();
@@ -99,7 +99,7 @@ public class Legend extends JPanel {
 	
 	public Color getColor(int index){
 		ArrayList<Color> colors = new ArrayList<Color>();
-			colors.add(new Color(150, 200, 255));   //blue
+			colors.add(new Color(231, 71, 60));   //blue
 			colors.add(new Color(255, 195, 0));  // yellow     
 			colors.add(new Color(29, 131, 72));  // dark green
 			colors.add( new Color(142, 68, 173));  //  purple
