@@ -142,7 +142,7 @@ public class DataReader {
 	/**
 	 * Resets the data in the stored ArrayLists and Graphs
 	 */
-	private void resetData() {
+	public void resetData() {
 	
 		_verticesAndEdgesRead = new ArrayList<String>();
 		_verticesAndEdgesInfo = new ArrayList<String>();
