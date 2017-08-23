@@ -116,7 +116,7 @@ public class OutputWriter {
 	 * @param file file to write to
 	 * @param line line of words to record to a file
 	 */
-	private void record(File file,String line){
+	public void record(File file,String line){
 		try{
       
       
@@ -133,7 +133,7 @@ public class OutputWriter {
 	 * Convenient method to clear a single file
 	 * @param file file to clear
 	 */
-	private void clearFile(File file){
+	public void clearFile(File file){
 		PrintWriter writer;
 		try {
 			writer = new PrintWriter(file);
