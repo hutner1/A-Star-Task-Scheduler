@@ -91,7 +91,7 @@ public class Gui {
 		frame = new JFrame();
 		frame.setTitle("Imagine Breaker - Task Scheduler");
 		frame.getContentPane().setBackground(new Color(213, 213, 213));
-		frame.setBounds(50, 50, 890, 600);
+		frame.setBounds(50, 50, 990, 600);
 		/*frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);*/
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -119,25 +119,25 @@ public class Gui {
 		//Initializing the panel with a card layout to store graphs. 
 		_cards = new JPanel(new CardLayout());
 		_cards.setBorder(new LineBorder(new Color(13, 90, 150),2));
-		_cards.setBounds(15, 15, 700, 540);
-		_cards.setPreferredSize(new Dimension(700,540));
+		_cards.setBounds(15, 15, 800, 540);
+		_cards.setPreferredSize(new Dimension(800,540));
 		CardLayout cardLayout = (CardLayout) _cards.getLayout();
 		frame.getContentPane().add(_cards);
 
 		//Initializing the graph from GraphStream than adding it to the cards panel.
 		JPanel wrapPanel = new JPanel();
 		wrapPanel.setLayout(null);
-		wrapPanel.setBounds(0, 0, 580, 540);
+		wrapPanel.setBounds(0, 0, 680, 540);
 		JPanel wrapPanel2 = new JPanel();
-		wrapPanel2.setBounds(0, -4, 580, 540);
+		wrapPanel2.setBounds(0, -4, 680, 540);
 		_graphPage = new GraphPage(_visualizer);
-		_graphPage.setPreferredSize(new Dimension(580,540));
+		_graphPage.setPreferredSize(new Dimension(680,540));
 		
 		wrapPanel2.add(_graphPage);
 		wrapPanel.add(wrapPanel2);
 		
 		JPanel legend = new Legend(_numProcessor);
-		legend.setBounds(580, 0, 120, 540);
+		legend.setBounds(680, 0, 120, 540);
 		
 		wrapPanel.add(legend);
 		
@@ -165,7 +165,7 @@ public class Gui {
 		_active = graphButton;
 		graphButton.setBackground(new Color(6, 47, 79));
 
-		graphButton.setBounds(734, 15, 140, 50);
+		graphButton.setBounds(834, 15, 140, 50);
 		frame.getContentPane().add(graphButton);
 
 		//Adding an action listener for the button related to the tree graph.
@@ -181,7 +181,7 @@ public class Gui {
 
 
 		//Giving looks to the gantt chart button
-		ganttButton.setBounds(734, 76, 140, 50);
+		ganttButton.setBounds(834, 76, 140, 50);
 		frame.getContentPane().add(ganttButton);
 
 		//Adding an action listener for the button related to the gantt chart.
@@ -197,7 +197,7 @@ public class Gui {
 
 		statButton = new CustomButton("Statistics Chart");
 		statButton.setText("Statistics");
-		statButton.setBounds(734, 137, 140, 50);
+		statButton.setBounds(834, 137, 140, 50);
 		frame.getContentPane().add(statButton);
 		statButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -226,7 +226,7 @@ public class Gui {
 			}
 		});
 
-		btnClose.setBounds(734, 505, 140, 50);
+		btnClose.setBounds(834, 505, 140, 50);
 		frame.getContentPane().add(btnClose);
 
 		//TODO
@@ -234,7 +234,7 @@ public class Gui {
 		infoArea.setText("Press the node to see the info");
 		infoArea.setEditable(false);
 		infoArea.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		infoArea.setBounds(734, 248, 140, 246);
+		infoArea.setBounds(834, 248, 140, 246);
 		infoArea.setBorder(new LineBorder(new Color(13, 90, 150), 1, true));
 		infoArea.setBorder(BorderFactory.createCompoundBorder( 
 				infoArea.getBorder(),  
@@ -258,7 +258,7 @@ public class Gui {
 		//129, 55, 114
 		txtrTask.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		txtrTask.setEditable(false);
-		txtrTask.setBounds(734, 220, 140, 30);
+		txtrTask.setBounds(834, 220, 140, 30);
 		txtrTask.setMargin(new Insets(5,5,5,5));
 
 		frame.getContentPane().add(txtrTask);
