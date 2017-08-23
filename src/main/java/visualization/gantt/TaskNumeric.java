@@ -38,18 +38,16 @@ public class TaskNumeric extends Task {
         return new TaskNumeric(description, start, start + duration);
     }
     
-    /**
-     * Getter method for parameters for Gantt chart task
-     * @param param
-     * @return
-     */
-    public String getParam(int param) {
-    	if (param == 0) {
-    		return _desc;
-    	} else if (param == 1) {
-    		return Long.toString(_start);
-    	} else {
-    		return Long.toString(_end);
-    	}
+
+    public String getDesc() {
+    	return _desc;
+    }
+    
+    public long getStartTime() {
+    	return _start;
+    }
+    
+    public long getEndTime() {
+    	return _end;
     }
 }
