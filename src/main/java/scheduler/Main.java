@@ -110,13 +110,18 @@ public class Main {
 			System.out.println(aStar.getSolPopped());
 			System.out.println(aStar.getSolPruned());
 			
-			if(stats != null){
+			if(graphVisualizer != null){
+				graphVisualizer.UpdateGraph(optimalSolution);
+				gantt.updateSolution(optimalSolution);
 				stats.updateStats(aStar.getSolCreated(), aStar.getSolPopped(), aStar.getSolPruned(), (int) (totalTime/1000000), optimalSolution.getLastFinishTime());
 				DefaultTableModel model = (DefaultTableModel)stats.getTable().getModel();
-
 				model.setValueAt("Optimal Finish Time", 7, 0);
-
 			}
+			
+/*			if(stats != null){
+				s
+
+			}*/
 			
 			
 			

@@ -40,6 +40,7 @@ public class CustomGanttRenderer extends GanttRenderer {
 	private int col;
 	private int index = -1;
 	private ArrayList<Color> _colors = new ArrayList<Color>();
+	private int NUMBER_OF_COLOURS = 1;
 	private TaskSeries _series;
 
 	/**
@@ -59,7 +60,7 @@ public class CustomGanttRenderer extends GanttRenderer {
 		setDrawBarOutline(true);
 		setBaseItemLabelsVisible(true);
 		setBaseItemLabelPaint(Color.BLACK);
-		this.setSeriesItemLabelFont(0,new Font("Arial",0,15));
+		this.setSeriesItemLabelFont(0,new Font("Arial",0,20));
 		setBasePositiveItemLabelPosition(new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.CENTER));
 
 	}
@@ -68,7 +69,7 @@ public class CustomGanttRenderer extends GanttRenderer {
 	 * TODO: Holds the colours used for the Gantt chart (change to alternating as per Guyver's advice)
 	 */
 	private void generateColours() {
-		_colors.add(0, new Color(231, 76, 60));   // blood orange
+		_colors.add(0, new Color(150, 200, 255));   //blue
 		_colors.add(1, new Color(255, 195, 0));  // yellow     
 		_colors.add(2, new Color(29, 131, 72));  // dark green
 		_colors.add(3, new Color(142, 68, 173));  //  purple
@@ -80,6 +81,7 @@ public class CustomGanttRenderer extends GanttRenderer {
 		_colors.add(9, new Color(217, 252, 103)); //greenish yellow
 		_colors.add(10, new Color(204, 92, 146)); //magenta
 		_colors.add(11, new Color(240, 160, 160)); //peach
+		
 	}
 
 	/* (non-Javadoc)
@@ -91,7 +93,7 @@ public class CustomGanttRenderer extends GanttRenderer {
 
 		if (this.row == row && this.col == col) {
 
-			if (index < 11) {
+			if (index < NUMBER_OF_COLOURS - 1) {
 				index++;
 			} else {
 				index = 0;

@@ -4,7 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Insets;
 
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -67,7 +69,14 @@ public class StatisticTable extends JPanel{
 		_table.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 20));
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+        
         _table.getColumnModel().getColumn(1).setCellRenderer( centerRenderer );
+        _table.setRowHeight(50);
+        
+        
+        DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
+        leftRenderer.setHorizontalAlignment(JLabel.RIGHT);
+        _table.getColumnModel().getColumn(0).setCellRenderer(leftRenderer);
 		
 		for (int row = 0; row < _table.getRowCount(); row++){
 	        int rowHeight = _table.getRowHeight();
