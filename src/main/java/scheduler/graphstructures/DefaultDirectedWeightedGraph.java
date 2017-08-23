@@ -1,15 +1,23 @@
 package scheduler.graphstructures;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
- * A Directed Graph with edge weights 
+ * A Directed Graph with edge weights
+ * 
+ * This graph caches the incoming and outgoing edges of all vertices
+ * after the graph's vertices and edges are finalised, when
+ * incomingEdgesOf() and outgoingEdgesOf() are called to any vertex.
  */
 public class DefaultDirectedWeightedGraph {
 	// NODES
 	private ArrayList<Vertex> _vertices;
 	// EDGES
 	private ArrayList<DefaultWeightedEdge> _edges;
+	// Store incoming and outgoing edges of each task vertex 
+	private HashMap<Vertex, ArrayList<DefaultWeightedEdge>> _incomingEdges;
+	private HashMap<Vertex, ArrayList<DefaultWeightedEdge>> _outgoingEdges;
 
 	/**
 	 * Constructor for digraph
@@ -17,6 +25,8 @@ public class DefaultDirectedWeightedGraph {
 	public DefaultDirectedWeightedGraph(){
 		_vertices = new ArrayList<>();
 		_edges = new ArrayList<>();
+		_incomingEdges = new HashMap<>();
+		_outgoingEdges = new HashMap<>();
 	}
 	
 	/**
@@ -56,11 +66,8 @@ public class DefaultDirectedWeightedGraph {
 	 */
 	public ArrayList<DefaultWeightedEdge> edgesOf(Vertex vertex){
 		ArrayList<DefaultWeightedEdge> edges = new ArrayList<>();
-		for(DefaultWeightedEdge edge : _edges){
-			if(edge.contains(vertex)){
-				edges.add(edge);
-			}
-		}
+		edges.addAll(incomingEdgesOf(vertex));
+		edges.addAll(outgoingEdgesOf(vertex));
 		return edges;
 	}
 	
@@ -70,13 +77,16 @@ public class DefaultDirectedWeightedGraph {
 	 * @return all edges pointing to the vertex // TODO 
 	 */
 	public ArrayList<DefaultWeightedEdge> incomingEdgesOf(Vertex vertex){
-		ArrayList<DefaultWeightedEdge> edges = new ArrayList<>();
-		for(DefaultWeightedEdge edge : _edges){
-			if(edge.getDest().equals(vertex)){
-				edges.add(edge);
+		if(_incomingEdges.get(vertex)==null){
+			ArrayList<DefaultWeightedEdge> edges = new ArrayList<>();
+			for(DefaultWeightedEdge edge : _edges){
+				if(edge.getDest().equals(vertex)){
+					edges.add(edge);
+				}
 			}
+			_incomingEdges.put(vertex, edges);	
 		}
-		return edges;
+		return _incomingEdges.get(vertex);
 	}
 	// MAKE IF EFFICIENT initialise them first // TODO
 	/**
@@ -85,21 +95,16 @@ public class DefaultDirectedWeightedGraph {
 	 * @return all edges going out from the vertex // TODO
 	 */
 	public ArrayList<DefaultWeightedEdge> outgoingEdgesOf(Vertex vertex){
-		ArrayList<DefaultWeightedEdge> edges = new ArrayList<>();
-		for(DefaultWeightedEdge edge : _edges){
-			if(edge.getSource().equals(vertex)){
-				edges.add(edge);
+		if(_outgoingEdges.get(vertex)==null){
+			ArrayList<DefaultWeightedEdge> edges = new ArrayList<>();
+			for(DefaultWeightedEdge edge : _edges){
+				if(edge.getSource().equals(vertex)){
+					edges.add(edge);
+				}
 			}
+			_outgoingEdges.put(vertex, edges);
 		}
-		return edges;
-	}
-
-	/**
-	 * Remove the edge from the graph
-	 * @param edge edge to remove
-	 */
-	public void removeEdge(DefaultWeightedEdge edge) {
-		_edges.remove(edge);		
+		return _outgoingEdges.get(vertex);
 	}
 
 	/**
@@ -137,5 +142,45 @@ public class DefaultDirectedWeightedGraph {
 	 */
 	public int getEdgeWeight(DefaultWeightedEdge edge) {
 		return edge.getWeight();
+	}
+	
+	/**
+	 * Get parents vertices
+	 * @param vertex
+	 * @return parents vertices
+	 */
+	public ArrayList<Vertex> getDirectParents(Vertex vertex){
+		ArrayList<Vertex> parents = new ArrayList<>();
+		for(DefaultWeightedEdge e : incomingEdgesOf(vertex)){
+			parents.add(getEdgeSource(e));
+		}
+		return parents;
+	}
+
+	/**
+	 * Get children vertices
+	 * @param vertex
+	 * @return children vertices
+	 */
+	public ArrayList<Vertex> getDirectChildren(Vertex vertex){
+		ArrayList<Vertex> children = new ArrayList<>();
+		for(DefaultWeightedEdge e : outgoingEdgesOf(vertex)){
+			children.add(getEdgeTarget(e));
+		}
+		return children;
+	}
+	
+	/**
+	 * Returns root nodes of the digraph
+	 * @return root nodes of the digraph
+	 */
+	public ArrayList<Vertex> returnRootVertices(){
+		ArrayList<Vertex> rootVertices = new ArrayList<>();
+		for (Vertex v: vertexSet()) {
+			if (inDegreeOf(v)==0) {
+				rootVertices.add(v);
+			}
+		}
+		return rootVertices;
 	}
 }

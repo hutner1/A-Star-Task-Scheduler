@@ -32,3 +32,7 @@ Optional:
 * David Qi (RustedWheel) - yqi955@aucklanduni.ac.nz - 311493182
 * Yao Jian Yap (RemRinRamChi) - yyap601@aucklanduni.ac.nz - 983729282
 * Justin Chuk (hchuk) - hchu167@aucklanduni.ac.nz - 863910247
+
+Report Draft: https://docs.google.com/a/aucklanduni.ac.nz/document/d/1MxXSSBw-1CeEl8gOmRib0_8x2dgedKgHdgEmadpTTBw/edit?usp=sharing
+
+Trello: https://trello.com/b/x2boWp4i/imagine-breaker-schedules

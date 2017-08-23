@@ -62,7 +62,7 @@
 				</configuration>
 			</plugin>
 
-			<!-- To create a har with dependencies -->
+			<!-- To create a jar with dependencies -->
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>3.0.0</version>

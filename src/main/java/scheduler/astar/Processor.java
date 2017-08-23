@@ -7,12 +7,17 @@ import scheduler.graphstructures.Vertex;
 
 /**
  * Processor containing tasks ran on it 
+ * 
+ * Stores a list of ProcessInfo, which is a list of task ran on the processor.
  */
 public class Processor {
 
 	private List<ProcessInfo> processes;
 	private int earliestNextProcess = 0;
 
+	/**
+	 * Initialise a processor with no tasks ran on it
+	 */
 	public Processor() {
 		processes = new ArrayList<ProcessInfo>();
 	}
@@ -55,7 +60,10 @@ public class Processor {
 	}
 
 	/**
-	 * Get the ProcessInfo of a task
+	 * Return ProcessInfo instance corresponding to the task,
+	 * so that further information of the task on the processor
+	 * can be obtained,
+	 * 
 	 * @param v task
 	 * @return ProceessInfo of a task
 	 */
@@ -124,7 +132,8 @@ public class Processor {
 	}
 	
 	/**
-	 * @return the list of scheduled tasks
+	 * Returns the list of scheduled tasks on the processor 
+	 * @return the list of scheduled tasks on the processor 
 	 */
 	public List<ProcessInfo> getProcesses() {
 		return processes;
@@ -132,7 +141,7 @@ public class Processor {
 
 	/**
 	 * Checks to see how long the processor has been idle states for
-	 * @return
+	 * @return time the processor has been idle for
 	 */
 	public int idleTime() {
 		int idleTime = earliestNextProcess;

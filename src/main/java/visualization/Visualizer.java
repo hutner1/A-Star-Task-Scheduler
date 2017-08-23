@@ -17,6 +17,7 @@ import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.stream.ProxyPipe;
 import org.graphstream.stream.SinkAdapter;
 import org.graphstream.ui.layout.HierarchicalLayout;
+import org.graphstream.ui.swingViewer.ViewPanel;
 import org.graphstream.ui.view.View;
 import org.graphstream.ui.view.Viewer;
 import org.graphstream.ui.view.ViewerListener;
@@ -28,6 +29,7 @@ import scheduler.astar.Solution;
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
 import scheduler.graphstructures.DefaultWeightedEdge;
 import scheduler.graphstructures.Vertex;
+import visualization.gui.Gui;
 
 /**
  * This class visualize the scheduling process with GraphStream
@@ -38,7 +40,7 @@ public class Visualizer {
 	//Set the style for the graph using CSS
 	private String _stylesheet = 
 			"graph {" +
-					"fill-color: rgb(225,225,225);" +
+					"fill-color: rgb(250,250,250);" +
 					"}" + 
 
 			"edge {" +
@@ -48,7 +50,9 @@ public class Visualizer {
 			"}" +
 
     		"node{" +
+    		"size:20px;"+
     		"text-size:16px;"+
+    		"size:30px;"+
     		"text-color:rgb(255,255,255);"+
     		"stroke-mode:plain;"+
     		"stroke-width:2px;"+
@@ -57,11 +61,13 @@ public class Visualizer {
 	private Graph _graph;
 	private Viewer _viewer;
 	private DefaultDirectedWeightedGraph _DAG;
-	private NodeClickListener _nodeClickListener;
+	private NodeClickListener _nodeClickListener = new NodeClickListener();
 
-	
+	/**
+	 * Constructor with no parameters. Sets the attributes for the graph
+	 */
 	public Visualizer(){
-		
+
 		//Creates the graph and initializes its attributes
 		System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
 		_graph = new SingleGraph("Input Graph");
@@ -73,7 +79,7 @@ public class Visualizer {
 
 
 	/**
-	 * This adds the nodes and edges from the directed weight graph into the graph stream
+	 * This method adds the nodes and edges from the directed weight graph into the graph stream
 	 * data structure
 	 * 
 	 * @param DAG The directed weighted graph input
@@ -82,15 +88,15 @@ public class Visualizer {
 	public void add(DefaultDirectedWeightedGraph DAG) {
 
 		_DAG = DAG;
-		
+
 		//Add all nodes of the DAG to the graph
 		for(Vertex vertex : DAG.vertexSet()){
 			Node n =_graph.addNode(vertex.getName());
-			
+
 			//Set the size of the nodes to be bigger if they are source node or a leaf
 			if(DAG.inDegreeOf(vertex) == 0){
 				n.addAttribute("ui.style", " size:40px;");
-				
+
 				//Allocate the position of the source node on the graph
 				n.setAttribute("y", 300);
 				n.setAttribute("x", 0);
@@ -101,7 +107,7 @@ public class Visualizer {
 			} else {
 				n.addAttribute("ui.style", " size:25px;");
 			}
-			
+
 			//Labels the node with their name
 			n.addAttribute("ui.label", n.getId());
 		}
@@ -119,25 +125,38 @@ public class Visualizer {
 	}
 
 	/**
-	 * 
 	 * This method displays the graph onto the screen, and also add action listeners
 	 * to node click action 
 	 * 
 	 */
-	public void displayGraph() {
-		
-		//Displays the graph
-		_viewer = _graph.display();
+	public ViewPanel displayGraph() {
 
-		View view = _viewer.getDefaultView();
+
+		//Displays the graph
+		_viewer = new Viewer(_graph,
+				Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
+
+		ViewPanel view = _viewer.addDefaultView(false);
+
+		_viewer.enableAutoLayout();
 
 		//Connect back the viewer to the graph, the graph becomes a sink for the viewer. 
 		ViewerPipe fromViewer = _viewer.newViewerPipe();
-		
+
 		//Create and add an viewer listener to intercept node click events
+
 		_nodeClickListener = new NodeClickListener(fromViewer, view, _graph); 
 		fromViewer.addViewerListener((ViewerListener) _nodeClickListener); 
 
+		return view;
+	}
+
+	/**
+	 * This method sets the listener for the GUI
+	 * @param gui
+	 */
+	public void setGuiListener(Gui gui){
+		_nodeClickListener._gui = gui;
 	}
 
 	/**
@@ -151,7 +170,7 @@ public class Visualizer {
 		//Get the hash map of the processes
 		HashMap<Integer, Processor> processorWithSolution = currentBestSol.getProcess();
 		HashMap<String, List<Object>> scheduledVertices = new HashMap<String, List<Object>>();
-		
+
 
 		//Set all nodes to black to reset previous visualization
 		for(Vertex vertex : _DAG.vertexSet()){
@@ -165,12 +184,14 @@ public class Visualizer {
 				String colorCode = getColor(i);
 				String vertexName = processInfo.getVertex().getName();
 				_graph.getNode(vertexName).setAttribute("ui.style", "fill-color:#"+ colorCode +";");
-				
+
 				List<Object> schedule = new ArrayList<Object>();
 				schedule.add(i);
-				schedule.add(processInfo);
+
+				schedule.add(processInfo.startTime());
+				schedule.add(processInfo.endTime());
 				scheduledVertices.put(vertexName, schedule);
-				
+
 			}
 		}
 		_nodeClickListener.setCurrentSolution(scheduledVertices);

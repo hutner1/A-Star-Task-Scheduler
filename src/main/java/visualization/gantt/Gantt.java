@@ -1,5 +1,6 @@
 package visualization.gantt;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.util.HashMap;
@@ -33,17 +34,29 @@ public class Gantt extends ApplicationFrame{
 	private static Solution _sol;
 	private static JFreeChart _chart;
 	private boolean _launched = false;
+	public JPanel _jpanel;
+	/**
+	 * Constructor for Gantt chart class with title parameter
+	 * @param title
+	 */
 	public Gantt(String title) {
 		super(title);
 		_title = title;
+		_jpanel = new JPanel();
+		_jpanel.setLayout(new BorderLayout());
 	}
 
 
+	/**
+	 * Constructor for Gantt chart class with title and solution parameters
+	 * @param title
+	 * @param solution
+	 */
 	public Gantt(String title,Solution solution) {
 		super(title);
 		_sol = solution;
 	}
-	
+
 	/**
 	 * Creates a gantt chart using data set. This gantt chart has no legend and 
 	 * the x axis represent seconds
@@ -53,19 +66,20 @@ public class Gantt extends ApplicationFrame{
 	 */
 	private static JFreeChart createChart(IntervalCategoryDataset dataset) {
 		_chart = GanttChartFactory.createGanttChart(
-				_title, "Task", "Value", dataset, false, true, true);
-		
-        CategoryPlot plot = (CategoryPlot) _chart.getPlot();
-        CustomGanttRenderer renderer = new CustomGanttRenderer();
-        renderer.setShadowVisible(false);
-        plot.setRenderer(renderer);
-        
-        
-        //remove reflection
-        BarRenderer br = (BarRenderer) plot.getRenderer();
-        br.setBarPainter(new StandardBarPainter());
-        _chart.setNotify(true);
-        
+				_title, "Processors", "Time", dataset, false, true, true);
+
+		CategoryPlot plot = (CategoryPlot) _chart.getPlot();
+		TaskSeriesCollection tsc = (TaskSeriesCollection) dataset;
+		CustomGanttRenderer renderer = new CustomGanttRenderer(tsc.getSeries(0));
+		renderer.setShadowVisible(false);
+		plot.setRenderer(renderer);
+
+
+		//remove reflection
+		BarRenderer br = (BarRenderer) plot.getRenderer();
+		br.setBarPainter(new StandardBarPainter());
+		_chart.setNotify(true);
+
 		return _chart;
 	}
 	/**
@@ -75,59 +89,56 @@ public class Gantt extends ApplicationFrame{
 	 * @return
 	 */
 	private static IntervalCategoryDataset createDataset() {
-		
-		
+
+
 		TaskSeries ts = new TaskSeries("Best Solution");
-		
+
 		HashMap<Integer, Processor> processors = _sol.getProcess();
-		
+
 		int processNo = processors.size();
-		
+
 		for (int i = 1; i <= processNo; i++) {
 			List<ProcessInfo> processList = processors.get(i).getProcesses();
 			String processName = "Processor " + i;
-			TaskNumeric main = new TaskNumeric(processName, 0, processors.get(i).getTime());
+			TaskNumeric main;
+			if (_sol.getProcess().get(i).getTime() == 0) {
+				main = new TaskNumeric(processName, 0, 0);
+			} else {
+				main = new TaskNumeric(processName, 0, _sol.getUpperBound());
+			}
 			for (ProcessInfo p: processList) {
 				int startTime = getTaskStart(p);
 				int endTime = getTaskEnd(p);
-				
+
 				main.addSubtask(new TaskNumeric(p.getTaskName(), startTime, endTime));
-				System.out.println(processName);
-				System.out.println(startTime);
-				System.out.println(endTime);
-				
+
+
 			}
 			ts.add(main);
 		}
-		
-		TaskSeriesCollection taskSeriesCollection = new TaskSeriesCollection();
-		taskSeriesCollection.add(ts);
-		
-		
-		
-		/*
-		TaskSeries ts = new TaskSeries("Temp Solution");
-		
-		TaskNumeric p0 = new TaskNumeric("Processor 0", 1, 10);
-		p0.addSubtask(new TaskNumeric("A",1,5));
-		p0.addSubtask(new TaskNumeric("B",5,10));
-		ts.add(p0);
-		ts.add(new TaskNumeric("Processor 1", 2,9));
-		
 
-		
 		TaskSeriesCollection taskSeriesCollection = new TaskSeriesCollection();
 		taskSeriesCollection.add(ts);
-		*/
+
 		return taskSeriesCollection;
-		
+
 	}
 
 
+	/**
+	 * This method returns the start time for a task
+	 * @param ProcessInfo p, storing vertex start and end time
+	 * @return int
+	 */
 	private static int getTaskStart(ProcessInfo p) {
 		return p.startTime();
 	}
 
+	/**
+	 * This method returns the end time for a task
+	 * @param ProcessInfo p, storing vertex start and end time
+	 * @return int
+	 */
 	private static int getTaskEnd(ProcessInfo p) {
 		return p.endTime();
 	}
@@ -138,23 +149,40 @@ public class Gantt extends ApplicationFrame{
 	 */
 	public void updateSolution(Solution sol) {
 		_sol = sol;
-		_chart.getCategoryPlot().setDataset(createDataset());
+		//_chart.getCategoryPlot().setDataset(createDataset());
 		//_chart.getXYPlot().setDataset(_chart.getXYPlot().getDataset());
-		
+		_jpanel.removeAll();
+
+
+		JFreeChart jfreechart = createChart(createDataset());
+		ChartPanel chartpanel = new ChartPanel(jfreechart);
+		chartpanel.setMouseWheelEnabled(true);
+
+		_jpanel.add(chartpanel);
+		_jpanel.revalidate();
+		_jpanel.repaint();
+
 	}
-	
+
+	/**
+	 * Setter method for solution
+	 * @param sol
+	 */
 	public void setSolution(Solution sol) {
 		_sol = sol;
 	}
+
 	/**
 	 * Creates the jpanel 
 	 * @return
 	 */
-	public static JPanel createDemoPanel() {
+	public JPanel createDemoPanel() {
 		JFreeChart jfreechart = createChart(createDataset());
 		ChartPanel chartpanel = new ChartPanel(jfreechart);
 		chartpanel.setMouseWheelEnabled(true);
-		return chartpanel;
+		_jpanel.add(chartpanel);
+		_launched = true;
+		return _jpanel;
 	}
 	/**
 	 * Checks if this panel has been created
@@ -167,13 +195,14 @@ public class Gantt extends ApplicationFrame{
 	 * Inialises the gantt chart, makes the JPanel and puts it in a frame
 	 */
 	public void launch() {
-		JPanel jpanel = createDemoPanel();
-		jpanel.setPreferredSize(new Dimension(1200, 800));
-		setContentPane(jpanel);
+		_jpanel = createDemoPanel();
+		//jpanel.setPreferredSize(new Dimension(1200, 800));
+		setContentPane(_jpanel);
 		this.pack();
 		RefineryUtilities.centerFrameOnScreen(this);
 		this.setVisible(true);
 		_launched= true;
+
 	}
 
 

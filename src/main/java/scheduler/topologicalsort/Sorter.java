@@ -51,7 +51,7 @@ public class Sorter {
 
 			//Remove all connecting edges to other nodes from the current vertex
 			for (DefaultWeightedEdge dwe: _graph.edgesOf(v)) {
-				_graph.removeEdge(dwe); // remove all nodes that may overlap in the digraph
+				//_graph.removeEdge(dwe); // remove all nodes that may overlap in the digraph
 
 				//Add nodes that become 'leaves'
 				Vertex target = _graph.getEdgeTarget(dwe);
