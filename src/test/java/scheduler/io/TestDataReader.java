@@ -60,16 +60,20 @@ public class TestDataReader {
 
 	}
 
+	
 	/**
-	 * Test to check the graph name is read correctly
+	 * Test to check that the graph name is read/stored correctly
 	 */
 	@Test
 	public void testGetGraphName() {
 
 		assertEquals("testGraph",_dataReader.getGraphName());
-
 	}
 
+	
+	/**
+	 * Test classification of input (vertex/edge)
+	 */
 	@Test
 	public void testGetVerticesAndEdgesRead() {
 
@@ -82,6 +86,10 @@ public class TestDataReader {
 		assertEquals(verticesAndEdgesRead.get(5), ">");
 	}
 
+	
+	/**
+	 * Test that vertices and edges from the file are read/stored correctly
+	 */
 	@Test
 	public void testGetVerticesAndEdgesInfo() {
 
@@ -95,7 +103,10 @@ public class TestDataReader {
 
 	}
 
-
+	
+	/**
+	 * Test the digraph constructed by the data reader from the input
+	 */
 	@Test
 	public void testGetGraph() {
 
@@ -130,7 +141,10 @@ public class TestDataReader {
 
 	}
 
-
+	
+	/**
+	 * Test the vertex mapping constructed by the data reader from the input
+	 */
 	@Test
 	public void testGetMapping() {
 
@@ -148,6 +162,7 @@ public class TestDataReader {
 
 	}
 
+	
 	/**
 	 * Test to check that the resetData() method resets all data in the reader
 	 */
