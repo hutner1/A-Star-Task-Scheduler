@@ -17,7 +17,7 @@ import scheduler.graphstructures.Vertex;
  * Comparable because needed for comparison in priority queue 
  * using maxCostFunction() (polling for best solution)
  */
-public class Solution implements Comparable<Solution>{
+public class Solution implements Comparable<Solution>, Schedule{
 	private int _upperBound; // TODO to be removed, as only used in A*
 	private HashMap<Integer, Processor> _processors;
 	private int _numberOfProcessors;
