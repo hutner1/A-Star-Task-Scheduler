@@ -1,16 +1,19 @@
 package scheduler.astar;
 
-import scheduler.graphstructures.DefaultDirectedWeightedGraph;
-import scheduler.graphstructures.Vertex;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import org.junit.Test;
 
 import io.DataReader;
+import scheduler.graphstructures.DefaultDirectedWeightedGraph;
+import scheduler.graphstructures.Vertex;
 
 /**
  * Tests to make sure that the Solution class functions as expected 
@@ -71,6 +74,14 @@ public class TestSolution {
 		
 		solA.addProcess(v, 1);
 		solB.addProcess(v, 2);
+		
+		Set<Solution> set = new CopyOnWriteArraySet<Solution>();
+		
+		set.add(solA);		
+		assertTrue(set.contains(solB));
+		
+		set.add(solB);
+		assertTrue(set.size() == 1);
 		
 		assertTrue(solA.equals(solB));
 		
