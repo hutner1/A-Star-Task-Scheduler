@@ -74,7 +74,7 @@ public class Main {
 						try {
 							
 							Gui window = new Gui(graphVisualizer2,gant2,stats2,numProc);
-							window.frame.setVisible(true);
+							window._frame.setVisible(true);
 							graphVisualizer2.setGuiListener(window);
 							
 						} catch (Exception e) {
