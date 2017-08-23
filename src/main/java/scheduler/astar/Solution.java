@@ -25,6 +25,7 @@ public class Solution implements Comparable<Solution>{
 	private List<Vertex> _schedulableProcesses;
 	private List<Vertex> _nonschedulableProcesses;
 	private Queue<Solution> _children;
+	private boolean _partiallyExpanded = false;
 
 	private DefaultDirectedWeightedGraph _graph;
 	private static HashMap<Vertex, Integer> _btmLevels;
@@ -174,7 +175,13 @@ public class Solution implements Comparable<Solution>{
 		if (maxThis < maxOther) {
 			return -1;
 		}  else if (maxThis == maxOther) {
-			return 0;
+			if (!_partiallyExpanded && s._partiallyExpanded) {
+				return -1;
+			} else if (_partiallyExpanded && !s._partiallyExpanded) {
+				return 1;
+			} else {
+				return 0;
+			}
 		} else {
 			return 1;
 		}
@@ -448,6 +455,10 @@ public class Solution implements Comparable<Solution>{
 	public int getUpperBound() {
 
 		return _upperBound;
+	}
+	
+	public void setExpansionStatus(boolean status) {
+		_partiallyExpanded = status;
 	}
 }
 

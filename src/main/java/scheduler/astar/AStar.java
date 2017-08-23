@@ -140,26 +140,33 @@ public class AStar {
 			//System.out.println("SS: "+_solutionSpace.size());
 
 			Queue<Solution> childSolutions = bestCurrentSolution.createChildren();
-			
+
 			Solution s;
 			boolean fullyExpanded = true;
-			
+
 			while ((s = childSolutions.poll()) != null) {
 				int childCost = s.maxCostFunction();
 				_solCreated ++;
-				if (childCost > _upperBound){
-					// DO NOTHING AS IT WILL NOT BE CONSIDERED
-					_solPruned ++;
-				} else if (!_solutionSpace.contains(s) && !_closedSolutions.contains(s)) { 	// below upper bound 
-					_solutionSpace.add(s); // TODO move to after if statement?
-					if (childCost == bestCurrentSolution.maxCostFunction()) {
-						if (!childSolutions.isEmpty()) {
-							fullyExpanded = false;
-							_solutionSpace.add(bestCurrentSolution);
-							break;
-						} 
+				System.out.println(childCost);
+				if (!_solutionSpace.contains(s) && !_closedSolutions.contains(s)) {
+					if (childCost > _upperBound){
+						// DO NOTHING AS IT WILL NOT BE CONSIDERED
+						_solPruned ++;
+					} else {
+						_solutionSpace.add(s); // TODO move to after if statement?
+						if (childCost == bestCurrentSolution.maxCostFunction()) {
+							if (!childSolutions.isEmpty()) {
+								fullyExpanded = false;
+								bestCurrentSolution.setExpansionStatus(true);
+								_solutionSpace.add(bestCurrentSolution);
+								break;
+							} else {
+								bestCurrentSolution.setExpansionStatus(false);
+							}
+						}
 					}
 				}
+
 			}
 			if(fullyExpanded){
 				_closedSolutions.add(bestCurrentSolution);
