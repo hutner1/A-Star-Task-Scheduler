@@ -74,8 +74,8 @@ public class StatisticTable extends JPanel{
         _table.setRowHeight(50);
         
         
-        DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
-        leftRenderer.setHorizontalAlignment(JLabel.RIGHT);
+        BoardTableCellRenderer leftRenderer = new BoardTableCellRenderer();
+        leftRenderer.setHorizontalAlignment(JLabel.LEFT);
         _table.getColumnModel().getColumn(0).setCellRenderer(leftRenderer);
 		
 		for (int row = 0; row < _table.getRowCount(); row++){
@@ -158,5 +158,15 @@ public class StatisticTable extends JPanel{
 		
 		return _table;
 	}
+	
+	class BoardTableCellRenderer extends DefaultTableCellRenderer {
 
+	    private static final long serialVersionUID = 1L;
+
+	    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
+	        super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
+	        setBorder(BorderFactory.createEmptyBorder(15,15,15,15));
+	        return this;
+	    }
+	}
 }

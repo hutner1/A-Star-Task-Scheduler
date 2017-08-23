@@ -64,7 +64,7 @@ public class Visualizer {
 	private NodeClickListener _nodeClickListener = new NodeClickListener();
 
 	/**
-	 * TODO Constructor with no parameters
+	 * Constructor with no parameters. Sets the attributes for the graph
 	 */
 	public Visualizer(){
 
