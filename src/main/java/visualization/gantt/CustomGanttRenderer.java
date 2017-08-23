@@ -81,7 +81,7 @@ public class CustomGanttRenderer extends GanttRenderer {
 		_colors.add(9, new Color(217, 252, 103)); //greenish yellow
 		_colors.add(10, new Color(204, 92, 146)); //magenta
 		_colors.add(11, new Color(240, 160, 160)); //peach
-		
+
 	}
 
 	/* (non-Javadoc)
@@ -234,9 +234,22 @@ public class CustomGanttRenderer extends GanttRenderer {
 				EntityCollection entities = state.getEntityCollection();
 				if (entities != null) {
 					String tip = null;
-					if (getToolTipGenerator(row, column) != null) {
-						tip = getToolTipGenerator(row, column).generateToolTip(
-								dataset, row, column);
+					CategoryToolTipGenerator cttg =
+							getToolTipGenerator(row, column);
+					if (cttg != null) {
+						if (cttg instanceof
+								CustomIntervalCategoryGanttToolTipGenerator) {
+							tip =
+									((CustomIntervalCategoryGanttToolTipGenerator)cttg).generateToolTip(
+											dataset, row, column,
+											subinterval
+											);
+						}
+						else {
+							tip = cttg.generateToolTip(
+									dataset, row, column
+									);
+						}
 					}
 					String url = null;
 					if (getItemURLGenerator(row, column) != null) {
