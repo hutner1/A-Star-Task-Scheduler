@@ -57,7 +57,7 @@ public class AStar {
 	public AStar(DefaultDirectedWeightedGraph graph, int numberOfProcessors, Visualizer graphVisualizer, Gantt gantt, StatisticTable stats) {
 		_graph = graph;
 		_numberOfProcessors = numberOfProcessors;
-		_solutionSpace = new PriorityBlockingQueue<Solution>(); //data structure does not permit null elements
+		_solutionSpace = new PriorityAStarQueue<Solution>(); //data structure does not permit null elements
 		_closedSolutions = new CopyOnWriteArraySet<Solution>(); //threadsafe set
 		_visualizer = graphVisualizer;
 		_gantt = gantt;
@@ -202,7 +202,7 @@ public class AStar {
 
 			if(_stats != null){  
 				if(_counter == 10){  
-					_stats.updateStats(_solCreated, _solPopped, _solPruned, -1, bestCurrentSolution.maxCostFunction());
+					_stats.updateStats(_solCreated, _solPopped, _solPruned, bestCurrentSolution.maxCostFunction());
 				}
 			} 
 

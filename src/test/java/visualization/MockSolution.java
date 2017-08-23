@@ -14,7 +14,26 @@ public class MockSolution implements Schedule{
 		_processors = new HashMap<Integer, Processor>();
 		
 		Processor p0 = new Processor();
+		p0.addProcess(new Vertex("aaaa", 5), 0);
+		p0.addProcess(new Vertex("bbbb", 4), 5);
+		p0.addProcess(new Vertex("cccc", 5) ,  10);
+		_processors.put(1, p0);
 		
+		Processor p1 = new Processor();
+		p1.addProcess(new Vertex("dddd", 1), 9);
+		p1.addProcess(new Vertex("eeee", 2), 15);
+		p1.addProcess(new Vertex("ffff", 2), 25);
+		_processors.put(2, p1);
+
+		
+		Processor p2 = new Processor();
+		p2.addProcess(new Vertex("gggg", 2), 27);
+		_processors.put(3, p2);
+
+		
+		Processor p3 = new Processor();
+		_processors.put(4, p3);
+
 		
 	}
 	@Override
@@ -44,13 +63,12 @@ public class MockSolution implements Schedule{
 	@Override
 	public HashMap<Integer, Processor> getProcess() {
 		// TODO Auto-generated method stub
-		return null;
+		return _processors;
 	}
 
 	@Override
 	public int getUpperBound() {
-		// TODO Auto-generated method stub
-		return 0;
+		return 30;
 	}
 
 }

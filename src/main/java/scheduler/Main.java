@@ -24,6 +24,8 @@ import visualization.gui.StatisticTable;
  * This is the main class for the task scheduler program.
  */
 public class Main {
+	
+	public static long _startTime;
 
 	public static void main(String[] args) {
 		// 1. Instantiate InputParser to parse the command line arguments.
@@ -101,6 +103,8 @@ public class Main {
 				aStar = new AStar(dataReader.getGraph(),inputParser.getProcessors(), graphVisualizer, gantt, stats);
 			}
 
+			_startTime = System.nanoTime();
+			
 			// write the optimal schedule to the output file
 			Solution optimalSolution = aStar.execute();
 			outWriter.createScheduleAStar(dataReader.getGraphName(),dataReader.getVerticesAndEdgesInfo(),dataReader.getVerticesAndEdgesRead(),optimalSolution,dataReader.getMapping());
@@ -114,7 +118,7 @@ public class Main {
 			if(graphVisualizer != null){
 				graphVisualizer.UpdateGraph(optimalSolution);
 				gantt.updateSolution(optimalSolution);
-				stats.updateStats(aStar.getSolCreated(), aStar.getSolPopped(), aStar.getSolPruned(), (int) (totalTime/1000000), optimalSolution.getLastFinishTime());
+				stats.updateStats(aStar.getSolCreated(), aStar.getSolPopped(), aStar.getSolPruned(), optimalSolution.getLastFinishTime());
 				DefaultTableModel model = (DefaultTableModel)stats.getTable().getModel();
 				model.setValueAt("Optimal Finish Time", 7, 0);
 			}

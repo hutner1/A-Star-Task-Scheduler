@@ -14,6 +14,8 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import scheduler.Main;
+
 public class StatisticTable extends JPanel{
 
 	private JTable _table;
@@ -91,18 +93,6 @@ public class StatisticTable extends JPanel{
 		add(scroll);
 	}
 
-
-	/**
-	 * Method to update all the statistics in the table
-	 * @param solCreated
-	 * @param solPopped
-	 * @param solPruned
-	 * @param time
-	 */
-	public void updateStats(int solCreated, int solPopped, int solPruned, double time){
-		updateStats(solCreated, solPopped, solPruned, time, null);
-	}
-
 	/**
 	 * Method to update all the statistics in the table with finish time
 	 * @param solCreated
@@ -111,7 +101,7 @@ public class StatisticTable extends JPanel{
 	 * @param time
 	 * @param finishTime
 	 */
-	public void updateStats(int solCreated, int solPopped, int solPruned, double time, Integer finishTime){
+	public void updateStats(int solCreated, int solPopped, int solPruned, Integer finishTime){
 
 		/*		_solCreated = solCreated;
 		_solPopped = solPopped;
@@ -125,11 +115,9 @@ public class StatisticTable extends JPanel{
 		model.setValueAt(solPopped, 3, 1);
 		model.setValueAt(solPruned, 4, 1);
 		model.setValueAt((Runtime.getRuntime().totalMemory())/1024/1024, 5, 1);
-
-		if(!(time < 1)){
-			model.setValueAt(time/1000, 6, 1);
-		}
-
+		
+		model.setValueAt(String.format("%.1f", (double)(System.nanoTime()-Main._startTime)/1000000000), 6, 1);
+		
 		if(finishTime != null){
 			model.setValueAt(finishTime, 7, 1);
 		}

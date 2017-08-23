@@ -19,6 +19,11 @@ public class Vertex {
 		_visited = false;
 	}
 	
+	public Vertex(String name, int weight) {
+		_name = name;
+		_weight = weight;
+	}
+	
 	//---Getter Methods---
 	
 	/**

@@ -26,12 +26,13 @@ import org.jfree.ui.TextAnchor;
 
 import scheduler.astar.ProcessInfo;
 import scheduler.astar.Processor;
+import scheduler.astar.Schedule;
 import scheduler.astar.Solution;
 
 public class Gantt extends ApplicationFrame{
 
 	private static String _title;
-	private static Solution _sol;
+	private static Schedule _sol;
 	private static JFreeChart _chart;
 	private boolean _launched = false;
 	public JPanel _jpanel;
@@ -52,7 +53,7 @@ public class Gantt extends ApplicationFrame{
 	 * @param title
 	 * @param solution
 	 */
-	public Gantt(String title,Solution solution) {
+	public Gantt(String title,Schedule solution) {
 		super(title);
 		_sol = solution;
 	}
@@ -168,8 +169,8 @@ public class Gantt extends ApplicationFrame{
 	 * Setter method for solution
 	 * @param sol
 	 */
-	public void setSolution(Solution sol) {
-		_sol = sol;
+	public void setSolution(Schedule sol) {
+		_sol = (Solution) sol;
 	}
 
 	/**
@@ -190,6 +191,10 @@ public class Gantt extends ApplicationFrame{
 	 */
 	public boolean hasLaunched() {
 		return _launched ;
+	}
+	
+	public IntervalCategoryDataset getDataset() {
+		return createDataset();
 	}
 	/**
 	 * Inialises the gantt chart, makes the JPanel and puts it in a frame

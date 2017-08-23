@@ -173,9 +173,21 @@ public class Visualizer {
 
 
 		//Set all nodes to black to reset previous visualization
-		for(Vertex vertex : _DAG.vertexSet()){
+	/*	for(Vertex vertex : _DAG.vertexSet()){
+			if(_graph.node){
+				
+			}
+			
 			_graph.getNode(vertex.getName()).setAttribute("ui.style", "fill-color:#"+ "000000" +";");
-		}
+			
+		}*/
+		
+		Iterator<Node> k = _graph.getNodeIterator();
+
+        while (k.hasNext()) {
+            Node next = k.next();
+            next.setAttribute("ui.style", "fill-color:#"+ "000000" +";");
+        }
 
 		//Set the color for each node/task in the current schedule
 		for(int i = 1; i < processorWithSolution.keySet().size() + 1; i++){

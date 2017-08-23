@@ -3,18 +3,24 @@ package visualization.gui;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import java.awt.GridLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 import java.util.ArrayList;
 
+import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import java.awt.Font;
 import java.awt.FlowLayout;
 import javax.swing.JTextField;
-import javax.swing.border.LineBorder;
 
 public class Legend extends JPanel {
 	private int _proNo;
@@ -31,13 +37,12 @@ public class Legend extends JPanel {
 		//The title for legends
 		JTextField title = new JTextField();
 		title.setForeground(new Color(255, 255, 255));
-		title.setBackground(new Color(13, 90, 150));
+		title.setBackground(new Color(51, 102, 255));
 		title.setEditable(false);
 		title.setText("Processors");
 		title.setFont(new Font("SansSerif", Font.BOLD, 17));
-		title.setBounds(0, -1, 120, 50);
+		title.setBounds(0, 0, 120, 50);
 		title.setHorizontalAlignment(JTextField.CENTER);
-		title.setBorder(BorderFactory.createEmptyBorder());
 		title.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT); 
 		add(title);
 
