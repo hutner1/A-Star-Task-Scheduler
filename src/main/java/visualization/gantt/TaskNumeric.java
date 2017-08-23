@@ -4,6 +4,11 @@ import java.util.Date;
 
 import org.jfree.data.gantt.Task;
 
+/**
+ * A custom task that uses integer numbers instead of dates
+ * @author Jack
+ *
+ */
 public class TaskNumeric extends Task {
     private String _desc;
 	private long _start;
