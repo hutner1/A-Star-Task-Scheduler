@@ -66,7 +66,7 @@ public class CustomGanttRenderer extends GanttRenderer {
 	}
 
 	/**
-	 * TODO: Holds the colours used for the Gantt chart (change to alternating as per Guyver's advice)
+	 * Holds the colours used for the Gantt chart (change to alternating as per Guyver's advice)
 	 */
 	private void generateColours() {
 		_colors.add(0, new Color(150, 200, 255));   //blue
@@ -129,7 +129,6 @@ public class CustomGanttRenderer extends GanttRenderer {
 			drawTask(g2, state, dataArea, plot, domainAxis, rangeAxis, 
 					dataset, row, column);
 		}
-
 		for (int subinterval = 0; subinterval < count; subinterval++) {
 
 			RectangleEdge rangeAxisLocation = plot.getRangeAxisEdge();
@@ -228,17 +227,18 @@ public class CustomGanttRenderer extends GanttRenderer {
 				drawItemLabel(g2, dataset, row, column, plot, generator, bar, false, subinterval);
 			}
 
-
 			// collect entity and tool tip information...
 			if (state.getInfo() != null) {
 				EntityCollection entities = state.getEntityCollection();
 				if (entities != null) {
+					System.out.println("Here 0");
 					String tip = null;
-					CategoryToolTipGenerator cttg =
-							getToolTipGenerator(row, column);
+					CategoryToolTipGenerator cttg = new CustomIntervalCategoryGanttToolTipGenerator();
+							//getToolTipGenerator(row, column);
 					if (cttg != null) {
 						if (cttg instanceof
 								CustomIntervalCategoryGanttToolTipGenerator) {
+							System.out.println("Here 1");
 							tip =
 									((CustomIntervalCategoryGanttToolTipGenerator)cttg).generateToolTip(
 											dataset, row, column,
@@ -246,6 +246,7 @@ public class CustomGanttRenderer extends GanttRenderer {
 											);
 						}
 						else {
+							System.out.println("Here 2");
 							tip = cttg.generateToolTip(
 									dataset, row, column
 									);
