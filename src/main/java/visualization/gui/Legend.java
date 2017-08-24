@@ -105,7 +105,7 @@ public class Legend extends JPanel {
 		JTextField text = new JTextField();
 		text.setEditable(false);
 		text.setFont(new Font("SansSerif", Font.BOLD, 10));
-		text.setText("Processor "+currentProcessor);
+		text.setText("Processor "+(currentProcessor+1));
 		text.setBounds(25, 0, 90, 20);
 		text.setBorder(BorderFactory.createEmptyBorder());
 		panel.add(text);
