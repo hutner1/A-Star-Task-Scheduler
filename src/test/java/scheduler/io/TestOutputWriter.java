@@ -29,8 +29,8 @@ import scheduler.graphstructures.Vertex;
  */
 public class TestOutputWriter {
 
-	String _outputFilename = "test";
-	File _testFile2;
+	private String _outputFilename = "test";
+	private File _testFile2;
 	private OutputWriter _outputWriter;
 	private String _digraphName;
 	private ArrayList<String> _verticesAndEdgesInfo;

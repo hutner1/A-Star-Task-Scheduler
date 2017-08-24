@@ -3,7 +3,6 @@ package scheduler.io;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -18,8 +17,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import io.DataReader;
-import io.InputParser;
-import io.InputParserException;
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
 import scheduler.graphstructures.DefaultWeightedEdge;
 import scheduler.graphstructures.Vertex;
@@ -29,8 +26,8 @@ import scheduler.graphstructures.Vertex;
  */
 public class TestDataReader {
 
-	File _file;
-	DataReader _dataReader;
+	private File _file;
+	private DataReader _dataReader;
 
 	@Before 
 	public void initialise() 
@@ -39,19 +36,22 @@ public class TestDataReader {
 
 		try {
 			_file.createNewFile();
-			PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(_file,true)));
-			writer.println("digraph \"testGraph\" {");
-			writer.println("	A	 [Weight=10];");
-			writer.println("		B	 [Weight=20];");
-			writer.println("	C	 [Weight=30];");
-			writer.println("	A -> B		 [Weight=10];");
-			writer.println("	A -> C	 				[Weight=5];");
-			writer.println("	B -> C	 [Weight=10];			");
-			writer.println("}");
-
-			writer.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		try {
+			PrintWriter inputWriter = new PrintWriter(new BufferedWriter(new FileWriter(_file,true)));
+			inputWriter.println("digraph \"testGraph\" {");
+			inputWriter.println("	A	 [Weight=10];");
+			inputWriter.println("	B	 [Weight=20];");
+			inputWriter.println("	C	 [Weight=30];");
+			inputWriter.println("	A -> B	 [Weight=10];");
+			inputWriter.println("	A -> C	 [Weight=5];");
+			inputWriter.println("	B -> C	 [Weight=10];");
+			inputWriter.println("}");
+			inputWriter.close();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
@@ -60,7 +60,7 @@ public class TestDataReader {
 
 	}
 
-	
+
 	/**
 	 * Test to check that the graph name is read/stored correctly
 	 */
@@ -70,7 +70,7 @@ public class TestDataReader {
 		assertEquals("testGraph",_dataReader.getGraphName());
 	}
 
-	
+
 	/**
 	 * Test classification of input (vertex/edge)
 	 */
@@ -86,7 +86,7 @@ public class TestDataReader {
 		assertEquals(verticesAndEdgesRead.get(5), ">");
 	}
 
-	
+
 	/**
 	 * Test that vertices and edges from the file are read/stored correctly
 	 */
@@ -103,7 +103,7 @@ public class TestDataReader {
 
 	}
 
-	
+
 	/**
 	 * Test the digraph constructed by the data reader from the input
 	 */
@@ -141,7 +141,7 @@ public class TestDataReader {
 
 	}
 
-	
+
 	/**
 	 * Test the vertex mapping constructed by the data reader from the input
 	 */
@@ -162,38 +162,39 @@ public class TestDataReader {
 
 	}
 
-	
+
 	/**
 	 * Test to check that the resetData() method resets all data in the reader
 	 */
 	@Test
 	public void resetData() {
-		
+
 		ArrayList<String> verticesAndEdgesRead = _dataReader.getVerticesAndEdgesRead();
 		ArrayList<String> verticesAndEdgesInfo = _dataReader.getVerticesAndEdgesInfo();
 		DefaultDirectedWeightedGraph digraph = _dataReader.getGraph();
 		HashMap<String, Vertex> vertexMapping = _dataReader.getMapping();
-		
+
 		assertFalse(verticesAndEdgesRead.isEmpty());
 		assertFalse(verticesAndEdgesInfo.isEmpty());
 		assertFalse(digraph.vertexSet().isEmpty());
 		assertFalse(digraph.edgeSet().isEmpty());
 		assertFalse(vertexMapping.isEmpty());
-		
+
 		_dataReader.resetData();
-		
+
 		verticesAndEdgesRead = _dataReader.getVerticesAndEdgesRead();
 		verticesAndEdgesInfo = _dataReader.getVerticesAndEdgesInfo();
 		digraph = _dataReader.getGraph();
 		vertexMapping = _dataReader.getMapping();
-		
+
 		assertTrue(verticesAndEdgesRead.isEmpty());
 		assertTrue(verticesAndEdgesInfo.isEmpty());
 		assertTrue(digraph.vertexSet().isEmpty());
 		assertTrue(digraph.edgeSet().isEmpty());
 		assertTrue(vertexMapping.isEmpty());
-		
-		initialise();
+
+		_dataReader = new DataReader(_file);
+		_dataReader.readNextGraph();
 	}
 
 

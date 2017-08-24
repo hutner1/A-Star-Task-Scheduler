@@ -194,7 +194,10 @@ public class Visualizer {
 			for(ProcessInfo processInfo : processes){
 				String colorCode = getColor(i);
 				String vertexName = processInfo.getVertex().getName();
-				_graph.getNode(vertexName).setAttribute("ui.style", "fill-color:#"+ colorCode +";");
+				
+				if(_graph.getNode(vertexName) != null){
+					_graph.getNode(vertexName).setAttribute("ui.style", "fill-color:#"+ colorCode +";");
+				}
 
 				List<Object> schedule = new ArrayList<Object>();
 				schedule.add(i);
@@ -220,6 +223,24 @@ public class Visualizer {
 				"e67e22", "5d6d7e", "45b39d", "aed6f1", "d9fc67", "cc5c92", "f0a0a0"};
 
 		return colors[index];
+	}
+	
+	/**
+	 * Get the directed weight graph
+	 * 
+	 * @return _DAG The directed weight graph
+	 */
+	public DefaultDirectedWeightedGraph getDAG(){
+		return _DAG;
+	}
+	
+	/**
+	 * Get the GraphStream graph
+	 * 
+	 * @return _DAG The GraphStream graph
+	 */
+	public Graph getGraph(){
+		return _graph;
 	}
 
 }
