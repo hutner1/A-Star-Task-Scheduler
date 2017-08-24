@@ -85,14 +85,50 @@ public class AStarParallelised extends AStar{
 	 * @return the OPTIMAL solution found in parallel
 	 */
 	private Solution getBestSolution(AStarThread[] aStarThreads) {
+		int threadNo = 0;
+		int bestCost = Integer.MIN_VALUE;
 		//Loop through all the threads
 		for (int i = 0; i < _numberOfThreads; i++) {
 			if (aStarThreads[i].getSolution() != null) {
-				System.out.println("Finish time  : "+aStarThreads[i].getSolution().getLastFinishTime());
-				return aStarThreads[i].getSolution();
+				int finishTime = aStarThreads[i].getSolution().getLastFinishTime();
+				System.out.println("Finish time  : "+finishTime);
+				if(finishTime < bestCost){
+					bestCost = finishTime;
+					threadNo = i;
+				}
 			}
 		}
-		return null;
+
+		Solution bestCurrentSolution = aStarThreads[threadNo].getSolution();
+		
+		if (_gantt != null) {
+			if (_gantt.hasLaunched()) {
+				if(_counter == 10){  
+					_gantt.updateSolution(bestCurrentSolution);
+				}
+			} else {
+				_gantt.setSolution(bestCurrentSolution);
+			}
+		}
+
+		if(_visualizer != null){  
+			if(_counter == 10){  
+				_counter = 0;  
+				_visualizer.UpdateGraph(bestCurrentSolution);  
+
+			} else {  
+				_counter++;  
+			}  
+
+		} 
+
+		if(_stats != null){  
+			if(_counter == 10){  
+				_stats.updateStats(_solCreated, _solPopped, _solPruned, bestCurrentSolution.maxCostFunction());
+			}
+		} 
+		
+		return bestCurrentSolution;
 	}
 
 }
