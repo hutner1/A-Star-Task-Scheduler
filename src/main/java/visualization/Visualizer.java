@@ -131,10 +131,9 @@ public class Visualizer {
 	 */
 	public ViewPanel displayGraph() {
 
-
 		//Displays the graph
 		_viewer = new Viewer(_graph,
-				Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
+				Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
 
 		ViewPanel view = _viewer.addDefaultView(false);
 
@@ -170,23 +169,13 @@ public class Visualizer {
 		//Get the hash map of the processes
 		HashMap<Integer, Processor> processorWithSolution = currentBestSol.getProcess();
 		HashMap<String, List<Object>> scheduledVertices = new HashMap<String, List<Object>>();
-
-
-		//Set all nodes to black to reset previous visualization
 	/*	for(Vertex vertex : _DAG.vertexSet()){
-				
-			}
-			
-			_graph.getNode(vertex.getName()).setAttribute("ui.style", "fill-color:#"+ "000000" +";");
-			
-		}*/
 		
 		Iterator<Node> k = _graph.getNodeIterator();
-
-        while (k.hasNext()) {
-            Node next = k.next();
-            next.setAttribute("ui.style", "fill-color:#"+ "000000" +";");
-        }
+		
+		for(Vertex vertex : _DAG.vertexSet()){
+			_graph.getNode(vertex.getName()).setAttribute("ui.style", "fill-color:#"+ "000000" +";");
+		}
 
 		//Set the color for each node/task in the current schedule
 		for(int i = 1; i < processorWithSolution.keySet().size() + 1; i++){
@@ -194,18 +183,14 @@ public class Visualizer {
 			for(ProcessInfo processInfo : processes){
 				String colorCode = getColor(i);
 				String vertexName = processInfo.getVertex().getName();
-				try {
 				_graph.getNode(vertexName).setAttribute("ui.style", "fill-color:#"+ colorCode +";");
-				}catch (Exception e) {
 				
-				}
 				List<Object> schedule = new ArrayList<Object>();
 				schedule.add(i);
-
-				schedule.add(processInfo.startTime());
-				schedule.add(processInfo.endTime());
+				schedule.add(processInfo.startTime()); 
+		        schedule.add(processInfo.endTime()); 
 				scheduledVertices.put(vertexName, schedule);
-
+				
 			}
 		}
 		_nodeClickListener.setCurrentSolution(scheduledVertices);
@@ -223,6 +208,24 @@ public class Visualizer {
 				"e67e22", "5d6d7e", "45b39d", "aed6f1", "d9fc67", "cc5c92", "f0a0a0"};
 
 		return colors[index];
+	}
+	
+	/**
+	 * Get the directed weight graph
+	 * 
+	 * @return _DAG The directed weight graph
+	 */
+	public DefaultDirectedWeightedGraph getDAG(){
+		return _DAG;
+	}
+	
+	/**
+	 * Get the GraphStream graph
+	 * 
+	 * @return _DAG The GraphStream graph
+	 */
+	public Graph getGraph(){
+		return _graph;
 	}
 
 }

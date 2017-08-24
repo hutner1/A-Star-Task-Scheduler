@@ -479,7 +479,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 			
 			
 
-			/*if (p.getTime() <= tMax && OutgoingCommsOK(this)) {
+			/*if (p.getTime() <= tMax && outgoingCommsOK(this)) {
 				return true;
 			}
 			*/
