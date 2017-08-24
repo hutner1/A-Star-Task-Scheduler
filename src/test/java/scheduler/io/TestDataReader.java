@@ -193,8 +193,8 @@ public class TestDataReader {
 		assertTrue(digraph.edgeSet().isEmpty());
 		assertTrue(vertexMapping.isEmpty());
 
-		_dataReader = new DataReader(_file);
-		_dataReader.readNextGraph();
+		_file.delete();
+		initialise();
 	}
 
 

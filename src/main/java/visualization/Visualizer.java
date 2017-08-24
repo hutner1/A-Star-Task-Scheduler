@@ -131,7 +131,6 @@ public class Visualizer {
 	 */
 	public ViewPanel displayGraph() {
 
-
 		//Displays the graph
 		_viewer = new Viewer(_graph,
 				Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
@@ -170,22 +169,16 @@ public class Visualizer {
 		//Get the hash map of the processes
 		HashMap<Integer, Processor> processorWithSolution = currentBestSol.getProcess();
 		HashMap<String, List<Object>> scheduledVertices = new HashMap<String, List<Object>>();
-
-
-		//Set all nodes to black to reset previous visualization
-	/*	for(Vertex vertex : _DAG.vertexSet()){
-				
-			}
-			
-			_graph.getNode(vertex.getName()).setAttribute("ui.style", "fill-color:#"+ "000000" +";");
-			
-		}*/
 		
 		Iterator<Node> k = _graph.getNodeIterator();
 
         while (k.hasNext()) {
             Node next = k.next();
-            next.setAttribute("ui.style", "fill-color:#"+ "000000" +";");
+            if(next != null){
+            	System.out.println(next.getId() + " " + next.getAttribute("ui.style"));
+            	next.removeAttribute("ui.style");
+            	next.addAttribute("ui.style", "fill-color:#"+ "000000" +";");
+            } 
         }
 
 		//Set the color for each node/task in the current schedule
@@ -196,7 +189,9 @@ public class Visualizer {
 				String vertexName = processInfo.getVertex().getName();
 				
 				if(_graph.getNode(vertexName) != null){
-					_graph.getNode(vertexName).setAttribute("ui.style", "fill-color:#"+ colorCode +";");
+					_graph.getNode(vertexName).removeAttribute("ui.style");
+					_graph.getNode(vertexName).addAttribute("ui.style", "fill-color:#"+ colorCode +";");
+					System.out.println(_graph.getNode(vertexName).getId() + " " + _graph.getNode(vertexName).getAttribute("ui.style"));
 				}
 
 				List<Object> schedule = new ArrayList<Object>();
