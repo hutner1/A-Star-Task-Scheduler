@@ -45,13 +45,14 @@ public class Legend extends JPanel {
 		//The title for legends
 		JTextField title = new JTextField();
 		title.setForeground(new Color(255, 255, 255));
-		title.setBackground(new Color(51, 102, 255));
+		title.setBackground(new Color(13, 90, 150));
 		title.setEditable(false);
 		title.setText("Processors");
 		title.setFont(new Font("SansSerif", Font.BOLD, 17));
 		title.setBounds(0, 0, 120, 50);
 		title.setHorizontalAlignment(JTextField.CENTER);
 		title.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT); 
+		title.setBorder(new LineBorder(new Color(13, 90, 150),1));
 		add(title);
 
 

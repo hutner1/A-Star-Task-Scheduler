@@ -86,7 +86,7 @@ public class StatisticTable extends JPanel{
 
 
 
-		BoardTableCellRenderer leftRenderer = new BoardTableCellRenderer();
+		TableCellRenderer leftRenderer = new TableCellRenderer();
 		leftRenderer.setHorizontalAlignment(JLabel.LEFT);
 		_table.getColumnModel().getColumn(0).setCellRenderer(leftRenderer);
 
@@ -135,7 +135,7 @@ public class StatisticTable extends JPanel{
 		}
 
 	}
-
+	
 	@SuppressWarnings("serial")
 	private class Model extends DefaultTableModel {
 
@@ -143,9 +143,6 @@ public class StatisticTable extends JPanel{
 			super(data, column);
 		}
 
-		/* (non-Javadoc)
-		 * @see javax.swing.table.DefaultTableModel#isCellEditable(int, int)
-		 */
 		@Override
 		public boolean isCellEditable(int row, int column) {
 			return false;
@@ -156,8 +153,12 @@ public class StatisticTable extends JPanel{
 
 		return _table;
 	}
-
-	class BoardTableCellRenderer extends DefaultTableCellRenderer {
+	
+	/**
+	 * This class creates a renderer that gives padding to the cells.
+	 *
+	 */
+	class TableCellRenderer extends DefaultTableCellRenderer {
 
 		private static final long serialVersionUID = 1L;
 

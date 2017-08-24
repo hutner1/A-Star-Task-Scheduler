@@ -163,18 +163,21 @@ public class AStar {
 								fullyExpanded = false;
 								bestCurrentSolution.setExpansionStatus(true);
 								_solutionSpace.add(bestCurrentSolution);
+								_solCreated += childSolutions.size();
 								break;
 							} else {
 								bestCurrentSolution.setExpansionStatus(false);
 							}
 						}
 					}
+				} else {
+					_solPruned ++;
 				}
 
 			}
-			//if(fullyExpanded){
+			if(fullyExpanded){
 				_closedSolutions.add(bestCurrentSolution);
-			//}
+			}
 
 
 			//TODO System.out.println(bestCurrentSolution.maxCostFunction());

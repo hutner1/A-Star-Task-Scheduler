@@ -152,4 +152,14 @@ public class Processor {
 		}
 		return idleTime;
 	}
+	
+	public List<Vertex> getProcessOrder() {
+		
+		List<Vertex> processOrder = new ArrayList<Vertex>();
+		for (ProcessInfo pI : processes) {
+			processOrder.add(pI.getVertex());
+		}
+		
+		return processOrder;
+	}
 }
