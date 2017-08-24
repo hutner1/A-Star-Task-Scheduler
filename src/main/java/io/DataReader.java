@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
 import scheduler.graphstructures.Vertex;
 
@@ -35,11 +38,15 @@ public class DataReader {
 	private HashMap<String,Vertex> _mapping;
 	private BufferedReader _reader;
 	
+	private static Logger _logger = LoggerFactory
+			.getLogger(DataReader.class);
+	
 	/**
 	 * Constructs DataReader
 	 * @param file input file to read digraph from
 	 */
 	public DataReader(File file) {
+		_logger.debug("Hello World");
 		try {
 			_reader = new BufferedReader(new FileReader(file));
 		} catch (FileNotFoundException e) {
