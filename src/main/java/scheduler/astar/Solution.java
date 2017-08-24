@@ -432,6 +432,41 @@ public class Solution implements Comparable<Solution>, Schedule{
 		return true;
 	}
 
+	/**
+	 * Added outgoingCommsOK function WITH BUGS
+	 * @param childSol
+	 * @return
+	 */
+	public boolean outgoingCommsOK(Solution childSol){
+		for (Vertex v: childSol._scheduledProcesses){
+			int swappedTime = 4;
+			if (swappedTime > minimalDataReadyTime(v)){
+				Queue<Solution> cs = childSol.createChildren();
+				Solution s;
+				while ((s = cs.poll()) != null) {
+					int time = s.getLastFinishTime();
+					if (childSol._scheduledProcesses.contains(s)){
+						if (childSol.getLastFinishTime()>time || true){
+							return false;
+						}
+					} else {
+						for (Processor p: _processors.values()){
+							boolean atLeastOneLater = false;
+							for (Vertex cv: _graph.getDirectParents(v)){
+								if (cv.getBottomLevel() >= time){
+									atLeastOneLater = true;
+								}
+							}
+							if (!atLeastOneLater){
+								return false;
+							}
+						}
+					}
+				}
+			}
+		}
+		return true;
+	}
 	//TODO hash code, remove it?
 	/**
 	public int hashCode(){
