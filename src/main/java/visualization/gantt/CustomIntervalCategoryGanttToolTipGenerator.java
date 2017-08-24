@@ -14,11 +14,6 @@ import org.jfree.data.gantt.Task;
 import org.jfree.data.gantt.TaskSeriesCollection;
 import org.jfree.data.time.TimePeriod;
 /**
- * Used to display tooltips. Currently does not work
- * @author Jack
- *
- */
-/**
  * A tooltip generator for plots that use data from an
 {@link GanttCategoryDataset}.
  */
