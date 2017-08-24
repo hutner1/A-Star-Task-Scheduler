@@ -171,38 +171,6 @@ public class Visualizer {
 		HashMap<String, List<Object>> scheduledVertices = new HashMap<String, List<Object>>();
 		
 		Iterator<Node> k = _graph.getNodeIterator();
-
-       /* while (k.hasNext()) {
-            Node next = k.next();
-            if(next != null){
-            	System.out.println(next.getId() + " " + next.getAttribute("ui.style"));
-            	next.removeAttribute("ui.style");
-            	next.addAttribute("ui.style", "fill-color:#"+ "000000" +";");
-            } 
-        }*/
-
-		//Set the color for each node/task in the current schedule
-/*		for(int i = 1; i < processorWithSolution.keySet().size() + 1; i++){
-			List<ProcessInfo> processes = processorWithSolution.get(i).getProcesses();
-			for(ProcessInfo processInfo : processes){
-				String colorCode = getColor(i);
-				String vertexName = processInfo.getVertex().getName();
-				
-				if(_graph.getNode(vertexName) != null){
-					_graph.getNode(vertexName).removeAttribute("ui.style");
-					_graph.getNode(vertexName).addAttribute("ui.style", "fill-color:#"+ colorCode +";");
-					System.out.println(_graph.getNode(vertexName).getId() + " " + _graph.getNode(vertexName).getAttribute("ui.style"));
-				}
-
-				List<Object> schedule = new ArrayList<Object>();
-				schedule.add(i);
-
-				schedule.add(processInfo.startTime());
-				schedule.add(processInfo.endTime());
-				scheduledVertices.put(vertexName, schedule);
-
-			}
-		}*/
 		
 		for(Vertex vertex : _DAG.vertexSet()){
 			_graph.getNode(vertex.getName()).setAttribute("ui.style", "fill-color:#"+ "000000" +";");

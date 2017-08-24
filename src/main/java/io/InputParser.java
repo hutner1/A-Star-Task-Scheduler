@@ -9,6 +9,8 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class parses the command line input from the user and then determine
@@ -27,6 +29,7 @@ public class InputParser {
 	private boolean _parallelise = false;
 	private String _outputFileName;
 	private File _file;
+	private Logger _logger = LoggerFactory.getLogger(InputParser.class);
 
 	/**
 	 * InputParser constructor
@@ -42,15 +45,15 @@ public class InputParser {
 	 * @throws InputParserException 
 	 */
 	public void parse() throws InputParserException {
-		
+
 		checkInputLengthAndHelp();
 		parseFileName();
 		parseProcessors();
 		parseOptions();
-		
+
 
 	}
-	
+
 	/**
 	 * This method checks to see whether or not the command line input has the required arguments,
 	 * and terminates execution if it is not. If the input argument is "--help" instead, print
@@ -58,14 +61,14 @@ public class InputParser {
 	 * @throws InputParserException 
 	 */
 	private void checkInputLengthAndHelp() throws InputParserException {
-		
+
 		if((_input.length == 1) && (_input[0].equals("--help"))) {
 			showHelpMessage();			
 		} else if(_input.length < 2){
 			//Error for when no arguments are supplied
 			throw new InputParserException("Error! Please follow the correct input format!");
 		}
-		
+
 	}
 
 	/**
@@ -99,12 +102,12 @@ public class InputParser {
 
 		//Verify the validity of the argument for the number of processors and store it - David Qi
 
-			_numberOfProcessors = Integer.parseInt(Processors);
+		_numberOfProcessors = Integer.parseInt(Processors);
 
-			//Check that the number of processors is of valid value
-			if(_numberOfProcessors < 1){
-				throw new InputParserException("Invalid input for the number of processors!");
-			}
+		//Check that the number of processors is of valid value
+		if(_numberOfProcessors < 1){
+			throw new InputParserException("Invalid input for the number of processors!");
+		}
 
 	}
 
@@ -148,16 +151,16 @@ public class InputParser {
 			if (commandLine.hasOption("v"))
 			{
 				_visualise = true; //Set the visualization flag to true
-				System.out.println("Option v is present.  This is a flag option.");
+				_logger.debug("Option v is present.  This is a flag option.");
 			}
 
 			if (commandLine.hasOption("p"))
 			{
 				_parallelise = true; //Parallelisation opted for
-				
+
 				/*int processors = Runtime.getRuntime().availableProcessors();
 				System.out.print(processors);*/
-				
+
 				//Check whether the p option is repeated, if yes output error
 				if(commandLine.getOptionValues("p").length > 1){
 					throw new InputParserException("Parse error: This option cannot be repeated!");
@@ -165,17 +168,16 @@ public class InputParser {
 
 				//Stored the number of cores to be used, output error if the 
 				//entered argument cannot be parsed into an integer (invalid input)
-					_cores = Integer.parseInt(commandLine.getOptionValue("p"));
+				_cores = Integer.parseInt(commandLine.getOptionValue("p"));
 
-					//Double check that the core count is valid
-					if(_cores < 1) {
-						throw new InputParserException("Parse error: Invalid input for the number of cores!");
-					}
+				//Double check that the core count is valid
+				if(_cores < 1) {
+					throw new InputParserException("Parse error: Invalid input for the number of cores!");
+				} else if(_cores > 8){
+					_cores = 8;
+				}
 
-			
-
-				System.out.print("Option p is present.  The number of cores is: ");
-				System.out.println(_cores);
+				_logger.debug("Option p is present.  The number of cores is: " + _cores);
 
 
 			}
@@ -197,8 +199,7 @@ public class InputParser {
 					throw new InputParserException("Parse error: Invalid input for the output name!");
 				}
 
-				System.out.print("Option o is present.  The output name is: ");
-				System.out.println(_outputFileName);
+				_logger.debug("Option o is present.  The output name is: " + _outputFileName);
 
 			}
 
@@ -223,7 +224,7 @@ public class InputParser {
 	 * displaying all the possible options
 	 */
 	public static void showHelpMessage(){
-		
+
 		System.out.println("java -jar scheduler.jar INPUT.dot P [OPTION]");
 		System.out.println("");
 		System.out.println("INPUT.dot	a task graph with integer weights in dot format");
@@ -235,9 +236,9 @@ public class InputParser {
 		System.out.println("-o OUTPUT	output file is named OUTPUT (default is INPUT-output.dot)");
 		System.exit(0);
 	}
-	
+
 	// Getter Methods
-	
+
 	/**
 	 * Get number of cores to use when calculating the optimum schedule
 	 * @return number of cores to use when calculating the optimum schedule
@@ -253,7 +254,7 @@ public class InputParser {
 	public int getProcessors() {
 		return _numberOfProcessors;
 	}
-	
+
 	/**
 	 * Determine whether or not to provide visualisation
 	 * @return boolean representing whether or not to provide visual representation
@@ -262,7 +263,7 @@ public class InputParser {
 		return _visualise;
 	}
 
-	
+
 	/**
 	 * Determine whether parallelisation is opted for 
 	 * @return whether parallelisation is opted for
@@ -270,7 +271,7 @@ public class InputParser {
 	public boolean isParallelise(){
 		return _parallelise;
 	}
-	
+
 	/**
 	 * Get the output file name
 	 * @return name of output file
