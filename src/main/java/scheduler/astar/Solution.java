@@ -376,6 +376,10 @@ public class Solution implements Comparable<Solution>, Schedule{
 		return s;
 	}
 
+	/**
+	 * Sets the processor schedule
+	 * @param HashMap of processors
+	 */
 	private void setProcessorSchedule(HashMap<Integer, Processor> processors) {
 		for (int i = 1; i <= _numberOfProcessors; i++) {
 			_processors.put(i, processors.get(i).createDeepCopy());
@@ -429,16 +433,63 @@ public class Solution implements Comparable<Solution>, Schedule{
 	}
 
 	/**
-	 * Added outgoingCommsOK function WITH BUGS
+	 * Algorithm 3 from the 2013 Sinnen paper.
+	 * @return a boolean to find whether a solution is equivalent 
+	 */
+	public boolean isEquivalent() {
+
+		Collections.sort(_scheduledProcesses);
+
+		Processor p = _processors.get(_mostRecentlyScheduledProcessor);
+		int tMax = p.getTime();
+
+		List<Vertex> processOrder = p.getProcessOrder();
+		int i = processOrder.size() - 2;
+
+		while (i >= 0 && _scheduledProcesses.indexOf(_lastScheduledTask) < _scheduledProcesses.indexOf(processOrder.get(i))) {
+			processOrder.remove(_lastScheduledTask);
+			processOrder.add(i, _lastScheduledTask);
+
+			Processor temp = new Processor();
+
+			_processors.put(_mostRecentlyScheduledProcessor, temp);
+			for (Vertex v : processOrder) {
+				try {
+					addProcessWithoutUpdating(v, _mostRecentlyScheduledProcessor);
+				} catch (SolutionException e) {
+					_processors.put(_mostRecentlyScheduledProcessor, p);
+					return false;
+				}
+			}
+
+			//System.out.println(temp.getProcessessString());
+
+			if (temp.getTime() <= tMax && outgoingCommsOK(this)) {
+				return true;
+			}
+
+			processOrder = p.getProcessOrder();
+			i--;
+		}
+
+		_processors.put(_mostRecentlyScheduledProcessor, p);
+		return false;
+	}
+	
+	/**
+	 * Algorithm 3 from the 2013 Sinnen paper.
+	 * This algorithm checks that all outgoing communications of the swapped tasks
+	 * done in Algorithm 2 do not delay any descendants, thus keeping a constant
+	 * schedule horizon
 	 * @param childSol
-	 * @return
+	 * @return a boolean to find whether a solution is equivalent 
 	 */
 	public boolean outgoingCommsOK(Solution childSol){
 		for (Vertex v: childSol._schedulableProcesses){
 			int swappedTime = minimalDataReadyTime(_lastScheduledTask);
 			if (swappedTime > minimalDataReadyTime(v)){
 				for (Vertex nc : _graph.getDirectChildren(v)) {
-					ArrayList<DefaultWeightedEdge> childEdges = outgoingEdgesOf(v);
+					ArrayList<DefaultWeightedEdge> childEdges = _graph.outgoingEdgesOf(v);
 					int edgeCost = 0;
 					for (DefaultWeightedEdge e : childEdges) {
 						if (e.getDest().equals(nc)) {
@@ -462,7 +513,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 							}
 							for (Vertex cv: parents){
 								if (p.isScheduled(cv)) {
-									ArrayList<DefaultWeightedEdge> cEdges = outgoingEdgesOf(cv);
+									ArrayList<DefaultWeightedEdge> cEdges = _graph.outgoingEdgesOf(cv);
 									int dataArrival = 0;
 									for (DefaultWeightedEdge e : cEdges) {
 										if (e.getDest().equals(nc)) {
@@ -485,10 +536,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 		}
 		return true;
 	}
-	private ArrayList<DefaultWeightedEdge> outgoingEdgesOf(Vertex v) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 	//TODO hash code, remove it?
 	/**
@@ -538,45 +586,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 		return _scheduledProcesses.size();
 	}
 
-	public boolean isEquivalent() {
 
-		Collections.sort(_scheduledProcesses);
-
-		Processor p = _processors.get(_mostRecentlyScheduledProcessor);
-		int tMax = p.getTime();
-
-		List<Vertex> processOrder = p.getProcessOrder();
-		int i = processOrder.size() - 2;
-
-		while (i >= 0 && _scheduledProcesses.indexOf(_lastScheduledTask) < _scheduledProcesses.indexOf(processOrder.get(i))) {
-			processOrder.remove(_lastScheduledTask);
-			processOrder.add(i, _lastScheduledTask);
-
-			Processor temp = new Processor();
-
-			_processors.put(_mostRecentlyScheduledProcessor, temp);
-			for (Vertex v : processOrder) {
-				try {
-					addProcessWithoutUpdating(v, _mostRecentlyScheduledProcessor);
-				} catch (SolutionException e) {
-					_processors.put(_mostRecentlyScheduledProcessor, p);
-					return false;
-				}
-			}
-
-			//System.out.println(temp.getProcessessString());
-
-			if (temp.getTime() <= tMax && outgoingCommsOK(this)) {
-				return true;
-			}
-
-			processOrder = p.getProcessOrder();
-			i--;
-		}
-
-		_processors.put(_mostRecentlyScheduledProcessor, p);
-		return false;
-	}
 
 	public void addProcessWithoutUpdating(Vertex v, int processorNumber) throws SolutionException {
 		int dataReadyTime = earliestDataReadyTime(v, processorNumber);
