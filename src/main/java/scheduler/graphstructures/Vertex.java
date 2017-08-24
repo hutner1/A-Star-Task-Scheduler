@@ -8,7 +8,7 @@ package scheduler.graphstructures;
  * BottomLvl will be set later, it is the level from the leaf 
  * Visited is used by topological sort to indicate that the node is visited
  */
-public class Vertex {
+public class Vertex implements Comparable<Vertex>{
 	private String _name;
 	private int _weight;
 	private int _bottomLvl;
@@ -81,6 +81,11 @@ public class Vertex {
 	 */
 	public void setVisited(){
 		_visited = true;
+	}
+
+	@Override
+	public int compareTo(Vertex v) {
+		return _name.compareTo(v._name);
 	}
 		
 }

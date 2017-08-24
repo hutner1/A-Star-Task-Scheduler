@@ -194,8 +194,11 @@ public class Visualizer {
 			for(ProcessInfo processInfo : processes){
 				String colorCode = getColor(i);
 				String vertexName = processInfo.getVertex().getName();
+				try {
 				_graph.getNode(vertexName).setAttribute("ui.style", "fill-color:#"+ colorCode +";");
-
+				}catch (Exception e) {
+				
+				}
 				List<Object> schedule = new ArrayList<Object>();
 				schedule.add(i);
 

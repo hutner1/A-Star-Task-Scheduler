@@ -26,6 +26,8 @@ public class Solution implements Comparable<Solution>, Schedule{
 	private List<Vertex> _nonschedulableProcesses;
 	private Queue<Solution> _children;
 	private boolean _partiallyExpanded = false;
+	private Vertex _lastScheduledTask;
+	private int _mostRecentlyScheduledProcessor;
 
 	private DefaultDirectedWeightedGraph _graph;
 	private static HashMap<Vertex, Integer> _btmLevels;
@@ -340,6 +342,8 @@ public class Solution implements Comparable<Solution>, Schedule{
 				for (int i = 1; i <= _numberOfProcessors; i++) {
 					Solution child = createDuplicateSolution();
 					child.addProcess(v, i);
+					child._lastScheduledTask = v;
+					child._mostRecentlyScheduledProcessor = i;
 					//TODO child.printTree();
 					_children.add(child);
 					//TODO System.out.println(child.maxCostFunction());
@@ -450,13 +454,43 @@ public class Solution implements Comparable<Solution>, Schedule{
 
 		return _upperBound;
 	}
-	
+
 	public void setExpansionStatus(boolean status) {
 		_partiallyExpanded = status;
 	}
-	
+
 	public int getSize() {
 		return _scheduledProcesses.size();
+	}
+
+	public boolean isEquivalent() {
+
+		Collections.sort(_scheduledProcesses);
+
+		Processor p = _processors.get(_mostRecentlyScheduledProcessor);
+		int tMax = p.getTime();
+
+		List<Vertex> processOrder = p.getProcessOrder();
+		int i = processOrder.size() - 2;
+
+		while (i >= 0 && _scheduledProcesses.indexOf(_lastScheduledTask) < _scheduledProcesses.indexOf(processOrder.get(i))) {
+			processOrder.remove(_lastScheduledTask);
+			processOrder.add(i, _lastScheduledTask);
+			
+			
+
+			/*if (p.getTime() <= tMax && OutgoingCommsOK(this)) {
+				return true;
+			}
+			*/
+			processOrder = p.getProcessOrder();
+			i--;
+		}
+		return false;
+	}
+
+
+	public void swapProcess(Processor p, Vertex vertexA, Vertex vertexB) {
 	}
 }
 
