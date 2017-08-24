@@ -454,5 +454,9 @@ public class Solution implements Comparable<Solution>, Schedule{
 	public void setExpansionStatus(boolean status) {
 		_partiallyExpanded = status;
 	}
+	
+	public int getSize() {
+		return _scheduledProcesses.size();
+	}
 }
 
