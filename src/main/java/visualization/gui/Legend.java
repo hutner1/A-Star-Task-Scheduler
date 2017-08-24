@@ -21,37 +21,21 @@ import javax.swing.JTextArea;
 import java.awt.Font;
 import java.awt.FlowLayout;
 import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
 
 public class Legend extends JPanel {
 	private int _proNo;
 	private int _height = 0;
-	
-	
+
+
 	/**
-	 * Create the panel.
+	 * Create the legend panel.
 	 */
 	public Legend(int proccesorNum) {
-		
 		_proNo = proccesorNum;
-		
-		JPanel mainPanel = new JPanel();
-		
 		setLayout(null);
-		JScrollPane panel = new JScrollPane(mainPanel);
-		mainPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-		
-		panel.setBounds(0, 50, 120, 333);
-		add(panel);
-		
-		JTextArea help = new JTextArea();
-		help.setLineWrap(true);
-		help.setEditable(false);
-		help.setWrapStyleWord(true);
-		help.setText("** The processors are where each task is assigned to.");
-		help.setFont(new Font("SansSerif", Font.ITALIC, 15));
-		help.setBounds(0, 385, 120, 155);
-		add(help);
-		
+
+		//The title for legends
 		JTextField title = new JTextField();
 		title.setForeground(new Color(255, 255, 255));
 		title.setBackground(new Color(51, 102, 255));
@@ -62,30 +46,62 @@ public class Legend extends JPanel {
 		title.setHorizontalAlignment(JTextField.CENTER);
 		title.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT); 
 		add(title);
+
+
+		//Setting up the panel to contain the labels.
+		JPanel content = new JPanel();
+
+		JScrollPane scroll = new JScrollPane(content);
+		content.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+		scroll.setBounds(0, 50, 120, 333);
+		scroll.setBorder(new LineBorder(Color.black));
+		add(scroll);
+
+		//Adding the legends into the content panel
 		ArrayList<JPanel> legends = new ArrayList<JPanel>();
 		for(int i=0; i<_proNo;i++){
 			legends.add(createLegends(i));
 			_height+=30;
-			mainPanel.add(legends.get(i));
+			content.add(legends.get(i));
 		}
-		
-		
-		mainPanel.setPreferredSize(new Dimension(90,_height+100));
-		
+
+		content.setPreferredSize(new Dimension(90,_height+100));
+
+
+		//Adding help text to allow users to understand what is being shown on the tree graph.
+		JTextArea help = new JTextArea();
+		help.setLineWrap(true);
+		help.setEditable(false);
+		help.setWrapStyleWord(true);
+		help.setText("\n** The processors are where each task is assigned to.");
+		help.setFont(new Font("SansSerif", Font.ITALIC, 15));
+		help.setBounds(0, 380, 120, 160);
+		help.setBorder(new LineBorder(Color.black));
+		help.setBorder(BorderFactory.createCompoundBorder( 
+				help.getBorder(),  
+				BorderFactory.createEmptyBorder(5, 5, 5, 5))); 
+		add(help);
 	}
-	
+
+	/**
+	 * This method creates a JPanel that contains the legend 
+	 * label with colored panel and the text.
+	 * @param currentProcessor
+	 * @return JPanel
+	 */
 	private JPanel createLegends(int currentProcessor){
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		panel.setPreferredSize(new Dimension(90,30));
-		
+
 		JPanel coloredPanel = new JPanel();
 		Color color = getColor(currentProcessor);
 		coloredPanel.setBackground(color);
 		coloredPanel.setBounds(5, 6, 10, 10);
-		
+
 		panel.add(coloredPanel);
-		
+
 		JTextField text = new JTextField();
 		text.setEditable(false);
 		text.setFont(new Font("SansSerif", Font.BOLD, 10));
@@ -93,48 +109,29 @@ public class Legend extends JPanel {
 		text.setBounds(25, 0, 90, 20);
 		text.setBorder(BorderFactory.createEmptyBorder());
 		panel.add(text);
-		
+
 		return panel;
 	}
-	
+
+	/**
+	 * Method to get the color for correct legend/label
+	 * @param index
+	 * @return
+	 */
 	public Color getColor(int index){
 		ArrayList<Color> colors = new ArrayList<Color>();
-			colors.add(new Color(150, 200, 255));   //blue
-			colors.add(new Color(255, 195, 0));  // yellow     
-			colors.add(new Color(29, 131, 72));  // dark green
-			colors.add( new Color(142, 68, 173));  //  purple
-			colors.add( new Color(40, 116, 166));  // navy blue
-			colors.add( new Color(230, 126, 34));  // orange
-			colors.add( new Color(93, 109, 126));  // grey
-			colors.add( new Color(69, 179, 157)); //mint
-			colors.add( new Color(174, 214, 241)); //light light blue
-			colors.add (new Color(217, 252, 103)); //greenish yellow
-			colors.add( new Color(204, 92, 146)); //magenta
-			colors.add( new Color(240, 160, 160)); //peach
-			colors.add(new Color(150, 200, 255));   //blue
-			colors.add(new Color(255, 195, 0));  // yellow     
-			colors.add(new Color(29, 131, 72));  // dark green
-			colors.add( new Color(142, 68, 173));  //  purple
-			colors.add( new Color(40, 116, 166));  // navy blue
-			colors.add( new Color(230, 126, 34));  // orange
-			colors.add( new Color(93, 109, 126));  // grey
-			colors.add( new Color(69, 179, 157)); //mint
-			colors.add( new Color(174, 214, 241)); //light light blue
-			colors.add (new Color(217, 252, 103)); //greenish yellow
-			colors.add( new Color(204, 92, 146)); //magenta
-			colors.add( new Color(240, 160, 160)); //peach
-			colors.add(new Color(150, 200, 255));   //blue
-			colors.add(new Color(255, 195, 0));  // yellow     
-			colors.add(new Color(29, 131, 72));  // dark green
-			colors.add( new Color(142, 68, 173));  //  purple
-			colors.add( new Color(40, 116, 166));  // navy blue
-			colors.add( new Color(230, 126, 34));  // orange
-			colors.add( new Color(93, 109, 126));  // grey
-			colors.add( new Color(69, 179, 157)); //mint
-			colors.add( new Color(174, 214, 241)); //light light blue
-			colors.add (new Color(217, 252, 103)); //greenish yellow
-			colors.add( new Color(204, 92, 146)); //magenta
-			colors.add( new Color(240, 160, 160)); //peach
+		colors.add(new Color(231, 71, 60));   //dark red
+		colors.add(new Color(255, 195, 0));  // yellow     
+		colors.add(new Color(29, 131, 72));  // dark green
+		colors.add( new Color(142, 68, 173));  //  purple
+		colors.add( new Color(40, 116, 166));  // navy blue
+		colors.add( new Color(230, 126, 34));  // orange
+		colors.add( new Color(93, 109, 126));  // grey
+		colors.add( new Color(69, 179, 157)); //mint
+		colors.add( new Color(174, 214, 241)); //light light blue
+		colors.add (new Color(217, 252, 103)); //greenish yellow
+		colors.add( new Color(204, 92, 146)); //magenta
+		colors.add( new Color(240, 160, 160)); //peach
 
 		return colors.get(index);
 	}
