@@ -24,6 +24,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 	private List<Vertex> _scheduledProcesses;
 	private List<Vertex> _schedulableProcesses;
 	private List<Vertex> _nonschedulableProcesses;
+	
 	private Queue<Solution> _children;
 	private boolean _partiallyExpanded = false;
 	private Vertex _lastScheduledTask;
@@ -93,8 +94,9 @@ public class Solution implements Comparable<Solution>, Schedule{
 	 * @param v task vertex
 	 * @param processorNumber number of the processor to allocate task on 
 	 * @return earliest possible task allocation time on selected processor
+	 * @throws SolutionException 
 	 */
-	private int earliestDataReadyTime(Vertex v, int processorNumber) {
+	private int earliestDataReadyTime(Vertex v, int processorNumber){
 
 		// for every processor, get the latest starting parent, then determine the earliest possible start time of new process
 		ArrayList<Integer> startingTimes = new ArrayList<Integer>();
@@ -445,8 +447,8 @@ public class Solution implements Comparable<Solution>, Schedule{
 				Solution s;
 				while ((s = cs.poll()) != null) {
 					int time = s.getLastFinishTime();
-					if (childSol._scheduledProcesses.contains(s)){
-						if (childSol.getLastFinishTime()>time || true){
+					if (s.isScheduled(v)){
+						if (childSol.getLastFinishTime()>time || !_processors.get(_mostRecentlyScheduledProcessor).isScheduled(v)){
 							return false;
 						}
 					} else {
@@ -472,6 +474,15 @@ public class Solution implements Comparable<Solution>, Schedule{
 	public int hashCode(){
 	}
 	 */
+
+	private boolean isScheduled(Vertex v) {
+		for (Processor p : _processors.values()) {
+			if (p.isScheduled(v)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	/**
 	 * Sets the static mapping of bottom levels for all vertices in the graph
@@ -520,18 +531,29 @@ public class Solution implements Comparable<Solution>, Schedule{
 			processOrder.remove(_lastScheduledTask);
 			processOrder.add(i, _lastScheduledTask);
 			
-			
+			Processor temp = new Processor();
 
-			/*if (p.getTime() <= tMax && outgoingCommsOK(this)) {
+			_processors.put(_mostRecentlyScheduledProcessor, temp);
+			for (Vertex v : processOrder) {
+				addProcessWithoutUpdating(v, _mostRecentlyScheduledProcessor);
+			}
+			
+			
+			if (temp.getTime() <= tMax && outgoingCommsOK(this)) {
 				return true;
 			}
-			*/
+			
 			processOrder = p.getProcessOrder();
 			i--;
 		}
+		
+		_processors.put(_mostRecentlyScheduledProcessor, p);
 		return false;
 	}
 
+	public void addProcessWithoutUpdating(Vertex v, int processorNumber) {
+		_processors.get(processorNumber).addProcess(v,earliestDataReadyTime(v, processorNumber));
+	}
 
 	public void swapProcess(Processor p, Vertex vertexA, Vertex vertexB) {
 	}

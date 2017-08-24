@@ -86,7 +86,7 @@ public class AStarParallelised extends AStar{
 	 */
 	private Solution getBestSolution(AStarThread[] aStarThreads) {
 		int threadNo = 0;
-		int bestCost = Integer.MIN_VALUE;
+		int bestCost = Integer.MAX_VALUE;
 		//Loop through all the threads
 		for (int i = 0; i < _numberOfThreads; i++) {
 			if (aStarThreads[i].getSolution() != null) {

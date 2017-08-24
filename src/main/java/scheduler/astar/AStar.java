@@ -151,7 +151,9 @@ public class AStar {
 				int childCost = s.maxCostFunction();
 				_solCreated ++;
 				//System.out.println(childCost);
-				if (!_closedSolutions.contains(s)) {
+				if (s.isEquivalent()) {
+					_solPruned ++;
+				} else if (!_closedSolutions.contains(s)) {
 					if (childCost > _upperBound){
 						// DO NOTHING AS IT WILL NOT BE CONSIDERED
 						_solPruned ++;
