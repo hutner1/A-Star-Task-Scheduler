@@ -461,8 +461,18 @@ public class Solution implements Comparable<Solution>, Schedule{
 								}
 							}
 							for (Vertex cv: parents){
-								if (cv.getBottomLevel() >= time){//TODO: figure out what is data arrival from np
-									atLeastOneLater = true;
+								if (p.isScheduled(cv)) {
+									ArrayList<DefaultWeightedEdge> cEdges = outgoingEdgesOf(cv);
+									int dataArrival = 0;
+									for (DefaultWeightedEdge e : cEdges) {
+										if (e.getDest().equals(nc)) {
+											dataArrival = e.getWeight();
+											break;
+										}
+									}
+									if (dataArrival >= time){
+										atLeastOneLater = true;
+									}
 								}
 							}
 							if (!atLeastOneLater){
