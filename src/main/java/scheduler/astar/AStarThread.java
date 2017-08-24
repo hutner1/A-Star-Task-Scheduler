@@ -14,7 +14,6 @@ import visualization.gui.StatisticTable;
 
 /**
  * AStar runnable class that will be added to allow solution search in parallel
- * Needs to be wrapped by Thread() to start
  */
 public class AStarThread extends AStar implements Runnable{
 	int _threadNo; //Number identifier for thread

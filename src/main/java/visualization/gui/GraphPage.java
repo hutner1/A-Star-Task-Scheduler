@@ -7,7 +7,9 @@ import org.graphstream.ui.swingViewer.ViewPanel;
 import visualization.Visualizer;
 
 import java.awt.GridLayout;
-
+/**
+ * Generates a panel to contain the graph produced by the Visualizer class.
+ */
 public class GraphPage extends JPanel {
 	ViewPanel _view;
 

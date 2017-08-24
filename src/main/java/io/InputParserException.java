@@ -1,7 +1,7 @@
 package io;
 
 /**
- * Contains a static method to print out an error message and quit the program
+ * Exception class that can be instantiated to print an error message and quit the program
  */
 public class InputParserException extends Exception {
 	

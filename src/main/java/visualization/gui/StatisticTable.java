@@ -16,6 +16,17 @@ import javax.swing.table.DefaultTableModel;
 
 import scheduler.Main;
 
+/**
+ * Generates a panel containing a table with relevant information about the current process. 
+ * The information includes followings:
+ * -The number of processors being used by the computer to produce the optimal schedule
+ * -The number of solutions created during the calculation
+ * -The number of solutions popped during the calculation
+ * -The number of solution pruned during the calculation
+ * -The amount of memory being used in megabytes (MB)
+ * -The time since the program has started in seconds (s)
+ * -The length/finish time of the current optimal solution 
+ */
 public class StatisticTable extends JPanel{
 
 	private JTable _table;

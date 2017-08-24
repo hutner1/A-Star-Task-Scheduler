@@ -9,6 +9,9 @@ import javax.swing.JButton;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
+/**
+ * Generates a button with the custom settings that cannot be set with the default JButton class.
+ */
 class CustomButton extends JButton {
 
 	private Color hoverBackgroundColor = new Color(6, 47, 79);

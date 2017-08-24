@@ -25,6 +25,11 @@ import javax.swing.border.LineBorder;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+/**
+ * Instantiates the GUI containing the representations of the schedule in the forms of a tree graph and Gantt chart. It also contains a statistics table which shows relevant information about the current progress of the AStar algorithm.
+ * - Allows the users to switch between panels which minimise a number of contents shown on the screen.
+ * - Updates the contents regularly to keep the users informed visually.
+ */
 public class Gui {
 	protected Visualizer _visualizer;
 	public JFrame _frame;

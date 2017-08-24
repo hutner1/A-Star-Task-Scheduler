@@ -442,19 +442,28 @@ public class Solution implements Comparable<Solution>, Schedule{
 		_btmLevels = btmLevels;
 	}
 
+	/**
+	 * Get the mapping from processor number to Processor instances
+	 */
 	public HashMap<Integer, Processor> getProcess(){
 		return _processors;
 	}
 
+	// TODO don't think we ever used upper bound
 	public int getUpperBound() {
 
 		return _upperBound;
 	}
 	
+	// TODO delete expansion status' stuff
 	public void setExpansionStatus(boolean status) {
 		_partiallyExpanded = status;
 	}
 	
+	/**
+	 * Returns the size of a schedule, the number of nodes scheduled on the schedule 
+	 * @return the number of nodes scheduled on the schedule 
+	 */
 	public int getSize() {
 		return _scheduledProcesses.size();
 	}

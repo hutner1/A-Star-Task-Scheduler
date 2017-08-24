@@ -23,6 +23,13 @@ import java.awt.FlowLayout;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
+/**
+ * Generates a panel containing the legend for the graph produced by the Visualizer class. 
+ * 
+ * The legend labels colours based on the processors that will be carrying out the tasks. 
+ * The colour of the nodes on the graph indicates which processor a certain task is ran on.
+ *
+ */
 public class Legend extends JPanel {
 	private int _proNo;
 	private int _height = 0;

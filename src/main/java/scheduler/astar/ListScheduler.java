@@ -32,11 +32,15 @@ public class ListScheduler {
 	
 	/**
 	 * Obtain the result of list scheduling
-	 * @return possible finish time using task scheduling that's based on a sepcialised topological sort.
+	 * @return possible finish time using task scheduling that's based on a topological sort.
 	 */
 	public int getResult(){
+		// stack of sorted tasks
 		ArrayDeque<Vertex> sortedTasks = getTopologicallySortedTasks(); 
+		// create an empty solution to be filled with tasks
 		Solution solution = new Solution(_numberOfProcessors, _digraph);
+		// fill the empty solution in the order of popping off the stack of sorted tasks
+		// tasks being added will always have their dependencies ran
 		while(!sortedTasks.isEmpty()){
 			solution.addProcessAtEarliestPossibleTime(sortedTasks.pollLast());
 		}	
