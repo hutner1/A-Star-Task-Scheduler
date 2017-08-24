@@ -73,7 +73,7 @@ public class StatisticTable extends JPanel{
         centerRenderer.setHorizontalAlignment( JLabel.CENTER );
         
         _table.getColumnModel().getColumn(1).setCellRenderer( centerRenderer );
-        _table.setRowHeight(50);
+        _table.setRowHeight(62);
         
         
         BoardTableCellRenderer leftRenderer = new BoardTableCellRenderer();

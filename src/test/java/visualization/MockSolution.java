@@ -38,25 +38,21 @@ public class MockSolution implements Schedule{
 	}
 	@Override
 	public int getLastFinishTime() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public void addProcess(Vertex v, int processorNumber) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public int maxCostFunction() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public boolean isCompleteSchedule() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

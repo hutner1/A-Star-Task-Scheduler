@@ -193,6 +193,10 @@ public class Gantt extends ApplicationFrame{
 		return _launched ;
 	}
 	
+	/**
+	 * A public class that returns the dataset. Used for testing
+	 * @return
+	 */
 	public IntervalCategoryDataset getDataset() {
 		return createDataset();
 	}
