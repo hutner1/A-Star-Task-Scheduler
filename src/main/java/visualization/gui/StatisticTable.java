@@ -66,6 +66,7 @@ public class StatisticTable extends JPanel{
 		_table.getTableHeader().setResizingAllowed(false);
 		_table.setRowSelectionAllowed(false);
 		_table.setFont(new Font("SansSerif", Font.PLAIN, 18));
+
 		_table.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 25));
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
