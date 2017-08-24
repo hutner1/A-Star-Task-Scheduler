@@ -38,14 +38,26 @@ public class TaskNumeric extends Task {
     }
     
 
+    /**
+     * Getter method for desc
+     * @return
+     */
     public String getDesc() {
     	return _desc;
     }
     
+    /**
+     * Getter method for start time
+     * @return
+     */
     public long getStartTime() {
     	return _start;
     }
     
+    /**
+     * Getter method for end time
+     * @return
+     */
     public long getEndTime() {
     	return _end;
     }

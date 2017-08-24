@@ -136,6 +136,9 @@ public class StatisticTable extends JPanel{
 
 	}
 	
+	/**
+	 * Model for the statistics table
+	 */
 	@SuppressWarnings("serial")
 	private class Model extends DefaultTableModel {
 
@@ -149,6 +152,10 @@ public class StatisticTable extends JPanel{
 		}
 	}
 
+	/**
+	 * Getter method to return the statistics table
+	 * @return the StatisticTable
+	 */
 	public JTable getTable(){
 
 		return _table;

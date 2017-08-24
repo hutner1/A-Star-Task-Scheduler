@@ -5,6 +5,9 @@ package io;
  */
 public class InputParserException extends Exception {
 	
+	/**
+	 * Constructor for InputParserException
+	 */
 	public InputParserException() {
 		super();
 	}
