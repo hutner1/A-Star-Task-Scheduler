@@ -92,7 +92,7 @@ public class Gantt extends ApplicationFrame{
 	private static IntervalCategoryDataset createDataset() {
 
 
-		TaskSeries ts = new TaskSeries("Best Solution");
+		TaskSeries ts = new TaskSeries("Current Solution");
 
 		HashMap<Integer, Processor> processors = _sol.getProcess();
 

@@ -60,7 +60,7 @@ public class Legend extends JPanel {
 
 		//Adding the legends into the content panel
 		ArrayList<JPanel> legends = new ArrayList<JPanel>();
-		for(int i=0; i<_proNo;i++){
+		for(int i=0; i<=_proNo;i++){
 			legends.add(createLegends(i));
 			_height+=30;
 			content.add(legends.get(i));
@@ -96,16 +96,25 @@ public class Legend extends JPanel {
 		panel.setPreferredSize(new Dimension(90,30));
 
 		JPanel coloredPanel = new JPanel();
-		Color color = getColor(currentProcessor);
-		coloredPanel.setBackground(color);
-		coloredPanel.setBounds(5, 6, 10, 10);
+		if (currentProcessor == _proNo) {
+			coloredPanel.setBackground(Color.BLACK);
+			coloredPanel.setBounds(5, 6, 10, 10);
+		} else {
+			Color color = getColor(currentProcessor);
+			coloredPanel.setBackground(color);
+			coloredPanel.setBounds(5, 6, 10, 10);
+		}
 
 		panel.add(coloredPanel);
 
 		JTextField text = new JTextField();
 		text.setEditable(false);
 		text.setFont(new Font("SansSerif", Font.BOLD, 10));
-		text.setText("Processor "+(currentProcessor+1));
+		if (currentProcessor == _proNo) {
+			text.setText("Unreached");
+		} else {
+			text.setText("Processor "+(currentProcessor+1));
+		}
 		text.setBounds(25, 0, 90, 20);
 		text.setBorder(BorderFactory.createEmptyBorder());
 		panel.add(text);
