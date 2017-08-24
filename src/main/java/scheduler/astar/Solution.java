@@ -206,7 +206,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 	/**
 	 * Part 1 of proposed cost function, returns the maximum end time of all
 	 * vertices that have already been scheduled, by using their bottom level
-	 * @return
+	 * @return maximum end time of all vertices that have already been scheduled, by using their bottom level
 	 */
 	private int maximumEndTimeOfPartialSchedule() {
 		ArrayList<Integer> maxBottomLevels = new ArrayList<Integer>();
@@ -230,6 +230,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 	 * Part 2 of the proposed cost function, returns the total idle time of the
 	 * schedule added to the total cost of all vertices, all divided by the 
 	 * number of processors
+	 * @return  total idle time of the schedule added to the total cost of all vertices, all divided by the number of processors
 	 */
 	private int idleTimePlusComputationLoad() {
 
@@ -250,9 +251,8 @@ public class Solution implements Comparable<Solution>, Schedule{
 	}
 
 	/**
-	 * Part 3 of proposed cost function, returns the latest end time of all schedulable
-	 * vertex given that they are scheduled at the next earliest time
-	 * @return
+	 * Part 3 of proposed cost function, maximum of earliest start time and bottom level of any schedulable tasks
+	 * @return maximum of earliest start time and bottom level of any schedulable tasks
 	 */
 	private int maximumEndTimeOfFreeVertices() {
 		ArrayList<Integer> maxTimes = new ArrayList<Integer>();
