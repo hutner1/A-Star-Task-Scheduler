@@ -21,6 +21,7 @@ import javax.swing.JTextArea;
 import java.awt.Font;
 import java.awt.FlowLayout;
 import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
 
 public class Legend extends JPanel {
 	private int _proNo;
