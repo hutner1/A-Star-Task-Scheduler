@@ -24,7 +24,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 	private List<Vertex> _scheduledProcesses;
 	private List<Vertex> _schedulableProcesses;
 	private List<Vertex> _nonschedulableProcesses;
-	
+
 	private Queue<Solution> _children;
 	private boolean _partiallyExpanded = false;
 	private Vertex _lastScheduledTask;
@@ -102,34 +102,28 @@ public class Solution implements Comparable<Solution>, Schedule{
 		ArrayList<Integer> startingTimes = new ArrayList<Integer>();
 
 		// finds task's dependencies, and finds earliest possible start time
-		for (int i = 1; i <= _numberOfProcessors; i++) {
-			int latestParentEndTime = 0;
-			for (DefaultWeightedEdge e : _graph.incomingEdgesOf(v)) {
-				Vertex parent = _graph.getEdgeSource(e);
+		for (DefaultWeightedEdge e : _graph.incomingEdgesOf(v)) {
+			int parentEndTime = -1;
+			Vertex parent = _graph.getEdgeSource(e);
+			for (int i = 1; i <= _numberOfProcessors; i++) {
 				if (_processors.get(i).isScheduled(parent)) {
-
-					int parentEndTime = _processors.get(i).endTimeOf(parent);
+					parentEndTime =_processors.get(i).endTimeOf(parent);
 					if (processorNumber != i) {
 						parentEndTime += _graph.getEdgeWeight(e);
 					}
-
-					if (parentEndTime > latestParentEndTime) {
-						latestParentEndTime = parentEndTime;
-					}
-
 				}
 			}
-			startingTimes.add(latestParentEndTime);
+			if (parentEndTime == -1) {
+				return -1;
+			} else {
+				startingTimes.add(parentEndTime);
+			}
 		}
+		startingTimes.add(_processors.get(processorNumber).earliestNextProcess());
 		int earliestStartTime = Collections.max(startingTimes);
-		int earliestAvailableTime = _processors.get(processorNumber).earliestNextProcess();
 		//System.out.println(earliestStartTime);
 		//System.out.println(earliestAvailableTime);
-		if (earliestStartTime > earliestAvailableTime) {
-			return earliestStartTime;
-		} else {
-			return earliestAvailableTime;
-		}
+		return earliestStartTime;
 	}
 
 	/**
@@ -419,8 +413,8 @@ public class Solution implements Comparable<Solution>, Schedule{
 		ArrayList<String> processesOtherSolution = new ArrayList<String>();
 
 		for (int i = 1; i <= _numberOfProcessors; i++) {
-			processesThisSolution.add(_processors.get(i).getProcessesString());
-			processesOtherSolution.add(otherSolution._processors.get(i).getProcessesString());
+			processesThisSolution.add(_processors.get(i).getProcessessString());
+			processesOtherSolution.add(otherSolution._processors.get(i).getProcessessString());
 		}
 
 		for (String processorString : processesThisSolution) {
@@ -508,7 +502,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 	public void setExpansionStatus(boolean status) {
 		_partiallyExpanded = status;
 	}
-	
+
 	/**
 	 * Returns the size of a schedule, the number of nodes scheduled on the schedule 
 	 * @return the number of nodes scheduled on the schedule 
@@ -530,29 +524,39 @@ public class Solution implements Comparable<Solution>, Schedule{
 		while (i >= 0 && _scheduledProcesses.indexOf(_lastScheduledTask) < _scheduledProcesses.indexOf(processOrder.get(i))) {
 			processOrder.remove(_lastScheduledTask);
 			processOrder.add(i, _lastScheduledTask);
-			
+
 			Processor temp = new Processor();
 
 			_processors.put(_mostRecentlyScheduledProcessor, temp);
 			for (Vertex v : processOrder) {
-				addProcessWithoutUpdating(v, _mostRecentlyScheduledProcessor);
+				try {
+					addProcessWithoutUpdating(v, _mostRecentlyScheduledProcessor);
+				} catch (SolutionException e) {
+					_processors.put(_mostRecentlyScheduledProcessor, p);
+					return false;
+				}
 			}
-			
-			
+
+			//System.out.println(temp.getProcessessString());
+
 			if (temp.getTime() <= tMax && outgoingCommsOK(this)) {
 				return true;
 			}
-			
+
 			processOrder = p.getProcessOrder();
 			i--;
 		}
-		
+
 		_processors.put(_mostRecentlyScheduledProcessor, p);
 		return false;
 	}
 
-	public void addProcessWithoutUpdating(Vertex v, int processorNumber) {
-		_processors.get(processorNumber).addProcess(v,earliestDataReadyTime(v, processorNumber));
+	public void addProcessWithoutUpdating(Vertex v, int processorNumber) throws SolutionException {
+		int dataReadyTime = earliestDataReadyTime(v, processorNumber);
+		if (dataReadyTime == -1) {
+			throw new SolutionException();
+		}
+		_processors.get(processorNumber).addProcess(v,dataReadyTime);
 	}
 
 	public void swapProcess(Processor p, Vertex vertexA, Vertex vertexB) {

@@ -1,6 +1,12 @@
 package scheduler.graphstructures;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -39,5 +45,21 @@ public class TestVertex {
 		assertTrue(_testVertex.isVisited());
 	}
 	
-
+	@Test
+	public void testComparator() {
+		Vertex vertexA = new Vertex("0");
+		Vertex vertexB = new Vertex("1");
+		Vertex vertexC = new Vertex("2");
+		
+		List<Vertex> vertices = new ArrayList<Vertex>();
+		vertices.add(vertexC);
+		vertices.add(vertexA);
+		vertices.add(vertexB);
+		
+		Collections.sort(vertices);
+		
+		assertTrue(vertices.indexOf(vertexA) == 0);
+		assertTrue(vertices.indexOf(vertexB) == 1);
+		assertTrue(vertices.indexOf(vertexC) == 2);
+	}
 }

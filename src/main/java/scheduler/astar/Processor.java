@@ -122,7 +122,7 @@ public class Processor {
 	/**
 	 * Print the all the scheduled tasks' name and start time
 	 */
-	public String getProcessesString() {
+	public String getProcessessString() {
 		String s = "";
 		for (ProcessInfo pI : processes) {
 			s += pI.getVertex().getName();
