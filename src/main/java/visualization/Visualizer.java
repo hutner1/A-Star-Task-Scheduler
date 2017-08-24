@@ -169,9 +169,6 @@ public class Visualizer {
 		//Get the hash map of the processes
 		HashMap<Integer, Processor> processorWithSolution = currentBestSol.getProcess();
 		HashMap<String, List<Object>> scheduledVertices = new HashMap<String, List<Object>>();
-	/*	for(Vertex vertex : _DAG.vertexSet()){
-		
-		Iterator<Node> k = _graph.getNodeIterator();
 		
 		for(Vertex vertex : _DAG.vertexSet()){
 			_graph.getNode(vertex.getName()).setAttribute("ui.style", "fill-color:#"+ "000000" +";");
