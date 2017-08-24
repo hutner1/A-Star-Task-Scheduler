@@ -33,6 +33,11 @@ import scheduler.astar.Processor;
 import scheduler.astar.Schedule;
 import scheduler.astar.Solution;
 
+/**
+ * Represents a single Gantt chart. It takes in a schedule, and generates a dataset.
+ * The dataset is then used to render a Gantt chart which will be put into a JPanel.
+ *
+ */
 public class Gantt extends ApplicationFrame{
 
 	private static String _title;

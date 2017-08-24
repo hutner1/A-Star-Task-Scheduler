@@ -32,7 +32,6 @@ import org.jfree.ui.TextAnchor;
 
 /**
  * Renders/paints the gantt chart
- * @author Jack
  *
  */
 public class CustomGanttRenderer extends GanttRenderer {

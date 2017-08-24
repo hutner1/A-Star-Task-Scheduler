@@ -14,8 +14,9 @@ import org.jfree.data.gantt.Task;
 import org.jfree.data.gantt.TaskSeriesCollection;
 import org.jfree.data.time.TimePeriod;
 /**
- * A tooltip generator for plots that use data from an
-{@link GanttCategoryDataset}.
+ * This class generates tooltips for subtasks. 
+ * It also changes the display format of the tooltips to correctly 
+ * show integer start/end times instead of showing Dates.
  */
 public class CustomIntervalCategoryGanttToolTipGenerator extends
 IntervalCategoryToolTipGenerator {
@@ -26,38 +27,30 @@ IntervalCategoryToolTipGenerator {
 		super();
 	}
 	/**
-	 * Creates a new generator with the specified number
-formatter.
+	 * Creates a new generator with the specified number formatter.
 	 *
-	 * @param labelFormat the label format string
-(<code>null</code> not permitted).
-	 * @param formatter the number formatter
-(<code>null</code> not permitted).
+	 * @param labelFormat the label format string (<code>null</code> not permitted).
+	 * @param formatter the number formatter (<code>null</code> not permitted).
 	 */
 	public CustomIntervalCategoryGanttToolTipGenerator(String labelFormat,
 			NumberFormat formatter) {
 		super(labelFormat, formatter);
 	}
 	/**
-	 * Creates a new generator with the specified date
-formatter.
+	 * Creates a new generator with the specified date formatter.
 	 *
-	 * @param labelFormat the label format string
-(<code>null</code> not permitted).
-	 * @param formatter the date formatter
-(<code>null</code> not permitted).
+	 * @param labelFormat the label format string (<code>null</code> not permitted).
+	 * @param formatter the date formatter (<code>null</code> not permitted).
 	 */
 	public CustomIntervalCategoryGanttToolTipGenerator(String labelFormat,
 			DateFormat formatter) {
 		super(labelFormat, formatter);
 	}
 	/**
-	 * Creates the array of items that can be passed to the
-<code>MessageFormat</code> class
+	 * Creates the array of items that can be passed to the <code>MessageFormat</code> class
 	 * for creating labels.
 	 *
-	 * @param dataset the dataset (<code>null</code> not
-permitted).
+	 * @param dataset the dataset (<code>null</code> not permitted).
 	 * @param row the row index (zero-based).
 	 * @param column the column index (zero-based).
 	 *
@@ -108,14 +101,12 @@ permitted).
 		return result;
 	}
 	/**
-	 * Generates the tool tip text for an item in a dataset.
-Note: in the current dataset
-	 * implementation, each row is a series, and each column
-contains values for a
+	 * Generates the tool tip text for an item in a dataset. 
+	 * Note: in the current dataset
+	 * implementation, each row is a series, and each column contains values for a
 	 * particular category.
 	 *
-	 * @param dataset the dataset (<code>null</code> not
-permitted).
+	 * @param dataset the dataset (<code>null</code> not permitted).
 	 * @param row the row index (zero-based).
 	 * @param column the column index (zero-based).
 	 * @param subinterval the subinterval index (zero-based).

@@ -18,7 +18,7 @@ import org.jfree.chart.urls.StandardCategoryURLGenerator;
 import org.jfree.data.category.IntervalCategoryDataset;
 
 /**
- * 
+ * Creates a Gantt chart, but the X-axis is in Integer format instead of Date format.
  *
  */
 public class GanttChartFactory extends ChartFactory{
