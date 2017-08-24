@@ -38,13 +38,14 @@ public class Legend extends JPanel {
 		//The title for legends
 		JTextField title = new JTextField();
 		title.setForeground(new Color(255, 255, 255));
-		title.setBackground(new Color(51, 102, 255));
+		title.setBackground(new Color(13, 90, 150));
 		title.setEditable(false);
 		title.setText("Processors");
 		title.setFont(new Font("SansSerif", Font.BOLD, 17));
 		title.setBounds(0, 0, 120, 50);
 		title.setHorizontalAlignment(JTextField.CENTER);
 		title.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT); 
+		title.setBorder(new LineBorder(new Color(13, 90, 150),1));
 		add(title);
 
 
@@ -60,7 +61,7 @@ public class Legend extends JPanel {
 
 		//Adding the legends into the content panel
 		ArrayList<JPanel> legends = new ArrayList<JPanel>();
-		for(int i=0; i<_proNo;i++){
+		for(int i=0; i<=_proNo;i++){
 			legends.add(createLegends(i));
 			_height+=30;
 			content.add(legends.get(i));
@@ -96,16 +97,25 @@ public class Legend extends JPanel {
 		panel.setPreferredSize(new Dimension(90,30));
 
 		JPanel coloredPanel = new JPanel();
-		Color color = getColor(currentProcessor);
-		coloredPanel.setBackground(color);
-		coloredPanel.setBounds(5, 6, 10, 10);
+		if (currentProcessor == _proNo) {
+			coloredPanel.setBackground(Color.BLACK);
+			coloredPanel.setBounds(5, 6, 10, 10);
+		} else {
+			Color color = getColor(currentProcessor);
+			coloredPanel.setBackground(color);
+			coloredPanel.setBounds(5, 6, 10, 10);
+		}
 
 		panel.add(coloredPanel);
 
 		JTextField text = new JTextField();
 		text.setEditable(false);
 		text.setFont(new Font("SansSerif", Font.BOLD, 10));
-		text.setText("Processor "+(currentProcessor+1));
+		if (currentProcessor == _proNo) {
+			text.setText("Unreached");
+		} else {
+			text.setText("Processor "+(currentProcessor+1));
+		}
 		text.setBounds(25, 0, 90, 20);
 		text.setBorder(BorderFactory.createEmptyBorder());
 		panel.add(text);

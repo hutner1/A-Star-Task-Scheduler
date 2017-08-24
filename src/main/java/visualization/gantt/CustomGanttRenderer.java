@@ -7,6 +7,7 @@ import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import org.jfree.chart.axis.CategoryAxis;
@@ -56,7 +57,7 @@ public class CustomGanttRenderer extends GanttRenderer {
 		setBaseItemLabelGenerator(new IntervalCategoryItemLabelGenerator());
 
 		// Customise some of the visuals of gantt chart (colour, outlines, position)
-		setSeriesPaint(0, Color.decode("#a5dbff"));
+		//setSeriesPaint(0, Color.decode("#FFFFFF"));
 		setDrawBarOutline(true);
 		setBaseItemLabelsVisible(true);
 		setBaseItemLabelPaint(Color.BLACK);
@@ -69,7 +70,7 @@ public class CustomGanttRenderer extends GanttRenderer {
 	 * Holds the colours used for the Gantt chart (change to alternating as per Guyver's advice)
 	 */
 	private void generateColours() {
-		_colors.add(0, new Color(150, 200, 255));   //blue
+		_colors.add(0, new Color(255,255,200));   //blue
 		_colors.add(1, new Color(255, 195, 0));  // yellow     
 		_colors.add(2, new Color(29, 131, 72));  // dark green
 		_colors.add(3, new Color(142, 68, 173));  //  purple
@@ -233,12 +234,11 @@ public class CustomGanttRenderer extends GanttRenderer {
 				if (entities != null) {
 					//System.out.println("Here 0");
 					String tip = null;
-					CategoryToolTipGenerator cttg = new CustomIntervalCategoryGanttToolTipGenerator();
+					CategoryToolTipGenerator cttg = new CustomIntervalCategoryGanttToolTipGenerator("{1}: {3} - {4}", NumberFormat.getNumberInstance());
 							//getToolTipGenerator(row, column);
 					if (cttg != null) {
 						if (cttg instanceof
 								CustomIntervalCategoryGanttToolTipGenerator) {
-							//System.out.println("Here 1");
 							tip =
 									((CustomIntervalCategoryGanttToolTipGenerator)cttg).generateToolTip(
 											dataset, row, column,
@@ -246,7 +246,6 @@ public class CustomGanttRenderer extends GanttRenderer {
 											);
 						}
 						else {
-							//System.out.println("Here 2");
 							tip = cttg.generateToolTip(
 									dataset, row, column
 									);
