@@ -434,22 +434,26 @@ public class Solution implements Comparable<Solution>, Schedule{
 	 * @return
 	 */
 	public boolean outgoingCommsOK(Solution childSol){
-		for (Vertex v: childSol._scheduledProcesses){
-			int swappedTime = 4;
+		for (Vertex v: childSol._schedulableProcesses){
+			int swappedTime = minimalDataReadyTime(_lastScheduledTask);
 			if (swappedTime > minimalDataReadyTime(v)){
-				Queue<Solution> cs = childSol.createChildren();
-				Solution s;
-				while ((s = cs.poll()) != null) {
-					int time = s.getLastFinishTime();
-					if (s.isScheduled(v)){
-						if (childSol.getLastFinishTime()>time || !_processors.get(_mostRecentlyScheduledProcessor).isScheduled(v)){
+				for (Vertex nc : _graph.getDirectChildren(v)) {
+					int time = v.getBottomLevel(); //TODO: add edge weight
+					if (isScheduled(nc)){
+						if (minimalDataReadyTime(nc)>time || !_processors.get(_mostRecentlyScheduledProcessor).isScheduled(v)){
 							return false;
 						}
 					} else {
 						for (Processor p: _processors.values()){
 							boolean atLeastOneLater = false;
-							for (Vertex cv: _graph.getDirectParents(v)){
-								if (cv.getBottomLevel() >= time){
+							ArrayList<Vertex> parents= _graph.getDirectParents(nc);
+							for (int i = 0; i < parents.size(); i++) {
+								if (parents.get(i).equals(v)) {
+									parents.remove(i);
+								}
+							}
+							for (Vertex cv: parents){
+								if (cv.getBottomLevel() >= time){//TODO: figure out what is data arrival from np
 									atLeastOneLater = true;
 								}
 							}
