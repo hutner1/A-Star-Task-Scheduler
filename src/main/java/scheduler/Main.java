@@ -28,6 +28,7 @@ public class Main {
 	public static long _startTime;
 
 	public static void main(String[] args) {
+		
 		// 1. Instantiate InputParser to parse the command line arguments.
 		InputParser inputParser = new InputParser(args);
 		try {
