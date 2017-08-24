@@ -133,7 +133,7 @@ public class Visualizer {
 
 		//Displays the graph
 		_viewer = new Viewer(_graph,
-				Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
+				Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
 
 		ViewPanel view = _viewer.addDefaultView(false);
 
@@ -172,17 +172,17 @@ public class Visualizer {
 		
 		Iterator<Node> k = _graph.getNodeIterator();
 
-        while (k.hasNext()) {
+       /* while (k.hasNext()) {
             Node next = k.next();
             if(next != null){
             	System.out.println(next.getId() + " " + next.getAttribute("ui.style"));
             	next.removeAttribute("ui.style");
             	next.addAttribute("ui.style", "fill-color:#"+ "000000" +";");
             } 
-        }
+        }*/
 
 		//Set the color for each node/task in the current schedule
-		for(int i = 1; i < processorWithSolution.keySet().size() + 1; i++){
+/*		for(int i = 1; i < processorWithSolution.keySet().size() + 1; i++){
 			List<ProcessInfo> processes = processorWithSolution.get(i).getProcesses();
 			for(ProcessInfo processInfo : processes){
 				String colorCode = getColor(i);
@@ -201,6 +201,27 @@ public class Visualizer {
 				schedule.add(processInfo.endTime());
 				scheduledVertices.put(vertexName, schedule);
 
+			}
+		}*/
+		
+		for(Vertex vertex : _DAG.vertexSet()){
+			_graph.getNode(vertex.getName()).setAttribute("ui.style", "fill-color:#"+ "000000" +";");
+		}
+
+		//Set the color for each node/task in the current schedule
+		for(int i = 1; i < processorWithSolution.keySet().size() + 1; i++){
+			List<ProcessInfo> processes = processorWithSolution.get(i).getProcesses();
+			for(ProcessInfo processInfo : processes){
+				String colorCode = getColor(i);
+				String vertexName = processInfo.getVertex().getName();
+				_graph.getNode(vertexName).setAttribute("ui.style", "fill-color:#"+ colorCode +";");
+				
+				List<Object> schedule = new ArrayList<Object>();
+				schedule.add(i);
+				schedule.add(processInfo.startTime()); 
+		        schedule.add(processInfo.endTime()); 
+				scheduledVertices.put(vertexName, schedule);
+				
 			}
 		}
 		_nodeClickListener.setCurrentSolution(scheduledVertices);
