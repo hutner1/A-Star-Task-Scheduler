@@ -156,6 +156,7 @@ public class AStar {
 						// DO NOTHING AS IT WILL NOT BE CONSIDERED
 						_solPruned ++;
 					} else {
+						System.out.println("added "+ childCost);
 						_solutionSpace.add(s); // TODO move to after if statement?
 						if (childCost == bestCurrentSolution.maxCostFunction()) {
 							if (!childSolutions.isEmpty()) {
@@ -210,6 +211,8 @@ public class AStar {
 			while(bestCurrentSolution == null){
 				bestCurrentSolution = _solutionSpace.poll();
 			}
+			
+			System.out.println("polled " + bestCurrentSolution.maxCostFunction());
 			
 		}
 

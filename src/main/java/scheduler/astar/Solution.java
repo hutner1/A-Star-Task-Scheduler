@@ -175,7 +175,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 		if (maxThis < maxOther) {
 			return -1;
 		}  else if (maxThis == maxOther) {
-			return s._scheduledProcesses.size() - _scheduledProcesses.size();
+			return s._scheduledProcesses.size() - this._scheduledProcesses.size();
 		} else {
 			return 1;
 		}
@@ -200,7 +200,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 		costs.add(idleTimePlusComputationLoad());
 		costs.add(maximumEndTimeOfFreeVertices());
 
-		System.out.println(costs.toString());
+		//System.out.println(costs.toString());
 
 		return Collections.max(costs);
 	}
