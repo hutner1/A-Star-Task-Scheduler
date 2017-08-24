@@ -27,7 +27,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 
 	private Queue<Solution> _children;
 	private boolean _partiallyExpanded = false;
-	private Vertex _lastScheduledTask;
+	Vertex _lastScheduledTask;
 	private int _mostRecentlyScheduledProcessor;
 
 	private DefaultDirectedWeightedGraph _graph;

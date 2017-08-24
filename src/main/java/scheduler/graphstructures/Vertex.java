@@ -13,19 +13,19 @@ public class Vertex implements Comparable<Vertex>{
 	private int _weight;
 	private int _bottomLvl;
 	private boolean _visited;
-	
+
 	public Vertex(String name) {
 		_name = name;
 		_visited = false;
 	}
-	
+
 	public Vertex(String name, int weight) {
 		_name = name;
 		_weight = weight;
 	}
-	
+
 	//---Getter Methods---
-	
+
 	/**
 	 * Get the name of Vertex
 	 * @return String name
@@ -33,7 +33,7 @@ public class Vertex implements Comparable<Vertex>{
 	public String getName(){
 		return _name;
 	}
-	
+
 	/**
 	 * Get the weight of Vertex
 	 * @return int weight
@@ -41,7 +41,7 @@ public class Vertex implements Comparable<Vertex>{
 	public int getWeight() {
 		return _weight;
 	}
-	
+
 	/**
 	 * Get the critical path from one node
 	 * @return int critical path from one node
@@ -49,7 +49,7 @@ public class Vertex implements Comparable<Vertex>{
 	public int getBottomLevel() {
 		return _bottomLvl;
 	}
-	
+
 	/**
 	 * Check to see if node is visited
 	 * @return visited status
@@ -57,8 +57,8 @@ public class Vertex implements Comparable<Vertex>{
 	public boolean isVisited(){
 		return _visited;
 	}
-	
-	
+
+
 	//---Setter Methods---
 	/**
 	 * Set the weight of a node
@@ -67,7 +67,7 @@ public class Vertex implements Comparable<Vertex>{
 	public void setWeight(int w) {
 		this._weight = w;
 	}
-	
+
 	/**
 	 * Set new value to the bottomLvl
 	 * @param value from bottomLvl
@@ -75,7 +75,7 @@ public class Vertex implements Comparable<Vertex>{
 	public void setBottomLevel(int val) {
 		_bottomLvl = val;
 	}
-	
+
 	/**
 	 * Set that the node is visited
 	 */
@@ -85,7 +85,12 @@ public class Vertex implements Comparable<Vertex>{
 
 	@Override
 	public int compareTo(Vertex v) {
-		return _name.compareTo(v._name);
+
+		try {
+			return Integer.parseInt(_name) - Integer.parseInt(v._name);
+		} catch (NumberFormatException e) {
+			return _name.compareTo(v._name);
+		}
 	}
-		
+
 }
