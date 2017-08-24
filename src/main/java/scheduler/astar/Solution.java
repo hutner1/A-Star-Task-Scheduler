@@ -433,7 +433,12 @@ public class Solution implements Comparable<Solution>, Schedule{
 	}
 
 	/**
-	 * Algorithm 3 from the 2013 Sinnen paper.
+	 * Algorithm 2 from the 2013 Sinnen paper.
+	 * This algorithm tries to reorder the tasks in a schedule
+	 * by perform swaps for tasks that do not break the dependencies
+	 * for each task in the graph of nodes. If one reordering is 
+	 * found with an equivalent schedule horizon, it is deemed as
+	 * equivalent and it is discarded
 	 * @return a boolean to find whether a solution is equivalent 
 	 */
 	public boolean isEquivalent() {
@@ -544,6 +549,11 @@ public class Solution implements Comparable<Solution>, Schedule{
 	}
 	 */
 
+	/**
+	 * Custom function to check whether a vertex is scheduled on a processor
+	 * @param v
+	 * @return
+	 */
 	private boolean isScheduled(Vertex v) {
 		for (Processor p : _processors.values()) {
 			if (p.isScheduled(v)) {
