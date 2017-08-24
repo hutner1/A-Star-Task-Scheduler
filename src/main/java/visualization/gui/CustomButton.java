@@ -38,20 +38,24 @@ class CustomButton extends JButton {
 		this.setOpaque(false);
 	}
 
-	/* (non-Javadoc)
-	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+	/** Override paintComponet which allows following things:
+	 * - Change the color of buttons when hovered into dark blue
+	 * - Change the corners into round shape
 	 */
 	@Override
 	protected void paintComponent(Graphics g) {
+		//When mouse is hovered
 		if (getModel().isRollover()) {
 			g.setColor(hoverBackgroundColor);
 		} else {
+			//when mouse is moved away
 			g.setColor(getBackground());
 		}
-		/*g.fillRect(0, 0, getWidth(), getHeight());*/
+		
+		//Filling the button with background color without going outside the round corners 
 		g.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 6, 6);
 
-		/*g.setColor(getBackground().darker().darker().darker());*/
+		//Drawing the button with round corners
 		g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 6, 6);
 
 		super.paintComponent(g);
@@ -59,11 +63,6 @@ class CustomButton extends JButton {
 
 	}
 
-	/* (non-Javadoc)
-	 * @see javax.swing.AbstractButton#setContentAreaFilled(boolean)
-	 */
-	@Override
-	public void setContentAreaFilled(boolean b) {
-	}
+	
 
 }

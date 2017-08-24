@@ -174,7 +174,6 @@ public class Visualizer {
 
 		//Set all nodes to black to reset previous visualization
 	/*	for(Vertex vertex : _DAG.vertexSet()){
-			if(_graph.node){
 				
 			}
 			
