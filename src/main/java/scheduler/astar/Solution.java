@@ -438,7 +438,15 @@ public class Solution implements Comparable<Solution>, Schedule{
 			int swappedTime = minimalDataReadyTime(_lastScheduledTask);
 			if (swappedTime > minimalDataReadyTime(v)){
 				for (Vertex nc : _graph.getDirectChildren(v)) {
-					int time = v.getBottomLevel(); //TODO: add edge weight
+					ArrayList<DefaultWeightedEdge> childEdges = outgoingEdgesOf(v);
+					int edgeCost = 0;
+					for (DefaultWeightedEdge e : childEdges) {
+						if (e.getDest().equals(nc)) {
+							edgeCost = e.getWeight();
+							break;
+						}
+					}
+					int time = v.getBottomLevel() + edgeCost;
 					if (isScheduled(nc)){
 						if (minimalDataReadyTime(nc)>time || !_processors.get(_mostRecentlyScheduledProcessor).isScheduled(v)){
 							return false;
@@ -467,6 +475,11 @@ public class Solution implements Comparable<Solution>, Schedule{
 		}
 		return true;
 	}
+	private ArrayList<DefaultWeightedEdge> outgoingEdgesOf(Vertex v) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	//TODO hash code, remove it?
 	/**
 	public int hashCode(){
