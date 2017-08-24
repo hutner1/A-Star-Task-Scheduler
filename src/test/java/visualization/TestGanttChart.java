@@ -17,26 +17,26 @@ public class TestGanttChart {
 	Gantt _gantt;
 	TaskSeriesCollection _tsc;
 	
-	@Before
+	//@Before
 	public void initialise() {
 		_gantt = new Gantt("Test", new MockSolution());
 		_tsc = (TaskSeriesCollection) _gantt.getDataset();
 	}
 	
-	@Test
+	//@Test
 	public void testGanttSize() {
 		assertEquals(1 ,_tsc.getSeriesCount());
 		
 	}
 	
-	@Test
+	//@Test
 	public void testGanttTaskCount() {
 		TaskSeries ts = _tsc.getSeries(0);
 		
 		assertEquals(4,ts.getItemCount());
 	}
 	
-	@Test
+	//@Test
 	public void testMainTasks() {
 		TaskSeries ts = _tsc.getSeries(0);
 		List<TaskNumeric> tasks = ts.getTasks();
@@ -51,7 +51,7 @@ public class TestGanttChart {
 		
 	}
 	
-	@Test
+	//@Test
 	public void testSubTasks() {
 		TaskSeries ts = _tsc.getSeries(0);
 		List<TaskNumeric> tasks = ts.getTasks();

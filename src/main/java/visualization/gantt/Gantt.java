@@ -3,14 +3,18 @@ package visualization.gantt;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JPanel;
 
+import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.labels.CategoryToolTipGenerator;
 import org.jfree.chart.labels.IntervalCategoryItemLabelGenerator;
+import org.jfree.chart.labels.IntervalCategoryToolTipGenerator;
 import org.jfree.chart.labels.ItemLabelAnchor;
 import org.jfree.chart.labels.ItemLabelPosition;
 import org.jfree.chart.plot.CategoryPlot;

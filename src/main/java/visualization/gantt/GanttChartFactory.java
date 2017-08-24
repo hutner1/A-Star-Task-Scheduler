@@ -19,12 +19,9 @@ import org.jfree.data.category.IntervalCategoryDataset;
 
 /**
  * 
- * This implementation was based on the code by Klamann
- * https://stackoverflow.com/a/24064512
  *
  */
 public class GanttChartFactory extends ChartFactory{
-	protected static ChartTheme currentTheme = new StandardChartTheme("JFree"); //Generic theme for Gantt chart used
 
 	/**
 	 * This static method makes the skeleton of the Gantt Chart
@@ -46,21 +43,13 @@ public class GanttChartFactory extends ChartFactory{
 		ValueAxis valueAxis = new NumberAxis(valueAxisLabel);
 
 		CategoryItemRenderer renderer = new GanttRenderer();
-		if (tooltips) {
-			renderer.setBaseToolTipGenerator(
-					new IntervalCategoryToolTipGenerator(
-							"{1}: {3} - {4}", NumberFormat.getNumberInstance()));
-		}
-		if (urls) {
-			renderer.setBaseItemURLGenerator(
-					new StandardCategoryURLGenerator());
-		}
-
+		
 		CategoryPlot plot = new CategoryPlot(dataset, categoryAxis, valueAxis,
 				renderer);
 		plot.setOrientation(PlotOrientation.HORIZONTAL);
 		JFreeChart chart = new JFreeChart(title, JFreeChart.DEFAULT_TITLE_FONT,
 				plot, legend);
+		ChartTheme currentTheme = new StandardChartTheme("Something");
 		currentTheme.apply(chart);
 		return chart;
 	}
