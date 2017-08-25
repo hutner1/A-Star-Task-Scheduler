@@ -83,11 +83,11 @@ public class NodeClickListener implements ViewerListener , MouseInputListener{
 		} else {
 
 			List<Object> scheduleInfo = _scheduledVertices.get(id);
-			System.out.println("");
+/*			System.out.println("");
 			System.out.println("Task: "+id);
 			System.out.println("Processor number: " + (int) scheduleInfo.get(0));
 			System.out.println("Start time: " + scheduleInfo.get(1));
-			System.out.println("End time: " + scheduleInfo.get(2));
+			System.out.println("End time: " + scheduleInfo.get(2));*/
 			_gui.showInfoOnTextArea(id,(int) scheduleInfo.get(0),scheduleInfo.get(1),scheduleInfo.get(2));
 
 		}

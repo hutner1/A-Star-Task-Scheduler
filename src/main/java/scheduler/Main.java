@@ -111,6 +111,7 @@ public class Main {
 			outWriter.createScheduleAStar(dataReader.getGraphName(),dataReader.getVerticesAndEdgesInfo(),dataReader.getVerticesAndEdgesRead(),optimalSolution,dataReader.getMapping());
 			long endTime = System.nanoTime();
 			long totalTime = endTime - startTime;
+			
 			System.out.println("\n Took " + totalTime/1000000 + "ms" + " : " + totalTime/1000000000 + " seconds");
 			System.out.println(aStar.getSolCreated());
 			System.out.println(aStar.getSolPopped());

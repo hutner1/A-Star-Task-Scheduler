@@ -40,8 +40,8 @@ public class Visualizer {
 	//Set the style for the graph using CSS
 	private String _stylesheet = 
 			"graph {" +
-					"fill-color: rgb(250,250,250);" +
-					"}" + 
+			"fill-color: rgb(250,250,250);" +
+			"}" + 
 
 			"edge {" +
 			"size:3px;" +
@@ -88,33 +88,41 @@ public class Visualizer {
 
 		_DAG = DAG;
 		
-		//Add all nodes of the DAG to the sgraph
-		for(Vertex vertex : DAG.vertexSet()){
+		//Add all nodes of the DAG to the graph
+		for(Vertex vertex : _DAG.vertexSet()){
 			Node n =_graph.addNode(vertex.getName());
 			
 			if(_DAG.inDegreeOf(vertex) == 0){
 				n.setAttribute("ui.style", "size:40px;");
-				/*if(_firstNode == true){*/
-				/*if(!(n.getOutDegree() < 1)){*/
-					n.setAttribute("y", 300);
+				
+				if(!(_DAG.outgoingEdgesOf(vertex).size() == 0)){
+					n.setAttribute("y", 30);
 					n.setAttribute("x", 0);
-				/*}*/
-				/*}*/
-				/*n.setAttribute("y", 300 + pos);
-				n.setAttribute("x", pos);
-				pos = pos + 20;*/
+				}
+
+			} else if(_DAG.outgoingEdgesOf(vertex).size() == 0){
+				n.setAttribute("ui.style", "size:40px;");
 			}
 			
 			//Labels the node with their name
 			n.addAttribute("ui.label", n.getId());
 		}
-
+		
+		boolean extendEdge = false;
+		if(_graph.getNodeSet().size() < 15){
+			extendEdge = true;
+		}
+		
 		//Add all edges of the DAG to the graph
-		for(DefaultWeightedEdge edge : DAG.edgeSet()){
+		for(DefaultWeightedEdge edge : _DAG.edgeSet()){
 			String source = DAG.getEdgeSource(edge).getName();
 			String target = DAG.getEdgeTarget(edge).getName();
 
-			_graph.addEdge(source + target ,source , target, true);
+			Edge e = _graph.addEdge(source + target ,source , target, true);
+			
+			if(extendEdge){
+				e.addAttribute("layout.weight", 2);
+			}	
 		}
 		
 
@@ -138,11 +146,12 @@ public class Visualizer {
 
 		//Connect back the viewer to the graph, the graph becomes a sink for the viewer. 
 		ViewerPipe fromViewer = _viewer.newViewerPipe();
-
 		//Create and add an viewer listener to intercept node click events
 
 		_nodeClickListener = new NodeClickListener(fromViewer, view, _graph); 
 		fromViewer.addViewerListener((ViewerListener) _nodeClickListener); 
+		
+/*		fromViewer.addSink(_graph);*/
 
 		return view;
 	}
@@ -168,7 +177,6 @@ public class Visualizer {
 		HashMap<String, List<Object>> scheduledVertices = new HashMap<String, List<Object>>();
 
 		for(Vertex vertex : _DAG.vertexSet()){
-			
 			_graph.getNode(vertex.getName()).setAttribute("ui.style", "fill-color:#"+ "000000" +";");
 		}
 

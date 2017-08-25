@@ -48,6 +48,7 @@ public class AStar {
 	protected static int _solPruned=0;
 	protected int _currentCost = Integer.MAX_VALUE;
 	protected Solution bestCurrentSolution;
+	protected static boolean _updated = false;
 
 	/**
 	 * AStar's constructor
@@ -132,20 +133,25 @@ public class AStar {
 
 			@Override
 			public void run() {
-				if (_gantt != null) {
-					if (_gantt.hasLaunched()) {
+				
+				if(_updated == false){
+					if(_visualizer != null){
 						_gantt.updateSolution(bestCurrentSolution);
+						_visualizer.updateGraph(bestCurrentSolution);  
 
-					} else {
-						_gantt.setSolution(bestCurrentSolution);
+					} 
+					
+					if (_gantt != null) {
+						if (_gantt.hasLaunched()) {
+							_gantt.updateSolution(bestCurrentSolution);
+
+						} else {
+							_gantt.setSolution(bestCurrentSolution);
+						}
 					}
 				}
 				
-				if(_visualizer != null){
-					_gantt.updateSolution(bestCurrentSolution);
-					_visualizer.updateGraph(bestCurrentSolution);  
-
-				} 
+				_updated = true;
 				
 			}
 			
@@ -220,7 +226,6 @@ public class AStar {
 			if(_visualizer != null){  
 				if(_counter == 100){  
 					_counter = 0;  
-					//_visualizer.updateGraph(bestCurrentSolution);  
 					_stats.updateStats(_solCreated, _solPopped, _solPruned, bestCurrentSolution.maxCostFunction());
 				} else {  
 					_counter++;  
@@ -233,7 +238,7 @@ public class AStar {
 			while(bestCurrentSolution == null){
 				bestCurrentSolution = _solutionSpace.poll();
 			}
-			
+			_updated = false;
 			_currentCost = bestCurrentSolution.maxCostFunction();
 		}
 
