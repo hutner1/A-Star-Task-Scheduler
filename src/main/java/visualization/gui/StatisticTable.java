@@ -3,6 +3,7 @@ package visualization.gui;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Insets;
 import java.text.DecimalFormat;
 
 import javax.swing.BorderFactory;
@@ -128,7 +129,10 @@ public class StatisticTable extends JPanel{
 		model.setValueAt(solPruned, 4, 1);
 		model.setValueAt((Runtime.getRuntime().totalMemory())/1024/1024, 5, 1);
 		
-		model.setValueAt(df.format((double)(System.nanoTime()-Main._startTime)/1000000000), 6, 1);
+		DecimalFormat df = new DecimalFormat("#.#");
+		String time = df.format((double)(System.nanoTime()-Main._startTime)/1000000000);
+		
+		model.setValueAt(time, 6, 1);
 		
 		if(finishTime != null){
 			model.setValueAt(finishTime, 7, 1);

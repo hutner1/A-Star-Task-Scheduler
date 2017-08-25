@@ -50,7 +50,7 @@ public class Visualizer {
 			"}" +
 
 			"node{" +
-			"size:25px;"+
+			"size:30px;"+
 			"text-size:16px;"+
 			"text-color:rgb(255,255,255);"+
 			"stroke-mode:plain;"+
@@ -87,14 +87,14 @@ public class Visualizer {
 	public void add(DefaultDirectedWeightedGraph DAG) {
 
 		_DAG = DAG;
-		int pos = 30;
+		/*int pos = 30;*/
 		
 		//Add all nodes of the DAG to the sgraph
 		for(Vertex vertex : DAG.vertexSet()){
 			Node n =_graph.addNode(vertex.getName());
 			
 			if(_DAG.inDegreeOf(vertex) == 0){
-				_graph.getNode(vertex.getName()).setAttribute("ui.style", "size:40px;");
+				n.setAttribute("ui.style", "size:40px;");
 				/*n.setAttribute("y", 300 + pos);
 				n.setAttribute("x", pos);
 				pos = pos + 20;*/
@@ -111,6 +111,7 @@ public class Visualizer {
 
 			_graph.addEdge(source + target ,source , target, true);
 		}
+		
 
 	}
 
@@ -127,6 +128,7 @@ public class Visualizer {
 
 		ViewPanel view = _viewer.addDefaultView(false);
 
+		
 		_viewer.enableAutoLayout();
 
 		//Connect back the viewer to the graph, the graph becomes a sink for the viewer. 
