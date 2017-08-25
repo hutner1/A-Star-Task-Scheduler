@@ -21,6 +21,7 @@ import io.OutputWriter;
 import scheduler.astar.AStar;
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
 import scheduler.graphstructures.Vertex;
+import visualization.graph.Visualizer;
 
 public class TestGraphStream {
 	

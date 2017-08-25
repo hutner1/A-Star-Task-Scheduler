@@ -1,4 +1,4 @@
-package visualization;
+package visualization.graph;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -49,15 +49,14 @@ public class Visualizer {
 			"arrow-size: 12px, 6px;" +
 			"}" +
 
-    		"node{" +
-    		"size:20px;"+
-    		"text-size:16px;"+
-    		"size:30px;"+
-    		"text-color:rgb(255,255,255);"+
-    		"stroke-mode:plain;"+
-    		"stroke-width:2px;"+
-    		"stroke-color:#FFF8;"+
-    		"}";
+			"node{" +
+			"size:25px;"+
+			"text-size:16px;"+
+			"text-color:rgb(255,255,255);"+
+			"stroke-mode:plain;"+
+			"stroke-width:2px;"+
+			"stroke-color:#FFF8;"+
+			"}";
 	private Graph _graph;
 	private Viewer _viewer;
 	private DefaultDirectedWeightedGraph _DAG;
@@ -93,25 +92,9 @@ public class Visualizer {
 		for(Vertex vertex : DAG.vertexSet()){
 			Node n =_graph.addNode(vertex.getName());
 
-			//Set the size of the nodes to be bigger if they are source node or a leaf
-			if(DAG.inDegreeOf(vertex) == 0){
-				n.addAttribute("ui.style", " size:40px;");
-
-				//Allocate the position of the source node on the graph
-				n.setAttribute("y", 300);
-				n.setAttribute("x", 0);
-
-			}else if(DAG.outgoingEdgesOf(vertex).size() < 1) {
-				n.addAttribute("ui.style", " size:40px;");
-
-			} else {
-				n.addAttribute("ui.style", " size:25px;");
-			}
-
 			//Labels the node with their name
 			n.addAttribute("ui.label", n.getId());
 		}
-
 
 		//Add all edges of the DAG to the graph
 		for(DefaultWeightedEdge edge : DAG.edgeSet()){
@@ -120,8 +103,7 @@ public class Visualizer {
 
 			_graph.addEdge(source + target ,source , target, true);
 		}
-
-
+		
 	}
 
 	/**
@@ -130,7 +112,18 @@ public class Visualizer {
 	 * 
 	 */
 	public ViewPanel displayGraph() {
-
+		
+		for(Vertex vertex : _DAG.vertexSet()){
+			if(_DAG.inDegreeOf(vertex) == 0 || _DAG.outgoingEdgesOf(vertex).size() < 1){
+				_graph.getNode(vertex.getName()).setAttribute("ui.style", " size:40px;");
+				
+				if(_DAG.inDegreeOf(vertex) == 0){
+					_graph.getNode(vertex.getName()).setAttribute("y", 300);
+					_graph.getNode(vertex.getName()).setAttribute("x", 0);
+				}
+			}
+		}
+		
 		//Displays the graph
 		_viewer = new Viewer(_graph,
 				Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
@@ -164,12 +157,12 @@ public class Visualizer {
 	 * 
 	 * @param currentBestSol The current best solution schedule from the A* algorithm
 	 */
-	public void UpdateGraph(Solution currentBestSol) {
+	public void updateGraph(Solution currentBestSol) {
 
 		//Get the hash map of the processes
 		HashMap<Integer, Processor> processorWithSolution = currentBestSol.getProcess();
 		HashMap<String, List<Object>> scheduledVertices = new HashMap<String, List<Object>>();
-		
+
 		for(Vertex vertex : _DAG.vertexSet()){
 			_graph.getNode(vertex.getName()).setAttribute("ui.style", "fill-color:#"+ "000000" +";");
 		}
@@ -181,13 +174,13 @@ public class Visualizer {
 				String colorCode = getColor(i);
 				String vertexName = processInfo.getVertex().getName();
 				_graph.getNode(vertexName).setAttribute("ui.style", "fill-color:#"+ colorCode +";");
-				
+
 				List<Object> schedule = new ArrayList<Object>();
 				schedule.add(i);
 				schedule.add(processInfo.startTime()); 
-		        schedule.add(processInfo.endTime()); 
+				schedule.add(processInfo.endTime()); 
 				scheduledVertices.put(vertexName, schedule);
-				
+
 			}
 		}
 		_nodeClickListener.setCurrentSolution(scheduledVertices);
@@ -206,7 +199,7 @@ public class Visualizer {
 
 		return colors[index];
 	}
-	
+
 	/**
 	 * Get the directed weight graph
 	 * 
@@ -215,7 +208,7 @@ public class Visualizer {
 	public DefaultDirectedWeightedGraph getDAG(){
 		return _DAG;
 	}
-	
+
 	/**
 	 * Get the GraphStream graph
 	 * 

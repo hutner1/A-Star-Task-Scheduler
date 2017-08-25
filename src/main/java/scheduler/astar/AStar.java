@@ -11,10 +11,8 @@ import java.util.concurrent.PriorityBlockingQueue;
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
 import scheduler.graphstructures.DefaultWeightedEdge;
 import scheduler.graphstructures.Vertex;
-import visualization.Visualizer;
-
 import visualization.gantt.Gantt;
-
+import visualization.graph.Visualizer;
 import visualization.gui.Gui;
 import visualization.gui.StatisticTable;
 
@@ -198,7 +196,7 @@ public class AStar {
 			if(_visualizer != null){  
 				if(_counter == 10){  
 					_counter = 0;  
-					_visualizer.UpdateGraph(bestCurrentSolution);  
+					_visualizer.updateGraph(bestCurrentSolution);  
 
 				} else {  
 					_counter++;  
