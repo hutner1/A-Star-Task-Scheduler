@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.PriorityBlockingQueue;
 
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
@@ -45,6 +47,7 @@ public class AStar {
 	protected static int _solPopped=0;
 	protected static int _solPruned=0;
 	protected int _currentCost = Integer.MAX_VALUE;
+	protected Solution bestCurrentSolution;
 
 	/**
 	 * AStar's constructor
@@ -69,6 +72,7 @@ public class AStar {
 	 */
 	public Solution execute() {
 		initialiseSolutionSpace();
+		
 		return findOptimalSolution();
 	}
 
@@ -114,15 +118,40 @@ public class AStar {
 	 */
 	protected Solution findOptimalSolution(){
 		// BEST priority solution
-		Solution bestCurrentSolution = _solutionSpace.poll();
+		bestCurrentSolution = _solutionSpace.poll();
 		_solPopped ++;
-
 		
 		while(bestCurrentSolution == null){
 			bestCurrentSolution = _solutionSpace.poll();
 			/*_solPopped ++;*/
 		}
 
+		//Timer stuff
+		Timer timer = new Timer();
+		timer.scheduleAtFixedRate(new TimerTask() {
+
+			@Override
+			public void run() {
+				if (_gantt != null) {
+					if (_gantt.hasLaunched()) {
+						_gantt.updateSolution(bestCurrentSolution);
+
+					} else {
+						_gantt.setSolution(bestCurrentSolution);
+					}
+				}
+				
+				if(_visualizer != null){
+					_gantt.updateSolution(bestCurrentSolution);
+					_visualizer.updateGraph(bestCurrentSolution);  
+
+				} 
+				
+			}
+			
+		}, 0, 2000);
+		
+		
 		// keep polling until the best cost solution is a complete schedule, hence an optimal solution
 		while (!bestCurrentSolution.isCompleteSchedule()) {
 			
@@ -176,7 +205,7 @@ public class AStar {
 			}
 
 
-
+			/*
 			if (_gantt != null) {
 				if (_gantt.hasLaunched()) {
 					if(_counter == 10){  
@@ -186,12 +215,12 @@ public class AStar {
 					_gantt.setSolution(bestCurrentSolution);
 				}
 			}
-			
+			*/
 
 			if(_visualizer != null){  
-				if(_counter == 10){  
+				if(_counter == 100){  
 					_counter = 0;  
-					_visualizer.updateGraph(bestCurrentSolution);  
+					//_visualizer.updateGraph(bestCurrentSolution);  
 					_stats.updateStats(_solCreated, _solPopped, _solPruned, bestCurrentSolution.maxCostFunction());
 				} else {  
 					_counter++;  
