@@ -83,7 +83,7 @@ public class DefaultDirectedWeightedGraph {
 	 * @return all edges pointing to the vertex // TODO 
 	 */
 	public ArrayList<DefaultWeightedEdge> incomingEdgesOf(Vertex vertex){
-		//if(_incomingEdges.get(vertex)==null){
+		if(_incomingEdges.get(vertex)==null){
 				ArrayList<DefaultWeightedEdge> edges = new ArrayList<>();
 				for(DefaultWeightedEdge edge : _edges){
 					if(edge.getDest().equals(vertex)){
@@ -92,7 +92,7 @@ public class DefaultDirectedWeightedGraph {
 				}
 				Collections.sort(edges);
 				_incomingEdges.put(vertex, edges);	
-				//}
+		}
 				return _incomingEdges.get(vertex);
 	}
 	// MAKE IF EFFICIENT initialise them first // TODO
@@ -102,7 +102,7 @@ public class DefaultDirectedWeightedGraph {
 	 * @return all edges going out from the vertex // TODO
 	 */
 	public ArrayList<DefaultWeightedEdge> outgoingEdgesOf(Vertex vertex){
-		//if(_outgoingEdges.get(vertex)==null){
+		if(_outgoingEdges.get(vertex)==null){
 				ArrayList<DefaultWeightedEdge> edges = new ArrayList<>();
 				for(DefaultWeightedEdge edge : _edges){
 					if(edge.getSource().equals(vertex)){
@@ -111,7 +111,7 @@ public class DefaultDirectedWeightedGraph {
 				}
 				Collections.sort(edges);
 				_outgoingEdges.put(vertex, edges);
-				//}
+		}
 				return _outgoingEdges.get(vertex);
 	}
 
