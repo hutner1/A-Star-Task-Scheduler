@@ -71,7 +71,7 @@ public class Gui {
 
 		//Adding the background image
 		try {
-			_frame.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("resources"+File.separator+"back5.jpg")))));
+			_frame.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("src"+File.separator+"main"+File.separator+"resources"+File.separator+"back5.jpg")))));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -141,7 +141,7 @@ public class Gui {
 		_frame.getContentPane().add(ganttButton);
 
 		//Initializing the buttons
-		JButton graphButton = new CustomButton("Tree Graph");
+		JButton graphButton = new CustomButton("Graph");
 		_active = graphButton;
 		graphButton.setBackground(new Color(6, 47, 79));
 		graphButton.setBounds(834, 15, 140, 50);
