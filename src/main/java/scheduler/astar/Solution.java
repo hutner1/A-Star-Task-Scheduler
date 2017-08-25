@@ -444,15 +444,15 @@ public class Solution implements Comparable<Solution>, Schedule{
 		for (Processor p : _processors.values()) {
 			hashString.add(p.getProcessessString());
 		}
-		
+
 		Collections.sort(hashString);
 
 		StringBuilder sb = new StringBuilder();
-		
+
 		for (String s : hashString) {
 			sb.append(s);
 		}
-		
+
 		return sb.toString().hashCode();
 	}
 
@@ -490,8 +490,6 @@ public class Solution implements Comparable<Solution>, Schedule{
 					return false;
 				}
 			}
-
-			//System.out.println(temp.getProcessessString());
 
 			if (temp.getTime() <= tMax && outgoingCommsOK(this, p)) {
 				return true;
@@ -533,17 +531,13 @@ public class Solution implements Comparable<Solution>, Schedule{
 						}
 					} else {
 						for (int i = 1; i <= _numberOfProcessors && i != _mostRecentlyScheduledProcessor; i++){
-							Processor p = _processors.get(i);
 							boolean atLeastOneLater = false;
 							ArrayList<Vertex> parents= _graph.getDirectParents(nc);
 							parents.remove(v);
 							for (Vertex cv: parents){
-
 								int dataArrival;
-
 								try {
 									dataArrival = endTimeOf(cv);
-
 									if (i != scheduledOnProcessorNumber(cv)) {
 										for (DefaultWeightedEdge e : _graph.outgoingEdgesOf(cv)) {
 											if (e.getDest().equals(nc)) {
@@ -552,10 +546,8 @@ public class Solution implements Comparable<Solution>, Schedule{
 										}
 									}
 								} catch (NullPointerException e) {
-
 									int earliestTime = earliestDataReadyTime(cv,1);
 									int procNumber = 1;
-
 									for (int j = 2; j <= _numberOfProcessors; j++) {
 										int drt = earliestDataReadyTime(cv,j);
 										if (drt < earliestTime) {
@@ -563,9 +555,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 											procNumber = j;
 										}
 									}
-
 									dataArrival = earliestTime;
-
 									if (i != procNumber) {
 										for (DefaultWeightedEdge e2 : _graph.outgoingEdgesOf(cv)) {
 											if (e2.getDest().equals(nc)) {
@@ -574,10 +564,6 @@ public class Solution implements Comparable<Solution>, Schedule{
 										}
 									}
 								}
-
-
-
-
 								if (dataArrival >= time) {
 									atLeastOneLater = true;
 								}
@@ -592,7 +578,6 @@ public class Solution implements Comparable<Solution>, Schedule{
 		}
 		return true;
 	}
-
 
 	private int endTimeOf(Vertex v) {
 		return _processors.get(scheduledOnProcessorNumber(v)).endTimeOf(v);

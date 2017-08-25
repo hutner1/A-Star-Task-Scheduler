@@ -216,6 +216,8 @@ public class AStar {
 			_currentCost = bestCurrentSolution.maxCostFunction();
 		}
 
+		_solutionSpace.add(bestCurrentSolution);
+		
 		return bestCurrentSolution;
 
 	}
