@@ -170,16 +170,5 @@ public class TestDefaultDirectedWeightedGraph {
 		assertEquals(_testGraph.getEdgeTarget(_e4),_leaf2);
 		assertEquals(_testGraph.getEdgeWeight(_e4),7);
 	}
-	
-	/**
-	 * Caching is done with incoming and outgoing edge sets if the
-	 * returned lists on 2 different calls have the same addresses
-	 */
-	@Test
-	public void testCaching(){
-		assertTrue(_testGraph.incomingEdgesOf(_intermediate)==_testGraph.incomingEdgesOf(_intermediate));
-		assertTrue(_testGraph.outgoingEdgesOf(_intermediate)==_testGraph.outgoingEdgesOf(_intermediate));
-	}
-
 
 }
