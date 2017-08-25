@@ -198,7 +198,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 		costs.add(idleTimePlusComputationLoad());
 		costs.add(maximumEndTimeOfFreeVertices());
 
-		//System.out.println(costs.toString());
+		System.out.println(costs.toString());
 
 		return Collections.max(costs);
 	}
@@ -429,6 +429,20 @@ public class Solution implements Comparable<Solution>, Schedule{
 		}
 
 		return true;
+	}
+	
+	@Override
+	public int hashCode() {
+		
+		int current = 0;
+		
+		for (Processor p : _processors.values()) {
+			for (ProcessInfo pI : p.getProcesses()) {
+				current += (pI.startTime() + pI.endTime())*3;
+			}
+		}
+		
+		return current;
 	}
 
 	/**

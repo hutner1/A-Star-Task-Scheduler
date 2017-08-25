@@ -2,10 +2,10 @@ package scheduler.astar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.PriorityBlockingQueue;
 
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
@@ -13,7 +13,6 @@ import scheduler.graphstructures.DefaultWeightedEdge;
 import scheduler.graphstructures.Vertex;
 import visualization.gantt.Gantt;
 import visualization.graph.Visualizer;
-import visualization.gui.Gui;
 import visualization.gui.StatisticTable;
 
 
@@ -55,8 +54,8 @@ public class AStar {
 	public AStar(DefaultDirectedWeightedGraph graph, int numberOfProcessors, Visualizer graphVisualizer, Gantt gantt, StatisticTable stats) {
 		_graph = graph;
 		_numberOfProcessors = numberOfProcessors;
-		_solutionSpace = new PriorityAStarQueue<Solution>(); //data structure does not permit null elements
-		_closedSolutions = new CopyOnWriteArraySet<Solution>(); //threadsafe set
+		_solutionSpace = new PriorityBlockingQueue<Solution>(); //data structure does not permit null elements
+		_closedSolutions = new HashSet<Solution>(); //threadsafe set
 		_visualizer = graphVisualizer;
 		_gantt = gantt;
 		_stats = stats;

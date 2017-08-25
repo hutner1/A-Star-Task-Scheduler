@@ -137,12 +137,12 @@ public class Processor {
 	 * Print the all the scheduled tasks' name and start time
 	 */
 	public String getProcessessString() {
-		String s = "";
+		StringBuilder s = new StringBuilder();
 		for (ProcessInfo pI : processes) {
-			s += pI.getVertex().getName();
-			s += pI.startTime();
+			s.append(pI.getVertex().getName());
+			s.append(pI.startTime());
 		}
-		return s;
+		return s.toString();
 	}
 	
 	/**
