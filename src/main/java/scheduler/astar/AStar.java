@@ -241,10 +241,6 @@ public class AStar {
 			_updated = false;
 			_currentCost = bestCurrentSolution.maxCostFunction();
 		}
-		
-		if(_visualizer != null){
-			_visualizer.updateGraph(bestCurrentSolution);
-		}
 
 		_solutionSpace.add(bestCurrentSolution);
 		timer.cancel();

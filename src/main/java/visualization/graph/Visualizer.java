@@ -108,11 +108,11 @@ public class Visualizer {
 				
 					n.setAttribute("y", 30);
 					n.setAttribute("x", 0);
-
 			} 
 			
 			//Labels the node with their name
 			n.addAttribute("ui.label", n.getId());
+			
 		}
 		
 		boolean extendEdge = false;
@@ -132,7 +132,6 @@ public class Visualizer {
 			}	
 		}
 		
-
 	}
 
 	/**
