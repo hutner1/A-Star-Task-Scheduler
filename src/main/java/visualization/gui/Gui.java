@@ -71,7 +71,7 @@ public class Gui {
 
 		//Adding the background image
 		try {
-			_frame.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("resources"+File.separator+"back5.jpg")))));
+			_frame.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("src"+File.separator+"main"+File.separator+"resources"+File.separator+"back5.jpg")))));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
