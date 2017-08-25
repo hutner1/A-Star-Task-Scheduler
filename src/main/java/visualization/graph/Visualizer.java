@@ -87,7 +87,6 @@ public class Visualizer {
 	public void add(DefaultDirectedWeightedGraph DAG) {
 
 		_DAG = DAG;
-		/*int pos = 30;*/
 		
 		//Add all nodes of the DAG to the sgraph
 		for(Vertex vertex : DAG.vertexSet()){
@@ -95,6 +94,12 @@ public class Visualizer {
 			
 			if(_DAG.inDegreeOf(vertex) == 0){
 				n.setAttribute("ui.style", "size:40px;");
+				/*if(_firstNode == true){*/
+				/*if(!(n.getOutDegree() < 1)){*/
+					n.setAttribute("y", 300);
+					n.setAttribute("x", 0);
+				/*}*/
+				/*}*/
 				/*n.setAttribute("y", 300 + pos);
 				n.setAttribute("x", pos);
 				pos = pos + 20;*/
