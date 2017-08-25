@@ -14,8 +14,8 @@ import scheduler.astar.AStar;
 import scheduler.astar.AStarParallelised;
 import scheduler.astar.Solution;
 import scheduler.graphstructures.Vertex;
-import visualization.Visualizer;
 import visualization.gantt.Gantt;
+import visualization.graph.Visualizer;
 import visualization.gui.Gui;
 import visualization.gui.StatisticTable;
 
@@ -117,7 +117,7 @@ public class Main {
 			System.out.println(aStar.getSolPruned());
 			
 			if(graphVisualizer != null){
-				graphVisualizer.UpdateGraph(optimalSolution);
+				graphVisualizer.updateGraph(optimalSolution);
 				gantt.updateSolution(optimalSolution);
 				stats.updateStats(aStar.getSolCreated(), aStar.getSolPopped(), aStar.getSolPruned(), optimalSolution.getLastFinishTime());
 				DefaultTableModel model = (DefaultTableModel)stats.getTable().getModel();

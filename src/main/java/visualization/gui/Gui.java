@@ -14,8 +14,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import visualization.Visualizer;
+
 import visualization.gantt.Gantt;
+import visualization.graph.Visualizer;
 
 import java.awt.CardLayout;
 import java.awt.Dimension;

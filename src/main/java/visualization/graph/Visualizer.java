@@ -1,4 +1,4 @@
-package visualization;
+package visualization.graph;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -164,7 +164,7 @@ public class Visualizer {
 	 * 
 	 * @param currentBestSol The current best solution schedule from the A* algorithm
 	 */
-	public void UpdateGraph(Solution currentBestSol) {
+	public void updateGraph(Solution currentBestSol) {
 
 		//Get the hash map of the processes
 		HashMap<Integer, Processor> processorWithSolution = currentBestSol.getProcess();

@@ -4,7 +4,8 @@ package visualization.gui;
 import javax.swing.JPanel;
 
 import org.graphstream.ui.swingViewer.ViewPanel;
-import visualization.Visualizer;
+
+import visualization.graph.Visualizer;
 
 import java.awt.GridLayout;
 /**

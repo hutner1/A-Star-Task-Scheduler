@@ -1,10 +1,8 @@
 package scheduler.astar;
 
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
-import visualization.Visualizer;
-
 import visualization.gantt.Gantt;
-
+import visualization.graph.Visualizer;
 import visualization.gui.Gui;
 import visualization.gui.StatisticTable;
 
@@ -114,7 +112,7 @@ public class AStarParallelised extends AStar{
 		if(_visualizer != null){  
 			if(_counter == 10){  
 				_counter = 0;  
-				_visualizer.UpdateGraph(bestCurrentSolution);  
+				_visualizer.updateGraph(bestCurrentSolution);  
 
 			} else {  
 				_counter++;  
