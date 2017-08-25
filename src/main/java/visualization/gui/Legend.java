@@ -119,7 +119,7 @@ public class Legend extends JPanel {
 		text.setEditable(false);
 		text.setFont(new Font("SansSerif", Font.BOLD, 10));
 		if (currentProcessor == _proNo) {
-			text.setText("Unreached");
+			text.setText("Unassigned");
 		} else {
 			text.setText("Processor "+(currentProcessor+1));
 		}
