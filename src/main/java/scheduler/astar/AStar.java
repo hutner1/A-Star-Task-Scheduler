@@ -134,11 +134,10 @@ public class AStar {
 			@Override
 			public void run() {
 				
-				if(_updated == false){
+				/*if(_updated == false){*/
 					if(_visualizer != null){
+						_visualizer.updateGraph(bestCurrentSolution);
 						_gantt.updateSolution(bestCurrentSolution);
-						
-
 					} 
 					
 					if (_gantt != null) {
@@ -149,9 +148,9 @@ public class AStar {
 							_gantt.setSolution(bestCurrentSolution);
 						}
 					}
-				}
+				/*}*/
 				
-				_updated = true;
+				/*_updated = true;*/
 				
 			}
 			
@@ -226,7 +225,7 @@ public class AStar {
 			if(_visualizer != null){  
 				if(_counter == 100){  
 					_counter = 0;  
-					_visualizer.updateGraph(bestCurrentSolution);  
+					/*_visualizer.updateGraph(bestCurrentSolution);  */
 					_stats.updateStats(_solCreated, _solPopped, _solPruned, bestCurrentSolution.maxCostFunction());
 				} else {  
 					_counter++;  
@@ -241,6 +240,10 @@ public class AStar {
 			}
 			_updated = false;
 			_currentCost = bestCurrentSolution.maxCostFunction();
+		}
+		
+		if(_visualizer != null){
+			_visualizer.updateGraph(bestCurrentSolution);
 		}
 
 		_solutionSpace.add(bestCurrentSolution);

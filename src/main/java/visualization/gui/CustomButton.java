@@ -56,10 +56,10 @@ class CustomButton extends JButton {
 		}
 		
 		//Filling the button with background color without going outside the round corners 
-		g.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 6, 6);
+		g.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 4, 4);
 
 		//Drawing the button with round corners
-		g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 6, 6);
+		g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 4, 4);
 
 		super.paintComponent(g);
 

@@ -118,7 +118,7 @@ public class Main {
 			System.out.println(aStar.getSolPruned());
 			
 			if(graphVisualizer != null){
-				graphVisualizer.updateGraph(optimalSolution);
+				/*graphVisualizer.updateGraph(optimalSolution);*/
 				gantt.updateSolution(optimalSolution);
 				stats.updateStats(aStar.getSolCreated(), aStar.getSolPopped(), aStar.getSolPruned(), optimalSolution.getLastFinishTime());
 				DefaultTableModel model = (DefaultTableModel)stats.getTable().getModel();

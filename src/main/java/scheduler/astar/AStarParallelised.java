@@ -57,7 +57,11 @@ public class AStarParallelised extends AStar{
 		// Start threading process, assign each thread(core) an ASTarThread with shared solution space and closed solution space
 		for (int i = 0; i < _numberOfThreads; i++) {
 
-			_aStarThreads[i] = new AStarThread(i, _graph, _solutionSpace, _closedSolutions, _numberOfProcessors, _visualizer, _upperBound, _gantt, _stats);
+			if(i == 0){
+				_aStarThreads[i] = new AStarThread(i, _graph, _solutionSpace, _closedSolutions, _numberOfProcessors, _visualizer, _upperBound, _gantt, _stats);
+			} else {
+				_aStarThreads[i] = new AStarThread(i, _graph, _solutionSpace, _closedSolutions, _numberOfProcessors, null, _upperBound, null, null);
+			}
 
 			//Add the custom thread with all the AStar fields into a thread
 			_threads[i] = new Thread(_aStarThreads[i]);
@@ -150,14 +154,14 @@ public class AStarParallelised extends AStar{
 
 		} 
 		*/
-		if(_stats != null){  
+		/*if(_stats != null){  
 			if(_counter == 100){  
 				_counter = 0;
 				_stats.updateStats(_solCreated, _solPopped, _solPruned, bestCurrentSolution.getLastFinishTime());
 			} else {
 				_counter++;
 			}
-		} 
+		} */
 		return bestCurrentSolution;
 	}
 
