@@ -340,9 +340,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 					child.addProcess(v, i);
 					child._lastScheduledTask = v;
 					child._mostRecentlyScheduledProcessor = i;
-					//TODO child.printTree();
 					_children.add(child);
-					//TODO System.out.println(child.maxCostFunction());
 				} 
 			}
 
@@ -409,6 +407,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 	 * its processes are done in the same order but on different processors
 	 */
 	@Override
+	//TODO: Equivalence checking
 	public boolean equals(Object o) {
 		Solution otherSolution = (Solution)o;
 
