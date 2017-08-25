@@ -469,7 +469,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 
 			//System.out.println(temp.getProcessessString());
 
-			if (temp.getTime() <= tMax && outgoingCommsOK(this)) {
+			if (temp.getTime() <= tMax && outgoingCommsOK(this, p)) {
 				return true;
 			}
 
@@ -480,7 +480,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 		_processors.put(_mostRecentlyScheduledProcessor, p);
 		return false;
 	}
-	
+
 	/**
 	 * Algorithm 3 from the 2013 Sinnen paper.
 	 * This algorithm checks that all outgoing communications of the swapped tasks
@@ -489,10 +489,10 @@ public class Solution implements Comparable<Solution>, Schedule{
 	 * @param childSol
 	 * @return a boolean to find whether a solution is equivalent 
 	 */
-	public boolean outgoingCommsOK(Solution childSol){
-		for (Vertex v: childSol._schedulableProcesses){
-			int swappedTime = minimalDataReadyTime(_lastScheduledTask);
-			if (swappedTime > minimalDataReadyTime(v)){
+	public boolean outgoingCommsOK(Solution childSol, Processor originalProcessor){
+		for (ProcessInfo pI: originalProcessor.getProcesses()){
+			Vertex v = pI.getVertex();
+			if (childSol._processors.get(_mostRecentlyScheduledProcessor).startTimeOf(v) > pI.startTime()) {
 				for (Vertex nc : _graph.getDirectChildren(v)) {
 					ArrayList<DefaultWeightedEdge> childEdges = _graph.outgoingEdgesOf(v);
 					int edgeCost = 0;
@@ -502,33 +502,60 @@ public class Solution implements Comparable<Solution>, Schedule{
 							break;
 						}
 					}
-					int time = v.getBottomLevel() + edgeCost;
+					int time = childSol._processors.get(_mostRecentlyScheduledProcessor).endTimeOf(v) + edgeCost;
 					if (isScheduled(nc)){
-						if (minimalDataReadyTime(nc)>time || !_processors.get(_mostRecentlyScheduledProcessor).isScheduled(v)){
+						if (_processors.get(scheduledOnProcessorNumber(nc)).startTimeOf(nc)>time || !_processors.get(_mostRecentlyScheduledProcessor).isScheduled(nc)){
 							return false;
 						}
 					} else {
-						for (Processor p: _processors.values()){
+						for (int i = 1; i <= _numberOfProcessors && i != _mostRecentlyScheduledProcessor; i++){
+							Processor p = _processors.get(i);
 							boolean atLeastOneLater = false;
 							ArrayList<Vertex> parents= _graph.getDirectParents(nc);
-							for (int i = 0; i < parents.size(); i++) {
-								if (parents.get(i).equals(v)) {
-									parents.remove(i);
-								}
-							}
+							parents.remove(v);
 							for (Vertex cv: parents){
-								if (p.isScheduled(cv)) {
-									ArrayList<DefaultWeightedEdge> cEdges = _graph.outgoingEdgesOf(cv);
-									int dataArrival = 0;
-									for (DefaultWeightedEdge e : cEdges) {
-										if (e.getDest().equals(nc)) {
-											dataArrival = e.getWeight();
-											break;
+
+								int dataArrival;
+
+								try {
+									dataArrival = endTimeOf(cv);
+
+									if (i != scheduledOnProcessorNumber(cv)) {
+										for (DefaultWeightedEdge e : _graph.outgoingEdgesOf(cv)) {
+											if (e.getDest().equals(nc)) {
+												dataArrival += e.getWeight();
+											}
 										}
 									}
-									if (dataArrival >= time){
-										atLeastOneLater = true;
+								} catch (NullPointerException e) {
+
+									int earliestTime = earliestDataReadyTime(cv,1);
+									int procNumber = 1;
+
+									for (int j = 2; j <= _numberOfProcessors; j++) {
+										int drt = earliestDataReadyTime(cv,j);
+										if (drt < earliestTime) {
+											earliestTime = drt;
+											procNumber = j;
+										}
 									}
+
+									dataArrival = earliestTime;
+
+									if (i != procNumber) {
+										for (DefaultWeightedEdge e2 : _graph.outgoingEdgesOf(cv)) {
+											if (e2.getDest().equals(nc)) {
+												dataArrival += e2.getWeight();
+											}
+										}
+									}
+								}
+
+
+
+
+								if (dataArrival >= time) {
+									atLeastOneLater = true;
 								}
 							}
 							if (!atLeastOneLater){
@@ -543,11 +570,9 @@ public class Solution implements Comparable<Solution>, Schedule{
 	}
 
 
-	//TODO hash code, remove it?
-	/**
-	public int hashCode(){
+	private int endTimeOf(Vertex v) {
+		return _processors.get(scheduledOnProcessorNumber(v)).endTimeOf(v);
 	}
-	 */
 
 	/**
 	 * Custom function to check whether a vertex is scheduled on a processor
@@ -561,6 +586,18 @@ public class Solution implements Comparable<Solution>, Schedule{
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Function to check which processor a process is scheduled on
+	 */
+	private int scheduledOnProcessorNumber(Vertex v) {
+		for (int i = 1; i <= _numberOfProcessors; i++) {
+			if (_processors.get(i).isScheduled(v)) {
+				return i;
+			}
+		}
+		return 0;
 	}
 
 	/**
@@ -606,7 +643,5 @@ public class Solution implements Comparable<Solution>, Schedule{
 		_processors.get(processorNumber).addProcess(v,dataReadyTime);
 	}
 
-	public void swapProcess(Processor p, Vertex vertexA, Vertex vertexB) {
-	}
 }
 
