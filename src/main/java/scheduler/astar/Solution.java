@@ -308,12 +308,11 @@ public class Solution implements Comparable<Solution>, Schedule{
 		_scheduledProcesses.add(parent);
 		_schedulableProcesses.remove(parent);
 
-		for (DefaultWeightedEdge outEdge : _graph.outgoingEdgesOf(parent)) {
-			Vertex child = _graph.getEdgeTarget(outEdge);
+		for (Vertex child : _graph.getChildren(parent)) {
 
 			boolean canBeScheduled = true;
-			for (DefaultWeightedEdge inEdge : _graph.incomingEdgesOf(child)) {
-				if (!_scheduledProcesses.contains(_graph.getEdgeSource(inEdge))) { 
+			for (Vertex childsParent : _graph.getParents(child)) {
+				if (!_scheduledProcesses.contains(childsParent)) { 
 					canBeScheduled = false;
 				}
 			}
