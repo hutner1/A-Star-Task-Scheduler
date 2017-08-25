@@ -87,11 +87,19 @@ public class Visualizer {
 	public void add(DefaultDirectedWeightedGraph DAG) {
 
 		_DAG = DAG;
-
-		//Add all nodes of the DAG to the graph
+		int pos = 30;
+		
+		//Add all nodes of the DAG to the sgraph
 		for(Vertex vertex : DAG.vertexSet()){
 			Node n =_graph.addNode(vertex.getName());
-
+			
+			if(_DAG.inDegreeOf(vertex) == 0){
+				_graph.getNode(vertex.getName()).setAttribute("ui.style", "size:40px;");
+				/*n.setAttribute("y", 300 + pos);
+				n.setAttribute("x", pos);
+				pos = pos + 20;*/
+			}
+			
 			//Labels the node with their name
 			n.addAttribute("ui.label", n.getId());
 		}
@@ -112,13 +120,6 @@ public class Visualizer {
 	 * 
 	 */
 	public ViewPanel displayGraph() {
-
-		for(Vertex vertex : _DAG.vertexSet()){
-			if(_DAG.inDegreeOf(vertex) == 0){
-				_graph.getNode(vertex.getName()).setAttribute("y", 300);
-				_graph.getNode(vertex.getName()).setAttribute("x", 0);
-			}
-		}
 
 		//Displays the graph
 		_viewer = new Viewer(_graph,
@@ -160,6 +161,7 @@ public class Visualizer {
 		HashMap<String, List<Object>> scheduledVertices = new HashMap<String, List<Object>>();
 
 		for(Vertex vertex : _DAG.vertexSet()){
+			
 			_graph.getNode(vertex.getName()).setAttribute("ui.style", "fill-color:#"+ "000000" +";");
 		}
 
