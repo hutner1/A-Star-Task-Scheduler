@@ -103,7 +103,7 @@ public class Visualizer {
 
 			_graph.addEdge(source + target ,source , target, true);
 		}
-		
+
 	}
 
 	/**
@@ -112,18 +112,14 @@ public class Visualizer {
 	 * 
 	 */
 	public ViewPanel displayGraph() {
-		
+
 		for(Vertex vertex : _DAG.vertexSet()){
-			if(_DAG.inDegreeOf(vertex) == 0 || _DAG.outgoingEdgesOf(vertex).size() < 1){
-				_graph.getNode(vertex.getName()).setAttribute("ui.style", " size:40px;");
-				
-				if(_DAG.inDegreeOf(vertex) == 0){
-					_graph.getNode(vertex.getName()).setAttribute("y", 300);
-					_graph.getNode(vertex.getName()).setAttribute("x", 0);
-				}
+			if(_DAG.inDegreeOf(vertex) == 0){
+				_graph.getNode(vertex.getName()).setAttribute("y", 300);
+				_graph.getNode(vertex.getName()).setAttribute("x", 0);
 			}
 		}
-		
+
 		//Displays the graph
 		_viewer = new Viewer(_graph,
 				Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
