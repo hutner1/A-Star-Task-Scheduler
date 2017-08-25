@@ -50,6 +50,7 @@ public class Visualizer {
 			"}" +
 
 			"node{" +
+			"size:25px;"+
 			"text-size:16px;"+
 			"text-color:rgb(255,255,255);"+
 			"stroke-mode:plain;"+
@@ -91,25 +92,9 @@ public class Visualizer {
 		for(Vertex vertex : DAG.vertexSet()){
 			Node n =_graph.addNode(vertex.getName());
 
-			//Set the size of the nodes to be bigger if they are source node or a leaf
-			if(DAG.inDegreeOf(vertex) == 0){
-				n.addAttribute("ui.style", " size:40px;");
-
-				//Allocate the position of the source node on the graph
-				n.setAttribute("y", 300);
-				n.setAttribute("x", 0);
-
-			}else if(DAG.outgoingEdgesOf(vertex).size() < 1) {
-				n.addAttribute("ui.style", " size:40px;");
-
-			} else {
-				n.addAttribute("ui.style", " size:25px;");
-			}
-
 			//Labels the node with their name
 			n.addAttribute("ui.label", n.getId());
 		}
-
 
 		//Add all edges of the DAG to the graph
 		for(DefaultWeightedEdge edge : DAG.edgeSet()){
@@ -118,8 +103,7 @@ public class Visualizer {
 
 			_graph.addEdge(source + target ,source , target, true);
 		}
-
-
+		
 	}
 
 	/**
@@ -128,7 +112,18 @@ public class Visualizer {
 	 * 
 	 */
 	public ViewPanel displayGraph() {
-
+		
+		for(Vertex vertex : _DAG.vertexSet()){
+			if(_DAG.inDegreeOf(vertex) == 0 || _DAG.outgoingEdgesOf(vertex).size() < 1){
+				_graph.getNode(vertex.getName()).setAttribute("ui.style", " size:40px;");
+				
+				if(_DAG.inDegreeOf(vertex) == 0){
+					_graph.getNode(vertex.getName()).setAttribute("y", 300);
+					_graph.getNode(vertex.getName()).setAttribute("x", 0);
+				}
+			}
+		}
+		
 		//Displays the graph
 		_viewer = new Viewer(_graph,
 				Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
