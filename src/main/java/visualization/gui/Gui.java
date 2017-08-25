@@ -141,7 +141,7 @@ public class Gui {
 		_frame.getContentPane().add(ganttButton);
 
 		//Initializing the buttons
-		JButton graphButton = new CustomButton("Tree Graph");
+		JButton graphButton = new CustomButton("Graph");
 		_active = graphButton;
 		graphButton.setBackground(new Color(6, 47, 79));
 		graphButton.setBounds(834, 15, 140, 50);
