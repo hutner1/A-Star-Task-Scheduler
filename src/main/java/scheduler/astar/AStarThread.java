@@ -35,7 +35,7 @@ public class AStarThread extends AStar implements Runnable{
 		this._upperBound = upperBound;
 		this._asp = asp;
 	}
-	
+
 	/**
 	 * Find optimal solution with the shared OPEN & CLOSED solution space
 	 * Thread#start() will allow this function to run
@@ -43,20 +43,31 @@ public class AStarThread extends AStar implements Runnable{
 	@SuppressWarnings("deprecation")
 	public void run() {
 		_bestSolution = findOptimalSolution();
-		System.out.println("Thread " + _threadNo + " --> "+System.nanoTime()/1000000000 + " seconds");
-		
-		// TODO sleep for 1 second for other threads near completion to finish
-		//while(_solutionSpace.peek().maxCostFunction()<_bestSolution.maxCostFunction()){
-			//System.out.println("hi");
-		//}
-		// first thread to finish will stop other threads from running
-		for(int i = 0; i<_asp._numberOfThreads; i++){
-			if(i != _threadNo){
-				_asp._threads[i].stop(); //Return the solution that one thread has
-			}
-		}
+		System.out.println("Thread " + _threadNo + " --> "+System.nanoTime()/1000000000 + " seconds" + " cost " + _currentCost);
+
+//		// TODO sleep for 1 second for other threads near completion to finish
+//		//while(_solutionSpace.peek().maxCostFunction()<_bestSolution.maxCostFunction()){
+//		//System.out.println("hi");
+//		//}
+//
+//		for(int i = 0; i<_asp._numberOfThreads; i++) {
+//			while (i != _threadNo && _asp._aStarThreads[i]._currentCost < _currentCost) {
+//			//	System.out.println(i + "Hi" + _threadNo);
+//			}
+//		}
+//
+//		//System.out.println("im killing everyone" + _threadNo);
+//		
+//		// first thread to finish will stop other threads from running
+//		for(int i = 0; i<_asp._numberOfThreads; i++){
+//			if(i != _threadNo){
+//				if(_asp._threads[i].isAlive()) {
+//					_asp._threads[i].stop(); //Return the solution that one thread has
+//				}
+//			}
+//		}
 	}
-	
+
 	/**
 	 * Get the optimal solution from this thread
 	 * @return optimal solution from this thread
@@ -64,5 +75,5 @@ public class AStarThread extends AStar implements Runnable{
 	public Solution getSolution(){
 		return _bestSolution;
 	}
-	
+
 }

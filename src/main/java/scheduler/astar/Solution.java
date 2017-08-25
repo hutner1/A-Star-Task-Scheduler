@@ -173,7 +173,13 @@ public class Solution implements Comparable<Solution>, Schedule{
 		if (maxThis < maxOther) {
 			return -1;
 		}  else if (maxThis == maxOther) {
-			return s._scheduledProcesses.size() - this._scheduledProcesses.size();
+			if (s._scheduledProcesses.size() - this._scheduledProcesses.size() != 0) {
+				return s._scheduledProcesses.size() - this._scheduledProcesses.size();
+			}
+			else {
+				return s.hashCode() - hashCode();
+			}
+
 		} else {
 			return 1;
 		}
@@ -430,19 +436,24 @@ public class Solution implements Comparable<Solution>, Schedule{
 
 		return true;
 	}
-	
+
 	@Override
 	public int hashCode() {
-		
-		int current = 0;
-		
+		ArrayList<String> hashString = new ArrayList<String>();
+
 		for (Processor p : _processors.values()) {
-			for (ProcessInfo pI : p.getProcesses()) {
-				current += (pI.startTime() + pI.endTime())*3;
-			}
+			hashString.add(p.getProcessessString());
 		}
 		
-		return current;
+		Collections.sort(hashString);
+
+		StringBuilder sb = new StringBuilder();
+		
+		for (String s : hashString) {
+			sb.append(s);
+		}
+		
+		return sb.toString().hashCode();
 	}
 
 	/**

@@ -128,7 +128,7 @@ public class StatisticTable extends JPanel{
 		model.setValueAt(solPruned, 4, 1);
 		model.setValueAt((Runtime.getRuntime().totalMemory())/1024/1024, 5, 1);
 		
-		model.setValueAt(df.format((double)(System.nanoTime()-Main._startTime)/1000000000), 6, 1);
+		model.setValueAt((double)(System.nanoTime()-Main._startTime)/1000000000, 6, 1);
 		
 		if(finishTime != null){
 			model.setValueAt(finishTime, 7, 1);

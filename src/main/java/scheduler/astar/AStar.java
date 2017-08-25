@@ -44,6 +44,7 @@ public class AStar {
 	protected static int _solCreated=0;
 	protected static int _solPopped=0;
 	protected static int _solPruned=0;
+	protected int _currentCost = Integer.MAX_VALUE;
 
 	/**
 	 * AStar's constructor
@@ -117,6 +118,7 @@ public class AStar {
 		Solution bestCurrentSolution = _solutionSpace.poll();
 		_solPopped ++;
 
+		
 		while(bestCurrentSolution == null){
 			bestCurrentSolution = _solutionSpace.poll();
 			/*_solPopped ++;*/
@@ -211,7 +213,7 @@ public class AStar {
 			}
 			
 			//System.out.println("polled " + bestCurrentSolution.maxCostFunction() + " size " + bestCurrentSolution.getSize());
-			
+			_currentCost = bestCurrentSolution.maxCostFunction();
 		}
 
 		return bestCurrentSolution;

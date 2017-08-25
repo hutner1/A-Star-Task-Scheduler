@@ -70,6 +70,7 @@ public class AStarParallelised extends AStar{
 		for (int i = 0; i <_numberOfThreads; i++) {
 			try {
 				_threads[i].join();
+				//System.out.println(i);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -122,10 +123,10 @@ public class AStarParallelised extends AStar{
 
 		if(_stats != null){  
 			if(_counter == 10){  
-				_stats.updateStats(_solCreated, _solPopped, _solPruned, bestCurrentSolution.maxCostFunction());
+				_stats.updateStats(_solCreated, _solPopped, _solPruned, bestCurrentSolution.getLastFinishTime());
 			}
 		} 
-		
+		System.out.println("fk "+bestCurrentSolution.getLastFinishTime());
 		return bestCurrentSolution;
 	}
 
