@@ -137,7 +137,7 @@ public class AStar {
 				if(_updated == false){
 					if(_visualizer != null){
 						_gantt.updateSolution(bestCurrentSolution);
-						_visualizer.updateGraph(bestCurrentSolution);  
+						
 
 					} 
 					
@@ -226,6 +226,7 @@ public class AStar {
 			if(_visualizer != null){  
 				if(_counter == 100){  
 					_counter = 0;  
+					_visualizer.updateGraph(bestCurrentSolution);  
 					_stats.updateStats(_solCreated, _solPopped, _solPruned, bestCurrentSolution.maxCostFunction());
 				} else {  
 					_counter++;  
