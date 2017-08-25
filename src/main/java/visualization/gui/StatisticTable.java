@@ -163,11 +163,11 @@ public class StatisticTable extends JPanel{
 	
 	/**
 	 * This class creates a renderer that gives padding to the cells.
+	 * referenced from stackoverflow
+	 * https://stackoverflow.com/questions/17188117/i-would-like-to-add-a-right-padding-to-a-jtable-column-is-it-possible
 	 *
 	 */
 	class TableCellRenderer extends DefaultTableCellRenderer {
-
-		private static final long serialVersionUID = 1L;
 
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
 			super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
