@@ -18,7 +18,7 @@ import scheduler.graphstructures.Vertex;
  * using maxCostFunction() (polling for best solution)
  */
 public class Solution implements Comparable<Solution>, Schedule{
-	private int _upperBound; // TODO to be removed, as only used in A*
+	private int _upperBound; 
 	private HashMap<Integer, Processor> _processors;
 	private int _numberOfProcessors;
 	private List<Vertex> _scheduledProcesses;
@@ -26,7 +26,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 	private List<Vertex> _nonschedulableProcesses;
 
 	private Queue<Solution> _children;
-	private boolean _partiallyExpanded = false;
+	private boolean _partiallyExpanded;
 	Vertex _lastScheduledTask;
 	private int _mostRecentlyScheduledProcessor;
 
@@ -48,6 +48,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 		_scheduledProcesses = new ArrayList<Vertex>(scheduled);
 		_schedulableProcesses = new ArrayList<Vertex>(schedulable);
 		_nonschedulableProcesses = new ArrayList<Vertex>(nonschedulable);
+		_partiallyExpanded = false;
 	}
 
 	/**
@@ -64,6 +65,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 		_numberOfProcessors = numberOfProcessors;
 		_processors = new HashMap<Integer, Processor>();
 		_graph = graph;
+		_partiallyExpanded = false;
 		for (int i = 1; i <= numberOfProcessors; i++) {
 			_processors.put(i, new Processor());
 		}
@@ -121,8 +123,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 		}
 		startingTimes.add(_processors.get(processorNumber).earliestNextProcess());
 		int earliestStartTime = Collections.max(startingTimes);
-		//System.out.println(earliestStartTime);
-		//System.out.println(earliestAvailableTime);
+
 		return earliestStartTime;
 	}
 
@@ -204,7 +205,6 @@ public class Solution implements Comparable<Solution>, Schedule{
 		costs.add(idleTimePlusComputationLoad());
 		costs.add(maximumEndTimeOfFreeVertices());
 
-		//System.out.println(costs.toString());
 
 		return Collections.max(costs);
 	}
@@ -355,17 +355,6 @@ public class Solution implements Comparable<Solution>, Schedule{
 		return _children;
 	}
 
-	/**
-	 * Debugging //TODO
-	 */
-	private void printTree() {
-		for (int i = 1; i <= _numberOfProcessors; i++) {
-			System.out.print("P:" + i + " [ ");
-			_processors.get(i).printProcesses();
-			System.out.print("] ");
-		}
-		System.out.println();
-	}
 
 	/**
 	 * Creates a hard copy of current solution
@@ -404,7 +393,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 				return ", Start=" + _processors.get(i).getProcess(vertex).startTime() + ", Processor=" + i;
 			}
 		}
-		return null; // TODO
+		return null; 
 	}
 
 	/**
@@ -413,7 +402,6 @@ public class Solution implements Comparable<Solution>, Schedule{
 	 * its processes are done in the same order but on different processors
 	 */
 	@Override
-	//TODO: Equivalence checking
 	public boolean equals(Object o) {
 		Solution otherSolution = (Solution)o;
 
@@ -624,12 +612,14 @@ public class Solution implements Comparable<Solution>, Schedule{
 		return _processors;
 	}
 
-	// TODO don't think we ever used upper bound
 	public int getUpperBound() {
-
 		return _upperBound;
 	}
 
+	/**
+	 * Sets whether a solution is partially expanded 
+	 * @param status
+	 */
 	public void setExpansionStatus(boolean status) {
 		_partiallyExpanded = status;
 	}

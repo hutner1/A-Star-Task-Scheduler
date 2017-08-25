@@ -85,7 +85,6 @@ public class Gui {
 			public void windowClosing(java.awt.event.WindowEvent windowEvent) {
 				Runtime.getRuntime().addShutdownHook(new Thread() {
 					public void run(){
-						System.out.println("Shutting down all threads");	
 					}
 				});
 				System.exit(0);
@@ -199,7 +198,6 @@ public class Gui {
 
 				Runtime.getRuntime().addShutdownHook(new Thread() {
 					public void run(){
-						System.out.println("Shutting down all threads");	
 					}
 				});
 

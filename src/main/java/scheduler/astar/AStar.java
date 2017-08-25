@@ -96,7 +96,6 @@ public class AStar {
 
 		ListScheduler listScheduler = new ListScheduler(_graph, _numberOfProcessors);
 		_upperBound = listScheduler.getResult();
-		System.out.println("Upper bound:" + _upperBound);
 
 		// Create empty solution and then commence the looping
 		Solution emptySolution = new Solution(_upperBound, _numberOfProcessors, _graph, new ArrayList<Vertex>(), schedulable, nonschedulable);
@@ -126,7 +125,6 @@ public class AStar {
 
 		// keep polling until the best cost solution is a complete schedule, hence an optimal solution
 		while (!bestCurrentSolution.isCompleteSchedule()) {
-			//System.out.println("C: "+_closedSolutions.size());
 			
 			// if solution is not already examined
 			while ((_closedSolutions.contains(bestCurrentSolution)) || (bestCurrentSolution == null)) {
@@ -138,7 +136,6 @@ public class AStar {
 
 			}
 
-			//System.out.println("SS: "+_solutionSpace.size());
 			
 			// expand the solution
 			Queue<Solution> childSolutions = bestCurrentSolution.createChildren();
@@ -149,7 +146,6 @@ public class AStar {
 			while ((s = childSolutions.poll()) != null) {
 				int childCost = s.maxCostFunction();
 				_solCreated ++;
-				//System.out.println(childCost);
 				if (s.isEquivalent()) {
 					_solPruned ++;
 				} else if (!_closedSolutions.contains(s)) {
@@ -157,8 +153,7 @@ public class AStar {
 						// DO NOTHING AS IT WILL NOT BE CONSIDERED
 						_solPruned ++;
 					} else {
-						//System.out.println("added "+ childCost + " size " + s.getSize() + " vertex " + s._lastScheduledTask.getName());
-						_solutionSpace.add(s); // TODO move to after if statement?
+						_solutionSpace.add(s); 
 						if (childCost == bestCurrentSolution.maxCostFunction()) {
 							if (!childSolutions.isEmpty()) {
 								fullyExpanded = false;
@@ -181,8 +176,6 @@ public class AStar {
 			}
 
 
-			//TODO System.out.println(bestCurrentSolution.maxCostFunction());
-			//TODO System.out.println("Solution space size : " + _solutionSpace.size());
 
 			if (_gantt != null) {
 				if (_gantt.hasLaunched()) {
@@ -212,7 +205,6 @@ public class AStar {
 				bestCurrentSolution = _solutionSpace.poll();
 			}
 			
-			//System.out.println("polled " + bestCurrentSolution.maxCostFunction() + " size " + bestCurrentSolution.getSize());
 			_currentCost = bestCurrentSolution.maxCostFunction();
 		}
 
@@ -238,7 +230,7 @@ public class AStar {
 	/**
 	 * Returns the bottom level of a vertex
 	 * @param vertex
-	 * @return
+	 * @return bottom level
 	 */
 	private int getBottomLevel(Vertex vertex){
 		ArrayList<Vertex> children = getChildren(vertex);
@@ -258,24 +250,21 @@ public class AStar {
 	}
 
 	/**
-	 * TODO
-	 * @return
+	 * Getter for number of solutions created
 	 */
 	public int getSolCreated(){
 		return _solCreated;
 	}
 
 	/**
-	 * TODO
-	 * @return
+	 * Getter for number of solutions pruned
 	 */	
 	public int getSolPruned(){
 		return _solPruned;
 	}
 
 	/**
-	 * TODO
-	 * @return
+	 * Getter for number of solutions popped
 	 */	
 	public int getSolPopped(){
 		return _solPopped;

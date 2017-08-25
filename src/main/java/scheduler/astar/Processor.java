@@ -159,7 +159,6 @@ public class Processor {
 	 */
 	public int idleTime() {
 		int idleTime = earliestNextProcess;
-		// TODO could just minus the process weights here lol
 		for (ProcessInfo pI : processes) {
 			idleTime += pI.startTime();
 			idleTime -= pI.endTime();

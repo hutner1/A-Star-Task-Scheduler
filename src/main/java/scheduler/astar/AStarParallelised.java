@@ -8,7 +8,6 @@ import visualization.gui.StatisticTable;
 
 /**
  * AStar thread class that will be added to allow solution search in parallel
- * TODO: Incorporate Paratask or Bananas in Pyjamas
  */
 public class AStarParallelised extends AStar{
 
@@ -26,7 +25,9 @@ public class AStarParallelised extends AStar{
 	 * @param graph task digraph
 	 * @param numberOfProcessors number of processors to do task scheduling on
 	 * @param numberOfThreads number of cores to use for scheduling
-	 * @param Visualizer the visualizer // TODO
+	 * @param Visualizer the visualizer 
+	 * @param Gantt the gantt chart
+	 * @param StatisticTable the statistics table
 	 */
 	public AStarParallelised(DefaultDirectedWeightedGraph graph, int numberOfProcessors, int numberOfThreads, Visualizer Visualizer, Gantt gantt, StatisticTable stats) {
 		super(graph, numberOfProcessors, Visualizer, gantt, stats);
@@ -53,7 +54,7 @@ public class AStarParallelised extends AStar{
 		// Start threading process, assign each thread(core) an ASTarThread with shared solution space and closed solution space
 		for (int i = 0; i < _numberOfThreads; i++) {
 
-			_aStarThreads[i] = new AStarThread(i, _graph, _solutionSpace, _closedSolutions, _numberOfProcessors, _visualizer, _upperBound,this, _gantt, _stats);
+			_aStarThreads[i] = new AStarThread(i, _graph, _solutionSpace, _closedSolutions, _numberOfProcessors, _visualizer, _upperBound, _gantt, _stats);
 
 			//Add the custom thread with all the AStar fields into a thread
 			_threads[i] = new Thread(_aStarThreads[i]);
@@ -70,7 +71,6 @@ public class AStarParallelised extends AStar{
 		for (int i = 0; i <_numberOfThreads; i++) {
 			try {
 				_threads[i].join();
-				//System.out.println(i);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -90,7 +90,6 @@ public class AStarParallelised extends AStar{
 		for (int i = 0; i < _numberOfThreads; i++) {
 			if (aStarThreads[i].getSolution() != null) {
 				int finishTime = aStarThreads[i].getSolution().getLastFinishTime();
-				System.out.println("Finish time  : "+finishTime);
 				if(finishTime < bestCost){
 					bestCost = finishTime;
 					threadNo = i;
@@ -126,7 +125,6 @@ public class AStarParallelised extends AStar{
 				_stats.updateStats(_solCreated, _solPopped, _solPruned, bestCurrentSolution.getLastFinishTime());
 			}
 		} 
-		System.out.println("fk "+bestCurrentSolution.getLastFinishTime());
 		return bestCurrentSolution;
 	}
 

@@ -115,7 +115,6 @@ public class NodeClickListener implements ViewerListener , MouseInputListener{
 	 * Inherited function unused 
 	 */ 
 	public void buttonReleased(String id) { 
-		// TODO Auto-generated method stub 
 
 	} 
 
@@ -124,7 +123,6 @@ public class NodeClickListener implements ViewerListener , MouseInputListener{
 	 */ 
 	@Override 
 	public void mouseClicked(MouseEvent e) { 
-		// TODO Auto-generated method stub 
 
 	} 
 
@@ -133,7 +131,6 @@ public class NodeClickListener implements ViewerListener , MouseInputListener{
 	 */ 
 	@Override 
 	public void mouseEntered(MouseEvent e) { 
-		// TODO Auto-generated method stub 
 
 	} 
 
@@ -142,7 +139,6 @@ public class NodeClickListener implements ViewerListener , MouseInputListener{
 	 */ 
 	@Override 
 	public void mouseExited(MouseEvent e) { 
-		// TODO Auto-generated method stub 
 
 	} 
 
@@ -151,9 +147,7 @@ public class NodeClickListener implements ViewerListener , MouseInputListener{
 	 */ 
 	@Override 
 	public void mousePressed(MouseEvent e) { 
-		// TODO Auto-generated method stub 
-		//_viewerPipe.pump(); 
-		//System.out.println("Pump it!"); 
+
 	} 
 
 
@@ -162,7 +156,6 @@ public class NodeClickListener implements ViewerListener , MouseInputListener{
 	 */ 
 	@Override 
 	public void mouseDragged(MouseEvent arg0) { 
-		// TODO Auto-generated method stub 
 
 	} 
 
@@ -171,8 +164,6 @@ public class NodeClickListener implements ViewerListener , MouseInputListener{
 	 */ 
 	@Override 
 	public void mouseMoved(MouseEvent arg0) { 
-		// TODO Auto-generated method stub 
-
 	} 
 
 

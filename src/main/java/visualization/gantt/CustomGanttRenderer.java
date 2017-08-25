@@ -231,7 +231,6 @@ public class CustomGanttRenderer extends GanttRenderer {
 			if (state.getInfo() != null) {
 				EntityCollection entities = state.getEntityCollection();
 				if (entities != null) {
-					//System.out.println("Here 0");
 					String tip = null;
 					CategoryToolTipGenerator cttg = new CustomIntervalCategoryGanttToolTipGenerator("{1}: {3} - {4}", NumberFormat.getNumberInstance());
 							//getToolTipGenerator(row, column);

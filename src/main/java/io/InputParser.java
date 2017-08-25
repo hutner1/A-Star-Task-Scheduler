@@ -158,9 +158,6 @@ public class InputParser {
 			{
 				_parallelise = true; //Parallelisation opted for
 
-				/*int processors = Runtime.getRuntime().availableProcessors();
-				System.out.print(processors);*/
-
 				//Check whether the p option is repeated, if yes output error
 				if(commandLine.getOptionValues("p").length > 1){
 					throw new InputParserException("Parse error: This option cannot be repeated!");
