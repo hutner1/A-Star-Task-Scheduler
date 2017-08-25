@@ -49,15 +49,13 @@ public class Visualizer {
 			"arrow-size: 12px, 6px;" +
 			"}" +
 
-    		"node{" +
-    		"size:20px;"+
-    		"text-size:16px;"+
-    		"size:30px;"+
-    		"text-color:rgb(255,255,255);"+
-    		"stroke-mode:plain;"+
-    		"stroke-width:2px;"+
-    		"stroke-color:#FFF8;"+
-    		"}";
+			"node{" +
+			"text-size:16px;"+
+			"text-color:rgb(255,255,255);"+
+			"stroke-mode:plain;"+
+			"stroke-width:2px;"+
+			"stroke-color:#FFF8;"+
+			"}";
 	private Graph _graph;
 	private Viewer _viewer;
 	private DefaultDirectedWeightedGraph _DAG;
@@ -169,7 +167,7 @@ public class Visualizer {
 		//Get the hash map of the processes
 		HashMap<Integer, Processor> processorWithSolution = currentBestSol.getProcess();
 		HashMap<String, List<Object>> scheduledVertices = new HashMap<String, List<Object>>();
-		
+
 		for(Vertex vertex : _DAG.vertexSet()){
 			_graph.getNode(vertex.getName()).setAttribute("ui.style", "fill-color:#"+ "000000" +";");
 		}
@@ -181,13 +179,13 @@ public class Visualizer {
 				String colorCode = getColor(i);
 				String vertexName = processInfo.getVertex().getName();
 				_graph.getNode(vertexName).setAttribute("ui.style", "fill-color:#"+ colorCode +";");
-				
+
 				List<Object> schedule = new ArrayList<Object>();
 				schedule.add(i);
 				schedule.add(processInfo.startTime()); 
-		        schedule.add(processInfo.endTime()); 
+				schedule.add(processInfo.endTime()); 
 				scheduledVertices.put(vertexName, schedule);
-				
+
 			}
 		}
 		_nodeClickListener.setCurrentSolution(scheduledVertices);
@@ -206,7 +204,7 @@ public class Visualizer {
 
 		return colors[index];
 	}
-	
+
 	/**
 	 * Get the directed weight graph
 	 * 
@@ -215,7 +213,7 @@ public class Visualizer {
 	public DefaultDirectedWeightedGraph getDAG(){
 		return _DAG;
 	}
-	
+
 	/**
 	 * Get the GraphStream graph
 	 * 
