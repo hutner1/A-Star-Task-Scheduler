@@ -90,6 +90,20 @@ public class Processor {
 	}
 
 	/**
+	 * Checks the start time of a task
+	 * @param v task
+	 * @return end time of a task
+	 */
+	public int startTimeOf(Vertex v) {
+		for (ProcessInfo pi : processes) {
+			if (pi.getVertex().equals(v)) {
+				return pi.startTime();
+			}
+		}
+		return 0;
+	}
+	
+	/**
 	 * Checks the end time of a task
 	 * @param v task
 	 * @return end time of a task

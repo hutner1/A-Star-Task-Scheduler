@@ -141,7 +141,7 @@ public class Gui {
 		_frame.getContentPane().add(ganttButton);
 
 		//Initializing the buttons
-		JButton graphButton = new CustomButton("Tree Graph");
+		JButton graphButton = new CustomButton("Graph");
 		_active = graphButton;
 		graphButton.setBackground(new Color(6, 47, 79));
 		graphButton.setBounds(834, 15, 140, 50);
@@ -229,6 +229,8 @@ public class Gui {
 		_infoArea.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		_infoArea.setBounds(834, 248, 140, 246);
 		_infoArea.setBorder(new LineBorder(new Color(13, 90, 150), 1, true));
+		//referenced from stackoverflow https://stackoverflow.com/questions/10274750/java-swing-setting-margins-on-textarea-with-line-border
+		//May have been used in other classes such as Legend as well.
 		_infoArea.setBorder(BorderFactory.createCompoundBorder( 
 				_infoArea.getBorder(),  
 				BorderFactory.createEmptyBorder(5, 5, 5, 5))); 
