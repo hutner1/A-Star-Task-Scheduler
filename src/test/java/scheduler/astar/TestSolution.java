@@ -71,8 +71,8 @@ public class TestSolution {
 		schedulableProcesses.add(v);
 		schedulableProcesses.add(v2);
 		
-		Solution solA = new Solution(200, 2, _graph, scheduledProcesses, schedulableProcesses, nonschedulableProcesses);
-		Solution solB = new Solution(200, 2, _graph, scheduledProcesses, schedulableProcesses, nonschedulableProcesses);
+		Solution solA = new Solution(200, 2, _graph, scheduledProcesses, schedulableProcesses, nonschedulableProcesses,false);
+		Solution solB = new Solution(200, 2, _graph, scheduledProcesses, schedulableProcesses, nonschedulableProcesses,false);
 		
 		solA.addProcess(v, 1);
 		solB.addProcess(v, 2);

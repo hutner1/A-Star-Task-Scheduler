@@ -73,7 +73,7 @@ public class AStar {
 	 */
 	public Solution execute() {
 		initialiseSolutionSpace();
-		
+
 		return findOptimalSolution();
 	}
 
@@ -103,7 +103,7 @@ public class AStar {
 		_upperBound = listScheduler.getResult();
 
 		// Create empty solution and then commence the looping
-		Solution emptySolution = new Solution(_upperBound, _numberOfProcessors, _graph, new ArrayList<Vertex>(), schedulable, nonschedulable);
+		Solution emptySolution = new Solution(_upperBound, _numberOfProcessors, _graph, new ArrayList<Vertex>(), schedulable, nonschedulable, false);
 		emptySolution.setBtmLevels(btmLevel);
 		_solutionSpace.add(emptySolution);	
 	}
@@ -121,7 +121,7 @@ public class AStar {
 		// BEST priority solution
 		bestCurrentSolution = _solutionSpace.poll();
 		_solPopped ++;
-		
+
 		while(bestCurrentSolution == null){
 			bestCurrentSolution = _solutionSpace.poll();
 			/*_solPopped ++;*/
@@ -133,14 +133,14 @@ public class AStar {
 
 			@Override
 			public void run() {
-				
+
 				if(_updated == false){
 					if(_visualizer != null){
 						_gantt.updateSolution(bestCurrentSolution);
 						_visualizer.updateGraph(bestCurrentSolution);  
 
 					} 
-					
+
 					if (_gantt != null) {
 						if (_gantt.hasLaunched()) {
 							_gantt.updateSolution(bestCurrentSolution);
@@ -150,17 +150,17 @@ public class AStar {
 						}
 					}
 				}
-				
+
 				_updated = true;
-				
+
 			}
-			
+
 		}, 0, 2000);
-		
-		
+
+
 		// keep polling until the best cost solution is a complete schedule, hence an optimal solution
 		while (!bestCurrentSolution.isCompleteSchedule()) {
-			
+
 			// if solution is not already examined
 			while ((_closedSolutions.contains(bestCurrentSolution)) || (bestCurrentSolution == null)) {
 				bestCurrentSolution = _solutionSpace.poll();
@@ -171,18 +171,21 @@ public class AStar {
 
 			}
 
-			
+			if (bestCurrentSolution.canFixOrder()) {
+				bestCurrentSolution.fixOrder();
+			}
 			// expand the solution
 			Queue<Solution> childSolutions = bestCurrentSolution.createChildren();
 
 			Solution s;
 			boolean fullyExpanded = true;
-			
+
 			while ((s = childSolutions.poll()) != null) {
 				int childCost = s.maxCostFunction();
 				_solCreated ++;
-				if (s.isEquivalent()) {
+				if (!bestCurrentSolution.isFixedOrder() && s.isEquivalent()) {
 					_solPruned ++;
+
 				} else if (!_closedSolutions.contains(s)) {
 					if (childCost > _upperBound){
 						// DO NOTHING AS IT WILL NOT BE CONSIDERED
@@ -192,12 +195,9 @@ public class AStar {
 						if (childCost == bestCurrentSolution.maxCostFunction()) {
 							if (!childSolutions.isEmpty()) {
 								fullyExpanded = false;
-								bestCurrentSolution.setExpansionStatus(true);
 								_solutionSpace.add(bestCurrentSolution);
 								_solCreated += childSolutions.size();
 								break;
-							} else {
-								bestCurrentSolution.setExpansionStatus(false);
 							}
 						}
 					}
@@ -221,7 +221,7 @@ public class AStar {
 					_gantt.setSolution(bestCurrentSolution);
 				}
 			}
-			*/
+			 */
 
 			if(_visualizer != null){  
 				if(_counter == 100){  

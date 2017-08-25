@@ -141,7 +141,7 @@ public class DataReader {
 				}
 				text = _reader.readLine();
 			}
-			createVirtualEdges();
+			//createVirtualEdges();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
