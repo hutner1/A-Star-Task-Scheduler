@@ -641,5 +641,43 @@ public class Solution implements Comparable<Solution>, Schedule{
 		_processors.get(processorNumber).addProcess(v,dataReadyTime);
 	}
 
+	private boolean canFixOrder() {
+
+		Vertex commonChild = null;
+		Vertex commonParent = null;
+
+		for (Vertex v : _schedulableProcesses) {
+			if (!(_graph.getParents(v).size() <= 1 && _graph.getChildren(v).size() <= 1)) {
+				return false;
+			}
+
+			if (_graph.getChildren(v).size() == 1) {
+
+				Vertex child = _graph.getChildren(v).get(0);
+
+				if (commonChild != null) {
+					if (!commonChild.equals(child)) {
+						return false;
+					}
+				} else {
+					commonChild = child;
+				}
+			}
+
+			if (_graph.getParents(v).size() == 1) {
+
+				Vertex parent = _graph.getParents(v).get(0);
+
+				if (commonParent != null) {
+					if(!commonParent.equals(parent)) {
+						return false;
+					}
+				} else {
+					commonParent = parent;
+				}
+			}
+		}
+		return true;
+	}
 }
 
