@@ -179,9 +179,12 @@ public class Solution implements Comparable<Solution>, Schedule{
 				return s._scheduledProcesses.size() - this._scheduledProcesses.size();
 			}
 			else {
-				return s.hashCode() - hashCode();
+				if (this.getLastFinishTime() - s.getLastFinishTime() != 0) {
+					return this.getLastFinishTime() - s.getLastFinishTime();
+				} else {
+					return s.hashCode() - hashCode();
+				}
 			}
-
 		} else {
 			return 1;
 		}
