@@ -198,7 +198,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 		costs.add(idleTimePlusComputationLoad());
 		costs.add(maximumEndTimeOfFreeVertices());
 
-		System.out.println(costs.toString());
+		//System.out.println(costs.toString());
 
 		return Collections.max(costs);
 	}

@@ -45,13 +45,11 @@ public class AStarThread extends AStar implements Runnable{
 		_bestSolution = findOptimalSolution();
 		System.out.println("Thread " + _threadNo + " --> "+System.nanoTime()/1000000000 + " seconds");
 		
-		// sleep for 1 second for other threads near completion to finish
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		// fisrt thread to finish will stop other threads from running
+		// TODO sleep for 1 second for other threads near completion to finish
+		//while(_solutionSpace.peek().maxCostFunction()<_bestSolution.maxCostFunction()){
+			//System.out.println("hi");
+		//}
+		// first thread to finish will stop other threads from running
 		for(int i = 0; i<_asp._numberOfThreads; i++){
 			if(i != _threadNo){
 				_asp._threads[i].stop(); //Return the solution that one thread has

@@ -1,10 +1,9 @@
 package visualization.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.Insets;
+import java.text.DecimalFormat;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -31,6 +30,7 @@ public class StatisticTable extends JPanel{
 
 	private JTable _table;
 	private final static String[] _columns = { "Statistics", "No." };
+	private DecimalFormat df = new DecimalFormat("####0.00");
 	/*	private int _solCreated;
 	private int _solPopped;
 	private int _solPruned;
@@ -128,7 +128,7 @@ public class StatisticTable extends JPanel{
 		model.setValueAt(solPruned, 4, 1);
 		model.setValueAt((Runtime.getRuntime().totalMemory())/1024/1024, 5, 1);
 		
-		model.setValueAt(String.format("%.1f", (double)(System.nanoTime()-Main._startTime)/1000000000), 6, 1);
+		model.setValueAt(df.format((double)(System.nanoTime()-Main._startTime)/1000000000), 6, 1);
 		
 		if(finishTime != null){
 			model.setValueAt(finishTime, 7, 1);
