@@ -238,7 +238,7 @@ public class AStar {
 		}
 
 		_solutionSpace.add(bestCurrentSolution);
-		
+		timer.cancel();
 		return bestCurrentSolution;
 
 	}
