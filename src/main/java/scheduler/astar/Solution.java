@@ -677,7 +677,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 	}
 
 	public void fixOrder() {
-		_fixedOrder = true;
+
 		HashMap<Integer, List<Vertex>> freeTasks = new HashMap<Integer, List<Vertex>>();
 		PriorityQueue<Integer> edrts = new PriorityQueue<Integer>();
 
@@ -707,15 +707,42 @@ public class Solution implements Comparable<Solution>, Schedule{
 				finalFixedOrder.add(v);
 			}
 		}
+		
+		if (verifyForkJoinOrder(finalFixedOrder)) {
+			_fixedOrder = true;
+			
+			for (int i = 0; i < finalFixedOrder.size() - 1; i++) {
+				_graph.addChild(finalFixedOrder.get(i),finalFixedOrder.get(i+1));
+			}
 
+			for (int i = 1; i < finalFixedOrder.size(); i++) {
+				_schedulableProcesses.remove(finalFixedOrder.get(i));
+				_nonschedulableProcesses.add(finalFixedOrder.get(i));
+			}
+		}
+
+		
+	}
+
+	private boolean verifyForkJoinOrder(List<Vertex> finalFixedOrder) {
 		for (int i = 0; i < finalFixedOrder.size() - 1; i++) {
-			_graph.addChild(finalFixedOrder.get(i),finalFixedOrder.get(i+1));
+			Vertex vertexA = finalFixedOrder.get(i);
+			Vertex vertexB = finalFixedOrder.get(i + 1);
+			int aCost = 0;
+			int bCost = 0;
+			
+			try {
+				aCost = _graph.outgoingEdgesOf(vertexA).get(0).getWeight();
+			} catch (IndexOutOfBoundsException e) {}
+			try {
+				bCost = _graph.outgoingEdgesOf(vertexB).get(0).getWeight();
+			} catch (IndexOutOfBoundsException e) {}
+			
+			if (aCost < bCost) {
+				return false;
+			}
 		}
-
-		for (int i = 1; i < finalFixedOrder.size(); i++) {
-			_schedulableProcesses.remove(finalFixedOrder.get(i));
-			_nonschedulableProcesses.add(finalFixedOrder.get(i));
-		}
+		return true;
 	}
 
 	public boolean isFixedOrder() {
