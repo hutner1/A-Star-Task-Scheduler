@@ -62,8 +62,8 @@ public class Main {
 				graphVisualizer.displayGraph();
 				gantt = new Gantt("");
 				stats = new StatisticTable(inputParser.getCores(),inputParser.getProcessors());
-				final Gantt gant2 = gantt;
 				final Visualizer graphVisualizer2 = graphVisualizer;
+				final Gantt gant2 = gantt;
 				final StatisticTable stats2 = stats;
 				final int numProc = inputParser.getProcessors();
 				//graphVisualizer.displayGraph();
@@ -118,11 +118,11 @@ public class Main {
 			System.out.println(aStar.getSolPruned());
 			
 			if(graphVisualizer != null){
-				graphVisualizer.updateGraph(optimalSolution);
 				gantt.updateSolution(optimalSolution);
 				stats.updateStats(aStar.getSolCreated(), aStar.getSolPopped(), aStar.getSolPruned(), optimalSolution.getLastFinishTime());
 				DefaultTableModel model = (DefaultTableModel)stats.getTable().getModel();
 				model.setValueAt("Optimal Finish Time", 7, 0);
+				graphVisualizer.updateGraph(optimalSolution);
 			}
 			
 		}

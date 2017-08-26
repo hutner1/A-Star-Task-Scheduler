@@ -133,12 +133,10 @@ public class AStar {
 
 			@Override
 			public void run() {
-
-				if(_updated == false){
+				/*if(_updated == false){*/
 					if(_visualizer != null){
+						_visualizer.updateGraph(bestCurrentSolution);
 						_gantt.updateSolution(bestCurrentSolution);
-						_visualizer.updateGraph(bestCurrentSolution);  
-
 					} 
 
 					if (_gantt != null) {
@@ -149,10 +147,9 @@ public class AStar {
 							_gantt.setSolution(bestCurrentSolution);
 						}
 					}
-				}
-
-				_updated = true;
-
+				/*}*/
+				
+				/*_updated = true;*/
 			}
 
 		}, 0, 2000);
@@ -226,6 +223,7 @@ public class AStar {
 			if(_visualizer != null){  
 				if(_counter == 100){  
 					_counter = 0;  
+					/*_visualizer.updateGraph(bestCurrentSolution);  */
 					_stats.updateStats(_solCreated, _solPopped, _solPruned, bestCurrentSolution.maxCostFunction());
 				} else {  
 					_counter++;  

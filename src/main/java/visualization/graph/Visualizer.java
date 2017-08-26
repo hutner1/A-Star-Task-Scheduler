@@ -50,7 +50,7 @@ public class Visualizer {
 			"}" +
 
 			"node{" +
-			"size:30px;"+
+			"size:35px;"+
 			"text-size:16px;"+
 			"text-color:rgb(255,255,255);"+
 			"stroke-mode:plain;"+
@@ -92,20 +92,14 @@ public class Visualizer {
 		for(Vertex vertex : _DAG.vertexSet()){
 			Node n =_graph.addNode(vertex.getName());
 			
-			if(_DAG.inDegreeOf(vertex) == 0){
-				n.setAttribute("ui.style", "size:40px;");
-				
-				if(!(_DAG.outgoingEdgesOf(vertex).size() == 0)){
+			if(_DAG.inDegreeOf(vertex) == 0 && !(_DAG.outgoingEdgesOf(vertex).size() == 0)){
 					n.setAttribute("y", 30);
 					n.setAttribute("x", 0);
-				}
-
-			} else if(_DAG.outgoingEdgesOf(vertex).size() == 0){
-				n.setAttribute("ui.style", "size:40px;");
-			}
+			} 
 			
 			//Labels the node with their name
 			n.addAttribute("ui.label", n.getId());
+			
 		}
 		
 		boolean extendEdge = false;
@@ -124,8 +118,6 @@ public class Visualizer {
 				e.addAttribute("layout.weight", 2);
 			}	
 		}
-		
-
 	}
 
 	/**
