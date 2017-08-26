@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import org.graphstream.algorithm.generator.BaseGenerator;
 import org.graphstream.algorithm.generator.LobsterGenerator;
 import org.graphstream.graph.Edge;

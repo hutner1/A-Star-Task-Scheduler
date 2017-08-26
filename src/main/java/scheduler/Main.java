@@ -2,6 +2,7 @@ package scheduler;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
@@ -123,6 +124,8 @@ public class Main {
 				DefaultTableModel model = (DefaultTableModel)stats.getTable().getModel();
 				model.setValueAt("Optimal Finish Time", 7, 0);
 				graphVisualizer.updateGraph(optimalSolution);
+				JOptionPane.showMessageDialog(null,
+					    "Scheduling complete!");
 			}
 			
 		}
