@@ -458,24 +458,24 @@ public class Solution implements Comparable<Solution>, Schedule{
 	 */
 	public boolean isEquivalent() {
 
-		Collections.sort(_scheduledProcesses);
+		Collections.sort(_scheduledProcesses); // Sort in topological order
 
 		Processor p = _processors.get(_mostRecentlyScheduledProcessor);
-		int tMax = p.getTime();
+		int tMax = p.getTime(); // final schedule horizon end time for m
 
 		List<Vertex> processOrder = p.getProcessOrder();
 		int i = processOrder.size() - 2;
 
 		while (i >= 0 && _scheduledProcesses.indexOf(_lastScheduledTask) < _scheduledProcesses.indexOf(processOrder.get(i))) {
 			processOrder.remove(_lastScheduledTask);
-			processOrder.add(i, _lastScheduledTask);
+			processOrder.add(i, _lastScheduledTask); //swap m with forgoing task
 
 			Processor temp = new Processor();
 
 			_processors.put(_mostRecentlyScheduledProcessor, temp);
 			for (Vertex v : processOrder) {
 				try {
-					addProcessWithoutUpdating(v, _mostRecentlyScheduledProcessor);
+					addProcessWithoutUpdating(v, _mostRecentlyScheduledProcessor); // try to add tasks at the earliest possible time
 				} catch (SolutionException e) {
 					_processors.put(_mostRecentlyScheduledProcessor, p);
 					return false;
@@ -505,19 +505,20 @@ public class Solution implements Comparable<Solution>, Schedule{
 	public boolean outgoingCommsOK(Solution childSol, Processor originalProcessor){
 		for (ProcessInfo pI: originalProcessor.getProcesses()){
 			Vertex v = pI.getVertex();
+			// if the start time of the task after m is later than before, analyse child tasks
 			if (childSol._processors.get(_mostRecentlyScheduledProcessor).startTimeOf(v) > pI.startTime()) {
 				for (Vertex nc : _graph.getDirectChildren(v)) {
 					ArrayList<DefaultWeightedEdge> childEdges = _graph.outgoingEdgesOf(v);
 					int edgeCost = 0;
 					for (DefaultWeightedEdge e : childEdges) {
 						if (e.getDest().equals(nc)) {
-							edgeCost = e.getWeight();
+							edgeCost = e.getWeight(); //get the edge cost from task to child
 							break;
 						}
 					}
 					int time = childSol._processors.get(_mostRecentlyScheduledProcessor).endTimeOf(v) + edgeCost;
-					if (isScheduled(nc)){
-						if (_processors.get(scheduledOnProcessorNumber(nc)).startTimeOf(nc)>time || !_processors.get(_mostRecentlyScheduledProcessor).isScheduled(nc)){
+					if (isScheduled(nc)){ //if the child is scheduled
+						if (_processors.get(scheduledOnProcessorNumber(nc)).startTimeOf(nc)>time && !_processors.get(_mostRecentlyScheduledProcessor).isScheduled(nc)){
 							return false;
 						}
 					} else {
