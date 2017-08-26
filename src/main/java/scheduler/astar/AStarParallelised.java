@@ -105,63 +105,6 @@ public class AStarParallelised extends AStar{
 		}
 
 		bestCurrentSolution = aStarThreads[threadNo].getSolution();
-		/*
-		Timer timer = new Timer();
-		timer.scheduleAtFixedRate(new TimerTask() {
-
-			@Override
-			public void run() {
-				if (_gantt != null) {
-					if (_gantt.hasLaunched()) {
-						_gantt.updateSolution(bestCurrentSolution);
-
-					} else {
-						_gantt.setSolution(bestCurrentSolution);
-					}
-				}
-				
-				if(_visualizer != null){
-					_gantt.updateSolution(bestCurrentSolution);
-					_visualizer.updateGraph(bestCurrentSolution);  
-
-				} 
-				
-			}
-			
-		}, 0, 2000);
-		*/
-		
-		
-		/*
-		if (_gantt != null) {
-			if (_gantt.hasLaunched()) {
-				if(_counter == 10){  
-					_gantt.updateSolution(bestCurrentSolution);
-				}
-			} else {
-				_gantt.setSolution(bestCurrentSolution);
-			}
-		}
-
-		if(_visualizer != null){  
-			if(_counter == 10){  
-				_counter = 0;  
-				_visualizer.updateGraph(bestCurrentSolution);  
-
-			} else {  
-				_counter++;  
-			}  
-
-		} 
-		*/
-		/*if(_stats != null){  
-			if(_counter == 100){  
-				_counter = 0;
-				_stats.updateStats(_solCreated, _solPopped, _solPruned, bestCurrentSolution.getLastFinishTime());
-			} else {
-				_counter++;
-			}
-		} */
 		return bestCurrentSolution;
 	}
 
