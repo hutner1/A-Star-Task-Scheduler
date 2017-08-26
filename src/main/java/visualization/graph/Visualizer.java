@@ -92,20 +92,7 @@ public class Visualizer {
 		for(Vertex vertex : _DAG.vertexSet()){
 			Node n =_graph.addNode(vertex.getName());
 			
-			/*if(_DAG.inDegreeOf(vertex) == 0){
-				n.setAttribute("ui.style", "size:40px;");
-				
-				if(!(_DAG.outgoingEdgesOf(vertex).size() == 0)){
-					n.setAttribute("y", 30);
-					n.setAttribute("x", 0);
-				}
-
-			} else if(_DAG.outgoingEdgesOf(vertex).size() == 0){
-				n.setAttribute("ui.style", "size:40px;");
-			}*/
-			
 			if(_DAG.inDegreeOf(vertex) == 0 && !(_DAG.outgoingEdgesOf(vertex).size() == 0)){
-				
 					n.setAttribute("y", 30);
 					n.setAttribute("x", 0);
 			} 
@@ -131,7 +118,6 @@ public class Visualizer {
 				e.addAttribute("layout.weight", 2);
 			}	
 		}
-		
 	}
 
 	/**

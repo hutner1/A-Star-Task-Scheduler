@@ -62,8 +62,8 @@ public class Main {
 				graphVisualizer.displayGraph();
 				gantt = new Gantt("");
 				stats = new StatisticTable(inputParser.getCores(),inputParser.getProcessors());
-				final Gantt gant2 = gantt;
 				final Visualizer graphVisualizer2 = graphVisualizer;
+				final Gantt gant2 = gantt;
 				final StatisticTable stats2 = stats;
 				final int numProc = inputParser.getProcessors();
 				//graphVisualizer.displayGraph();
