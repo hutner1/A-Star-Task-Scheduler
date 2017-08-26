@@ -93,4 +93,14 @@ public class Vertex implements Comparable<Vertex>{
 		}
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		Vertex v = (Vertex) o;
+		
+		if (v._name.equals(_name)) {
+			return true;
+		} else {
+			return false;
+		}
+ 	}
 }

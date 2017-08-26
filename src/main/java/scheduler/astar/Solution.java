@@ -2,9 +2,11 @@ package scheduler.astar;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Queue;
 
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
@@ -26,11 +28,11 @@ public class Solution implements Comparable<Solution>, Schedule{
 	private List<Vertex> _nonschedulableProcesses;
 
 	private Queue<Solution> _children;
-	private boolean _partiallyExpanded;
 	Vertex _lastScheduledTask;
 	private int _mostRecentlyScheduledProcessor;
 
 	private DefaultDirectedWeightedGraph _graph;
+	private boolean _fixedOrder = false;;
 	private static HashMap<Vertex, Integer> _btmLevels;
 
 	/**
@@ -42,13 +44,13 @@ public class Solution implements Comparable<Solution>, Schedule{
 	 * @param schedulable tasks with ran dependencies
 	 * @param nonschedulable tasks with dependencies not run
 	 */
-	public Solution(int upperBound, int numberOfProcessors, DefaultDirectedWeightedGraph graph, List<Vertex> scheduled, List<Vertex> schedulable, List<Vertex> nonschedulable) {
+	public Solution(int upperBound, int numberOfProcessors, DefaultDirectedWeightedGraph graph, List<Vertex> scheduled, List<Vertex> schedulable, List<Vertex> nonschedulable, boolean fixedOrder) {
 		this(numberOfProcessors, graph);
 		_upperBound = upperBound;
 		_scheduledProcesses = new ArrayList<Vertex>(scheduled);
 		_schedulableProcesses = new ArrayList<Vertex>(schedulable);
 		_nonschedulableProcesses = new ArrayList<Vertex>(nonschedulable);
-		_partiallyExpanded = false;
+		_fixedOrder = fixedOrder;
 	}
 
 	/**
@@ -65,7 +67,6 @@ public class Solution implements Comparable<Solution>, Schedule{
 		_numberOfProcessors = numberOfProcessors;
 		_processors = new HashMap<Integer, Processor>();
 		_graph = graph;
-		_partiallyExpanded = false;
 		for (int i = 1; i <= numberOfProcessors; i++) {
 			_processors.put(i, new Processor());
 		}
@@ -178,9 +179,12 @@ public class Solution implements Comparable<Solution>, Schedule{
 				return s._scheduledProcesses.size() - this._scheduledProcesses.size();
 			}
 			else {
-				return s.hashCode() - hashCode();
+				if (this.getLastFinishTime() - s.getLastFinishTime() != 0) {
+					return this.getLastFinishTime() - s.getLastFinishTime();
+				} else {
+					return s.hashCode() - hashCode();
+				}
 			}
-
 		} else {
 			return 1;
 		}
@@ -308,12 +312,11 @@ public class Solution implements Comparable<Solution>, Schedule{
 		_scheduledProcesses.add(parent);
 		_schedulableProcesses.remove(parent);
 
-		for (DefaultWeightedEdge outEdge : _graph.outgoingEdgesOf(parent)) {
-			Vertex child = _graph.getEdgeTarget(outEdge);
+		for (Vertex child : _graph.getChildren(parent)) {
 
 			boolean canBeScheduled = true;
-			for (DefaultWeightedEdge inEdge : _graph.incomingEdgesOf(child)) {
-				if (!_scheduledProcesses.contains(_graph.getEdgeSource(inEdge))) { 
+			for (Vertex childsParent : _graph.getParents(child)) {
+				if (!_scheduledProcesses.contains(childsParent)) { 
 					canBeScheduled = false;
 				}
 			}
@@ -364,7 +367,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 	 * @return Hard copy of the current solution
 	 */
 	public Solution createDuplicateSolution() {
-		Solution s = new Solution(_upperBound, _numberOfProcessors, _graph, _scheduledProcesses, _schedulableProcesses, _nonschedulableProcesses);
+		Solution s = new Solution(_upperBound, _numberOfProcessors, _graph, _scheduledProcesses, _schedulableProcesses, _nonschedulableProcesses, _fixedOrder);
 		s.setProcessorSchedule(_processors);
 		return s;
 	}
@@ -617,14 +620,6 @@ public class Solution implements Comparable<Solution>, Schedule{
 	}
 
 	/**
-	 * Sets whether a solution is partially expanded 
-	 * @param status
-	 */
-	public void setExpansionStatus(boolean status) {
-		_partiallyExpanded = status;
-	}
-
-	/**
 	 * Returns the size of a schedule, the number of nodes scheduled on the schedule 
 	 * @return the number of nodes scheduled on the schedule 
 	 */
@@ -642,5 +637,148 @@ public class Solution implements Comparable<Solution>, Schedule{
 		_processors.get(processorNumber).addProcess(v,dataReadyTime);
 	}
 
-}
+	public boolean canFixOrder() {
 
+		Vertex commonChild = null;
+		int commonParentProcessorNumber = 0;
+
+		for (Vertex v : _schedulableProcesses) {
+			if (!(_graph.getParents(v).size() <= 1 && _graph.getChildren(v).size() <= 1)) {
+				return false;
+			}
+
+			if (_graph.getChildren(v).size() == 1) {
+
+				Vertex child = _graph.getChildren(v).get(0);
+
+				if (commonChild != null) {
+					if (!commonChild.equals(child)) {
+						return false;
+					}
+				} else {
+					commonChild = child;
+				}
+			}
+
+			if (_graph.getParents(v).size() == 1) {
+
+				Vertex parent = _graph.getParents(v).get(0);
+
+				if (commonParentProcessorNumber != 0) {
+					if(commonParentProcessorNumber != scheduledOnProcessorNumber(parent)) {
+						return false;
+					}
+				} else {
+					commonParentProcessorNumber = scheduledOnProcessorNumber(parent);
+				}
+			}
+		}
+		return true;
+	}
+
+	public void fixOrder() {
+		_fixedOrder = true;
+		HashMap<Integer, List<Vertex>> freeTasks = new HashMap<Integer, List<Vertex>>();
+		PriorityQueue<Integer> edrts = new PriorityQueue<Integer>();
+
+		for (Vertex v : _schedulableProcesses) {
+			int edrt = earliestDataReadyTimeWithEdges(v);
+
+			if (freeTasks.containsKey(edrt)) {
+				freeTasks.get(edrt).add(v);
+			} else {
+				List<Vertex> sameCostTasks = new ArrayList<Vertex>();
+				sameCostTasks.add(v);
+				freeTasks.put(edrt, sameCostTasks);
+				edrts.add(edrt);
+			}
+		}
+
+		for (List<Vertex> sameCosts : freeTasks.values()) {
+			if (sameCosts.size() > 1) {
+				sortNonIncreasingOutEdge(sameCosts);
+			}
+		}
+
+		List<Vertex> finalFixedOrder = new ArrayList<Vertex>();
+
+		while (!edrts.isEmpty()) {
+			for (Vertex v : freeTasks.get(edrts.poll())) {
+				finalFixedOrder.add(v);
+			}
+		}
+
+		for (int i = 0; i < finalFixedOrder.size() - 1; i++) {
+			_graph.addChild(finalFixedOrder.get(i),finalFixedOrder.get(i+1));
+		}
+
+		for (int i = 1; i < finalFixedOrder.size(); i++) {
+			_schedulableProcesses.remove(finalFixedOrder.get(i));
+			_nonschedulableProcesses.add(finalFixedOrder.get(i));
+		}
+	}
+
+	public boolean isFixedOrder() {
+		return _fixedOrder ;
+	}
+
+	private void sortNonIncreasingOutEdge(List<Vertex> list) {
+
+		boolean changed = true;
+
+		while (changed) {
+			changed = false;
+			for (int i = 0; i < list.size() - 1; i++) {
+				for (int j = i + 1; j < list.size(); j++) {
+					List<DefaultWeightedEdge> edgeI = _graph.outgoingEdgesOf(list.get(i));
+					List<DefaultWeightedEdge> edgeJ = _graph.outgoingEdgesOf(list.get(j));
+					int iCost = 0;
+					int jCost = 0;
+
+					try {
+						iCost = edgeI.get(0).getWeight();
+					} catch (IndexOutOfBoundsException e) {}
+
+					try {
+						jCost = edgeJ.get(0).getWeight();
+					} catch (IndexOutOfBoundsException e) {}
+
+					if (iCost < jCost) {
+						Vertex temp = list.get(i);
+						list.remove(i);
+						list.add(j, temp);
+						changed = true;
+					}
+				}
+			}
+		}
+
+	}
+
+	private int earliestDataReadyTimeWithEdges(Vertex v){
+
+		// for every processor, get the latest starting parent, then determine the earliest possible start time of new process
+		ArrayList<Integer> startingTimes = new ArrayList<Integer>();
+
+		// finds task's dependencies, and finds earliest possible start time
+		for (DefaultWeightedEdge e : _graph.incomingEdgesOf(v)) {
+			int parentEndTime = 0;
+			Vertex parent = _graph.getEdgeSource(e);
+			for (int i = 1; i <= _numberOfProcessors; i++) {
+				if (_processors.get(i).isScheduled(parent)) {
+					parentEndTime =_processors.get(i).endTimeOf(parent);
+					parentEndTime += _graph.getEdgeWeight(e);	
+				}
+			}
+
+			startingTimes.add(parentEndTime);
+		}
+
+		if (startingTimes.size() == 0) {
+			return 0;
+		} else {
+			return Collections.max(startingTimes);
+		}
+	}
+
+}

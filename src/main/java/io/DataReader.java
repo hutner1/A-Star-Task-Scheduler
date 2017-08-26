@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +21,7 @@ import scheduler.graphstructures.Vertex;
 public class DataReader {
 
 	private String _digraphName;
-	
+
 	/**
 	 * Records the vertices with their names and edges with ">" as they are being read.
 	 * 
@@ -37,10 +38,10 @@ public class DataReader {
 	private DefaultDirectedWeightedGraph _digraph;
 	private HashMap<String,Vertex> _mapping;
 	private BufferedReader _reader;
-	
+
 	private static Logger _logger = LoggerFactory
 			.getLogger(DataReader.class);
-	
+
 	/**
 	 * Constructs DataReader
 	 * @param file input file to read digraph from
@@ -60,20 +61,20 @@ public class DataReader {
 	 * be obtained by calling the getGraph() method.
 	 */
 	public void readNextGraph() {
-		
+
 		//Resets the stored data from possible previous graphs within the same file
 		resetData();
-		
+
 		//Start reading the input file
 		try {
 			//Read first line of input file to get name of digraph and store it
 			String text = _reader.readLine();
 			String[] headerArray = text.split("\"");
 			_digraphName = headerArray[1];
-					
+
 			// move to next line to check if the line is not needed
 			text = _reader.readLine();
-			
+
 			// Gracefully takes care of unneeded lines
 			while(!text.trim().substring(text.trim().length() - 1).equals(";")||!text.contains("[Weight=")){
 				text = _reader.readLine();
@@ -140,18 +141,65 @@ public class DataReader {
 				}
 				text = _reader.readLine();
 			}
+			//createVirtualEdges();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
-	
+	/**
+	 * Creates extra virtual edges in the graph between equivalent nodes, so that only one scheduling order is considered
+	 */
+	private void createVirtualEdges() {
+
+		HashMap<String, List<Vertex>> equivalentVertices = new HashMap<String, List<Vertex>>();
+
+		for (Vertex v : _mapping.values()) {
+			String vertexString = _digraph.getVertexString(v);
+
+			if (equivalentVertices.containsKey(vertexString)) {
+				equivalentVertices.get(vertexString).add(v);
+			} else {
+				List<Vertex> vertices = new ArrayList<Vertex>();
+				vertices.add(v);
+				equivalentVertices.put(vertexString, vertices);
+			}
+		}
+
+		for (List<Vertex> vertices : equivalentVertices.values()) {
+			if (vertices.size() > 1) {
+				for (int i = 0; i < vertices.size() - 1; i++) {
+					_digraph.addChild(vertices.get(i), vertices.get(i+1));
+				}
+			}
+		}
+	}
+
+	/*private void orderFork() {
+		HashMap<Vertex, List<Vertex>> forkVertices = new HashMap<Vertex, List<Vertex>>();
+
+		for (Vertex v : _mapping.values()) {
+			if (_digraph.getParents(v).size() == 1 && _digraph.getChildren(v).size() == 0) {
+
+				Vertex parent = _digraph.getParents(v).get(0);
+				
+				if (forkVertices.containsKey(parent)) {
+					forkVertices.get(parent).add(v);
+				} else {
+					List<Vertex> vertices = new ArrayList<Vertex>();
+					vertices.add(v);
+					forkVertices.put(parent, vertices);
+				}
+			}
+		}
+	}*/
+
 	/**
 	 * Resets the data in the stored ArrayLists and Graphs
 	 */
 	public void resetData() {
-	
+
 		_verticesAndEdgesRead = new ArrayList<String>();
 		_verticesAndEdgesInfo = new ArrayList<String>();
 		//Creates digraph with weighted vertices and weighted edges
@@ -171,13 +219,13 @@ public class DataReader {
 			_reader.mark(2);
 			eof = _reader.read();
 			_reader.reset();
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return eof > 0;
 	}
-	
+
 	/**
 	 * Method to parse and get the weight of the vertex/edge
 	 * @param weightString string containing the vertex/edge weight
@@ -190,9 +238,9 @@ public class DataReader {
 
 		return weight;
 	}
-	
+
 	// Getter Methods
-	
+
 	/**
 	 * Returns the name of the input digraph
 	 * @return name of input digraph
@@ -224,7 +272,7 @@ public class DataReader {
 	public DefaultDirectedWeightedGraph getGraph() {
 		return _digraph;
 	}
-	
+
 	/**
 	 * Get the map for the mapping from the vertex name to its Vertex instance
 	 * @return map for the mapping from the vertex name to its Vertex instance
