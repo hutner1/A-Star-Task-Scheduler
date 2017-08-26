@@ -628,7 +628,13 @@ public class Solution implements Comparable<Solution>, Schedule{
 	}
 
 
-
+	/**
+	 * Adds a process to a processor at its earliest possible time, to be used for reassigning tasks
+	 * in a different order
+	 * @param v
+	 * @param processorNumber
+	 * @throws SolutionException when a task is trying to be scheduled without having all dependencies met
+	 */
 	public void addProcessWithoutUpdating(Vertex v, int processorNumber) throws SolutionException {
 		int dataReadyTime = earliestDataReadyTime(v, processorNumber);
 		if (dataReadyTime == -1) {
@@ -637,12 +643,19 @@ public class Solution implements Comparable<Solution>, Schedule{
 		_processors.get(processorNumber).addProcess(v,dataReadyTime);
 	}
 
+	/**
+	 * The first condition for checking if it is possible to fix the order of a schedule based on its current
+	 * list of free tasks
+	 * @return
+	 */
 	public boolean canFixOrder() {
 
 		Vertex commonChild = null;
 		int commonParentProcessorNumber = 0;
 
+		// For every free task, check if it satisfies 3 conditions
 		for (Vertex v : _schedulableProcesses) {
+			// The task must have at most one parent and at most one child
 			if (!(_graph.getParents(v).size() <= 1 && _graph.getChildren(v).size() <= 1)) {
 				return false;
 			}
@@ -650,7 +663,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 			if (_graph.getChildren(v).size() == 1) {
 
 				Vertex child = _graph.getChildren(v).get(0);
-
+				// All tasks with a child must share the same child
 				if (commonChild != null) {
 					if (!commonChild.equals(child)) {
 						return false;
@@ -663,7 +676,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 			if (_graph.getParents(v).size() == 1) {
 
 				Vertex parent = _graph.getParents(v).get(0);
-
+				// All tasks with parents must have their parents allocated to the same processor
 				if (commonParentProcessorNumber != 0) {
 					if(commonParentProcessorNumber != scheduledOnProcessorNumber(parent)) {
 						return false;
@@ -676,11 +689,17 @@ public class Solution implements Comparable<Solution>, Schedule{
 		return true;
 	}
 
+	/**
+	 * Attempts to fix the order that the free tasks in a partial solution are able to be scheduled in
+	 * if the final order obtained does not satisfy both fork order and join order, then the order is not
+	 * fixed
+	 */
 	public void fixOrder() {
 
 		HashMap<Integer, List<Vertex>> freeTasks = new HashMap<Integer, List<Vertex>>();
 		PriorityQueue<Integer> edrts = new PriorityQueue<Integer>();
 
+		// Gets the tasks in fork order
 		for (Vertex v : _schedulableProcesses) {
 			int edrt = earliestDataReadyTimeWithEdges(v);
 
@@ -694,12 +713,14 @@ public class Solution implements Comparable<Solution>, Schedule{
 			}
 		}
 
+		//Attempts to break ties by sorting in non-increasing out edge cost
 		for (List<Vertex> sameCosts : freeTasks.values()) {
 			if (sameCosts.size() > 1) {
 				sortNonIncreasingOutEdge(sameCosts);
 			}
 		}
 
+		//Creates the final fixed ordering
 		List<Vertex> finalFixedOrder = new ArrayList<Vertex>();
 
 		while (!edrts.isEmpty()) {
@@ -708,9 +729,14 @@ public class Solution implements Comparable<Solution>, Schedule{
 			}
 		}
 		
+		//Checks that the final fixed order is in fork-join order, as currently it is
+		//only guaranteed to be in fork order, so the conditions for join order must be
+		//verified
 		if (verifyForkJoinOrder(finalFixedOrder)) {
 			_fixedOrder = true;
 			
+			//If the fork-join condition is met, then you can reduce the list of
+			//free tasks to a list, with only one task being scheduled each time
 			for (int i = 0; i < finalFixedOrder.size() - 1; i++) {
 				_graph.addChild(finalFixedOrder.get(i),finalFixedOrder.get(i+1));
 			}
@@ -724,6 +750,12 @@ public class Solution implements Comparable<Solution>, Schedule{
 		
 	}
 
+	/**
+	 * Checks that the ordering of a fork ordered list is also a join ordered list,
+	 * if it is, then it is suitable for fork-join, otherwise it is not
+	 * @param finalFixedOrder
+	 * @return
+	 */
 	private boolean verifyForkJoinOrder(List<Vertex> finalFixedOrder) {
 		for (int i = 0; i < finalFixedOrder.size() - 1; i++) {
 			Vertex vertexA = finalFixedOrder.get(i);
@@ -745,10 +777,20 @@ public class Solution implements Comparable<Solution>, Schedule{
 		return true;
 	}
 
+	/**
+	 * Returns the boolean for whether the solution has used a fixed order list, if
+	 * it has, then schedule horizon is no longer viable and should be disabled
+	 * @return
+	 */
 	public boolean isFixedOrder() {
 		return _fixedOrder ;
 	}
 
+	/**
+	 * Sorts a list of vertices with equal data ready times based on their out edge weight,
+	 * in decreasing order of out edge weight
+	 * @param list
+	 */
 	private void sortNonIncreasingOutEdge(List<Vertex> list) {
 
 		boolean changed = true;
@@ -782,6 +824,13 @@ public class Solution implements Comparable<Solution>, Schedule{
 
 	}
 
+	/**
+	 * Returns the earliest data ready time for a vertex, assuming that you
+	 * always have to incur the penalty for switching between processors after
+	 * a parent task finishes
+	 * @param v
+	 * @return
+	 */
 	private int earliestDataReadyTimeWithEdges(Vertex v){
 
 		// for every processor, get the latest starting parent, then determine the earliest possible start time of new process

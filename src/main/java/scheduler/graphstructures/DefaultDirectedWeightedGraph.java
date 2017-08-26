@@ -257,6 +257,12 @@ public class DefaultDirectedWeightedGraph {
 		return childrenList;
 	}
 
+	/**
+	 * Returns the list of children of a vertex, as well as its artificial
+	 * children that are used for the fixed order list
+	 * @param v
+	 * @return
+	 */
 	public List<Vertex> getChildren(Vertex v) {
 		if (_children.get(v) == null) {
 			_children.put(v, createChildren(v));
@@ -264,7 +270,12 @@ public class DefaultDirectedWeightedGraph {
 		return _children.get(v);
 	}
 
-
+	/**
+	 * Returns the list of parents of a vertex, as well as its artificial
+	 * parents that are used for the fixed order list
+	 * @param v
+	 * @return
+	 */
 	public List<Vertex> getParents(Vertex v) {
 		if (_parents.get(v) == null) {
 			_parents.put(v, createParents(v));

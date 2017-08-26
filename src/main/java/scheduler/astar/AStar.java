@@ -168,6 +168,7 @@ public class AStar {
 
 			}
 
+			// If the current solution can be placed in fixed order, then attempt to fix the order
 			if (bestCurrentSolution.canFixOrder()) {
 				bestCurrentSolution.fixOrder();
 			}
@@ -180,6 +181,7 @@ public class AStar {
 			while ((s = childSolutions.poll()) != null) {
 				int childCost = s.maxCostFunction();
 				_solCreated ++;
+				// Perform schedule horizon equivalence check only if the solution is not in fixed order
 				if (!bestCurrentSolution.isFixedOrder() && s.isEquivalent()) {
 					_solPruned ++;
 
