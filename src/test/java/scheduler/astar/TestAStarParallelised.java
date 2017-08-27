@@ -54,7 +54,19 @@ public class TestAStarParallelised {
 			assertEquals(sol.getLastFinishTime(),59);
 		}
 	}
-
+	/**
+	 * Test for getting the AStarParallelised optimal result solution for a stencil graph
+	 */
+	@Test
+	public void testStencil(){
+		DataReader dataReader = new DataReader(new File("test-examples/200.dot"));
+		while(dataReader.hasMoreGraphs()) {
+			dataReader.readNextGraph();
+			AStar as = new AStarParallelised(dataReader.getGraph(), 2, 8,null,null,null);
+			Solution sol = as.execute();
+			assertEquals(sol.getLastFinishTime(),1380);
+		}
+	}
 }
 
 
