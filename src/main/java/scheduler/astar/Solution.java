@@ -4,6 +4,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -793,37 +794,19 @@ public class Solution implements Comparable<Solution>, Schedule{
 	 * @param list
 	 */
 	private void sortNonIncreasingOutEdge(List<Vertex> list) {
-
-		boolean changed = true;
-
-		while (changed) {
-			changed = false;
-			for (int i = 0; i < list.size() - 1; i++) {
-				for (int j = i + 1; j < list.size(); j++) {
-					List<DefaultWeightedEdge> edgeI = _graph.outgoingEdgesOf(list.get(i));
-					List<DefaultWeightedEdge> edgeJ = _graph.outgoingEdgesOf(list.get(j));
-					int iCost = 0;
-					int jCost = 0;
-
-					try {
-						iCost = edgeI.get(0).getWeight();
-					} catch (IndexOutOfBoundsException e) {}
-
-					try {
-						jCost = edgeJ.get(0).getWeight();
-					} catch (IndexOutOfBoundsException e) {}
-
-					if (iCost < jCost) {
-						Vertex temp = list.get(i);
-						list.remove(i);
-						list.add(j, temp);
-						changed = true;
-					}
+		Collections.sort(list, new Comparator<Vertex>() {
+			@Override
+			public int compare(Vertex arg0, Vertex arg1) {
+				if (_graph.outgoingEdgesOf(arg0).get(0).getWeight() == _graph.outgoingEdgesOf(arg1).get(0).getWeight()) {
+					return 0;
+				} else if (_graph.outgoingEdgesOf(arg0).get(0).getWeight() > _graph.outgoingEdgesOf(arg1).get(0).getWeight()) {
+					return -1;
+				} else {
+					return 1;
 				}
 			}
+		});
 		}
-
-	}
 
 	/**
 	 * Returns the earliest data ready time for a vertex, assuming that you
