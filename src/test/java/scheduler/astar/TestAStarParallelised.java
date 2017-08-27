@@ -35,7 +35,7 @@ public class TestAStarParallelised {
 		DataReader dataReader = new DataReader(new File("test-examples/test1.dot"));
 		while(dataReader.hasMoreGraphs()) {
 			dataReader.readNextGraph();
-			AStar as = new AStarParallelised(dataReader.getGraph(), 2, 8,null,null,null);
+			AStar as = new AStarParallelised(dataReader.getGraph(), 2, 2,null,null,null);
 			Solution sol = as.execute();
 			assertEquals(sol.getLastFinishTime(),360);
 		}
