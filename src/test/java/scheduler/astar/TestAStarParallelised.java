@@ -35,9 +35,36 @@ public class TestAStarParallelised {
 		DataReader dataReader = new DataReader(new File("test-examples/test1.dot"));
 		while(dataReader.hasMoreGraphs()) {
 			dataReader.readNextGraph();
-			AStar as = new AStarParallelised(dataReader.getGraph(), 1, 2,null,null,null);
+			AStar as = new AStarParallelised(dataReader.getGraph(), 2, 8,null,null,null);
 			Solution sol = as.execute();
-			assertEquals(sol.getLastFinishTime(),640);
+			assertEquals(sol.getLastFinishTime(),360);
+		}
+	}
+	
+	/**
+	 * Test for getting the A* solution for a difficult fork-join graph (demonstrating fixed order pruning)
+	 */
+	@Test
+	public void testTwo(){
+		DataReader dataReader = new DataReader(new File("test-examples/2.dot"));
+		while(dataReader.hasMoreGraphs()) {
+			dataReader.readNextGraph();
+			AStar as = new AStarParallelised(dataReader.getGraph(), 2, 8,null,null,null);
+			Solution sol = as.execute();
+			assertEquals(sol.getLastFinishTime(),59);
+		}
+	}
+	/**
+	 * Test for getting the AStarParallelised optimal result solution for a stencil graph
+	 */
+	@Test
+	public void testStencil(){
+		DataReader dataReader = new DataReader(new File("test-examples/203.dot"));
+		while(dataReader.hasMoreGraphs()) {
+			dataReader.readNextGraph();
+			AStar as = new AStarParallelised(dataReader.getGraph(), 2, 8,null,null,null);
+			Solution sol = as.execute();
+			assertEquals(sol.getLastFinishTime(),134);
 		}
 	}
 }
