@@ -64,19 +64,6 @@ public class TestSolution {
 		}
 	}
 	/**
-	 * Test for getting the A* solution for a stencil graph
-	 */
-	@Test
-	public void testStencil(){
-		DataReader dataReader = new DataReader(new File("test-examples/203.dot"));
-		while(dataReader.hasMoreGraphs()) {
-			dataReader.readNextGraph();
-			AStar alg = new AStar(dataReader.getGraph(), 2, null,null,null);
-			Solution sol = alg.execute();
-			assertEquals(sol.getLastFinishTime(),134);
-		}
-	}
-	/**
 	 * Test for solution equality when adding vertices to a solution
 	 */
 	@Test
