@@ -68,26 +68,17 @@ public class NodeClickListener implements ViewerListener , MouseInputListener{
 	public void buttonPushed(String id) { 
 
 		//Prints out the node name
-		/*System.out.println("Button pushed on node "+id)*/; 
 		Node n = _graph.getNode(id); 
 
 		if(_scheduledVertices == null){
 
-			System.out.println("No schedule found"); 
-
 		} else if(n.getAttribute("ui.style").toString().contains("fill-color:#000000;")){
 
-			System.out.println("This task is not scheduled yet");
 			_gui.noInfoToShow(id);
 
 		} else {
 
 			List<Object> scheduleInfo = _scheduledVertices.get(id);
-/*			System.out.println("");
-			System.out.println("Task: "+id);
-			System.out.println("Processor number: " + (int) scheduleInfo.get(0));
-			System.out.println("Start time: " + scheduleInfo.get(1));
-			System.out.println("End time: " + scheduleInfo.get(2));*/
 			_gui.showInfoOnTextArea(id,(int) scheduleInfo.get(0),scheduleInfo.get(1),scheduleInfo.get(2));
 
 		}
