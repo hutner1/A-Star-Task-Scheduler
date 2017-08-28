@@ -35,6 +35,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 	private DefaultDirectedWeightedGraph _graph;
 	private boolean _fixedOrder = false;;
 	private static HashMap<Vertex, Integer> _btmLevels;
+	private int _maxCost = -1;
 
 	/**
 	 * Create a solution with list of scheduled, schedulable, non-schedulable and the task digraph.
@@ -204,14 +205,19 @@ public class Solution implements Comparable<Solution>, Schedule{
 	 * @return the cost function 
 	 */
 	public int maxCostFunction() {
-		ArrayList<Integer> costs = new ArrayList<Integer>();
-
-		costs.add(maximumEndTimeOfPartialSchedule());
-		costs.add(idleTimePlusComputationLoad());
-		costs.add(maximumEndTimeOfFreeVertices());
+		if (_maxCost == -1) {
+			ArrayList<Integer> costs = new ArrayList<Integer>();
 
 
-		return Collections.max(costs);
+			costs.add(maximumEndTimeOfPartialSchedule());
+			costs.add(idleTimePlusComputationLoad());
+			costs.add(maximumEndTimeOfFreeVertices());
+
+
+			_maxCost = Collections.max(costs);
+		}
+		
+		return _maxCost;
 	}
 
 	/**
@@ -730,13 +736,13 @@ public class Solution implements Comparable<Solution>, Schedule{
 				finalFixedOrder.add(v);
 			}
 		}
-		
+
 		//Checks that the final fixed order is in fork-join order, as currently it is
 		//only guaranteed to be in fork order, so the conditions for join order must be
 		//verified
 		if (verifyForkJoinOrder(finalFixedOrder)) {
 			_fixedOrder = true;
-			
+
 			//If the fork-join condition is met, then you can reduce the list of
 			//free tasks to a list, with only one task being scheduled each time
 			for (int i = 0; i < finalFixedOrder.size() - 1; i++) {
@@ -749,7 +755,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 			}
 		}
 
-		
+
 	}
 
 	/**
@@ -764,14 +770,14 @@ public class Solution implements Comparable<Solution>, Schedule{
 			Vertex vertexB = finalFixedOrder.get(i + 1);
 			int aCost = 0;
 			int bCost = 0;
-			
+
 			try {
 				aCost = _graph.outgoingEdgesOf(vertexA).get(0).getWeight();
 			} catch (IndexOutOfBoundsException e) {}
 			try {
 				bCost = _graph.outgoingEdgesOf(vertexB).get(0).getWeight();
 			} catch (IndexOutOfBoundsException e) {}
-			
+
 			if (aCost < bCost) {
 				return false;
 			}
@@ -810,7 +816,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 				return costB-costA;
 			}
 		});
-		}
+	}
 
 	/**
 	 * Returns the earliest data ready time for a vertex, assuming that you

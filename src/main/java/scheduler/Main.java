@@ -1,7 +1,4 @@
 package scheduler;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -14,7 +11,6 @@ import io.OutputWriter;
 import scheduler.astar.AStar;
 import scheduler.astar.AStarParallelised;
 import scheduler.astar.Solution;
-import scheduler.graphstructures.Vertex;
 import visualization.gantt.Gantt;
 import visualization.graph.Visualizer;
 import visualization.gui.Gui;
