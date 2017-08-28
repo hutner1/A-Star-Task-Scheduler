@@ -797,13 +797,17 @@ public class Solution implements Comparable<Solution>, Schedule{
 		Collections.sort(list, new Comparator<Vertex>() {
 			@Override
 			public int compare(Vertex arg0, Vertex arg1) {
-				if (_graph.outgoingEdgesOf(arg0).get(0).getWeight() == _graph.outgoingEdgesOf(arg1).get(0).getWeight()) {
-					return 0;
-				} else if (_graph.outgoingEdgesOf(arg0).get(0).getWeight() > _graph.outgoingEdgesOf(arg1).get(0).getWeight()) {
-					return -1;
-				} else {
-					return 1;
+				int costA = 0;
+				int costB = 0;
+				try{
+					costA = _graph.outgoingEdgesOf(arg0).get(0).getWeight();
+				}catch(IndexOutOfBoundsException e){
 				}
+				try{
+					costB = _graph.outgoingEdgesOf(arg1).get(0).getWeight();
+				}catch(IndexOutOfBoundsException e){
+				}
+				return costB-costA;
 			}
 		});
 		}
