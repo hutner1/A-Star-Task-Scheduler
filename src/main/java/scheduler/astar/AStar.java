@@ -127,13 +127,13 @@ public class AStar {
 			/*_solPopped ++;*/
 		}
 
-		//Timer stuff
+	/*	//Timer stuff
 		Timer timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 
 			@Override
 			public void run() {
-				/*if(_updated == false){*/
+				if(_updated == false){
 					if(_visualizer != null){
 						_visualizer.updateGraph(bestCurrentSolution);
 						_gantt.updateSolution(bestCurrentSolution);
@@ -147,12 +147,12 @@ public class AStar {
 							_gantt.setSolution(bestCurrentSolution);
 						}
 					}
-				/*}*/
+				}
 				
-				/*_updated = true;*/
+				_updated = true;
 			}
 
-		}, 0, 2000);
+		}, 0, 2000);*/
 
 
 		// keep polling until the best cost solution is a complete schedule, hence an optimal solution
@@ -209,16 +209,27 @@ public class AStar {
 				_closedSolutions.add(bestCurrentSolution);
 			}
 
+			if (_gantt != null) {
+				if (_gantt.hasLaunched()) {
+					if(_counter == 1000){  
+						_gantt.updateSolution(bestCurrentSolution);
+					}
+				} else {
+					_gantt.setSolution(bestCurrentSolution);
+				}
+			}
+			
+
 			if(_visualizer != null){  
-				if(_counter == 100){  
+				if(_counter == 1000){  
 					_counter = 0;  
-					/*_visualizer.updateGraph(bestCurrentSolution);  */
+					_visualizer.updateGraph(bestCurrentSolution);  
 					_stats.updateStats(_solCreated, _solPopped, _solPruned, bestCurrentSolution.maxCostFunction());
 				} else {  
 					_counter++;  
 				}  
 
-			} 
+			}
 
 			_solPopped ++;
 			bestCurrentSolution = _solutionSpace.poll();
@@ -230,7 +241,7 @@ public class AStar {
 		}
 
 		_solutionSpace.add(bestCurrentSolution);
-		timer.cancel();
+		//timer.cancel();
 		return bestCurrentSolution;
 
 	}

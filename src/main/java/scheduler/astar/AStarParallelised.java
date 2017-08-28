@@ -67,21 +67,31 @@ public class AStarParallelised extends AStar{
 			_threads[i] = new Thread(_aStarThreads[i]);
 			_threads[i].setName("Thread-"+i);
 		}
+
+		_threads[0].start();
 		
-		// Start the threads
-		for (Thread t : _threads) {
-			t.start();
+		try {
+			Thread.sleep(10);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
-
-
-		// Wait for all the threads to finish
-		for (int i = 0; i <_numberOfThreads; i++) {
-			try {
-				_threads[i].join();
-			} catch (Exception e) {
-				e.printStackTrace();
+		
+		if (_threads[0].isAlive()) {
+			for (int i = 1; i < _numberOfThreads; i++) {
+				_threads[i].start();
+			}
+			
+			// Wait for all the threads to finish
+			for (int i = 0; i <_numberOfThreads; i++) {
+				try {
+					_threads[i].join();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
+		
 		return getBestSolution(_aStarThreads);
 	}
 
@@ -109,3 +119,4 @@ public class AStarParallelised extends AStar{
 	}
 
 }
+	

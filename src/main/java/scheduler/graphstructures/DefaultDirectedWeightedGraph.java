@@ -17,9 +17,7 @@ public class DefaultDirectedWeightedGraph {
 	private ArrayList<Vertex> _vertices;
 	// EDGES
 	private ArrayList<DefaultWeightedEdge> _edges;
-	// Store incoming and outgoing edges of each task vertex 
-	private HashMap<Vertex, ArrayList<DefaultWeightedEdge>> _incomingEdges;
-	private HashMap<Vertex, ArrayList<DefaultWeightedEdge>> _outgoingEdges;
+	// Store parents and children edges of each task vertex 
 	private HashMap<Vertex, ArrayList<Vertex>> _parents;
 	private HashMap<Vertex, ArrayList<Vertex>> _children;
 
@@ -29,19 +27,17 @@ public class DefaultDirectedWeightedGraph {
 	public DefaultDirectedWeightedGraph(){
 		_vertices = new ArrayList<>();
 		_edges = new ArrayList<>();
-		_incomingEdges = new HashMap<>();
-		_outgoingEdges = new HashMap<>();
 		_parents = new HashMap<>();
 		_children = new HashMap<>();
 	}
-	
+
 	/**
 	 * Add node to digraph
 	 */
 	public void addVertex(Vertex vertex){
 		_vertices.add(vertex);
 	}
-	
+
 	/**
 	 * Add edge to digraph
 	 */
@@ -50,21 +46,21 @@ public class DefaultDirectedWeightedGraph {
 		_edges.add(edge);
 		return edge;
 	}
-	
+
 	/**
 	 * Return the set of nodes in the graph 
 	 */
 	public ArrayList<Vertex> vertexSet(){
 		return _vertices;
 	}
-	
+
 	/**
 	 * Return the set of edge in the graph 
 	 */
 	public ArrayList<DefaultWeightedEdge> edgeSet(){
 		return _edges;
 	}
-	
+
 	/**
 	 * Get all edges connected to the vertex
 	 * @param vertex vertex to get edges for
@@ -76,24 +72,23 @@ public class DefaultDirectedWeightedGraph {
 		edges.addAll(outgoingEdgesOf(vertex));
 		return edges;
 	}
-	
+
 	/** 
 	 * Get all edges pointing to the vertex
 	 * @param vertex vertex to get incoming edges for
 	 * @return all edges pointing to the vertex // TODO 
 	 */
 	public ArrayList<DefaultWeightedEdge> incomingEdgesOf(Vertex vertex){
-		//if(_incomingEdges.get(vertex)==null){
-				ArrayList<DefaultWeightedEdge> edges = new ArrayList<>();
-				for(DefaultWeightedEdge edge : _edges){
-					if(edge.getDest().equals(vertex)){
-						edges.add(edge);
-					}
-				}
-				Collections.sort(edges);
-				_incomingEdges.put(vertex, edges);	
-				//}
-				return _incomingEdges.get(vertex);
+
+		ArrayList<DefaultWeightedEdge> edges = new ArrayList<>();
+		for(DefaultWeightedEdge edge : _edges){
+			if(edge.getDest().equals(vertex)){
+				edges.add(edge);
+			}
+		}
+		Collections.sort(edges);
+
+		return edges;
 	}
 	// MAKE IF EFFICIENT initialise them first // TODO
 	/**
@@ -102,17 +97,17 @@ public class DefaultDirectedWeightedGraph {
 	 * @return all edges going out from the vertex // TODO
 	 */
 	public ArrayList<DefaultWeightedEdge> outgoingEdgesOf(Vertex vertex){
-		//if(_outgoingEdges.get(vertex)==null){
-				ArrayList<DefaultWeightedEdge> edges = new ArrayList<>();
-				for(DefaultWeightedEdge edge : _edges){
-					if(edge.getSource().equals(vertex)){
-						edges.add(edge);
-					}
-				}
-				Collections.sort(edges);
-				_outgoingEdges.put(vertex, edges);
-				//}
-				return _outgoingEdges.get(vertex);
+
+		ArrayList<DefaultWeightedEdge> edges = new ArrayList<>();
+		for(DefaultWeightedEdge edge : _edges){
+			if(edge.getSource().equals(vertex)){
+				edges.add(edge);
+			}
+		}
+		Collections.sort(edges);
+
+		return edges;
+
 	}
 
 	/**
@@ -133,7 +128,7 @@ public class DefaultDirectedWeightedGraph {
 	public Vertex getEdgeSource(DefaultWeightedEdge edge) {
 		return edge.getSource();
 	}
-	
+
 	/**
 	 * Get the source of the edge
 	 * @param edge
@@ -151,7 +146,7 @@ public class DefaultDirectedWeightedGraph {
 	public int getEdgeWeight(DefaultWeightedEdge edge) {
 		return edge.getWeight();
 	}
-	
+
 	/**
 	 * Get parents vertices
 	 * @param vertex
@@ -177,7 +172,7 @@ public class DefaultDirectedWeightedGraph {
 		}
 		return children;
 	}
-	
+
 	/**
 	 * Returns root nodes of the digraph
 	 * @return root nodes of the digraph
@@ -191,7 +186,7 @@ public class DefaultDirectedWeightedGraph {
 		}
 		return rootVertices;
 	}
-	
+
 	public String getVertexString(Vertex v) {
 		StringBuilder infoString = new StringBuilder();
 
@@ -199,9 +194,9 @@ public class DefaultDirectedWeightedGraph {
 		for (DefaultWeightedEdge e : incomingEdgesOf(v)) {
 			infoString.append(e.sourceString());
 		}
-		
+
 		infoString.append("-");
-		
+
 		for (DefaultWeightedEdge e : outgoingEdgesOf(v)) {
 			infoString.append(e.destString());
 		}
