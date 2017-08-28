@@ -209,19 +209,6 @@ public class AStar {
 				_closedSolutions.add(bestCurrentSolution);
 			}
 
-
-			/*
-			if (_gantt != null) {
-				if (_gantt.hasLaunched()) {
-					if(_counter == 10){  
-						_gantt.updateSolution(bestCurrentSolution);
-					}
-				} else {
-					_gantt.setSolution(bestCurrentSolution);
-				}
-			}
-			 */
-
 			if(_visualizer != null){  
 				if(_counter == 100){  
 					_counter = 0;  

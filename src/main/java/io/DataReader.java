@@ -7,7 +7,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -141,59 +140,11 @@ public class DataReader {
 				}
 				text = _reader.readLine();
 			}
-			//createVirtualEdges();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 	}
-
-	/**
-	 * Creates extra virtual edges in the graph between equivalent nodes, so that only one scheduling order is considered
-	 */
-	private void createVirtualEdges() {
-
-		HashMap<String, List<Vertex>> equivalentVertices = new HashMap<String, List<Vertex>>();
-
-		for (Vertex v : _mapping.values()) {
-			String vertexString = _digraph.getVertexString(v);
-
-			if (equivalentVertices.containsKey(vertexString)) {
-				equivalentVertices.get(vertexString).add(v);
-			} else {
-				List<Vertex> vertices = new ArrayList<Vertex>();
-				vertices.add(v);
-				equivalentVertices.put(vertexString, vertices);
-			}
-		}
-
-		for (List<Vertex> vertices : equivalentVertices.values()) {
-			if (vertices.size() > 1) {
-				for (int i = 0; i < vertices.size() - 1; i++) {
-					_digraph.addChild(vertices.get(i), vertices.get(i+1));
-				}
-			}
-		}
-	}
-
-	/*private void orderFork() {
-		HashMap<Vertex, List<Vertex>> forkVertices = new HashMap<Vertex, List<Vertex>>();
-
-		for (Vertex v : _mapping.values()) {
-			if (_digraph.getParents(v).size() == 1 && _digraph.getChildren(v).size() == 0) {
-
-				Vertex parent = _digraph.getParents(v).get(0);
-				
-				if (forkVertices.containsKey(parent)) {
-					forkVertices.get(parent).add(v);
-				} else {
-					List<Vertex> vertices = new ArrayList<Vertex>();
-					vertices.add(v);
-					forkVertices.put(parent, vertices);
-				}
-			}
-		}
-	}*/
 
 	/**
 	 * Resets the data in the stored ArrayLists and Graphs

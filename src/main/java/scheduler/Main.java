@@ -49,7 +49,6 @@ public class Main {
 		
 		// 5. Find optimal solution for all the input task graphs.
 		while(dataReader.hasMoreGraphs()) {
-			System.out.println("More graphs in file? " + dataReader.hasMoreGraphs());
 			dataReader.readNextGraph();
 			
 			if(inputParser.isVisualise() == true){
@@ -110,9 +109,6 @@ public class Main {
 			long totalTime = endTime - startTime;
 			
 			System.out.println("\n Took " + totalTime/1000000 + "ms" + " : " + totalTime/1000000000 + " seconds");
-			System.out.println(aStar.getSolCreated());
-			System.out.println(aStar.getSolPopped());
-			System.out.println(aStar.getSolPruned());
 			
 			if(graphVisualizer != null){
 				gantt.updateSolution(optimalSolution);
