@@ -25,16 +25,11 @@ import scheduler.Main;
  * -The time since the program has started in seconds (s)
  * -The length/finish time of the current optimal solution 
  */
+@SuppressWarnings("serial")
 public class StatisticTable extends JPanel{
 
 	private JTable _table;
 	private final static String[] _columns = { "Statistics", "No." };
-	/*	private int _solCreated;
-	private int _solPopped;
-	private int _solPruned;
-	private int _timeTaken;
-	private Integer _optimalFinishTime;*/
-
 
 	/**
 	 * Constructor for the statistics table
@@ -43,7 +38,6 @@ public class StatisticTable extends JPanel{
 	public StatisticTable(int Cores, int processors){
 
 		setLayout(new BorderLayout());
-		/*setBackground(new Color(250,250,250));*/
 
 		Object[][] data = new Object[8][2];
 
@@ -99,7 +93,6 @@ public class StatisticTable extends JPanel{
 		}
 
 		JScrollPane scroll = new JScrollPane(_table);
-		/*scroll.setBackground(new Color(250,250,250));*/
 		add(scroll);
 	}
 
@@ -112,12 +105,6 @@ public class StatisticTable extends JPanel{
 	 * @param finishTime
 	 */
 	public void updateStats(int solCreated, int solPopped, int solPruned, Integer finishTime){
-
-		/*		_solCreated = solCreated;
-		_solPopped = solPopped;
-		_solPruned = solPruned;
-		_timeTaken = time;
-		_optimalFinishTime = finishtime;*/
 
 		DefaultTableModel model = (DefaultTableModel)_table.getModel();
 
@@ -138,7 +125,6 @@ public class StatisticTable extends JPanel{
 	/**
 	 * Model for the statistics table
 	 */
-	@SuppressWarnings("serial")
 	private class Model extends DefaultTableModel {
 
 		Model(Object[][] data, String[] column) {

@@ -1,26 +1,14 @@
 package visualization.graph;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
-import org.graphstream.algorithm.generator.BaseGenerator;
-import org.graphstream.algorithm.generator.LobsterGenerator;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.graph.implementations.SingleGraph;
-import org.graphstream.stream.ProxyPipe;
-import org.graphstream.stream.SinkAdapter;
-import org.graphstream.ui.layout.HierarchicalLayout;
 import org.graphstream.ui.swingViewer.ViewPanel;
-import org.graphstream.ui.view.View;
 import org.graphstream.ui.view.Viewer;
 import org.graphstream.ui.view.ViewerListener;
 import org.graphstream.ui.view.ViewerPipe;

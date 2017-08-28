@@ -284,7 +284,4 @@ public class InputParser {
 	public File getFile() {
 		return _file;
 	}
-
-
-
 }

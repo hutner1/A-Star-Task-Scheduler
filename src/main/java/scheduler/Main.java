@@ -84,12 +84,11 @@ public class Main {
 				});
 					
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 			
-			// start timing //TODO will this be included in final?
+			// start timing
 			long startTime = System.nanoTime();
 
 			// decide whether to parallelise A* based on user input

@@ -76,7 +76,7 @@ public class DefaultDirectedWeightedGraph {
 	/** 
 	 * Get all edges pointing to the vertex
 	 * @param vertex vertex to get incoming edges for
-	 * @return all edges pointing to the vertex // TODO 
+	 * @return all edges pointing to the vertex
 	 */
 	public ArrayList<DefaultWeightedEdge> incomingEdgesOf(Vertex vertex){
 
@@ -90,11 +90,11 @@ public class DefaultDirectedWeightedGraph {
 
 		return edges;
 	}
-	// MAKE IF EFFICIENT initialise them first // TODO
+	
 	/**
 	 * Get all edges going out from the vertex
 	 * @param vertex vertex to get outgoing edges for
-	 * @return all edges going out from the vertex // TODO
+	 * @return all edges going out from the vertex
 	 */
 	public ArrayList<DefaultWeightedEdge> outgoingEdgesOf(Vertex vertex){
 
@@ -187,6 +187,11 @@ public class DefaultDirectedWeightedGraph {
 		return rootVertices;
 	}
 
+	/**
+	 * Returns a string that represents the parents and children of a task and their weights
+	 * @param v
+	 * @return
+	 */
 	public String getVertexString(Vertex v) {
 		StringBuilder infoString = new StringBuilder();
 
@@ -200,11 +205,8 @@ public class DefaultDirectedWeightedGraph {
 		for (DefaultWeightedEdge e : outgoingEdgesOf(v)) {
 			infoString.append(e.destString());
 		}
-
 		return infoString.toString();
 	}
-
-
 
 	/**
 	 * Creates an artificial edge between two vertices
@@ -236,6 +238,11 @@ public class DefaultDirectedWeightedGraph {
 		parentList.add(parent);
 	}
 
+	/**
+	 * Creates a list containing the parent vertices of a vertex
+	 * @param v
+	 * @return
+	 */
 	private ArrayList<Vertex> createParents(Vertex v) {
 		ArrayList<Vertex> parentList = new ArrayList<Vertex>();
 		for (DefaultWeightedEdge e : incomingEdgesOf(v)) {
@@ -244,6 +251,11 @@ public class DefaultDirectedWeightedGraph {
 		return parentList;
 	}
 
+	/**
+	 * Creates a list containing the child vertices of a vertex
+	 * @param v
+	 * @return
+	 */
 	private ArrayList<Vertex> createChildren(Vertex v) {
 		ArrayList<Vertex> childrenList = new ArrayList<Vertex>();
 		for (DefaultWeightedEdge e : outgoingEdgesOf(v)) {

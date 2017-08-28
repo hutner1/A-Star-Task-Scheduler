@@ -83,6 +83,10 @@ public class Vertex implements Comparable<Vertex>{
 		_visited = true;
 	}
 
+	/**
+	 * Overrides the compareTo() method in order to be able to sort vertices in a list
+	 * into a consistent order
+	 */
 	@Override
 	public int compareTo(Vertex v) {
 
@@ -93,6 +97,9 @@ public class Vertex implements Comparable<Vertex>{
 		}
 	}
 
+	/**
+	 * Overrides the equals() method to allow comparison between two vertices
+	 */
 	@Override
 	public boolean equals(Object o) {
 		Vertex v = (Vertex) o;

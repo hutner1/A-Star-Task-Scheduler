@@ -1,21 +1,16 @@
 package visualization.graph;
-import java.awt.Point;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.swing.event.MouseInputListener; 
+import javax.swing.event.MouseInputListener;
 
-import org.graphstream.graph.Edge; 
-import org.graphstream.graph.Graph; 
+import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
 import org.graphstream.ui.view.View;
 import org.graphstream.ui.view.ViewerListener;
 import org.graphstream.ui.view.ViewerPipe;
 
-import scheduler.astar.ProcessInfo;
-import scheduler.astar.Processor;
 import visualization.gui.Gui; 
 
 /**

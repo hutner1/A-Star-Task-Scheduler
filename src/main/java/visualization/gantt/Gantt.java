@@ -1,32 +1,21 @@
 package visualization.gantt;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JPanel;
 
-import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.labels.CategoryToolTipGenerator;
-import org.jfree.chart.labels.IntervalCategoryItemLabelGenerator;
-import org.jfree.chart.labels.IntervalCategoryToolTipGenerator;
-import org.jfree.chart.labels.ItemLabelAnchor;
-import org.jfree.chart.labels.ItemLabelPosition;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.StandardBarPainter;
 import org.jfree.data.category.IntervalCategoryDataset;
-import org.jfree.data.gantt.Task;
 import org.jfree.data.gantt.TaskSeries;
 import org.jfree.data.gantt.TaskSeriesCollection;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
-import org.jfree.ui.TextAnchor;
 
 import scheduler.astar.ProcessInfo;
 import scheduler.astar.Processor;
@@ -38,6 +27,7 @@ import scheduler.astar.Solution;
  * The dataset is then used to render a Gantt chart which will be put into a JPanel.
  *
  */
+@SuppressWarnings("serial")
 public class Gantt extends ApplicationFrame{
 
 	private static String _title;

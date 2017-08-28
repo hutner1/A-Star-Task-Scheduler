@@ -8,6 +8,7 @@ import org.jfree.data.gantt.Task;
  * A custom task that uses integer numbers instead of dates
  *
  */
+@SuppressWarnings("serial")
 public class TaskNumeric extends Task {
     private String _desc;
 	private long _start;

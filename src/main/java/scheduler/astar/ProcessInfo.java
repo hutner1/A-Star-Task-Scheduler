@@ -53,6 +53,4 @@ public class ProcessInfo {
 	public String getTaskName() {
 		return _vertex.getName();
 	}
-	
-	
 }

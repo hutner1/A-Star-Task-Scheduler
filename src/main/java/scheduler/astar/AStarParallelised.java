@@ -1,12 +1,8 @@
 package scheduler.astar;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
 import visualization.gantt.Gantt;
 import visualization.graph.Visualizer;
-import visualization.gui.Gui;
 import visualization.gui.StatisticTable;
 
 /**
@@ -68,12 +64,13 @@ public class AStarParallelised extends AStar{
 			_threads[i].setName("Thread-"+i);
 		}
 
+		// Start the first thread, and after 10 ms if it has not finished, then start
+		// the remaining threads
 		_threads[0].start();
 		
 		try {
 			Thread.sleep(10);
 		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
@@ -91,7 +88,6 @@ public class AStarParallelised extends AStar{
 				}
 			}
 		}
-		
 		return getBestSolution(_aStarThreads);
 	}
 
@@ -113,10 +109,8 @@ public class AStarParallelised extends AStar{
 				}
 			}
 		}
-
 		bestCurrentSolution = aStarThreads[threadNo].getSolution();
 		return bestCurrentSolution;
 	}
-
 }
 	

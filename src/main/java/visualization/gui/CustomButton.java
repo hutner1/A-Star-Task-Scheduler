@@ -7,14 +7,14 @@ import java.awt.Graphics;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 
 /**
  * Generates a button with the custom settings that cannot be set with the default JButton class.
  */
+@SuppressWarnings("serial")
 class CustomButton extends JButton {
 
-	private Color hoverBackgroundColor = new Color(6, 47, 79);
+	private Color _hoverBackgroundColor = new Color(6, 47, 79);
 
 	/**
 	 * Constructor for a custom button with no parameters
@@ -49,7 +49,7 @@ class CustomButton extends JButton {
 	protected void paintComponent(Graphics g) {
 		//When mouse is hovered
 		if (getModel().isRollover()) {
-			g.setColor(hoverBackgroundColor);
+			g.setColor(_hoverBackgroundColor);
 		} else {
 			//when mouse is moved away
 			g.setColor(getBackground());

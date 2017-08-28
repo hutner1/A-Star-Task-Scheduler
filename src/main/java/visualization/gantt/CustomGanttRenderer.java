@@ -34,13 +34,14 @@ import org.jfree.ui.TextAnchor;
  * Renders/paints the gantt chart
  *
  */
+@SuppressWarnings("serial")
 public class CustomGanttRenderer extends GanttRenderer {
 
-	private int row;
-	private int col;
-	private int index = -1;
+	private int _row;
+	private int _col;
+	private int _index = -1;
 	private ArrayList<Color> _colors = new ArrayList<Color>();
-	private int NUMBER_OF_COLOURS = 1;
+	private int _numberOfColours = 1;
 	private TaskSeries _series;
 
 	/**
@@ -91,19 +92,19 @@ public class CustomGanttRenderer extends GanttRenderer {
 	public Paint getItemPaint(int row, int col) {
 
 
-		if (this.row == row && this.col == col) {
+		if (this._row == row && this._col == col) {
 
-			if (index < NUMBER_OF_COLOURS - 1) {
-				index++;
+			if (_index < _numberOfColours - 1) {
+				_index++;
 			} else {
-				index = 0;
+				_index = 0;
 			}
 		} else {
-			this.row = row;
-			this.col = col;
-			index = 0;
+			this._row = row;
+			this._col = col;
+			_index = 0;
 		}
-		return _colors.get(index);
+		return _colors.get(_index);
 
 	}
 

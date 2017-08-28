@@ -1,12 +1,8 @@
 package scheduler.astar;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.Stack;
 
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
-import scheduler.graphstructures.DefaultWeightedEdge;
 import scheduler.graphstructures.Vertex;
 
 /**
@@ -87,7 +83,4 @@ public class ListScheduler {
 		// add to stack when no more unvisited children left
 		sortedTasks.add(vertex);
 	}
-
-	 
-
 }

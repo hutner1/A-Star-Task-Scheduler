@@ -4,20 +4,16 @@ import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.text.NumberFormat;
 
-import java.util.Date;
-
 import org.jfree.chart.labels.IntervalCategoryToolTipGenerator;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.IntervalCategoryDataset;
 import org.jfree.data.gantt.GanttCategoryDataset;
-import org.jfree.data.gantt.Task;
-import org.jfree.data.gantt.TaskSeriesCollection;
-import org.jfree.data.time.TimePeriod;
 /**
  * This class generates tooltips for subtasks. 
  * It also changes the display format of the tooltips to correctly 
  * show integer start/end times instead of showing Dates.
  */
+@SuppressWarnings("serial")
 public class CustomIntervalCategoryGanttToolTipGenerator extends
 IntervalCategoryToolTipGenerator {
 	/**

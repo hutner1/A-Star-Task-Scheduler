@@ -53,6 +53,9 @@ public class DefaultWeightedEdge implements Comparable<DefaultWeightedEdge>{
 		return false;
 	}
 
+	/**
+	 * Overridden compareTo() in order to be able to sort a list of edges
+	 */
 	@Override
 	public int compareTo(DefaultWeightedEdge o) {
 
@@ -63,6 +66,11 @@ public class DefaultWeightedEdge implements Comparable<DefaultWeightedEdge>{
 		}
 	}
 	
+	/**
+	 * Returns a string that represents the source node of an edge and the weight of the
+	 * edge
+	 * @return
+	 */
 	public String sourceString() {
 		StringBuilder string = new StringBuilder();
 		string.append(_edgeWeight);
@@ -71,6 +79,11 @@ public class DefaultWeightedEdge implements Comparable<DefaultWeightedEdge>{
 		return string.toString();
 	}
 	
+	/**
+	 * Returns a string that represents the destination node of an edge and the weight
+	 * of the edge
+	 * @return
+	 */
 	public String destString() {
 		StringBuilder string = new StringBuilder();
 		string.append(_edgeWeight);

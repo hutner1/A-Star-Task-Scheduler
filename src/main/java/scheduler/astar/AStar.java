@@ -6,8 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.PriorityBlockingQueue;
 
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
@@ -29,16 +27,13 @@ public class AStar {
 	 * OPEN solutions
 	 */
 	protected PriorityBlockingQueue<Solution> _solutionSpace;
-
 	/**
 	 * CLOSED solutions
 	 */
 	protected Set<Solution> _closedSolutions;
-
+	
 	protected Visualizer _visualizer;
-
 	protected StatisticTable _stats;
-
 	//Upper bound obtained from list scheduling
 	protected int _upperBound;
 	protected Gantt _gantt;
@@ -124,36 +119,7 @@ public class AStar {
 
 		while(bestCurrentSolution == null){
 			bestCurrentSolution = _solutionSpace.poll();
-			/*_solPopped ++;*/
 		}
-
-	/*	//Timer stuff
-		Timer timer = new Timer();
-		timer.scheduleAtFixedRate(new TimerTask() {
-
-			@Override
-			public void run() {
-				if(_updated == false){
-					if(_visualizer != null){
-						_visualizer.updateGraph(bestCurrentSolution);
-						_gantt.updateSolution(bestCurrentSolution);
-					} 
-
-					if (_gantt != null) {
-						if (_gantt.hasLaunched()) {
-							_gantt.updateSolution(bestCurrentSolution);
-
-						} else {
-							_gantt.setSolution(bestCurrentSolution);
-						}
-					}
-				}
-				
-				_updated = true;
-			}
-
-		}, 0, 2000);*/
-
 
 		// keep polling until the best cost solution is a complete schedule, hence an optimal solution
 		while (!bestCurrentSolution.isCompleteSchedule()) {
@@ -165,7 +131,6 @@ public class AStar {
 					_solPopped ++;
 					_solPruned ++;
 				}
-
 			}
 
 			// If the current solution can be placed in fixed order, then attempt to fix the order
@@ -203,7 +168,6 @@ public class AStar {
 				} else {
 					_solPruned ++;
 				}
-
 			}
 			if(fullyExpanded){
 				_closedSolutions.add(bestCurrentSolution);
@@ -219,7 +183,6 @@ public class AStar {
 				}
 			}
 			
-
 			if(_visualizer != null){  
 				if(_counter == 1000){  
 					_counter = 0;  
@@ -228,7 +191,6 @@ public class AStar {
 				} else {  
 					_counter++;  
 				}  
-
 			}
 
 			_solPopped ++;
@@ -241,9 +203,7 @@ public class AStar {
 		}
 
 		_solutionSpace.add(bestCurrentSolution);
-		//timer.cancel();
 		return bestCurrentSolution;
-
 	}
 
 	/**

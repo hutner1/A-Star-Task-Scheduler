@@ -1,25 +1,16 @@
 package visualization.gui;
 
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
-
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import java.awt.GridLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.util.ArrayList;
 
-import javax.swing.JSeparator;
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import java.awt.Font;
-import java.awt.FlowLayout;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
@@ -30,6 +21,7 @@ import javax.swing.border.LineBorder;
  * The colour of the nodes on the graph indicates which processor a certain task is ran on.
  *
  */
+@SuppressWarnings("serial")
 public class Legend extends JPanel {
 	private int _proNo;
 	private int _height = 0;

@@ -3,6 +3,7 @@ package io;
 /**
  * Exception class that can be instantiated to print an error message and quit the program
  */
+@SuppressWarnings("serial")
 public class InputParserException extends Exception {
 	
 	/**

@@ -6,7 +6,6 @@ import java.util.concurrent.PriorityBlockingQueue;
 import scheduler.graphstructures.DefaultDirectedWeightedGraph;
 import visualization.gantt.Gantt;
 import visualization.graph.Visualizer;
-import visualization.gui.Gui;
 import visualization.gui.StatisticTable;
 
 

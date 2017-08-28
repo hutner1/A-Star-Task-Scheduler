@@ -1,7 +1,5 @@
 package visualization.gantt;
 
-import java.text.NumberFormat;
-
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartTheme;
 import org.jfree.chart.JFreeChart;
@@ -9,12 +7,10 @@ import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
-import org.jfree.chart.labels.IntervalCategoryToolTipGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.chart.renderer.category.GanttRenderer;
-import org.jfree.chart.urls.StandardCategoryURLGenerator;
 import org.jfree.data.category.IntervalCategoryDataset;
 
 /**

@@ -12,14 +12,14 @@ import scheduler.graphstructures.Vertex;
  */
 public class Processor {
 
-	private List<ProcessInfo> processes;
-	private int earliestNextProcess = 0;
+	private List<ProcessInfo> _processes;
+	private int _earliestNextProcess = 0;
 
 	/**
 	 * Initialise a processor with no tasks ran on it
 	 */
 	public Processor() {
-		processes = new ArrayList<ProcessInfo>();
+		_processes = new ArrayList<ProcessInfo>();
 	}
 
 	/**
@@ -28,10 +28,10 @@ public class Processor {
 	 */
 	public Processor createDeepCopy() {
 		Processor p = new Processor();
-		for (ProcessInfo pI : processes) {
-			p.processes.add(pI);
+		for (ProcessInfo pI : _processes) {
+			p._processes.add(pI);
 		}
-		p.earliestNextProcess = earliestNextProcess;
+		p._earliestNextProcess = _earliestNextProcess;
 		return p;
 	}
 
@@ -40,8 +40,8 @@ public class Processor {
 	 * @return earliest possible start time for next task
 	 */
 	public int getTime() {
-		if (processes.size() > 0) {
-			return processes.get(processes.size()-1).endTime(); //end time of last scheduled task
+		if (_processes.size() > 0) {
+			return _processes.get(_processes.size()-1).endTime(); //end time of last scheduled task
 		} else {
 			return 0;
 		}
@@ -53,10 +53,9 @@ public class Processor {
 	 * @param time start time
 	 */
 	public void addProcess(Vertex v, int time) {
-		//System.out.println("ADDED " + v.getName());
 		ProcessInfo p = new ProcessInfo(v,time);
-		processes.add(p);
-		earliestNextProcess = p.endTime();
+		_processes.add(p);
+		_earliestNextProcess = p.endTime();
 	}
 
 	/**
@@ -68,7 +67,7 @@ public class Processor {
 	 * @return ProceessInfo of a task
 	 */
 	public ProcessInfo getProcess(Vertex v) {
-		for (ProcessInfo pi : processes) {
+		for (ProcessInfo pi : _processes) {
 			if (pi.getVertex().equals(v)) {
 				return pi;
 			}
@@ -81,7 +80,7 @@ public class Processor {
 	 * @param v task
 	 */
 	public boolean isScheduled(Vertex v) {
-		for (ProcessInfo pI : processes) {
+		for (ProcessInfo pI : _processes) {
 			if (pI.getVertex().equals(v)) {
 				return true;
 			}
@@ -95,21 +94,21 @@ public class Processor {
 	 * @return end time of a task
 	 */
 	public int startTimeOf(Vertex v) {
-		for (ProcessInfo pi : processes) {
+		for (ProcessInfo pi : _processes) {
 			if (pi.getVertex().equals(v)) {
 				return pi.startTime();
 			}
 		}
 		return 0;
 	}
-	
+
 	/**
 	 * Checks the end time of a task
 	 * @param v task
 	 * @return end time of a task
 	 */
 	public int endTimeOf(Vertex v) {
-		for (ProcessInfo pi : processes) {
+		for (ProcessInfo pi : _processes) {
 			if (pi.getVertex().equals(v)) {
 				return pi.endTime();
 			}
@@ -121,36 +120,36 @@ public class Processor {
 	 * @return the earliest possible start time for the next task on the processor
 	 */
 	public int earliestNextProcess() {
-		return earliestNextProcess;
+		return _earliestNextProcess;
 	}
 
 	/**
 	 * Print the all the scheduled tasks' name
 	 */
 	public void printProcesses() {
-		for (ProcessInfo pI : processes) {
+		for (ProcessInfo pI : _processes) {
 			System.out.print(pI.getVertex().getName() + " ");
 		}
 	}
-	
+
 	/**
 	 * Print the all the scheduled tasks' name and start time
 	 */
 	public String getProcessessString() {
 		StringBuilder s = new StringBuilder();
-		for (ProcessInfo pI : processes) {
+		for (ProcessInfo pI : _processes) {
 			s.append(pI.getVertex().getName());
 			s.append(pI.startTime());
 		}
 		return s.toString();
 	}
-	
+
 	/**
 	 * Returns the list of scheduled tasks on the processor 
 	 * @return the list of scheduled tasks on the processor 
 	 */
 	public List<ProcessInfo> getProcesses() {
-		return processes;
+		return _processes;
 	}
 
 	/**
@@ -158,21 +157,19 @@ public class Processor {
 	 * @return time the processor has been idle for
 	 */
 	public int idleTime() {
-		int idleTime = earliestNextProcess;
-		for (ProcessInfo pI : processes) {
+		int idleTime = _earliestNextProcess;
+		for (ProcessInfo pI : _processes) {
 			idleTime += pI.startTime();
 			idleTime -= pI.endTime();
 		}
 		return idleTime;
 	}
-	
+
 	public List<Vertex> getProcessOrder() {
-		
 		List<Vertex> processOrder = new ArrayList<Vertex>();
-		for (ProcessInfo pI : processes) {
+		for (ProcessInfo pI : _processes) {
 			processOrder.add(pI.getVertex());
 		}
-		
 		return processOrder;
 	}
 }

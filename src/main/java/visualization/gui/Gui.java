@@ -1,12 +1,13 @@
 package visualization.gui;
 
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -16,17 +17,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
 
 import visualization.gantt.Gantt;
 import visualization.graph.Visualizer;
-
-import java.awt.CardLayout;
-import java.awt.Dimension;
-import java.awt.Color;
-
-import javax.swing.border.LineBorder;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 
 /**
  * Instantiates the GUI containing the representations of the schedule in the forms of a tree graph and Gantt chart. It also contains a statistics table which shows relevant information about the current progress of the AStar algorithm.
@@ -75,7 +71,6 @@ public class Gui {
 			try {
 				_frame.setContentPane(new JLabel(new ImageIcon(ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("back5.jpg") ))));
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 

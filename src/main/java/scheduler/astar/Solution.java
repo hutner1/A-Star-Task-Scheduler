@@ -2,7 +2,6 @@ package scheduler.astar;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -27,11 +26,9 @@ public class Solution implements Comparable<Solution>, Schedule{
 	private List<Vertex> _scheduledProcesses;
 	private List<Vertex> _schedulableProcesses;
 	private List<Vertex> _nonschedulableProcesses;
-
 	private Queue<Solution> _children;
 	Vertex _lastScheduledTask;
 	private int _mostRecentlyScheduledProcessor;
-
 	private DefaultDirectedWeightedGraph _graph;
 	private boolean _fixedOrder = false;;
 	private static HashMap<Vertex, Integer> _btmLevels;
@@ -85,7 +82,6 @@ public class Solution implements Comparable<Solution>, Schedule{
 				maximumTime = p.getTime();
 			}
 		}
-
 		return maximumTime;
 	}
 
@@ -158,8 +154,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 				minTime = earliestTime;
 				processorNumber = i;
 			}
-		}
-
+		}	
 		_processors.get(processorNumber).addProcess(v,earliestDataReadyTime(v, processorNumber));
 	}
 
@@ -197,6 +192,9 @@ public class Solution implements Comparable<Solution>, Schedule{
 	 * Helper function that calls all three parts of the proposed cost function
 	 * and returns the maximum of those three values.
 	 * 
+	 * As a solution's cost function does not change, it is cached, and so if
+	 * it has already been calculated for a solution, it is saved as a private field.
+	 * 
 	 * Parts
 	 * 1. maximum of start time and bottom level of any task in schedule
 	 * 2. idle time plus computation load
@@ -208,15 +206,12 @@ public class Solution implements Comparable<Solution>, Schedule{
 		if (_maxCost == -1) {
 			ArrayList<Integer> costs = new ArrayList<Integer>();
 
-
 			costs.add(maximumEndTimeOfPartialSchedule());
 			costs.add(idleTimePlusComputationLoad());
 			costs.add(maximumEndTimeOfFreeVertices());
 
-
 			_maxCost = Collections.max(costs);
 		}
-		
 		return _maxCost;
 	}
 
@@ -299,7 +294,6 @@ public class Solution implements Comparable<Solution>, Schedule{
 				minTime = earliestTime;
 			}
 		}
-
 		return minTime;
 	}
 
@@ -320,7 +314,6 @@ public class Solution implements Comparable<Solution>, Schedule{
 		_schedulableProcesses.remove(parent);
 
 		for (Vertex child : _graph.getChildren(parent)) {
-
 			boolean canBeScheduled = true;
 			for (Vertex childsParent : _graph.getParents(child)) {
 				if (!_scheduledProcesses.contains(childsParent)) { 
@@ -347,7 +340,6 @@ public class Solution implements Comparable<Solution>, Schedule{
 	 * @return
 	 */
 	public Queue<Solution> createChildren() {
-
 		if (_children == null) {
 			_children = new ArrayDeque<Solution>();
 			for (Vertex v : _schedulableProcesses) {
@@ -359,9 +351,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 					_children.add(child);
 				} 
 			}
-
 		}
-
 		return _children;
 	}
 
@@ -390,7 +380,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 	}
 
 	/**
-	 * Returns the additional information on task vertex tha needs to be added to output file
+	 * Returns the additional information on task vertex that needs to be added to output file
 	 * 
 	 * Used by OutputWriter obj of the io package to print out the optimal schedule's information on each task.
 	 * 
@@ -431,10 +421,13 @@ public class Solution implements Comparable<Solution>, Schedule{
 				return false;
 			}
 		}
-
 		return true;
 	}
 
+	/**
+	 * Overrides the hashCode method in order to allow solutions to be stored
+	 * in a HashSet
+	 */
 	@Override
 	public int hashCode() {
 		ArrayList<String> hashString = new ArrayList<String>();
@@ -446,7 +439,6 @@ public class Solution implements Comparable<Solution>, Schedule{
 		Collections.sort(hashString);
 
 		StringBuilder sb = new StringBuilder();
-
 		for (String s : hashString) {
 			sb.append(s);
 		}
@@ -484,7 +476,7 @@ public class Solution implements Comparable<Solution>, Schedule{
 				try {
 					addProcessWithoutUpdating(v, _mostRecentlyScheduledProcessor); // try to add tasks at the earliest possible time
 				} catch (SolutionException e) {
-					_processors.put(_mostRecentlyScheduledProcessor, p);
+					_processors.put(_mostRecentlyScheduledProcessor, p); //If the task is unable to be scheduled, it is not equivalent, so undo changes and exit
 					return false;
 				}
 			}
@@ -623,6 +615,9 @@ public class Solution implements Comparable<Solution>, Schedule{
 		return _processors;
 	}
 
+	/**
+	 * Gets the upper bound of the total time of the solution
+	 */
 	public int getUpperBound() {
 		return _upperBound;
 	}
@@ -634,7 +629,6 @@ public class Solution implements Comparable<Solution>, Schedule{
 	public int getSize() {
 		return _scheduledProcesses.size();
 	}
-
 
 	/**
 	 * Adds a process to a processor at its earliest possible time, to be used for reassigning tasks
@@ -754,8 +748,6 @@ public class Solution implements Comparable<Solution>, Schedule{
 				_nonschedulableProcesses.add(finalFixedOrder.get(i));
 			}
 		}
-
-
 	}
 
 	/**
@@ -807,12 +799,11 @@ public class Solution implements Comparable<Solution>, Schedule{
 				int costB = 0;
 				try{
 					costA = _graph.outgoingEdgesOf(arg0).get(0).getWeight();
-				}catch(IndexOutOfBoundsException e){
-				}
+				}catch(IndexOutOfBoundsException e){}
+				
 				try{
 					costB = _graph.outgoingEdgesOf(arg1).get(0).getWeight();
-				}catch(IndexOutOfBoundsException e){
-				}
+				}catch(IndexOutOfBoundsException e){}
 				return costB-costA;
 			}
 		});
@@ -840,7 +831,6 @@ public class Solution implements Comparable<Solution>, Schedule{
 					parentEndTime += _graph.getEdgeWeight(e);	
 				}
 			}
-
 			startingTimes.add(parentEndTime);
 		}
 
