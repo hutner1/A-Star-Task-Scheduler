@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -70,11 +72,13 @@ public class Gui {
 		_frame.setResizable(false);
 
 		//Adding the background image
-		try {
-			_frame.setContentPane(new JLabel(new ImageIcon(ImageIO.read(new File("src"+File.separator+"main"+File.separator+"resources"+File.separator+"back5.jpg")))));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+			try {
+				_frame.setContentPane(new JLabel(new ImageIcon(ImageIO.read(this.getClass().getClassLoader().getResourceAsStream("back5.jpg") ))));
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
 
 		/*frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);*/
 		_frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
