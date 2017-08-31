@@ -510,12 +510,12 @@ public class Solution implements Comparable<Solution>, Schedule{
 					ArrayList<DefaultWeightedEdge> childEdges = _graph.outgoingEdgesOf(v);
 					int edgeCost = 0;
 					for (DefaultWeightedEdge e : childEdges) {
-						if (e.getDest().equals(nc)) {
+						if (e.getDest().equals(nc) && e.getSource().equals(v)) {
 							edgeCost = e.getWeight(); //get the edge cost from task to child
 							break;
 						}
 					}
-					int time = childSol._processors.get(_mostRecentlyScheduledProcessor).endTimeOf(v) + edgeCost;
+					int time = originalProcessor.endTimeOf(v) + edgeCost;
 					if (isScheduled(nc)){ //if the child is scheduled
 						if (_processors.get(scheduledOnProcessorNumber(nc)).startTimeOf(nc)>time && !_processors.get(_mostRecentlyScheduledProcessor).isScheduled(nc)){
 							return false;
